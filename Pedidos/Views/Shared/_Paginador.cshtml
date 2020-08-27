@@ -72,6 +72,8 @@
     <ul class="pagination">
 
         @{Model.ValoresQueryString["pagina"] = 1; }
+
+        @*IR PRIMERA PAGINA*@
         @if (Model.PaginaActual == 1)
         {
             <li class="page-item disabled">@Html.ActionLink("Primera", null, Model.ValoresQueryString, new { @class = "page-link" })</li>
@@ -80,6 +82,18 @@
         {
             <li class="page-item">@Html.ActionLink("Primera", null, Model.ValoresQueryString, new { @class = "page-link" })</li>
         }
+
+        @*ANTERIOR*@
+        @*@if (Model.PaginaActual == 1)
+        {
+            Model.ValoresQueryString["pagina"] = 1;
+            <li class="page-item disabled">@Html.ActionLink("←", null, Model.ValoresQueryString, new { @class = "page-link" })</li>
+        }
+        else
+        {
+            Model.ValoresQueryString["pagina"] = Model.PaginaActual - 1;
+            <li class="page-item">@Html.ActionLink("←", null, Model.ValoresQueryString, new { @class = "page-link" })</li>
+        }*@
 
         @for (int i = Inicial; i <= Final; i++)
         {
@@ -90,10 +104,24 @@
             }
             else
             {
-                <li class="page-item">@Html.ActionLink(i.ToString(), null, Model.ValoresQueryString, new { @class = "page-link" })</li>
+                <li  class="page-item">@Html.ActionLink(i.ToString(), null, Model.ValoresQueryString, new { @class = "page-link" })</li>
             }
         }
 
+        @*SIGUIENTE*@
+
+        @*@if (Model.PaginaActual == cantidadPaginas)
+        {
+            Model.ValoresQueryString["pagina"] = cantidadPaginas;
+            <li class="page-item disabled">@Html.ActionLink("->", null, Model.ValoresQueryString, new { @class = "page-link",@style="font-size:15px" })</li>
+        }
+        else
+        {
+            Model.ValoresQueryString["pagina"] = Model.PaginaActual + 1;
+            <li class="page-item">@Html.ActionLink("->", null, Model.ValoresQueryString, new { @class = "page-link" ,@style="font-size:15px"})</li>
+        }*@
+
+        @*IA A ULTIMA PAGINA*@
 
         @{Model.ValoresQueryString["pagina"] = cantidadPaginas; }
         @if (Model.PaginaActual == cantidadPaginas)

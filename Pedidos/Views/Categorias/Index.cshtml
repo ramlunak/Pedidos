@@ -10,14 +10,13 @@
     <a asp-action="Create">Create New</a>
 </p>
 
-@{ Html.RenderPartial("_Paginador");}
 
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Categorias.First().nombre)
-            </th>         
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Categorias.First().activo)
             </th>
@@ -25,19 +24,24 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Categorias) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombre)
-            </td>          
-            <td>
-                @Html.DisplayFor(modelItem => item.activo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |              
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Categorias)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id" asp-route-pagina="@Model.PaginaActual">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id" asp-route-pagina="@Model.PaginaActual">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div class="d-flex justify-content-end">
+    @{ Html.RenderPartial("_Paginador");}
+</div>

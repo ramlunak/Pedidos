@@ -20,10 +20,8 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        // GET: Categorias
         public async Task<IActionResult> Index(int pagina = 1)
-        {
-
+        {          
             var cantidadRegistrosPorPagina = 5; // parámetro
 
             var temas = await _context.P_Categorias.OrderBy(x => x.id)
@@ -43,36 +41,14 @@ namespace Pedidos.Controllers
             return View(modelo);
         }
 
-        // GET: Categorias/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var p_Categoria = await _context.P_Categorias
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Categoria == null)
-            {
-                return NotFound();
-            }
-
-            return View(p_Categoria);
-        }
-
-        // GET: Categorias/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Categorias/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_Categoria p_Categoria)
+        public async Task<IActionResult> Create(P_Categoria p_Categoria)
         {
             if (ModelState.IsValid)
             {
@@ -85,8 +61,7 @@ namespace Pedidos.Controllers
             return View(p_Categoria);
         }
 
-        // GET: Categorias/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? pagina)
         {
             if (id == null)
             {
@@ -98,15 +73,14 @@ namespace Pedidos.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.Pagina = pagina;
             return View(p_Categoria);
         }
 
-        // POST: Categorias/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,nombre,idCuenta,activo")] P_Categoria p_Categoria)
+        public async Task<IActionResult> Edit(int id, P_Categoria p_Categoria,int? pagina)
         {
             if (id != p_Categoria.id)
             {
@@ -131,12 +105,11 @@ namespace Pedidos.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),new{pagina});
             }
             return View(p_Categoria);
         }
 
-        // GET: Categorias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -154,7 +127,7 @@ namespace Pedidos.Controllers
             return View(p_Categoria);
         }
 
-        // POST: Categorias/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

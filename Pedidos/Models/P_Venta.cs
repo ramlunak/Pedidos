@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Models
 {
-    public class P_Ventas
+    public class P_Venta
     {
         public int id { get; set; }
         public int idProducto { get; set; }        

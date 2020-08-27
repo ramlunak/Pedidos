@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Models
 {
-    public class P_Pedidos
+    public class P_Pedido
     {
         public int id { get; set; }
         public int? idCliente { get; set; }
@@ -20,6 +20,6 @@ namespace Pedidos.Models
         public bool activo { get; set; }
 
         [NotMapped]
-        public List<P_Ventas> Ventas { get; set; }
+        public List<P_Venta> Ventas { get; set; }
     }
 }

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Pedidos.Models.P_Categoria>
+﻿@model Pedidos.ViewModels.VMCategorias
 
 @{
     ViewData["Title"] = "Index";
@@ -9,36 +9,32 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+@{ Html.RenderPartial("_Paginador");}
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
-            </th>
+                @Html.DisplayNameFor(model => model.Categorias.First().nombre)
+            </th>         
             <th>
-                @Html.DisplayNameFor(model => model.idCuenta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.activo)
+                @Html.DisplayNameFor(model => model.Categorias.First().activo)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Categorias) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idCuenta)
-            </td>
+            </td>          
             <td>
                 @Html.DisplayFor(modelItem => item.activo)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |              
                 <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
             </td>
         </tr>

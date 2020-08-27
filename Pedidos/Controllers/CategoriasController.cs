@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
@@ -20,9 +21,26 @@ namespace Pedidos.Controllers
         }
 
         // GET: Categorias
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int pagina = 1)
         {
-            return View(await _context.P_Categorias.ToListAsync());
+
+            var cantidadRegistrosPorPagina = 5; // parámetro
+
+            var temas = await _context.P_Categorias.OrderBy(x => x.id)
+                   .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+                   .Take(cantidadRegistrosPorPagina).ToListAsync();
+
+            var totalDeRegistros = await _context.P_Categorias.CountAsync();
+
+            var modelo = new ViewModels.VMCategorias();
+            modelo.Categorias = temas;
+            modelo.PaginaActual = pagina;
+            modelo.TotalDeRegistros = totalDeRegistros;
+            modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            modelo.ValoresQueryString = new RouteValueDictionary();
+            modelo.ValoresQueryString["pagina"] = pagina;
+
+            return View(modelo);
         }
 
         // GET: Categorias/Details/5
@@ -58,6 +76,8 @@ namespace Pedidos.Controllers
         {
             if (ModelState.IsValid)
             {
+                p_Categoria.idCuenta = 1;
+
                 _context.Add(p_Categoria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

@@ -5,7 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlScripts\Categoria.sql" />
+    <None Remove="SqlScripts\Cliente - Copy.sql" />
     <None Remove="SqlScripts\Cliente.sql" />
+    <None Remove="SqlScripts\Produto - Copy.sql" />
+    <None Remove="SqlScripts\Produto.sql" />
   </ItemGroup>
 
   <ItemGroup>

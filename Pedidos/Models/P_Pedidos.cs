@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pedidos.Models.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace Pedidos.Models
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
         public DateTime fecha { get; set; }
+        public StatusPedido status { get; set; }
         public string Descripcion { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }

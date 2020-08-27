@@ -9,6 +9,7 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int idProducto { get; set; }        
+        public int idPedido { get; set; }        
         public DateTime fecha { get; set; }
         public float Precio { get; set; }
         public int idCuenta { get; set; }

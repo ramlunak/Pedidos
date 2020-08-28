@@ -10,7 +10,7 @@ using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class LoginController : Controller
+    public class LoginController : BaseController
     {
         private readonly AppDbContext _context;
 
@@ -22,25 +22,40 @@ namespace Pedidos.Controllers
         // GET: P_Cuenta
         public async Task<IActionResult> Index()
         {
+            if (Cuenta != null)
+            {
+                return RedirectToAction(nameof(Index), "Home", null);
+            }
+
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(P_Cuenta login)
         {
             try
             {
-                var cuenta = await _context.P_Cuentas.Where(x => x.activo).FirstOrDefaultAsync();
-                if(cuenta is null)
+                var cuenta = await _context.P_Cuentas.Where(x => x.usuario == login.usuario && x.password == login.password).FirstOrDefaultAsync();
+                if (cuenta is null)
                 {
-                    ViewBag.Erro = "Usuario não cadastrado";                   
+                    ViewBag.Erro = "Usuario não cadastrado";
+                }
+                else if (!cuenta.activo)
+                {
+                    ViewBag.Erro = "Sua conta foi desativada, contate o suporte técnico.";
+                }
+                else
+                {
+                    await SignIn(cuenta);
+                    return RedirectToAction(nameof(Index), "Home", null);
                 }
             }
             catch
             {
                 ViewBag.Erro = "Erro de conexão, contate o suporte técnico.";
             }
+
             return View(login);
         }
 

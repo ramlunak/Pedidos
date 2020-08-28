@@ -2,6 +2,7 @@
     id int not null identity(1,1),   
     usuario varchar(255) not null,   
     password varchar(255) not null,     
+    rol varchar(255)  null,     
     idPlano int  null,    
     activo bit not null
 );

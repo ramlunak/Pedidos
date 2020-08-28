@@ -11,7 +11,7 @@ using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class CategoriasController : Controller
+    public class CategoriasController : BaseController
     {
         private readonly AppDbContext _context;
 
@@ -22,6 +22,8 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Index(int pagina = 1)
         {          
+           
+
             var cantidadRegistrosPorPagina = 5; // parámetro
 
             var temas = await _context.P_Categorias.OrderBy(x => x.id)
@@ -43,6 +45,7 @@ namespace Pedidos.Controllers
 
         public IActionResult Create()
         {
+            ValidarCuenta();
             return View();
         }
 

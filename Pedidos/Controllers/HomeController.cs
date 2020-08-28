@@ -9,7 +9,7 @@ using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : BaseController
     {
         private readonly ILogger<HomeController> _logger;
 

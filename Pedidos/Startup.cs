@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pedidos.Data;
+using Pedidos.Models.Enums;
 
 namespace Pedidos
 {
@@ -54,8 +55,7 @@ namespace Pedidos
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy("Alumno", pol => pol.RequireClaim(ClaimTypes.Role, "Alumno"));
-                options.AddPolicy("Instructor", pol => pol.RequireClaim(ClaimTypes.Role, "Instructor"));
+                options.AddPolicy(RolesSistema.Establecimiento.ToString(), pol => pol.RequireClaim(ClaimTypes.Role, RolesSistema.Establecimiento.ToString()));               
             });
 
             var cultureInfo = new CultureInfo("pt-BR");

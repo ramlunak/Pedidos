@@ -10,7 +10,7 @@ using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class ClientesController : Controller
+    public class ClientesController : BaseController
     {
         private readonly AppDbContext _context;
 

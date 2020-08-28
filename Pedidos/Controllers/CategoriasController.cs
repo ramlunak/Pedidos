@@ -21,16 +21,15 @@ namespace Pedidos.Controllers
         }
 
         public async Task<IActionResult> Index(int pagina = 1)
-        {          
-           
-
+        {
+            ValidarCuenta();
             var cantidadRegistrosPorPagina = 5; // parámetro
 
             var temas = await _context.P_Categorias.OrderBy(x => x.id)
                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
                    .Take(cantidadRegistrosPorPagina).ToListAsync();
 
-            var totalDeRegistros = await _context.P_Categorias.CountAsync();
+            var totalDeRegistros = await _context.P_Categorias.Where(x=>x.idCuenta == Cuenta.id).CountAsync();
 
             var modelo = new ViewModels.VMCategorias();
             modelo.Categorias = temas;
@@ -53,6 +52,7 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Categoria p_Categoria)
         {
+            ValidarCuenta();
             if (ModelState.IsValid)
             {
                 p_Categoria.idCuenta = 1;
@@ -66,6 +66,7 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Edit(int? id, int? pagina)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
@@ -85,6 +86,8 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, P_Categoria p_Categoria,int? pagina)
         {
+            ValidarCuenta();
+
             if (id != p_Categoria.id)
             {
                 return NotFound();
@@ -115,6 +118,8 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
+            ValidarCuenta();
+
             if (id == null)
             {
                 return NotFound();
@@ -135,6 +140,7 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ValidarCuenta();
             var p_Categoria = await _context.P_Categorias.FindAsync(id);
             _context.P_Categorias.Remove(p_Categoria);
             await _context.SaveChangesAsync();
@@ -143,6 +149,7 @@ namespace Pedidos.Controllers
 
         private bool P_CategoriaExists(int id)
         {
+            ValidarCuenta();
             return _context.P_Categorias.Any(e => e.id == id);
         }
     }

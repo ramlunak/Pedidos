@@ -22,12 +22,14 @@ namespace Pedidos.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.P_Clientes.ToListAsync());
+            ValidarCuenta();
+            return View(await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id).ToListAsync());
         }
 
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +48,7 @@ namespace Pedidos.Controllers
         // GET: Clientes/Create
         public IActionResult Create()
         {
+            ValidarCuenta();
             return View();
         }
 
@@ -56,6 +59,7 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,telefono,nombre,idCuenta,activo")] P_Cliente p_Cliente)
         {
+            ValidarCuenta();
             if (ModelState.IsValid)
             {
                 _context.Add(p_Cliente);
@@ -68,6 +72,7 @@ namespace Pedidos.Controllers
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
@@ -88,6 +93,7 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,telefono,nombre,idCuenta,activo")] P_Cliente p_Cliente)
         {
+            ValidarCuenta();
             if (id != p_Cliente.id)
             {
                 return NotFound();
@@ -119,6 +125,7 @@ namespace Pedidos.Controllers
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
@@ -139,6 +146,7 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ValidarCuenta();
             var p_Cliente = await _context.P_Clientes.FindAsync(id);
             _context.P_Clientes.Remove(p_Cliente);
             await _context.SaveChangesAsync();
@@ -147,6 +155,7 @@ namespace Pedidos.Controllers
 
         private bool P_ClienteExists(int id)
         {
+            ValidarCuenta();
             return _context.P_Clientes.Any(e => e.id == id);
         }
     }

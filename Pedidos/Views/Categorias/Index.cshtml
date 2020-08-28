@@ -4,14 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-center align-items-center w-100">
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+    <div style="margin:5px"> Categorias</div>
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="d-flex justify-content-between">
+    <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Nova Categoria</a></div>
+    <div>
+        <!-- Search form -->
+        <!-- Search form -->
+        <form class="form-inline">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="Search"
+                   aria-label="Search">
+        </form>
+    </div>
+</div>
 
-
-<table class="table">
+<table class="table table-striped">
     <thead>
         <tr>
             <th>
@@ -34,9 +46,12 @@
                     @Html.DisplayFor(modelItem => item.activo)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.id" asp-route-pagina="@Model.PaginaActual">Edit</a> |
-                    <a asp-action="Delete" asp-route-id="@item.id" asp-route-pagina="@Model.PaginaActual">Delete</a>
+                    <div style="margin-top:5px">
+                        <div class="btn btn-sm btn-success"><a style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a></div>  |
+                        <div class="btn btn-sm btn-danger"><a style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a></div>
+                    </div>
                 </td>
+
             </tr>
         }
     </tbody>

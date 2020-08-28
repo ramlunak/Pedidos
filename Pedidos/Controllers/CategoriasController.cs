@@ -25,14 +25,14 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             var cantidadRegistrosPorPagina = 5; // parámetro
 
-            var temas = await _context.P_Categorias.OrderBy(x => x.id)
+            var lista = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).OrderBy(x => x.id)
                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                   .Take(cantidadRegistrosPorPagina).Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+                   .Take(cantidadRegistrosPorPagina).ToListAsync();
 
             var totalDeRegistros = await _context.P_Categorias.Where(x=>x.idCuenta == Cuenta.id).CountAsync();
 
             var modelo = new ViewModels.VMCategorias();
-            modelo.Categorias = temas;
+            modelo.Categorias = lista;
             modelo.PaginaActual = pagina;
             modelo.TotalDeRegistros = totalDeRegistros;
             modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
@@ -55,7 +55,7 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             if (ModelState.IsValid)
             {
-                p_Categoria.idCuenta = 1;
+                p_Categoria.idCuenta = Cuenta.id;
 
                 _context.Add(p_Categoria);
                 await _context.SaveChangesAsync();

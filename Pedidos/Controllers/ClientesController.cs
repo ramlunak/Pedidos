@@ -57,11 +57,12 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,telefono,nombre,idCuenta,activo")] P_Cliente p_Cliente)
+        public async Task<IActionResult> Create( P_Cliente p_Cliente)
         {
             ValidarCuenta();
             if (ModelState.IsValid)
             {
+                p_Cliente.idCuenta = Cuenta.id;
                 _context.Add(p_Cliente);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

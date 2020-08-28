@@ -46,9 +46,10 @@ namespace Pedidos.Controllers
         }
 
         // GET: Productos/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             ValidarCuenta();
+            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View();
         }
 
@@ -57,11 +58,12 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,codigo,nombre,idCategoria,idCuenta,activo")] P_Productos p_Productos)
+        public async Task<IActionResult> Create( P_Productos p_Productos)
         {
             ValidarCuenta();
             if (ModelState.IsValid)
             {
+                p_Productos.idCuenta = Cuenta.id;
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

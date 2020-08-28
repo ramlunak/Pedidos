@@ -27,7 +27,7 @@ namespace Pedidos.Controllers
 
             var temas = await _context.P_Categorias.OrderBy(x => x.id)
                    .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                   .Take(cantidadRegistrosPorPagina).ToListAsync();
+                   .Take(cantidadRegistrosPorPagina).Where(x => x.idCuenta == Cuenta.id).ToListAsync();
 
             var totalDeRegistros = await _context.P_Categorias.Where(x=>x.idCuenta == Cuenta.id).CountAsync();
 

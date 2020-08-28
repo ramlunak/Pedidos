@@ -21,6 +21,7 @@ namespace Pedidos.Controllers
         public IActionResult Index()
         {
             ValidarCuenta();
+            //ViewData["Nombre"] = Cuenta.usuario;
             return View();
         }
 

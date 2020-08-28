@@ -30,6 +30,12 @@ namespace Pedidos.Controllers
             return View();
         }
 
+        public async Task<IActionResult> Salir()
+        {
+            Logof();
+            return RedirectToAction(nameof(Index), null);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Index(P_Cuenta login)

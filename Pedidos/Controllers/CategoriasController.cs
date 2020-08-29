@@ -20,16 +20,38 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        public async Task<IActionResult> Index(int pagina = 1)
+        public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
             ValidarCuenta();
             var cantidadRegistrosPorPagina = 5; // parámetro
 
-            var lista = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).OrderBy(x => x.id)
-                   .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-                   .Take(cantidadRegistrosPorPagina).ToListAsync();
+            //Func<P_Categoria, bool> predicado;
+            //predicado = x => x.idCuenta == Cuenta.id;
 
-            var totalDeRegistros = await _context.P_Categorias.Where(x=>x.idCuenta == Cuenta.id).CountAsync();
+            //if (nombre != null)
+            //    predicado = x => x.idCuenta == Cuenta.id;
+
+            //var lista = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).OrderBy(x => x.id)
+            //           .Skip((pagina - 1) * cantidadRegistrosPorPagina)
+            //           .Take(cantidadRegistrosPorPagina).ToListAsync();
+
+
+            var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
+            var sql = SqlConsultas.GetSqlAllCategorias(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);
+
+            var lista = await _context.P_Categorias.FromSqlRaw(sql).ToListAsync();
+
+            var totalDeRegistros = 0;
+            if (nombre is null)
+            {             
+                totalDeRegistros = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+            }
+            else
+            {
+                totalDeRegistros = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).CountAsync();
+            }
+
+            ViewBag.FlrNombre = nombre;
 
             var modelo = new ViewModels.VMCategorias();
             modelo.Categorias = lista;
@@ -38,6 +60,7 @@ namespace Pedidos.Controllers
             modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
             modelo.ValoresQueryString = new RouteValueDictionary();
             modelo.ValoresQueryString["pagina"] = pagina;
+            modelo.ValoresQueryString["nombre"] = nombre;
 
             return View(modelo);
         }
@@ -84,7 +107,7 @@ namespace Pedidos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, P_Categoria p_Categoria,int? pagina)
+        public async Task<IActionResult> Edit(int id, P_Categoria p_Categoria, int? pagina)
         {
             ValidarCuenta();
 
@@ -111,7 +134,7 @@ namespace Pedidos.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index),new{pagina});
+                return RedirectToAction(nameof(Index), new { pagina });
             }
             return View(p_Categoria);
         }

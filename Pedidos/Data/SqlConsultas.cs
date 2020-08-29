@@ -13,8 +13,7 @@ namespace Pedidos.Data
         {
             StringBuilder filtro = new StringBuilder();
             if (nombre != null)
-            {
-                Skip = 0;
+            {               
                 filtro.Append($" AND nombre LIKE '%{nombre}%'");
             }
 

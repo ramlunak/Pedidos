@@ -10,8 +10,18 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create" enctype="multipart/form-data" >
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group row">
+                <div class="col-sm-12">
+                    <div class="custom-file">
+                        <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
+                               Class="form-control custom-file-input" />
+                        <label class="custom-file-label">Procurar Imagem....</label>
+                    </div>
+                </div>
+            </div>
 
             <div class="form-group">
                 <label>Temas</label>
@@ -27,17 +37,11 @@
 
                 </select>
             </div>
-
-            <div class="form-group">
-                <label asp-for="codigo" class="control-label"></label>
-                <input asp-for="codigo" class="form-control" />
-                <span asp-validation-for="codigo" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="nombre" class="control-label"></label>
                 <input asp-for="nombre" class="form-control" />
                 <span asp-validation-for="nombre" class="text-danger"></span>
-            </div>          
+            </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
                     <input class="form-check-input" asp-for="activo" /> @Html.DisplayNameFor(model => model.activo)

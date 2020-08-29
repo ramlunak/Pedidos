@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
@@ -63,7 +64,26 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             if (ModelState.IsValid)
             {
-                p_Productos.idCuenta = Cuenta.id;
+
+                var files = HttpContext.Request.Form.Files;
+                foreach (var imagen in files)
+                {
+                    if (imagen != null && imagen.Length > 0)
+                    {
+                        if (!imagen.IsImage())
+                        {
+                            @ViewBag.Erro = "O arquivo selecionado não tem formato de imagem";
+                            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+                            return View(p_Productos);
+                        }
+
+                        var imgBytes = await imagen.ToByteArray();
+                        var newImg = imgBytes.Resize(50, 50);
+                        p_Productos.imagen = await imagen.ToByteArray();
+                    }
+                }
+
+                p_Productos.idCuenta = Cuenta.id;               
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -93,7 +113,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,codigo,nombre,idCategoria,idCuenta,activo")] P_Productos p_Productos)
+        public async Task<IActionResult> Edit(int id, P_Productos p_Productos)
         {
             ValidarCuenta();
             if (id != p_Productos.id)
@@ -103,9 +123,28 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(p_Productos);
+                
+                    try
+                    {
+                        var files = HttpContext.Request.Form.Files;
+                        foreach (var imagen in files)
+                        {
+                            if (imagen != null && imagen.Length > 0)
+                            {
+                                if (!imagen.IsImage())
+                                {
+                                    @ViewBag.Erro = "O arquivo selecionado não tem formato de imagem";
+                                    ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+                                    return View(p_Productos);
+                                }
+
+                                var imgBytes = await imagen.ToByteArray();
+                                var newImg = imgBytes.Resize(50, 50);
+                                p_Productos.imagen = await imagen.ToByteArray();
+                            }
+                        }
+
+                        _context.Update(p_Productos);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

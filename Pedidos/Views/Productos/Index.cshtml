@@ -13,9 +13,6 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.codigo)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.nombre)
             </th>
             <th>
@@ -31,29 +28,43 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.codigo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idCategoria)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idCuenta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.activo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+
+            var imgDataURL = string.Empty;
+            if (item.imagen != null)
+            {
+                string imreBase64Data = Convert.ToBase64String(item.imagen);
+                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+            }
+
+            <tr>
+                <td>
+                    @if (item.imagen != null && item.imagen.Length > 0)
+                    {
+                        <div >
+                            <img style="object-fit:contain" src="@imgDataURL" width="150" height="150" />
+                        </div>
+                    }
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idCategoria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idCuenta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

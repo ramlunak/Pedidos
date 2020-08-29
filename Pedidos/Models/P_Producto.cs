@@ -1,5 +1,9 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -9,7 +13,19 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public string codigo { get; set; }
-        public string nombre { get; set; }    
+
+        [Required(ErrorMessage = "O nome é obrigatorio")]
+        [DisplayName("Nome")]
+        public string nombre { get; set; }
+        
+        [Column(TypeName = "image")]
+        public byte[] imagen { get; set; }
+
+        [NotMapped]
+        public IFormFile ImageName { get; set; }
+
+        [Required(ErrorMessage = "A Categoria é obrigatoria")]
+        [DisplayName("Categoria")]
         public int idCategoria { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }

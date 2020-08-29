@@ -47,7 +47,7 @@
                     @Html.DisplayFor(modelItem => item.activo)
                 </td>
                 <td>
-                    <div style="margin-top:5px">
+                    <div>
                         <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
                         <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
                     </div>

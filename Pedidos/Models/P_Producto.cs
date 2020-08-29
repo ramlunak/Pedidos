@@ -17,7 +17,7 @@ namespace Pedidos.Models
         [Required(ErrorMessage = "O nome é obrigatorio")]
         [DisplayName("Nome")]
         public string nombre { get; set; }
-        
+
         [Column(TypeName = "image")]
         public byte[] imagen { get; set; }
 
@@ -27,6 +27,8 @@ namespace Pedidos.Models
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]
         public int idCategoria { get; set; }
+        [NotMapped]
+        public string Categoria { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
     }

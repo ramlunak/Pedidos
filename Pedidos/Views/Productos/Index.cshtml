@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Pedidos.Models.P_Productos>
+﻿@model Pedidos.ViewModels.VMProductos
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
+                @Html.DisplayNameFor(model => model.Productos.First().nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.idCategoria)
+                @Html.DisplayNameFor(model => model.Productos.First().idCategoria)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.idCuenta)
+                @Html.DisplayNameFor(model => model.Productos.First().idCuenta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.activo)
+                @Html.DisplayNameFor(model => model.Productos.First().activo)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
+        @foreach (var item in Model.Productos)
         {
 
             var imgDataURL = string.Empty;
@@ -60,9 +60,10 @@
                     @Html.DisplayFor(modelItem => item.activo)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                    <div>
+                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
+                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
+                    </div>
                 </td>
             </tr>
         }

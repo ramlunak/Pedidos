@@ -25,17 +25,6 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             var cantidadRegistrosPorPagina = 5; // parámetro
 
-            //Func<P_Categoria, bool> predicado;
-            //predicado = x => x.idCuenta == Cuenta.id;
-
-            //if (nombre != null)
-            //    predicado = x => x.idCuenta == Cuenta.id;
-
-            //var lista = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).OrderBy(x => x.id)
-            //           .Skip((pagina - 1) * cantidadRegistrosPorPagina)
-            //           .Take(cantidadRegistrosPorPagina).ToListAsync();
-
-
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
             var sql = SqlConsultas.GetSqlAllCategorias(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Extensions;
@@ -21,10 +22,42 @@ namespace Pedidos.Controllers
         }
 
         // GET: Productos
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
             ValidarCuenta();
-            return View(await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id).ToListAsync());
+
+            var cantidadRegistrosPorPagina = 5; // parámetro
+
+            var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
+            var sql = SqlConsultas.GetSqlAllProductos(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);
+
+            var lista = await new DBHelper(_context).ProductosFromCmd(sql);
+
+           // var lista = await _context.P_Productos.FromSqlRaw(sql).ToListAsync();
+
+            var totalDeRegistros = 0;
+            if (nombre is null)
+            {
+                totalDeRegistros = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+            }
+            else
+            {
+                totalDeRegistros = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).CountAsync();
+            }
+
+            ViewBag.FlrNombre = nombre;
+            
+            var modelo = new ViewModels.VMProductos();
+            modelo.Productos = lista;
+            modelo.PaginaActual = pagina;
+            modelo.TotalDeRegistros = totalDeRegistros;
+            modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            modelo.ValoresQueryString = new RouteValueDictionary();
+            modelo.ValoresQueryString["pagina"] = pagina;
+            modelo.ValoresQueryString["nombre"] = nombre;
+
+            return View(modelo);
+
         }
 
         // GET: Productos/Details/5
@@ -122,8 +155,7 @@ namespace Pedidos.Controllers
             }
 
             if (ModelState.IsValid)
-            {
-                
+            {                
                     try
                     {
                         var files = HttpContext.Request.Form.Files;

@@ -33,8 +33,6 @@ namespace Pedidos.Controllers
 
             var lista = await new DBHelper(_context).ProductosFromCmd(sql);
 
-           // var lista = await _context.P_Productos.FromSqlRaw(sql).ToListAsync();
-
             var totalDeRegistros = 0;
             if (nombre is null)
             {

@@ -76,7 +76,6 @@ public class DBHelper
 
     public async Task<List<P_Productos>> ProductosFromCmd(string query)
     {
-
         using (var command = _context.Database.GetDbConnection().CreateCommand())
         {
             command.CommandText = query;

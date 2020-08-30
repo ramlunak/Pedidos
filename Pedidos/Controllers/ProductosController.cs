@@ -140,8 +140,14 @@ namespace Pedidos.Controllers
             var ListaCaterorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             ViewBag.Categorias = ListaCaterorias;
             ViewBag.Pagina = pagina;
-
-            p_Productos.Categoria = ListaCaterorias.First(x => x.id == p_Productos.idCategoria).nombre;
+            
+            try
+            {
+                p_Productos.Categoria = ListaCaterorias.First(x => x.id == p_Productos.idCategoria).nombre;
+            }
+            catch 
+            {
+            }
 
             return View(p_Productos);
         }

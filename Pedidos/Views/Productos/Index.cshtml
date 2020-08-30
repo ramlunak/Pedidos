@@ -10,7 +10,7 @@
         <!-- Search form -->
         <form id="formSearchCategoria">
             <div class="d-flex align-items-center">
-                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
+                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="search" placeholder="Buscar"
                        aria-label="Search">
                 <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
                 <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
@@ -19,6 +19,7 @@
         </form>
     </div>
 </div>
+
 
 <table class="table">
     <thead>

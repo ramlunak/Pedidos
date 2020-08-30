@@ -82,7 +82,7 @@ namespace Pedidos.Controllers
         {
             ValidarCuenta();
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            return View();
+            return View(new P_Productos());
         }
 
         // POST: Productos/Create
@@ -136,8 +136,13 @@ namespace Pedidos.Controllers
             {
                 return NotFound();
             }
-            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+
+            var ListaCaterorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+            ViewBag.Categorias = ListaCaterorias;
             ViewBag.Pagina = pagina;
+
+            p_Productos.Categoria = ListaCaterorias.First(x => x.id == p_Productos.idCategoria).nombre;
+
             return View(p_Productos);
         }
 

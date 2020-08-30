@@ -24,7 +24,7 @@
             </div>
 
             <div class="form-group">
-                <label>Temas</label>
+                <label>Categorias</label>
                 <select asp-for="idCategoria" class="form-control" id="idCategoria">
 
                     @if (ViewBag.Categorias != null)
@@ -37,6 +37,7 @@
 
                 </select>
             </div>
+
             <div class="form-group">
                 <label asp-for="nombre" class="control-label"></label>
                 <input asp-for="nombre" class="form-control" />

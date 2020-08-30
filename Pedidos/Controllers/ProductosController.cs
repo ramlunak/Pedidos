@@ -136,7 +136,7 @@ namespace Pedidos.Controllers
             {
                 return NotFound();
             }
-
+            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             ViewBag.Pagina = pagina;
             return View(p_Productos);
         }

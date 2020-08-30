@@ -44,7 +44,7 @@ namespace Pedidos.Controllers
             }
 
             ViewBag.FlrNombre = nombre;
-            
+
             var modelo = new ViewModels.VMProductos();
             modelo.Productos = lista;
             modelo.PaginaActual = pagina;
@@ -90,7 +90,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( P_Productos p_Productos)
+        public async Task<IActionResult> Create(P_Productos p_Productos)
         {
             ValidarCuenta();
             if (ModelState.IsValid)
@@ -114,7 +114,7 @@ namespace Pedidos.Controllers
                     }
                 }
 
-                p_Productos.idCuenta = Cuenta.id;               
+                p_Productos.idCuenta = Cuenta.id;
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -123,7 +123,7 @@ namespace Pedidos.Controllers
         }
 
         // GET: Productos/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id,int? pagina)
         {
             ValidarCuenta();
             if (id == null)
@@ -136,6 +136,8 @@ namespace Pedidos.Controllers
             {
                 return NotFound();
             }
+
+            ViewBag.Pagina = pagina;
             return View(p_Productos);
         }
 
@@ -152,29 +154,35 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {                
-                    try
-                    {
-                        var files = HttpContext.Request.Form.Files;
-                        foreach (var imagen in files)
-                        {
-                            if (imagen != null && imagen.Length > 0)
-                            {
-                                if (!imagen.IsImage())
-                                {
-                                    @ViewBag.Erro = "O arquivo selecionado não tem formato de imagem";
-                                    ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-                                    return View(p_Productos);
-                                }
+            if (ModelState.ErrorCount == 1)
+                ModelState.Clear();
 
-                                var imgBytes = await imagen.ToByteArray();
-                                var newImg = imgBytes.Resize(50, 50);
-                                p_Productos.imagen = await imagen.ToByteArray();
-                            }
+            if (p_Productos.ImageBase64 != null)
+                p_Productos.imagen = System.Convert.FromBase64String(p_Productos.ImageBase64);
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var files = HttpContext.Request.Form.Files;
+                    foreach (var imagen in files)
+                    {
+                        if (!imagen.IsImage())
+                        {
+                            @ViewBag.Erro = "O arquivo selecionado não tem formato de imagem";
+                            ViewBag.Categorias = await _context.P_Categorias.ToListAsync();
+                            return View(p_Productos);
                         }
 
-                        _context.Update(p_Productos);
+                        if (imagen != null && imagen.Length > 0)
+                        {
+                            var imgBytes = await imagen.ToByteArray();
+                            var newImg = imgBytes.Resize(50, 50);
+                            p_Productos.imagen = await imagen.ToByteArray();
+                        }
+                    }
+
+                    _context.Update(p_Productos);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

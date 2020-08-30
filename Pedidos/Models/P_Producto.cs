@@ -23,6 +23,9 @@ namespace Pedidos.Models
 
         [NotMapped]
         public IFormFile ImageName { get; set; }
+        [NotMapped]
+        public string ImageBase64 { get; set; }
+
 
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]

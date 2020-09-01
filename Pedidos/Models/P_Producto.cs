@@ -42,6 +42,9 @@ namespace Pedidos.Models
         [DisplayName("U/M")]
         public UnidadMedida? unidadeMedida { get; set; }
 
+        public int? horasPreparacion { get; set; }
+        public int? minutosPreparacion { get; set; }      
+
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 

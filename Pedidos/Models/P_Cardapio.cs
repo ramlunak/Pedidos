@@ -13,11 +13,14 @@ namespace Pedidos.Models
         public int id { get; set; }
         public int idProducto { get; set; }
 
+        [DisplayName("Valor")]
+        [DataType(DataType.Currency)]       
+        public decimal valor { get; set; }
+
+        [NotMapped]
         [Required(ErrorMessage = "O valor é obrigatorio")]
         [DisplayName("Valor")]
-        [DisplayFormat(DataFormatString = "{0:0,0000}")]
-        [DataType(DataType.Currency)]
-        public decimal valor { get; set; }   
+        public string strValor { get; set; } = string.Empty;
         
         public DateTime fecha { get; set; } = DateTime.Now;
 

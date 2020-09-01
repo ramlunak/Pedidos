@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
@@ -56,10 +58,11 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( P_Cardapio p_Cardapio)
+        public async Task<IActionResult> Create(P_Cardapio p_Cardapio)
         {
             if (ModelState.IsValid)
             {
+                p_Cardapio.valor = p_Cardapio.strValor.ToDecimal();
                 p_Cardapio.idCuenta = Cuenta.id;
                 _context.Add(p_Cardapio);
                 await _context.SaveChangesAsync();
@@ -90,7 +93,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,idProducto,valor,fecha,minutosPreparacion,idCuenta,activo")] P_Cardapio p_Cardapio)
+        public async Task<IActionResult> Edit(int id, P_Cardapio p_Cardapio)
         {
             if (id != p_Cardapio.id)
             {
@@ -101,6 +104,7 @@ namespace Pedidos.Controllers
             {
                 try
                 {
+                    p_Cardapio.valor = p_Cardapio.strValor.ToDecimal();
                     _context.Update(p_Cardapio);
                     await _context.SaveChangesAsync();
                 }

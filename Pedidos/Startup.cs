@@ -58,10 +58,10 @@ namespace Pedidos
                 options.AddPolicy(RolesSistema.Establecimiento.ToString(), pol => pol.RequireClaim(ClaimTypes.Role, RolesSistema.Establecimiento.ToString()));               
             });
 
-            var cultureInfo = new CultureInfo("pt-BR");            
+            var cultureInfo = new CultureInfo("pt-BR");
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-
+            
             services.AddControllers(options =>
             {
                 options.RespectBrowserAcceptHeader = true; // false by default

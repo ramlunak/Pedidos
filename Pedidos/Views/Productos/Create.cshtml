@@ -1,7 +1,8 @@
 ﻿@model Pedidos.Models.P_Productos
+@using Pedidos.Models.Enums
 
 @{
-    ViewData["Title"] = "Criar";   
+    ViewData["Title"] = "Criar";
 }
 
 <h5>Criar Produto</h5>
@@ -21,31 +22,40 @@
                 </div>
             </div>
 
-        <div class="form-group">
-            <label>Categorias</label>
-            <input type="search" id="browserInputCategoria" list="CategoriaList" asp-for="Categoria"  class="form-control" />
-            <datalist id="CategoriaList">
-                @if (ViewBag.Categorias != null)
-                {
-                    @foreach (var categoria in ViewBag.Categorias)
+            <div class="form-group">
+                <label>Categorias</label>
+                <input type="search" id="browserInputCategoria" list="CategoriaList" asp-for="Categoria" class="form-control" />
+                <datalist id="CategoriaList">
+                    @if (ViewBag.Categorias != null)
                     {
-                        <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
+                        @foreach (var categoria in ViewBag.Categorias)
+                        {
+                            <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
+                        }
                     }
-                }
-            </datalist> 
-            <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
-            <span asp-validation-for="idCategoria" class="text-danger"></span>
-        </div>
+                </datalist>
+                <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
+                <span asp-validation-for="idCategoria" class="text-danger"></span>
+            </div>
 
             <div class="form-group">
                 <label asp-for="nombre" class="control-label"></label>
                 <input asp-for="nombre" class="form-control" />
                 <span asp-validation-for="nombre" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="activo" /> @Html.DisplayNameFor(model => model.activo)
-                </label>
+            @*<div class="form-group">
+                <label>U/M</label>
+                <select asp-for="unidadeMedida" class="form-control" id="unidadeMedida">
+
+                    <option value="@(UnidadMedida.UN)">@(UnidadMedida.UN)</option>
+                    <option value="@(UnidadMedida.L)">@(UnidadMedida.L)</option>
+
+                </select>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="strValor" class="control-label"></label>
+                <input asp-for="strValor" type="number" class="form-control" />
+                <span asp-validation-for="strValor" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
@@ -67,9 +77,9 @@
                 var fileName = $(this).val().split("\\").pop();
                 $(this).next('.custom-file-label').html(fileName);
             })
-        
+
             $('#browserInputCategoria').on('input', function () {
-                var opt = $('option[value="' + $(this).val() + '"]');             
+                var opt = $('option[value="' + $(this).val() + '"]');
                 $('#idCategoria').val(opt.length ? opt.attr('id') : '');
             });
 

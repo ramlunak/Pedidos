@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -28,6 +29,18 @@ namespace Pedidos.Models
         public byte[] imagen { get; set; }
               
         public int idCuenta { get; set; }
+
+        [DisplayName("Valor")]
+        [DataType(DataType.Currency)]
+        public decimal valor { get; set; }
+
+        [NotMapped]
+        [Required(ErrorMessage = "O valor é obrigatorio")]
+        [DisplayName("Valor")]
+        public string strValor { get; set; } = string.Empty;
+              
+        [DisplayName("U/M")]
+        public UnidadMedida? unidadeMedida { get; set; }
 
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;

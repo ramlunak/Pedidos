@@ -3,6 +3,7 @@
     nombre varchar(255) not null,   
     codigo varchar(255) null,     
     idCategoria int not null,     
+    valor decimal not null,     
     activo bit null, 
     idCuenta int null  
 );

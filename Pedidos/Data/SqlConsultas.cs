@@ -41,6 +41,7 @@ namespace Pedidos.Data
                    $" ,(SELECT TOP(1) nombre FROM P_Categorias where P_Categorias.id = PRO.idCategoria) AS Categoria" +
                    $" ,[activo]" +
                    $" ,[idCuenta]" +
+                   $" ,[valor]" +
                    $" ,[imagen]" +
                    $" FROM[dbo].[P_Productos] AS PRO" +
                    $" WHERE idCuenta = {idCuenta}" +

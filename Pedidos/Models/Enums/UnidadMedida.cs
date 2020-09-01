@@ -8,6 +8,7 @@ namespace Pedidos.Models.Enums
     public enum UnidadMedida
     {
         KG,      
+        G,      
         UN,
         L
     }  

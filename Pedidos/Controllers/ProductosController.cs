@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -113,7 +114,7 @@ namespace Pedidos.Controllers
                         p_Productos.imagen = await imagen.ToByteArray();
                     }
                 }
-
+                p_Productos.valor = p_Productos.strValor.ToDecimal();
                 p_Productos.idCuenta = Cuenta.id;
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
@@ -124,7 +125,7 @@ namespace Pedidos.Controllers
         }
 
         // GET: Productos/Edit/5
-        public async Task<IActionResult> Edit(int? id,int? pagina)
+        public async Task<IActionResult> Edit(int? id, int? pagina)
         {
             ValidarCuenta();
             if (id == null)
@@ -138,15 +139,16 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
+            p_Productos.strValor = p_Productos.valor.ToString(CultureInfo.InvariantCulture);
             var ListaCaterorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             ViewBag.Categorias = ListaCaterorias;
             ViewBag.Pagina = pagina;
-            
+
             try
             {
                 p_Productos.Categoria = ListaCaterorias.First(x => x.id == p_Productos.idCategoria).nombre;
             }
-            catch 
+            catch
             {
             }
 
@@ -194,6 +196,7 @@ namespace Pedidos.Controllers
                         }
                     }
 
+                    p_Productos.valor = p_Productos.strValor.ToDecimal();
                     _context.Update(p_Productos);
                     await _context.SaveChangesAsync();
                 }

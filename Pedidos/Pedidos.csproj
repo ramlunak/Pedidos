@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="SqlScripts\Cardapio.sql" />
     <None Remove="SqlScripts\Categoria.sql" />
     <None Remove="SqlScripts\Cliente - Copy.sql" />
     <None Remove="SqlScripts\Cliente.sql" />

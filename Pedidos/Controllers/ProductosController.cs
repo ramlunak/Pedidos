@@ -119,6 +119,7 @@ namespace Pedidos.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(p_Productos);
         }
 

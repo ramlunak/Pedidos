@@ -54,7 +54,7 @@ namespace Pedidos.Controllers
             modelo.ValoresQueryString = new RouteValueDictionary();
             modelo.ValoresQueryString["pagina"] = pagina;
             modelo.ValoresQueryString["nombre"] = nombre;
-
+            
             return View(modelo);
 
         }
@@ -92,7 +92,7 @@ namespace Pedidos.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Productos p_Productos)
-        {
+        {            
             ValidarCuenta();
             if (ModelState.IsValid)
             {

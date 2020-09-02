@@ -42,6 +42,8 @@ namespace Pedidos.Data
                    $" ,[activo]" +
                    $" ,[idCuenta]" +
                    $" ,[valor]" +
+                   $" ,[horasPreparacion]" +
+                   $" ,[minutosPreparacion]" +
                    $" ,[imagen]" +
                    $" FROM[dbo].[P_Productos] AS PRO" +
                    $" WHERE idCuenta = {idCuenta}" +

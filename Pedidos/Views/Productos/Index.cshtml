@@ -4,11 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-    <div class="d-flex justify-content-center align-items-center w-100">
-        <div style="background-color:lightgray;width:100%;height:1px"></div>
-        <div style="margin:5px"> Produtos</div>
-        <div style="background-color:lightgray;width:100%;height:1px"></div>
-    </div>
+<div class="d-flex justify-content-center align-items-center w-100">
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+    <div style="margin:5px"> Produtos</div>
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+</div>
 
 <div class="d-flex justify-content-between m-1">
     <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Novo Produto</a></div>
@@ -27,26 +27,6 @@
 </div>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Productos.First().idCategoria)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Productos.First().nombre)
-            </th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.Productos.First().unidadeMedida)
-            </th>*@
-            <th>
-                @Html.DisplayNameFor(model => model.Productos.First().valor)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
         @foreach (var item in Model.Productos)
         {
@@ -60,36 +40,78 @@
 
         <tr>
             <td>
-                @if (item.imagen != null && item.imagen.Length > 0)
-                {
-                    <div>
+                <div class="row co-sm-12">
+                    <div class="col-2 p-0 m-0">
+                        @if (item.imagen != null && item.imagen.Length > 0){
                         <img style="flex:none;width:60px;height: 60px;border-radius:10px;object-fit:fill" src="@imgDataURL" />
+                        }
                     </div>
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Categoria)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombre)
+                    <div class="col-7 col-md-6 p-0 m-0">
+                        <div class="d-block p-2">
+                            <div style="color:black;font-size:18px">
+                                <span style="text-transform:uppercase">@Html.DisplayFor(modelItem => item.nombre)</span>
+                            </div>
+                            <div style="font-style:italic">
+                                @Html.DisplayFor(modelItem => item.Categoria)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3 col-md-2 p-0">
+                        <div class="d-block justify-content-start justify-content-md-end p-0">
+                            <div style="font-size: 14px;font-weight: 500;color: blue;">
+                                @Html.DisplayFor(modelItem => item.valor)
+                            </div>
+                            @if(item.horasPreparacion.HasValue || item.horasPreparacion.HasValue){
+                            <div style="font-size:13px;color:gray" class="d-flex">
+                                <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
+                                @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion)
+                            </div>
+                            }
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-2">
+                        <div class="d-flex justify-content-end p-2">
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @*@if (item.imagen != null && item.imagen.Length > 0)
+                    {*@
+
+                @*<img style="flex:none;width:60px;height: 60px;border-radius:10px;object-fit:fill" src="@imgDataURL" />*@
+
+                @*}*@
+
             </td>
             @*<td>
-                @Html.DisplayFor(modelItem => item.unidadeMedida)
-            </td>*@
-            <td>
-                @Html.DisplayFor(modelItem => item.valor)
-            </td>
-            <td>
-                <div>
-                    <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
-                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
-                </div>
-            </td>
+                    @Html.DisplayFor(modelItem => item.Categoria)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.valor)
+                </td>
+                <td>
+                    <div>
+                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
+                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
+                    </div>
+                </td>*@
         </tr>
         }
     </tbody>
 </table>
-
 
 <div class="d-flex justify-content-end">
     @{ Html.RenderPartial("_Paginador");}

@@ -12,6 +12,7 @@
     <None Remove="SqlScripts\Cuenta.sql" />
     <None Remove="SqlScripts\Produto - Copy.sql" />
     <None Remove="SqlScripts\Produto.sql" />
+    <None Remove="SqlScripts\SubCategoria.sql" />
   </ItemGroup>
 
   <ItemGroup>

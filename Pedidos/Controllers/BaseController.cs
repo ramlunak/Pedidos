@@ -59,7 +59,7 @@ namespace Pedidos.Controllers
         {
             try
             {
-                Response.Cookies.Delete("MinhaEscolaOnline");
+                Response.Cookies.Delete("Pedidos");
             }
             catch (Exception)
             {

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
@@ -20,10 +21,38 @@ namespace Pedidos.Controllers
         }
 
         // GET: Clientes
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
             ValidarCuenta();
-            return View(await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id).ToListAsync());
+            var cantidadRegistrosPorPagina = 5; // parámetro
+
+            var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
+            var sql = SqlConsultas.GetSqlAllClientes(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);
+
+            var lista = await _context.P_Clientes.FromSqlRaw(sql).ToListAsync();
+
+            var totalDeRegistros = 0;
+            if (nombre is null)
+            {
+                totalDeRegistros = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+            }
+            else
+            {
+                totalDeRegistros = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).CountAsync();
+            }
+
+            ViewBag.FlrNombre = nombre;
+
+            var modelo = new ViewModels.VMClientes();
+            modelo.Clientes = lista;
+            modelo.PaginaActual = pagina;
+            modelo.TotalDeRegistros = totalDeRegistros;
+            modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            modelo.ValoresQueryString = new RouteValueDictionary();
+            modelo.ValoresQueryString["pagina"] = pagina;
+            modelo.ValoresQueryString["nombre"] = nombre;
+
+            return View(modelo);
         }
 
         // GET: Clientes/Details/5
@@ -49,7 +78,7 @@ namespace Pedidos.Controllers
         public IActionResult Create()
         {
             ValidarCuenta();
-            return View();
+            return View(new P_Cliente());
         }
 
         // POST: Clientes/Create

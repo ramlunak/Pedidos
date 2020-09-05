@@ -65,85 +65,85 @@ namespace Pedidos.Controllers
             return View(login);
         }
 
-        // GET: P_Cuenta/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: P_Cuenta/Edit/5
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var p_Cuenta = await _context.P_Cuentas.FindAsync(id);
-            if (p_Cuenta == null)
-            {
-                return NotFound();
-            }
-            return View(p_Cuenta);
-        }
+        //    var p_Cuenta = await _context.P_Cuentas.FindAsync(id);
+        //    if (p_Cuenta == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(p_Cuenta);
+        //}
 
-        // POST: P_Cuenta/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,usuario,password,logged,idPlano,activo")] P_Cuenta p_Cuenta)
-        {
-            if (id != p_Cuenta.id)
-            {
-                return NotFound();
-            }
+        //// POST: P_Cuenta/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(int id, [Bind("id,usuario,password,logged,idPlano,activo")] P_Cuenta p_Cuenta)
+        //{
+        //    if (id != p_Cuenta.id)
+        //    {
+        //        return NotFound();
+        //    }
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(p_Cuenta);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!P_CuentaExists(p_Cuenta.id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(p_Cuenta);
-        }
+        //    if (ModelState.IsValid)
+        //    {
+        //        try
+        //        {
+        //            _context.Update(p_Cuenta);
+        //            await _context.SaveChangesAsync();
+        //        }
+        //        catch (DbUpdateConcurrencyException)
+        //        {
+        //            if (!P_CuentaExists(p_Cuenta.id))
+        //            {
+        //                return NotFound();
+        //            }
+        //            else
+        //            {
+        //                throw;
+        //            }
+        //        }
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(p_Cuenta);
+        //}
 
-        // GET: P_Cuenta/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //// GET: P_Cuenta/Delete/5
+        //public async Task<IActionResult> Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var p_Cuenta = await _context.P_Cuentas
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Cuenta == null)
-            {
-                return NotFound();
-            }
+        //    var p_Cuenta = await _context.P_Cuentas
+        //        .FirstOrDefaultAsync(m => m.id == id);
+        //    if (p_Cuenta == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            return View(p_Cuenta);
-        }
+        //    return View(p_Cuenta);
+        //}
 
-        // POST: P_Cuenta/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var p_Cuenta = await _context.P_Cuentas.FindAsync(id);
-            _context.P_Cuentas.Remove(p_Cuenta);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //// POST: P_Cuenta/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var p_Cuenta = await _context.P_Cuentas.FindAsync(id);
+        //    _context.P_Cuentas.Remove(p_Cuenta);
+        //    await _context.SaveChangesAsync();
+        //    return RedirectToAction(nameof(Index));
+        //}
 
         private bool P_CuentaExists(int id)
         {

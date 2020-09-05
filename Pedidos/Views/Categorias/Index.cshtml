@@ -48,8 +48,18 @@
                 </td>
                 <td>
                     <div>
-                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
-                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
+                        <div class="d-flex justify-content-end p-2">
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 </td>
 

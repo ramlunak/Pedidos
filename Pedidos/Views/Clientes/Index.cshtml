@@ -1,49 +1,95 @@
-﻿@model IEnumerable<Pedidos.Models.P_Cliente>
+﻿@model Pedidos.ViewModels.VMClientes
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-center align-items-center w-100">
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+    <div style="margin:5px"> Clientes</div>
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="d-flex justify-content-between m-1">
+    <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Novo Cliente</a></div>
+    <div>
+        <!-- Search form -->
+        <form id="formSearchCategoria">
+            <div class="d-flex align-items-center">
+                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
+                       aria-label="Search">
+                <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
+                <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
+
+            </div>
+        </form>
+    </div>
+</div>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.telefono)
+                @Html.DisplayNameFor(model => model.Clientes.First().nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.nombre)
-            </th>
-          
-            <th>
-                @Html.DisplayNameFor(model => model.activo)
+                @Html.DisplayNameFor(model => model.Clientes.First().telefono)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.telefono)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombre)
-            </td>
-          
-            <td>
-                @Html.DisplayFor(modelItem => item.activo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Clientes)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.telefono)
+                </td>
+
+                <td>
+                    <div>
+                        <div class="d-flex justify-content-end p-2">
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<div class="d-flex justify-content-end">
+    @{ Html.RenderPartial("_Paginador");}
+</div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function LimpiarNombre() {
+            $('#nombre').val('');
+            $('#formSearchCategoria').submit();
+        }
+
+        $(document).ready(function () {
+
+
+
+            $('#txtChild1').on('change', function () {
+                $("#C1Age1").show();
+            });
+
+        });
+    </script>
+}

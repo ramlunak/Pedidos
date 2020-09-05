@@ -41,7 +41,7 @@ namespace Pedidos
                    .AddCookie(o =>
                    {
                        o.LoginPath = "/Cuenta/Login";
-                       o.Cookie.Name = "MinhaEscolaOnline";
+                       o.Cookie.Name = "Pedidos";
                    });
 
             services.AddDistributedMemoryCache();

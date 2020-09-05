@@ -42,9 +42,11 @@
             <td>
                 <div class="row co-sm-12">
                     <div class="col-2 p-0 m-0">
-                        @if (item.imagen != null && item.imagen.Length > 0){
-                        <img style="flex:none;width:60px;height: 60px;border-radius:10px;object-fit:fill" src="@imgDataURL" />
+                        <div style="width:60px;height: 60px">
+                            @if (item.imagen != null && item.imagen.Length > 0){
+                            <img style="flex:none;width:60px;border-radius:10px;object-fit:cover" src="@imgDataURL" />
                         }
+                        </div>
                     </div>
                     <div class="col-7 col-md-6 p-0 m-0">
                         <div class="d-block p-2">
@@ -58,8 +60,8 @@
                     </div>
                     <div class="col-3 col-md-2 p-0">
                         <div class="d-block justify-content-start justify-content-md-end p-0">
-                            <div style="font-size: 14px;font-weight: 500;color: blue;">
-                                @Html.DisplayFor(modelItem => item.valor)
+                            <div style="font-size: 15px;font-weight: 500;color: blue;">
+                                <div>R$ @item.valor</div>
                             </div>
                             @if(item.horasPreparacion.HasValue || item.horasPreparacion.HasValue){
                             <div style="font-size:13px;color:gray" class="d-flex">

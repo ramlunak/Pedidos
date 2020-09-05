@@ -1,18 +1,20 @@
-﻿@model Pedidos.ViewModels.VMCategorias
+﻿@model Pedidos.ViewModels.VMSubCategorias
+
 @{
-    ViewData["Title"] = "Index";}
+    ViewData["Title"] = "Index";
+}
 
 <div class="d-flex justify-content-center align-items-center w-100">
     <div style="background-color:lightgray;width:100%;height:1px"></div>
-    <div style="margin:5px"> Categorias</div>
+    <div style="margin:5px;width:280px">Sub Categorias</div>
     <div style="background-color:lightgray;width:100%;height:1px"></div>
 </div>
 
 <div class="d-flex justify-content-between m-1">
-    <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Nova Categoria</a></div>
+    <div class="btn btn-sm btn-primary"><a style="color:white" asp-route-idCategoria="@ViewBag.idCategoria" asp-action="Create">Nova Sub Categoria</a></div>
     <div>
         <!-- Search form -->
-        <form id="formSearchCategoria">
+        <form id="formSearch">
             <div class="d-flex align-items-center">
                 <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
                        aria-label="Search">
@@ -24,28 +26,22 @@
     </div>
 </div>
 
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Categorias.First().nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categorias.First().activo)
+                @Html.DisplayNameFor(model => model.SubCategorias.First().nombre)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.Categorias)
+        @foreach (var item in Model.SubCategorias)
         {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-                <td>
-                    <a class="nav-link text-dark" asp-area="" asp-route-idCategoria="@item.id" asp-controller="SubCategorias" asp-action="Index">Sub</a>
-                    
                 </td>
                 <td>
                     <div>
@@ -63,7 +59,6 @@
                         </div>
                     </div>
                 </td>
-
             </tr>
         }
     </tbody>
@@ -78,12 +73,10 @@
 
         function LimpiarNombre() {
             $('#nombre').val('');
-            $('#formSearchCategoria').submit();
+            $('#formSearch').submit();
         }
 
         $(document).ready(function () {
-
-
 
             $('#txtChild1').on('change', function () {
                 $("#C1Age1").show();

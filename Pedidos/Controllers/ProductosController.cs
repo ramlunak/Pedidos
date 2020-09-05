@@ -27,7 +27,7 @@ namespace Pedidos.Controllers
         {
             ValidarCuenta();
 
-            var cantidadRegistrosPorPagina = 5; // parámetro
+            var cantidadRegistrosPorPagina = 10; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
             var sql = SqlConsultas.GetSqlAllProductos(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);

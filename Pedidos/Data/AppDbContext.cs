@@ -27,5 +27,7 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_Cuenta> P_Cuentas { get; set; }
 
         public DbSet<Pedidos.Models.P_Cardapio> P_Cardapios { get; set; }
+
+        public DbSet<Pedidos.Models.P_SubCategoria> P_SubCategorias { get; set; }
     }
 }

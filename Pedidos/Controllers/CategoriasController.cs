@@ -23,7 +23,7 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
             ValidarCuenta();
-            var cantidadRegistrosPorPagina = 5; // parámetro
+            var cantidadRegistrosPorPagina = 10; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
             var sql = SqlConsultas.GetSqlAllCategorias(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);

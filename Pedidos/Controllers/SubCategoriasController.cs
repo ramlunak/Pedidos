@@ -11,120 +11,119 @@ using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class ClientesController : BaseController
+    public class SubCategoriasController : BaseController
     {
         private readonly AppDbContext _context;
 
-        public ClientesController(AppDbContext context)
+        public SubCategoriasController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Clientes
-        public async Task<IActionResult> Index(string nombre, int pagina = 1)
+        // GET: SubCategorias
+        public async Task<IActionResult> Index(int? idCategoria, string nombre, int pagina = 1)
         {
+
             ValidarCuenta();
-            var cantidadRegistrosPorPagina = 10; // parámetro
+            var cantidadRegistrosPorPagina = 3; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
-            var sql = SqlConsultas.GetSqlAllClientes(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);
+            var sql = SqlConsultas.GetSqlAllSubCategorias(Cuenta.id, idCategoria is null ? 0 : idCategoria.Value, Skip, cantidadRegistrosPorPagina, nombre);
 
-            var lista = await _context.P_Clientes.FromSqlRaw(sql).ToListAsync();
+            var lista = await _context.P_SubCategorias.FromSqlRaw(sql).ToListAsync();
 
             var totalDeRegistros = 0;
             if (nombre is null)
             {
-                totalDeRegistros = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+                totalDeRegistros = await _context.P_SubCategorias.Where(x => x.idCuenta == Cuenta.id && x.idCategoria == idCategoria.Value).CountAsync();
             }
             else
             {
-                totalDeRegistros = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).CountAsync();
+                totalDeRegistros = await _context.P_SubCategorias.Where(x => x.idCuenta == Cuenta.id && x.idCategoria == idCategoria.Value && x.nombre.Contains(nombre)).CountAsync();
             }
 
+            ViewBag.idCategoria = idCategoria;
             ViewBag.FlrNombre = nombre;
 
-            var modelo = new ViewModels.VMClientes();
-            modelo.Clientes = lista;
+            var modelo = new ViewModels.VMSubCategorias();
+            modelo.SubCategorias = lista;
             modelo.PaginaActual = pagina;
             modelo.TotalDeRegistros = totalDeRegistros;
             modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
             modelo.ValoresQueryString = new RouteValueDictionary();
             modelo.ValoresQueryString["pagina"] = pagina;
             modelo.ValoresQueryString["nombre"] = nombre;
+            modelo.ValoresQueryString["idCategoria"] = idCategoria;
 
             return View(modelo);
         }
 
-        // GET: Clientes/Details/5
+        // GET: SubCategorias/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var p_Cliente = await _context.P_Clientes
+            var p_SubCategoria = await _context.P_SubCategorias
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Cliente == null)
+            if (p_SubCategoria == null)
             {
                 return NotFound();
             }
 
-            return View(p_Cliente);
+            return View(p_SubCategoria);
         }
 
-        // GET: Clientes/Create
-        public IActionResult Create()
+        // GET: SubCategorias/Create
+        public IActionResult Create(int? idCategoria)
         {
-            ValidarCuenta();
-            return View(new P_Cliente());
+            ViewBag.idCategoria = idCategoria;
+            return View(new P_SubCategoria());
         }
 
-        // POST: Clientes/Create
+        // POST: SubCategorias/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( P_Cliente p_Cliente)
+        public async Task<IActionResult> Create(P_SubCategoria p_SubCategoria)
         {
-            ValidarCuenta();
             if (ModelState.IsValid)
             {
-                p_Cliente.idCuenta = Cuenta.id;
-                _context.Add(p_Cliente);
+                p_SubCategoria.idCuenta = Cuenta.id;
+                _context.Add(p_SubCategoria);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { p_SubCategoria.idCategoria});
             }
-            return View(p_Cliente);
+            return View(p_SubCategoria);
         }
 
-        // GET: Clientes/Edit/5
+        // GET: SubCategorias/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var p_Cliente = await _context.P_Clientes.FindAsync(id);
-            if (p_Cliente == null)
+            var p_SubCategoria = await _context.P_SubCategorias.FindAsync(id);
+            if (p_SubCategoria == null)
             {
                 return NotFound();
             }
-            return View(p_Cliente);
+            return View(p_SubCategoria);
         }
 
-        // POST: Clientes/Edit/5
+        // POST: SubCategorias/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,telefono,nombre,idCuenta,activo")] P_Cliente p_Cliente)
+        public async Task<IActionResult> Edit(int id, P_SubCategoria p_SubCategoria,int? pagina)
         {
-            ValidarCuenta();
-            if (id != p_Cliente.id)
+            if (id != p_SubCategoria.id)
             {
                 return NotFound();
             }
@@ -133,12 +132,12 @@ namespace Pedidos.Controllers
             {
                 try
                 {
-                    _context.Update(p_Cliente);
+                    _context.Update(p_SubCategoria);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!P_ClienteExists(p_Cliente.id))
+                    if (!P_SubCategoriaExists(p_SubCategoria.id))
                     {
                         return NotFound();
                     }
@@ -147,46 +146,43 @@ namespace Pedidos.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index),new {p_SubCategoria.idCategoria,pagina});
             }
-            return View(p_Cliente);
+            return View(p_SubCategoria);
         }
 
-        // GET: Clientes/Delete/5
+        // GET: SubCategorias/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var p_Cliente = await _context.P_Clientes
+            var p_SubCategoria = await _context.P_SubCategorias
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Cliente == null)
+            if (p_SubCategoria == null)
             {
                 return NotFound();
             }
 
-            return View(p_Cliente);
+            return View(p_SubCategoria);
         }
 
-        // POST: Clientes/Delete/5
+        // POST: SubCategorias/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            ValidarCuenta();
-            var p_Cliente = await _context.P_Clientes.FindAsync(id);
-            _context.P_Clientes.Remove(p_Cliente);
+            var p_SubCategoria = await _context.P_SubCategorias.FindAsync(id);
+            _context.P_SubCategorias.Remove(p_SubCategoria);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { p_SubCategoria.idCategoria });
         }
 
-        private bool P_ClienteExists(int id)
+        private bool P_SubCategoriaExists(int id)
         {
-            ValidarCuenta();
-            return _context.P_Clientes.Any(e => e.id == id);
+            return _context.P_SubCategorias.Any(e => e.id == id);
         }
     }
 }

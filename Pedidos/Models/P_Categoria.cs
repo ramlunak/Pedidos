@@ -9,7 +9,7 @@ namespace Pedidos.Models
 {
     public class P_Categoria
     {
-        [Key]
+      
         public int id { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatorio")]

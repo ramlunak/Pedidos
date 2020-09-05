@@ -14,10 +14,8 @@ namespace Pedidos.Models
 
         [Required(ErrorMessage = "O nome é obrigatorio")]
         [DisplayName("Nome")]
-        public string nombre { get; set; }
-
-        [Key, ForeignKey("P_Categoria")]
-        public int idCategotia { get; set; }
+        public string nombre { get; set; }      
+        public int idCategoria { get; set; }
         public int idCuenta { get; set; }
 
         [DisplayName("Ativo")]

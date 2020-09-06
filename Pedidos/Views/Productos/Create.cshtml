@@ -63,7 +63,24 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12 col-lg-9">
+                <div class="col-sm-12 col-lg-3">
+                    <div class="form-group">
+                        <label>Sub Categorias</label>
+                        <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
+                            @*<option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
+                            @if (ViewBag.SubCategoria != null)
+                            {
+                                @foreach (var subCategoria in ViewBag.SubCategoria)
+                                {
+                                    <option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
+                                }
+                            }*@
+
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 col-lg-6">
                     <div class="form-group">
                         <label class="control-label">Tempo de preparação (Hr/Min)</label>
                         <div class="input-group mb-3">
@@ -109,8 +126,20 @@
             $('#browserInputCategoria').on('input', function () {
                 var opt = $('option[value="' + $(this).val() + '"]');
                 $('#idCategoria').val(opt.length ? opt.attr('id') : '');
+                CargarSubCategorias();
             });
 
+            function CargarSubCategorias() {
+
+                $.getJSON('/Categorias/GetSubCategarias', { idCategoria: $('#idCategoria').val() }, function (data) {
+
+                    $.each(data, function () {
+                        $('#idSubCategoria').append('<option value=' + this.value + '>' + this.text + '</option>');
+                    });
+
+                });
+            }
+            
         });
     </script>
 

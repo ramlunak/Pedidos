@@ -23,6 +23,7 @@ namespace Pedidos.Models
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]
         public int idCategoria { get; set; }
+        public int? idSubCategoria { get; set; }
 
 
         [Column(TypeName = "image")]

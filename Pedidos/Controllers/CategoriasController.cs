@@ -32,7 +32,7 @@ namespace Pedidos.Controllers
 
             var totalDeRegistros = 0;
             if (nombre is null)
-            {             
+            {
                 totalDeRegistros = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).CountAsync();
             }
             else
@@ -58,6 +58,19 @@ namespace Pedidos.Controllers
         {
             ValidarCuenta();
             return View();
+        }
+
+        public async Task<IEnumerable<SelectListItem>> GetSubCategarias(int idCategoria)
+        {
+            ValidarCuenta();
+
+            var subCategorias = await _context.P_SubCategorias.Where(x => x.idCategoria == idCategoria).Select(x => new SelectListItem
+            {
+                Text = x.nombre,
+                Value = x.id.ToString()
+            }).ToListAsync();
+
+            return subCategorias;
         }
 
         [HttpPost]

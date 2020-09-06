@@ -85,7 +85,7 @@ namespace Pedidos.Controllers
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(new P_Productos());
         }
-
+        
         // POST: Productos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.

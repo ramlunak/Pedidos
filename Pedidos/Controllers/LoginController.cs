@@ -57,7 +57,7 @@ namespace Pedidos.Controllers
                     return RedirectToAction(nameof(Index), "Home", null);
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 ViewBag.Erro = "Erro de conexão, contate o suporte técnico.";
             }

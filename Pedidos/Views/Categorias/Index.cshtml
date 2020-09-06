@@ -13,13 +13,25 @@
     <div>
         <!-- Search form -->
         <form id="formSearchCategoria">
-            <div class="d-flex align-items-center">
+
+            <div class="input-group">
+                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm " type="text" placeholder="Buscar"
+                       aria-label="Search">
+                <div class="input-group-append">
+                    <span class="input-group-text">
+                        <i style="color:dodgerblue" class="fa fa-search"></i>
+                    </span>
+                </div>
+            </div>
+
+            @*<div class="d-flex align-items-center">
                 <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
                        aria-label="Search">
                 <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
                 <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
 
-            </div>
+            </div>*@
+
         </form>
     </div>
 </div>

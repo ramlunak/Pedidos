@@ -32,12 +32,12 @@
                         <input type="search" id="browserInputCategoria" list="CategoriaList" asp-for="Categoria" class="form-control" />
                         <datalist id="CategoriaList">
                             @if (ViewBag.Categorias != null)
-                    {
-                            @foreach (var categoria in ViewBag.Categorias)
-                        {
-                            <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
-                        }
-                    }
+                            {
+                                @foreach (var categoria in ViewBag.Categorias)
+                                {
+                                    <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
+                                }
+                            }
                         </datalist>
                         <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
                         <span asp-validation-for="idCategoria" class="text-danger"></span>
@@ -68,13 +68,13 @@
                         <label>Sub Categorias</label>
                         <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
                             @*<option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
-                            @if (ViewBag.SubCategoria != null)
-                            {
-                                @foreach (var subCategoria in ViewBag.SubCategoria)
+                                @if (ViewBag.SubCategoria != null)
                                 {
-                                    <option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
-                                }
-                            }*@
+                                    @foreach (var subCategoria in ViewBag.SubCategoria)
+                                    {
+                                        <option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
+                                    }
+                                }*@
 
                         </select>
                     </div>
@@ -136,10 +136,11 @@
                     $.each(data, function () {
                         $('#idSubCategoria').append('<option value=' + this.value + '>' + this.text + '</option>');
                     });
+                    $('#idSubCategoria').append('<option selected ></option>');
 
                 });
             }
-            
+
         });
     </script>
 

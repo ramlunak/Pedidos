@@ -27,11 +27,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
+            <th class="col-8">
                 @Html.DisplayNameFor(model => model.Categorias.First().nombre)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Categorias.First().activo)
+            <th class="col-4">
+               
             </th>
             <th></th>
         </tr>
@@ -40,12 +40,13 @@
         @foreach (var item in Model.Categorias)
         {
             <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
+                <td>                   
+                        @Html.DisplayFor(modelItem => item.nombre)                   
                 </td>
                 <td>
-                    <a class="nav-link text-dark" asp-area="" asp-route-idCategoria="@item.id" asp-controller="SubCategorias" asp-action="Index">Sub</a>
-                    
+                    <a class="nav-link text-dark" title="Sub Categorias" asp-area="" asp-route-idCategoria="@item.id" asp-controller="SubCategorias" asp-action="Index">
+                        <i class="fa fa-list-ul" aria-hidden="true"></i>
+                    </a>                    
                 </td>
                 <td>
                     <div>

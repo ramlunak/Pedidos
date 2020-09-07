@@ -81,7 +81,13 @@ namespace Pedidos.Controllers
         {
             ValidarCuenta();
             ViewBag.idCliente = idCliente;
-            return View(new P_Direcciones());
+
+            //Cargar configuracion de la cuenta
+            var newDireccion = new P_Direcciones();
+            newDireccion.state = Cuenta.estado;
+            newDireccion.city = Cuenta.municipio;
+
+            return View(newDireccion);
         }
 
         // POST: Direcciones/Create
@@ -89,7 +95,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( P_Direcciones p_Direcciones)
+        public async Task<IActionResult> Create(P_Direcciones p_Direcciones)
         {
             ValidarCuenta();
             if (ModelState.IsValid)
@@ -124,7 +130,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,  P_Direcciones p_Direcciones, int? pagina)
+        public async Task<IActionResult> Edit(int id, P_Direcciones p_Direcciones, int? pagina)
         {
             ValidarCuenta();
             if (id != p_Direcciones.id)

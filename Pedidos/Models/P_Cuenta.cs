@@ -13,5 +13,9 @@ namespace Pedidos.Models
         public string rol { get; set; }       
         public int? idPlano { get; set; }
         public bool activo { get; set; } = true;
+
+        //Configuraciones
+        public string estado { get; set; }
+        public string municipio { get; set; }
     }
 }

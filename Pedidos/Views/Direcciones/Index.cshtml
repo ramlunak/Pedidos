@@ -1,95 +1,92 @@
-﻿@model IEnumerable<Pedidos.Models.P_Direcciones>
+﻿@model Pedidos.ViewModels.VMDirecciones
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="d-flex justify-content-center align-items-center w-100">
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+    <div style="margin:5px"> Endereços</div>
+    <div style="background-color:lightgray;width:100%;height:1px"></div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<div class="d-flex justify-content-between m-1">
+    <div class="btn btn-sm btn-primary"><a style="color:white" asp-route-idCliente="@ViewBag.idCliente" asp-action="Create">Novo Endereço</a></div>
+    <div>
+        <!-- Search form -->
+        <form id="formSearch">
+
+            <div class="input-group">
+                <input id="idCategoria" name="idCategoria" hidden value="@ViewBag.idCliente" />
+                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm " type="text" placeholder="Buscar"
+                       aria-label="Search">
+                <div class="input-group-append">
+                    <span id="btnSearch" class="input-group-text">
+                        <i style="color:dodgerblue" class="fa fa-search"></i>
+                    </span>
+                </div>
+            </div>
+
+            @*<div class="d-flex align-items-center">
+                    <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
+                           aria-label="Search">
+                    <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
+                    <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
+
+                </div>*@
+
+        </form>
+    </div>
+</div>
+
 <table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.code)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.state)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.city)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.district)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.numero)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.complemento)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idCliente)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idPedido)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idCuenta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.activo)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.code)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.state)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.city)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.district)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.numero)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.complemento)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idCliente)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idPedido)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idCuenta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.activo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Direcciones)
+        {
+            <tr>
+                <td>
+                    <div class="row col-12 d-flex">
+
+                        <div class="col-12 col-md-10" style="color: black;font-size: 18px;">
+                            @item.text
+                        </div>
+
+                        <div class="col-12 col-md-2">
+                            <div class="d-flex justify-content-end p-2">
+                                <div class="m-1">
+                                    <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-id="@item.id">
+                                        <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="m-1">
+                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-id="@item.id">
+                                        <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+
+@section Scripts{
+    <script type="text/javascript">
+
+        function LimpiarNombre() {
+            $('#nombre').val('');
+            $('#formSearch').submit();
+        }
+
+        $(document).ready(function () {
+            $('#btnSearch').on('click', function () {
+                 $('#formSearch').submit();
+            });
+
+        });
+    </script>
+}

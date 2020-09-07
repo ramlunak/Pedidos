@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class DireccionesController : Controller
+    public class DireccionesController : BaseController
     {
         private readonly AppDbContext _context;
 
@@ -20,9 +21,41 @@ namespace Pedidos.Controllers
         }
 
         // GET: Direcciones
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? idCliente, string nombre, int pagina = 1)
         {
-            return View(await _context.P_Direcciones.ToListAsync());
+
+            ValidarCuenta();
+            var cantidadRegistrosPorPagina = 3; // parámetro
+
+            var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
+            var sql = SqlConsultas.GetSqlAllDirecciones(Cuenta.id, idCliente is null ? 0 : idCliente.Value, Skip, cantidadRegistrosPorPagina, nombre);
+
+            var lista = await _context.P_Direcciones.FromSqlRaw(sql).ToListAsync();
+
+            var totalDeRegistros = 0;
+            if (nombre is null)
+            {
+                totalDeRegistros = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.idCliente == idCliente.Value).CountAsync();
+            }
+            else
+            {
+                totalDeRegistros = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.idCliente == idCliente.Value && x.address.Contains(nombre)).CountAsync();
+            }
+
+            ViewBag.idCliente = idCliente;
+            ViewBag.FlrNombre = nombre;
+
+            var modelo = new ViewModels.VMDirecciones();
+            modelo.Direcciones = lista;
+            modelo.PaginaActual = pagina;
+            modelo.TotalDeRegistros = totalDeRegistros;
+            modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            modelo.ValoresQueryString = new RouteValueDictionary();
+            modelo.ValoresQueryString["pagina"] = pagina;
+            modelo.ValoresQueryString["nombre"] = nombre;
+            modelo.ValoresQueryString["idCliente"] = idCliente;
+
+            return View(modelo);
         }
 
         // GET: Direcciones/Details/5
@@ -44,9 +77,11 @@ namespace Pedidos.Controllers
         }
 
         // GET: Direcciones/Create
-        public IActionResult Create()
+        public IActionResult Create(int? idCliente)
         {
-            return View();
+            ValidarCuenta();
+            ViewBag.idCliente = idCliente;
+            return View(new P_Direcciones());
         }
 
         // POST: Direcciones/Create
@@ -54,13 +89,15 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,code,state,city,district,address,numero,complemento,idCliente,idPedido,idCuenta,activo")] P_Direcciones p_Direcciones)
+        public async Task<IActionResult> Create( P_Direcciones p_Direcciones)
         {
+            ValidarCuenta();
             if (ModelState.IsValid)
             {
+                p_Direcciones.idCuenta = Cuenta.id;
                 _context.Add(p_Direcciones);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { p_Direcciones.idCliente });
             }
             return View(p_Direcciones);
         }
@@ -68,6 +105,7 @@ namespace Pedidos.Controllers
         // GET: Direcciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
@@ -86,8 +124,9 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,code,state,city,district,address,numero,complemento,idCliente,idPedido,idCuenta,activo")] P_Direcciones p_Direcciones)
+        public async Task<IActionResult> Edit(int id,  P_Direcciones p_Direcciones, int? pagina)
         {
+            ValidarCuenta();
             if (id != p_Direcciones.id)
             {
                 return NotFound();
@@ -111,7 +150,7 @@ namespace Pedidos.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { p_Direcciones.idCliente, pagina });
             }
             return View(p_Direcciones);
         }
@@ -119,6 +158,7 @@ namespace Pedidos.Controllers
         // GET: Direcciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
@@ -139,10 +179,11 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            ValidarCuenta();
             var p_Direcciones = await _context.P_Direcciones.FindAsync(id);
             _context.P_Direcciones.Remove(p_Direcciones);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { p_Direcciones.idCliente });
         }
 
         private bool P_DireccionesExists(int id)

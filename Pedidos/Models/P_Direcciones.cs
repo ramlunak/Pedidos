@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -36,9 +37,19 @@ namespace Pedidos.Models
         public string numero { get; set; }
         public string complemento { get; set; }
         
-        public int idCliente { get; set; }
+        public int? idCliente { get; set; }
         public int idPedido { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; } = true;
+
+        //AUXILIARES
+        [NotMapped]
+        public string text
+        {
+            get
+            {
+                return $"{address}, {numero} {complemento} - {district}, {city} - {state} {(code is null ? "":", "+code)}";
+            }
+        }
     }
 }

@@ -35,36 +35,41 @@
                 @Html.DisplayNameFor(model => model.Clientes.First().telefono)
             </th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Clientes)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.telefono)
-                </td>
-
-                <td>
-                    <div>
-                        <div class="d-flex justify-content-end p-2">
-                            <div class="m-1">
-                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <div class="m-1">
-                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </div>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.telefono)
+            </td>
+            <td>
+                <a class="nav-link text-dark" title="Endereços" asp-area="" asp-route-idCliente="@item.id" asp-controller="Direcciones" asp-action="Index">
+                    <i class="fa fa-home" style="color:steelblue" aria-hidden="true"></i>
+                </a>
+            </td>
+            <td>
+                <div>
+                    <div class="d-flex justify-content-end p-2">
+                        <div class="m-1">
+                            <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="m-1">
+                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
                         </div>
                     </div>
-                </td>
-            </tr>
+                </div>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

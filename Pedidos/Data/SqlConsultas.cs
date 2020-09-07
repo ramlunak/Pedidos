@@ -42,6 +42,24 @@ namespace Pedidos.Data
                    $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
         }
 
+        public static string GetSqlAllDirecciones(int idCuenta, int idcliente, int Skip, int Take, string nombre)
+        {
+            StringBuilder filtro = new StringBuilder();
+            if (nombre != null)
+            {
+                filtro.Append($" AND nombre LIKE '%{nombre}%'");
+            }
+
+            return $"DECLARE @Skip INT = {Skip}, @Take INT = {Take}" +
+                   $" SELECT* FROM[dbo].[P_Direcciones]" +
+                   $" WHERE idCuenta = {idCuenta}" +
+                   $" AND idcliente = {idcliente}" +
+                   filtro +
+                   $" ORDER BY id ASC" +
+                   $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
+        }
+
+
         public static string GetSqlAllProductos(int idCuenta, int Skip, int Take, string nombre)
         {
             StringBuilder filtro = new StringBuilder();

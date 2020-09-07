@@ -59,6 +59,7 @@ namespace Pedidos.Controllers
         {
             try
             {
+                Cuenta.Productos = new List<P_Productos>();
                 Response.Cookies.Delete("Pedidos");
             }
             catch (Exception)
@@ -75,6 +76,7 @@ namespace Pedidos.Controllers
                 Response.Redirect("/Login");              
             }
         }
+
 
         public P_Cuenta Cuenta
         {
@@ -102,5 +104,6 @@ namespace Pedidos.Controllers
 
             }
         }
+
     }
 }

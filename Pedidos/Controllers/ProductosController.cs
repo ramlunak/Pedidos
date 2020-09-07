@@ -115,9 +115,10 @@ namespace Pedidos.Controllers
                     }
                 }
                 p_Productos.valor = p_Productos.strValor.ToDecimal();
-                p_Productos.idCuenta = Cuenta.id;
+                p_Productos.idCuenta = Cuenta.id;              
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
+                Cuenta.Productos.Add(p_Productos);
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
@@ -198,6 +199,11 @@ namespace Pedidos.Controllers
 
                     p_Productos.valor = p_Productos.strValor.ToDecimal();
                     _context.Update(p_Productos);
+
+                    var pold_roducto = await _context.P_Productos.FindAsync(p_Productos.id);
+                    Cuenta.Productos.Remove(pold_roducto);
+                    Cuenta.Productos.Add(p_Productos);
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -244,6 +250,7 @@ namespace Pedidos.Controllers
             var p_Productos = await _context.P_Productos.FindAsync(id);
             _context.P_Productos.Remove(p_Productos);
             await _context.SaveChangesAsync();
+            Cuenta.Productos.Remove(p_Productos);
             return RedirectToAction(nameof(Index));
         }
 

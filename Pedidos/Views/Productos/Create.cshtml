@@ -132,7 +132,7 @@
             function CargarSubCategorias() {
 
                 $.getJSON('/Categorias/GetSubCategarias', { idCategoria: $('#idCategoria').val() }, function (data) {
-
+                   
                     $.each(data, function () {
                         $('#idSubCategoria').append('<option value=' + this.value + '>' + this.text + '</option>');
                     });

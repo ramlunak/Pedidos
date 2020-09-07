@@ -6,14 +6,17 @@
 
   <ItemGroup>
     <None Remove="SqlScripts\Cardapio.sql" />
+    <None Remove="SqlScripts\Categoria - Copy.sql" />
     <None Remove="SqlScripts\Categoria.sql" />
     <None Remove="SqlScripts\Cliente - Copy.sql" />
     <None Remove="SqlScripts\Cliente.sql" />
     <None Remove="SqlScripts\Cuenta.sql" />
     <None Remove="SqlScripts\Direcciones.sql" />
+    <None Remove="SqlScripts\Pedidos.sql" />
     <None Remove="SqlScripts\Produto - Copy.sql" />
     <None Remove="SqlScripts\Produto.sql" />
     <None Remove="SqlScripts\SubCategoria.sql" />
+    <None Remove="SqlScripts\Ventas.sql" />
   </ItemGroup>
 
   <ItemGroup>
@@ -34,10 +37,6 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="SqlScripts\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -117,6 +116,10 @@
     <None Include="wwwroot\lib\sweetalert2\src\utils\Timer.js" />
     <None Include="wwwroot\lib\sweetalert2\src\utils\utils.js" />
     <None Include="wwwroot\lib\sweetalert2\src\variables.scss" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SqlScripts\" />
   </ItemGroup>
 
 

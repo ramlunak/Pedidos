@@ -67,7 +67,7 @@ namespace Pedidos
                 options.RespectBrowserAcceptHeader = true; // false by default
             });
 
-            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(Configuration.GetConnectionString("ConnectionStringLocal")));
+            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
 
             JsonSerializerOptions options = new JsonSerializerOptions()

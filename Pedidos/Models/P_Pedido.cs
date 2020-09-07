@@ -15,11 +15,12 @@ namespace Pedidos.Models
         public int? idAplicativo { get; set; }
         public DateTime fecha { get; set; }
         public StatusPedido status { get; set; }
-        public string Descripcion { get; set; }
+        public string descripcion { get; set; }
+        public decimal Descripcion { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
-
+                
         [NotMapped]
-        public List<P_Venta> Ventas { get; set; }
+        public List<P_Productos> Productos { get; set; }
     }
 }

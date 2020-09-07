@@ -31,5 +31,9 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_SubCategoria> P_SubCategorias { get; set; }
 
         public DbSet<Pedidos.Models.P_Direcciones> P_Direcciones { get; set; }
+
+        public DbSet<Pedidos.Models.P_Pedido> P_Pedidos { get; set; }
+
+        public DbSet<Pedidos.Models.P_Venta> P_Ventas { get; set; }
     }
 }

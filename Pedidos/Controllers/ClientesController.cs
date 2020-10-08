@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Pedidos.Data;
 using Pedidos.Models;
 
@@ -86,7 +87,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create( P_Cliente p_Cliente)
+        public async Task<IActionResult> Create(P_Cliente p_Cliente)
         {
             ValidarCuenta();
             if (ModelState.IsValid)
@@ -94,6 +95,17 @@ namespace Pedidos.Controllers
                 p_Cliente.idCuenta = Cuenta.id;
                 _context.Add(p_Cliente);
                 await _context.SaveChangesAsync();
+
+                //Actualizar lista cliente de la session
+                var SSclientes = GetSession("Clientes");
+                if (SSclientes != null)
+                {
+                    var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
+                    ListClientes.Add(p_Cliente);
+                    var json = JsonConvert.SerializeObject(ListClientes);
+                    SetSession("Clientes", json);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(p_Cliente);
@@ -180,6 +192,17 @@ namespace Pedidos.Controllers
             var p_Cliente = await _context.P_Clientes.FindAsync(id);
             _context.P_Clientes.Remove(p_Cliente);
             await _context.SaveChangesAsync();
+
+            //Actualizar lista cliente de la session
+            var SSclientes = GetSession("Clientes");
+            if (SSclientes != null)
+            {
+                var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
+                ListClientes.Remove(p_Cliente);
+                var json = JsonConvert.SerializeObject(ListClientes);
+                SetSession("Clientes", json);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -188,5 +211,30 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             return _context.P_Clientes.Any(e => e.id == id);
         }
+
+
+        public async Task<IActionResult> GetTelefono(int idCliente)
+        {
+            string telefono = null;
+            var SSclientes = GetSession("Clientes");
+            if (SSclientes != null)
+            {
+                var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
+                var cliente = ListClientes.Where(x => x.id == idCliente).FirstOrDefault();
+                if (cliente != null)
+                {
+                    telefono = cliente.telefono;
+                }
+            }
+
+            return Json(telefono);
+        }
+
+        public async Task<IActionResult> GetDireccion(int idCliente)
+        {
+            var direciones = await _context.P_Direcciones.Where(x => x.idCliente == idCliente).ToArrayAsync();
+            return Json(direciones.ToArray());
+        }
+
     }
 }

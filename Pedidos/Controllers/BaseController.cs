@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Pedidos.Models;
@@ -77,6 +78,15 @@ namespace Pedidos.Controllers
             }
         }
 
+        public void SetSession(string key,string value)
+        {
+            HttpContext.Session.SetString(key,value);
+        }
+
+        public string GetSession(string key)
+        {
+            return string.IsNullOrEmpty(HttpContext.Session.GetString(key)) ? null : HttpContext.Session.GetString(key);
+        }
 
         public P_Cuenta Cuenta
         {

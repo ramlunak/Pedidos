@@ -4,10 +4,122 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+@*CLIENTE*@
+<div class="row">
+    <div class="row col-12">
+        @*RUA*@
+        <div class="col-md-8">
+            <div class="form-group">
+                <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control" />
+                <datalist id="ClienteList">
+                    @if (ViewBag.Clientes != null)
+                    {
+                        @foreach (var cliente in ViewBag.Clientes)
+                        {
+                            <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                        }
+                    }
+                </datalist>
+                <input id="IdCliente" hidden class="form-control" />
+            </div>
+        </div>
+        @*NUMERO*@
+        <div class="col-md-4">
+            <div class="form-group">
 
-<h4>P_Pedido</h4>
+                <input id="telefono" type="number" placeholder="Telefone" class="form-control" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-12">
+        <ul id="ListaDirecciones" style="display:inline-flex; list-style-type: none;">
+        </ul>
+    </div>
+
+</div>
+
 <hr />
+
+@*dIRECCION*@
+<div class="row">
+    <div class="row col-12">
+
+        @*CEP*@
+        <div class="col-md-3">
+
+            <div class="form-group">
+
+
+                <div class="input-group">
+                    <input id="code" type="number" placeholder="CEP" class="form-control">
+                    <div class="input-group-append">
+                        <span id="cepSearch" class="input-group-text" style="cursor:pointer">
+                            <i style="color:dodgerblue" class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+        @*RUA*@
+        <div class="col-md-5">
+            <div class="form-group">
+
+                <input id="address" placeholder="Rua" class="form-control" />
+
+            </div>
+        </div>
+        @*NUMERO*@
+        <div class="col-md-2">
+            <div class="form-group">
+
+                <input id="numero" type="number" placeholder="Número" class="form-control" />
+
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group">
+
+                <input id="complemento" placeholder="Complemento" class="form-control" />
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row col-12">
+        @*BARRIO*@
+        <div class="col-md-5">
+            <div class="form-group">
+
+                <input id="district" placeholder="Barrio" class="form-control" />
+
+            </div>
+        </div>
+        @*CIUDAD*@
+        <div class="col-md-5">
+            <div class="form-group">
+
+                <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control" />
+
+            </div>
+        </div>
+        @*ESTADO*@
+        <div class="col-md-2">
+            <div class="form-group">
+
+                <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control" />
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<hr />
+
 <div class="row">
     <div class="col-md-4">
 
@@ -35,52 +147,6 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-
-            <div class="form-group">
-                <label asp-for="idCliente" class="control-label"></label>
-                <input asp-for="idCliente" class="form-control" />
-                <span asp-validation-for="idCliente" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="idMesa" class="control-label"></label>
-                <input asp-for="idMesa" class="form-control" />
-                <span asp-validation-for="idMesa" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="idAplicativo" class="control-label"></label>
-                <input asp-for="idAplicativo" class="form-control" />
-                <span asp-validation-for="idAplicativo" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fecha" class="control-label"></label>
-                <input asp-for="fecha" class="form-control" />
-                <span asp-validation-for="fecha" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="status" class="control-label"></label>
-                <select asp-for="status" class="form-control"></select>
-                <span asp-validation-for="status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="descripcion" class="control-label"></label>
-                <input asp-for="descripcion" class="form-control" />
-                <span asp-validation-for="descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Descripcion" class="control-label"></label>
-                <input asp-for="Descripcion" class="form-control" />
-                <span asp-validation-for="Descripcion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="idCuenta" class="control-label"></label>
-                <input asp-for="idCuenta" class="form-control" />
-                <span asp-validation-for="idCuenta" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="activo" /> @Html.DisplayNameFor(model => model.activo)
-                </label>
-            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
@@ -94,25 +160,93 @@
 
 @section Scripts {
 
+    <script type="text/javascript">
 
-    <script>
+        var DIRECCIONES = [];
+
         $(document).ready(function () {
 
-            $('#browserInputProducto').on('input', function () {
-                var opt = $('option[value="' + $(this).val() + '"]');
-                $('#idProducto').val(opt.length ? opt.attr('id') : '');
+            $('#cepSearch').on('click', function () {
+
+                $.getJSON('https://ws.apicep.com/cep.json', { code: $('#code').val() }, function (data) {
+                    console.log(data);
+                    if (JSON.parse(data.ok)) {
+                        $('#state').val(data.state);
+                        $('#city').val(data.city);
+                        $('#district').val(data.district);
+                        $('#address').val(data.address);
+                    } else {
+                        Swal.fire('Oops...', data.message, 'warning');
+                        LimpiarCamposDireccion();
+                    }
+                });
+
             });
 
-            $('#browserInputProducto').on('keyup', function () {
-                if (event.keyCode === 13) {
-                    // Cancel the default action, if needed
-                    event.preventDefault();
-                    // Trigger the button element with a click
-                    $('#formAddProducto').submit();
-                }
+            function LimpiarCamposDireccion() {
+                $('#state').val('');
+                $('#city').val('');
+                $('#district').val('');
+                $('#address').val('');
+            }
+
+            $('#browserInputCliente').on('input', function () {
+                var opt = $('option[value="' + $(this).val() + '"]');
+                $('#IdCliente').val(opt.length ? opt.attr('id') : '');
+                CargarTelefono();
+                CargarDireccion();
             });
+
+            function CargarTelefono() {
+                $.getJSON('/Clientes/GetTelefono', { idCliente: $('#IdCliente').val() }, function (data) {
+                    $('#telefono').val(data);
+                });
+            }
+
+            function CargarDireccion() {
+                $.getJSON('/Clientes/GetDireccion', { idCliente: $('#IdCliente').val() }, function (data) {
+                    DIRECCIONES = data;
+
+                    var ul = $("#ListaDirecciones")[0];
+                    var listLength = ul.children.length;
+
+                    for (i = 0; i < listLength; i++) {
+                        ul.removeChild(ul.children[0]);
+                    }
+
+                    $.each(data, function (index, value) {
+                        $("#ListaDirecciones").append('<li> <a class="nav-link text-dark" style="cursor: pointer;" title="Endereços" onclick="SetDireccion(' + index + ')"><i class="fa fa-home fa-lg" style="color:steelblue" aria-hidden="true"></i></a> </li >');
+                    });
+
+                    SetDireccion(0);
+                });
+            }
 
         });
+
+        function SetDireccion(index) {
+
+            if (DIRECCIONES.length == 0) {
+                $('#code').val(null);
+                $('#state').val(null);
+                $('#city').val(null);
+                $('#district').val(null);
+                $('#address').val(null);
+                $('#numero').val(null);
+                $('#complemento').val(null);
+            } else {
+                $('#code').val(DIRECCIONES[index].code);
+                $('#state').val(DIRECCIONES[index].state);
+                $('#city').val(DIRECCIONES[index].city);
+                $('#district').val(DIRECCIONES[index].district);
+                $('#address').val(DIRECCIONES[index].address);
+                $('#numero').val(DIRECCIONES[index].numero);
+                $('#complemento').val(DIRECCIONES[index].complemento);
+            }
+
+        }
+
+
     </script>
 
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

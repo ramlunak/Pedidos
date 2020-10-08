@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
+using Newtonsoft;
+using Newtonsoft.Json;
 
 namespace Pedidos.Controllers
 {
@@ -50,7 +52,35 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Create()
         {
             ValidarCuenta();
-            ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+
+
+            if (GetSession("Productos") == null)
+            {
+                var productos = ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                var json = JsonConvert.SerializeObject(productos);
+                SetSession("Productos", json);
+            }
+            else
+            {
+                var SSproductos = GetSession("Productos");
+                ViewBag.Productos = JsonConvert.DeserializeObject(SSproductos);
+            }
+
+            if (GetSession("Clientes") == null)
+            {
+                var clientes = ViewBag.Clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                var json = JsonConvert.SerializeObject(clientes);
+                SetSession("Clientes", json);
+            }
+            else
+            {
+                var SSclientes = GetSession("Clientes");
+                ViewBag.Clientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
+            }
+
+            ViewBag.State = Cuenta.estado;
+            ViewBag.City = Cuenta.municipio;
+
             return View();
         }
 

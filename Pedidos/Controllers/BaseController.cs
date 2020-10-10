@@ -74,18 +74,30 @@ namespace Pedidos.Controllers
             if (Cuenta is null || !Cuenta.activo)
             {
                 Logof();
-                Response.Redirect("/Login");              
+                Response.Redirect("/Login");
             }
         }
 
-        public void SetSession(string key,string value)
+        public void SetSession(string key, string value)
         {
-            HttpContext.Session.SetString(key,value);
+            HttpContext.Session.SetString(key, value);
+        }
+
+        public void SetSession(string key, object o)
+        {
+            var json = JsonConvert.SerializeObject(o);
+            HttpContext.Session.SetString(key, json);
         }
 
         public string GetSession(string key)
         {
             return string.IsNullOrEmpty(HttpContext.Session.GetString(key)) ? null : HttpContext.Session.GetString(key);
+        }
+
+        public T GetSession<T>(string key)
+        {
+            var value = string.IsNullOrEmpty(HttpContext.Session.GetString(key)) ? null : HttpContext.Session.GetString(key);
+            return JsonConvert.DeserializeObject<T>(value);
         }
 
         public P_Cuenta Cuenta

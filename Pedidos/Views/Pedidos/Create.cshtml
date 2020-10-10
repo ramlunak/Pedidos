@@ -5,7 +5,7 @@
 }
 
 @*FORMULARIO*@
-<form id="formAddProducto" asp-action="AddProducto">
+<form asp-action="Create">
 
     <div class="row container d-flex justify-content-center">
         <div class="col-12 col-md-10 col-lg-8">
@@ -15,7 +15,7 @@
             <div class="row">
 
                 <div class="form-group col-10">
-                    <input type="search" id="browserInputProducto" list="ProductoList" placeholder="Producto" asp-for="Producto" class="form-control form-control-sm" />
+                    <input type="search" id="browserInputProducto" list="ProductoList" placeholder="Producto" value="@Model.Producto" class="form-control form-control-sm" />
                     <datalist id="ProductoList">
                         @if (ViewBag.Productos != null)
                         {
@@ -25,18 +25,22 @@
                             }
                         }
                     </datalist>
-                    <input id="IdProducto" asp-for="IdProducto" hidden class="form-control" />
+                    <input id="IdProducto" asp-for="IdProducto" value="@Model.IdProducto" hidden class="form-control" />
                     <span asp-validation-for="IdProducto" class="text-danger"></span>
+                    @if (ViewBag.Erro != null)
+                    {
+                        <div class="alert small alert-danger m-1">@ViewBag.Erro</div>
+                    }
                 </div>
 
                 <div class="form-group col-2 m-0">
-                    <input id="cantidad" type="number" placeholder="Quant." value="1" class="form-control form-control-sm" />
+                    <input id="Cantidad" name="Cantidad" type="number" placeholder="Quant." value="1" class="form-control form-control-sm" />
                 </div>
 
             </div>
 
             <div class="form-group">
-                <input id="descripcao" placeholder="Descricao (Opcional)" class="form-control form-control-sm" />
+                <input id="Observacion" name="Observacion" placeholder="Observação (Opcional)" class="form-control form-control-sm" />
             </div>
 
             <div class="form-group row d-flex justify-content-end">
@@ -47,6 +51,7 @@
     </div>
 
 </form>
+
 @*LISTA PEDIDOS*@
 <div class="row container d-flex justify-content-center">
     <div class="col-12">
@@ -55,29 +60,28 @@
             <tbody>
 
                 @if (Model != null)
-                    @foreach (var item in Model.Productos)
+                    @foreach (var producto in Model.Productos)
                     {
-                        <tr>
-                            <td class="w-auto">
-                                <div class="row d-flex justify-content-start w-auto">
-                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete">
-                                        <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </td>
-
-                            <td>
-                                <div>Cerveja Heineken LongNeck </div>
-                            </td>
-                            <td>
-                                <div>1</div>
-                            </td>
-                            <td>
-                                <div class="row d-flex justify-content-end w-auto">
-                                    $R 5.00
-                                </div>
-                            </td>
-                        </tr>
+                <tr>
+                    <td class="w-auto">
+                        <div class="row d-flex justify-content-start w-auto">
+                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
+                                <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row d-flex justify-content-start">@producto.nombre</div>
+                    </td>
+                    <td>
+                        <div class="row d-flex justify-content-start">@producto.Observacion</div>
+                    </td>
+                    <td>
+                        <div class="row d-flex justify-content-end w-auto">
+                            @producto.valor.ToString("C")
+                        </div>
+                    </td>
+                </tr>
 
                     }
 
@@ -93,7 +97,7 @@
                             </td>
                             <td>
                                 <div class="row d-flex justify-content-end w-auto">
-                                    <strong>$R 32.25</strong>
+                                    <strong>@Model.ValorTotal</strong>
                                 </div>
                             </td>
                         </tr>
@@ -237,6 +241,8 @@
 
             $(document).ready(function () {
 
+                $("#browserInputProducto").focus();
+
                 $('#cepSearch').on('click', function () {
 
                     $.getJSON('https://ws.apicep.com/cep.json', { code: $('#code').val() }, function (data) {
@@ -254,12 +260,12 @@
 
                 });
 
-                function LimpiarCamposDireccion() {
-                    $('#state').val('');
-                    $('#city').val('');
-                    $('#district').val('');
-                    $('#address').val('');
-                }
+                $('#browserInputProducto').on('input', function () {
+                    var opt = $('option[value="' + $(this).val() + '"]');
+                    console.log(opt.length ? opt.attr('id') : '');
+                    $('#IdProducto').val(opt.length ? opt.attr('id') : '');
+
+                });
 
                 $('#browserInputCliente').on('input', function () {
                     var opt = $('option[value="' + $(this).val() + '"]');
@@ -293,6 +299,12 @@
                     });
                 }
 
+                function LimpiarCamposDireccion() {
+                    $('#state').val('');
+                    $('#city').val('');
+                    $('#district').val('');
+                    $('#address').val('');
+                }
             });
 
             function SetDireccion(index) {

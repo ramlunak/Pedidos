@@ -81,7 +81,15 @@ namespace Pedidos.Controllers
             ViewBag.State = Cuenta.estado;
             ViewBag.City = Cuenta.municipio;
 
-            return View();
+            var ProductosPedido = new List<P_Productos>();
+            if (GetSession("ProductosPedido") != null)
+            {
+                ProductosPedido = GetSession<List<P_Productos>>("ProductosPedido");
+            }
+            var newPedido = new P_Pedido();
+            newPedido.Productos = ProductosPedido;
+
+            return View(newPedido);
         }
 
         // POST: Pedidos/Create
@@ -93,20 +101,22 @@ namespace Pedidos.Controllers
         {
             ValidarCuenta();
 
-            if (ModelState.IsValid)
+            //CARGAR PRODUCTOS SESSION
+            var productosDB = new List<P_Productos>();
+            if (GetSession("Productos") == null)
             {
-                _context.Add(p_Pedido);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                var productos = ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                productosDB = productos;
+                var jsonProductos = JsonConvert.SerializeObject(productos);
+                SetSession("Productos", jsonProductos);
             }
-            return View(p_Pedido);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProducto(P_Pedido pedido)
-        {
-            ValidarCuenta();
+            else
+            {
+                var SSproductos = GetSession("Productos");
+                productosDB = JsonConvert.DeserializeObject<List<P_Productos>>(SSproductos);
+            }
+            ViewBag.Productos = productosDB;
+            //-------------------------------------------
 
             var ProductosPedido = new List<P_Productos>();
 
@@ -115,19 +125,43 @@ namespace Pedidos.Controllers
                 ProductosPedido = JsonConvert.DeserializeObject<List<P_Productos>>(GetSession("ProductosPedido"));
             }
 
-            ProductosPedido.Add(new P_Productos
+            if (p_Pedido.IdProducto != null)
             {
-                nombre = pedido.Producto
-            });
+                var p = productosDB.Where(x => x.id == p_Pedido.IdProducto).FirstOrDefault();
+                p.Observacion = p_Pedido.Observacion;
+                p.DataPedido = DateTime.Now;
 
-            var json = JsonConvert.SerializeObject(ProductosPedido);
-            SetSession("ProductosPedido", json);
+                for (int i = 0; i < p_Pedido.Cantidad; i++)
+                {
+                    ProductosPedido.Add(p);
+                }
 
-            pedido.Productos = ProductosPedido;
+                //ACTUALIZAR INDEX EN LA LISTA
+                var index = 0;
+                foreach (var item in ProductosPedido)
+                {
+                    item.Index = index;
+                    index++;
+                }
 
-            return RedirectToAction(nameof(Create), pedido);
+                var json = JsonConvert.SerializeObject(ProductosPedido);
+                SetSession("ProductosPedido", json);
 
+                p_Pedido.Producto = null;
+                p_Pedido.IdProducto = null;
+                p_Pedido.Cantidad = 1;
+                p_Pedido.Observacion = null;               
+            }
+            else
+            {
+                ViewBag.Erro = "Seleccione um produto da lista";
+            }
+
+            p_Pedido.Productos = ProductosPedido;
+
+            return View(p_Pedido);
         }
+
 
         // GET: Pedidos/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -185,23 +219,21 @@ namespace Pedidos.Controllers
         }
 
         // GET: Pedidos/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> DeleteProducto(int? index)
         {
             ValidarCuenta();
 
-            if (id == null)
+            var ProductosPedido = new List<P_Productos>();
+            if (GetSession("ProductosPedido") != null)
             {
-                return NotFound();
+                ProductosPedido = GetSession<List<P_Productos>>("ProductosPedido");
             }
 
-            var p_Pedido = await _context.P_Pedidos
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Pedido == null)
-            {
-                return NotFound();
-            }
+            var p = ProductosPedido.Where(x => x.Index == index).FirstOrDefault();
+            ProductosPedido.Remove(p);
+            SetSession("ProductosPedido", ProductosPedido);
 
-            return View(p_Pedido);
+            return RedirectToAction(nameof(Create));
         }
 
         // POST: Pedidos/Delete/5

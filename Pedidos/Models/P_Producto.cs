@@ -28,7 +28,7 @@ namespace Pedidos.Models
 
         [Column(TypeName = "image")]
         public byte[] imagen { get; set; }
-              
+
         public int idCuenta { get; set; }
 
         [DisplayName("Valor")]
@@ -39,12 +39,12 @@ namespace Pedidos.Models
         [Required(ErrorMessage = "O valor é obrigatorio")]
         [DisplayName("Valor")]
         public string strValor { get; set; } = string.Empty;
-              
+
         [DisplayName("U/M")]
         public UnidadMedida? unidadeMedida { get; set; }
 
         public int? horasPreparacion { get; set; }
-        public int? minutosPreparacion { get; set; }      
+        public int? minutosPreparacion { get; set; }
 
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
@@ -62,7 +62,11 @@ namespace Pedidos.Models
 
         //PARA LOS PEDIDOS
         [NotMapped]
-        public string Cantidad { get; set; }
+        public DateTime DataPedido { get; set; }
+        [NotMapped]
+        public string Observacion { get; set; }
+        [NotMapped]
+        public int Index { get; set; }
 
     }
 }

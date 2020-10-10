@@ -16,18 +16,33 @@ namespace Pedidos.Models
         public int? idAplicativo { get; set; }
         public DateTime fecha { get; set; }
         public StatusPedido status { get; set; }
-        public string descripcion { get; set; }      
+        public string descripcion { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
 
         //AUXILIARES
+
+        [NotMapped]      
+        public int? IdProducto { get; set; }
+
         [Required(ErrorMessage = "O Produco é obrigatorio")]
         [NotMapped]
         public string Producto { get; set; }
         [NotMapped]
-        public int IdProducto { get; set; }
-
+        public int Cantidad { get; set; }
+        [NotMapped]
+        public string Observacion { get; set; }
         [NotMapped]
         public List<P_Productos> Productos = new List<P_Productos>();
+        [NotMapped]
+        public string ValorTotal
+        {
+            get
+            {
+                var total = Productos.Sum(x => x.valor);
+                return total.ToString("C");
+            }
+        }
+
     }
 }

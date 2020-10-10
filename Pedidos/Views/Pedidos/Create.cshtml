@@ -4,134 +4,18 @@
     ViewData["Title"] = "Create";
 }
 
-    <div hidden>
+@*FORMULARIO*@
+<form id="formAddProducto" asp-action="AddProducto">
 
-        @*CLIENTE*@
-        <div class="row">
-            <div class="row col-12">
-                @*RUA*@
-                <div class="col-md-8">
-                    <div class="form-group">
-                        <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control" />
-                        <datalist id="ClienteList">
-                            @if (ViewBag.Clientes != null)
-                            {
-                                @foreach (var cliente in ViewBag.Clientes)
-                                {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
-                                }
-                            }
-                        </datalist>
-                        <input id="IdCliente" hidden class="form-control" />
-                    </div>
-                </div>
-                @*NUMERO*@
-                <div class="col-md-4">
-                    <div class="form-group">
+    <div class="row container d-flex justify-content-center">
+        <div class="col-12 col-md-10 col-lg-8">
 
-                        <input id="telefono" type="number" placeholder="Telefone" class="form-control" />
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row col-12" hidden>
-                <ul id="ListaDirecciones" style="display:inline-flex; list-style-type: none;">
-                </ul>
-            </div>
-
-        </div>
-
-        <hr />
-
-        @*dIRECCION*@
-        <div class="row">
-            <div class="row col-12">
-
-                @*CEP*@
-                <div class="col-md-3">
-
-                    <div class="form-group">
-
-
-                        <div class="input-group">
-                            <input id="code" type="number" placeholder="CEP" class="form-control">
-                            <div class="input-group-append">
-                                <span id="cepSearch" class="input-group-text" style="cursor:pointer">
-                                    <i style="color:dodgerblue" class="fa fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
-
-
-                    </div>
-
-                </div>
-                @*RUA*@
-                <div class="col-md-5">
-                    <div class="form-group">
-
-                        <input id="address" placeholder="Rua" class="form-control" />
-
-                    </div>
-                </div>
-                @*NUMERO*@
-                <div class="col-md-2">
-                    <div class="form-group">
-
-                        <input id="numero" type="number" placeholder="Número" class="form-control" />
-
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-
-                        <input id="complemento" placeholder="Complemento" class="form-control" />
-
-                    </div>
-                </div>
-            </div>
-
-            <div class="row col-12">
-                @*BARRIO*@
-                <div class="col-md-5">
-                    <div class="form-group">
-
-                        <input id="district" placeholder="Barrio" class="form-control" />
-
-                    </div>
-                </div>
-                @*CIUDAD*@
-                <div class="col-md-5">
-                    <div class="form-group">
-
-                        <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control" />
-
-                    </div>
-                </div>
-                @*ESTADO*@
-                <div class="col-md-2">
-                    <div class="form-group">
-
-                        <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control" />
-
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <hr />
-    </div>
-
-<div class="row">
-    <div class="col-md-4">
-
-        <form id="formAddProducto" asp-action="AddProducto">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div>
-                <div class="form-group">
-                    <label>Categorias</label>
-                    <input type="search" id="browserInputProducto" list="ProductoList" asp-for="Producto" class="form-control" />
+
+            <div class="row">
+
+                <div class="form-group col-10">
+                    <input type="search" id="browserInputProducto" list="ProductoList" placeholder="Producto" asp-for="Producto" class="form-control form-control-sm" />
                     <datalist id="ProductoList">
                         @if (ViewBag.Productos != null)
                         {
@@ -144,22 +28,221 @@
                     <input id="IdProducto" asp-for="IdProducto" hidden class="form-control" />
                     <span asp-validation-for="IdProducto" class="text-danger"></span>
                 </div>
-            </div>
-        </form>
 
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group col-2 m-0">
+                    <input id="cantidad" type="number" placeholder="Quant." value="1" class="form-control form-control-sm" />
+                </div>
+
+            </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input id="descripcao" placeholder="Descricao (Opcional)" class="form-control form-control-sm" />
             </div>
-        </form>
+
+            <div class="form-group row d-flex justify-content-end">
+                <input type="submit" value="Criar" class="btn btn-primary btn-sm" />
+            </div>
+
+        </div>
+    </div>
+
+</form>
+@*LISTA PEDIDOS*@
+<div class="row container d-flex justify-content-center">
+    <div class="col-12">
+
+        <table class="table table-sm">
+            <tbody>
+                @*@foreach (var item in Model.Clientes)
+                    {*@
+                <tr>
+                    <td class="w-auto">
+                        <div class="row d-flex justify-content-start w-auto">
+                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete">
+                                <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </td>
+
+                    <td>
+                        <div>Cerveja Heineken LongNeck </div>
+                    </td>
+                    <td>
+                        <div>1</div>
+                    </td>
+                    <td>
+                        <div class="row d-flex justify-content-end w-auto">
+                            $R 5.00
+                        </div>
+                    </td>
+
+                </tr>
+
+                <tr>
+                    <td class="w-auto">
+                        <div class="row d-flex justify-content-start w-auto">
+                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete">
+                                <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </td>
+                    <td>
+                        <div>X BACON </div>
+                    </td>
+                    <td>
+                        <div>2</div>
+                    </td>
+                    <td>
+                        <div class="row d-flex justify-content-end w-auto">
+                            $R 27.25
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="w-auto">
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <div class="row d-flex justify-content-end w-auto">
+                            <strong>$R 32.25</strong>
+                        </div>
+                    </td>
+                </tr>
+
+                @*}*@
+            </tbody>
+        </table>
+
+
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
+
+
+@***************@
+<div hidden>
+
+    @*CLIENTE*@
+    <div class="row">
+        <div class="row col-12">
+            @*RUA*@
+            <div class="col-md-8">
+                <div class="form-group">
+                    <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control" />
+                    <datalist id="ClienteList">
+                        @if (ViewBag.Clientes != null)
+                        {
+                            @foreach (var cliente in ViewBag.Clientes)
+                            {
+                                <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                            }
+                        }
+                    </datalist>
+                    <input id="IdCliente" hidden class="form-control" />
+                </div>
+            </div>
+            @*NUMERO*@
+            <div class="col-md-4">
+                <div class="form-group">
+
+                    <input id="telefono" type="number" placeholder="Telefone" class="form-control" />
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-12" hidden>
+            <ul id="ListaDirecciones" style="display:inline-flex; list-style-type: none;">
+            </ul>
+        </div>
+
+    </div>
+
+    <hr />
+
+    @*dIRECCION*@
+    <div class="row">
+        <div class="row col-12">
+
+            @*CEP*@
+            <div class="col-md-3">
+
+                <div class="form-group">
+
+
+                    <div class="input-group">
+                        <input id="code" type="number" placeholder="CEP" class="form-control">
+                        <div class="input-group-append">
+                            <span id="cepSearch" class="input-group-text" style="cursor:pointer">
+                                <i style="color:dodgerblue" class="fa fa-search"></i>
+                            </span>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            @*RUA*@
+            <div class="col-md-5">
+                <div class="form-group">
+
+                    <input id="address" placeholder="Rua" class="form-control" />
+
+                </div>
+            </div>
+            @*NUMERO*@
+            <div class="col-md-2">
+                <div class="form-group">
+
+                    <input id="numero" type="number" placeholder="Número" class="form-control" />
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+
+                    <input id="complemento" placeholder="Complemento" class="form-control" />
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            @*BARRIO*@
+            <div class="col-md-5">
+                <div class="form-group">
+
+                    <input id="district" placeholder="Barrio" class="form-control" />
+
+                </div>
+            </div>
+            @*CIUDAD*@
+            <div class="col-md-5">
+                <div class="form-group">
+
+                    <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control" />
+
+                </div>
+            </div>
+            @*ESTADO*@
+            <div class="col-md-2">
+                <div class="form-group">
+
+                    <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control" />
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
 </div>
+
 
 @section Scripts {
 

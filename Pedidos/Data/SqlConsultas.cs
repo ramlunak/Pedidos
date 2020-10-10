@@ -58,8 +58,7 @@ namespace Pedidos.Data
                    $" ORDER BY id ASC" +
                    $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
         }
-
-
+        
         public static string GetSqlAllProductos(int idCuenta, int Skip, int Take, string nombre)
         {
             StringBuilder filtro = new StringBuilder();

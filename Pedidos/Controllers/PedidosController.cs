@@ -104,11 +104,29 @@ namespace Pedidos.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddProducto(int idProducto)
+        public async Task<IActionResult> AddProducto(P_Pedido pedido)
         {
             ValidarCuenta();
-            return RedirectToAction(nameof(Create));
-            ;
+
+            var ProductosPedido = new List<P_Productos>();
+
+            if (GetSession("ProductosPedido") != null)
+            {
+                ProductosPedido = JsonConvert.DeserializeObject<List<P_Productos>>(GetSession("ProductosPedido"));
+            }
+
+            ProductosPedido.Add(new P_Productos
+            {
+                nombre = pedido.Producto
+            });
+
+            var json = JsonConvert.SerializeObject(ProductosPedido);
+            SetSession("ProductosPedido", json);
+
+            pedido.Productos = ProductosPedido;
+
+            return RedirectToAction(nameof(Create), pedido);
+
         }
 
         // GET: Pedidos/Edit/5

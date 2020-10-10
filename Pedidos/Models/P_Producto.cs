@@ -60,5 +60,9 @@ namespace Pedidos.Models
         [NotMapped]
         public string ImageBase64 { get; set; }
 
+        //PARA LOS PEDIDOS
+        [NotMapped]
+        public string Cantidad { get; set; }
+
     }
 }

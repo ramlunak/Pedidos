@@ -16,8 +16,7 @@ namespace Pedidos.Models
         public int? idAplicativo { get; set; }
         public DateTime fecha { get; set; }
         public StatusPedido status { get; set; }
-        public string descripcion { get; set; }
-        public decimal Descripcion { get; set; }
+        public string descripcion { get; set; }      
         public int idCuenta { get; set; }
         public bool activo { get; set; }
 
@@ -29,6 +28,6 @@ namespace Pedidos.Models
         public int IdProducto { get; set; }
 
         [NotMapped]
-        public List<P_Productos> Productos { get; set; }
+        public List<P_Productos> Productos = new List<P_Productos>();
     }
 }

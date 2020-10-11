@@ -7,6 +7,7 @@
     status tinyint null,
     descripcion varchar(255) null,
     valor decimal(18,5) null,
+    descuento decimal(18,5) null,
     activo bit null, 
     idCuenta int null  
 );

@@ -19,6 +19,8 @@ namespace Pedidos.Models
         public string descripcion { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
+        public decimal? valor { get; set; }
+        public decimal? descuento { get; set; }
 
         //AUXILIARES
 

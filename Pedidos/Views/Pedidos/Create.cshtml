@@ -43,8 +43,11 @@
                 <input id="Observacion" name="Observacion" placeholder="Observação (Opcional)" class="form-control form-control-sm" />
             </div>
 
-            <div class="form-group row d-flex justify-content-end">
-                <input type="submit" value="Add" class="btn btn-primary btn-sm" />
+            <div class="form-group row d-flex justify-content-between">
+                <input type="submit" value="Adicionar à lista" class="btn btn-primary btn-sm" />
+                <div>
+                    <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar Pedido</a>
+                </div>
             </div>
 
         </div>
@@ -52,13 +55,14 @@
 
 </form>
 
+<hr />
+
 @*LISTA PEDIDOS*@
 <div class="row container d-flex justify-content-center">
     <div class="col-12">
 
         <table class="table table-sm">
             <tbody>
-
                 @if (Model != null)
                     @foreach (var producto in Model.Productos)
                     {
@@ -121,7 +125,6 @@
 
         </div>
     </div>
-
 
 
     @***************@

@@ -21,34 +21,12 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        // GET: Pedidos
         public async Task<IActionResult> Index()
         {
             ValidarCuenta();
             return View(await _context.P_Pedidos.ToListAsync());
         }
 
-        // GET: Pedidos/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            ValidarCuenta();
-
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var p_Pedido = await _context.P_Pedidos
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Pedido == null)
-            {
-                return NotFound();
-            }
-
-            return View(p_Pedido);
-        }
-
-        // GET: Pedidos/Create
         public async Task<IActionResult> Create()
         {
             ValidarCuenta();
@@ -92,9 +70,6 @@ namespace Pedidos.Controllers
             return View(newPedido);
         }
 
-        // POST: Pedidos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Pedido p_Pedido)
@@ -150,7 +125,7 @@ namespace Pedidos.Controllers
                 p_Pedido.Producto = null;
                 p_Pedido.IdProducto = null;
                 p_Pedido.Cantidad = 1;
-                p_Pedido.Observacion = null;               
+                p_Pedido.Observacion = null;
             }
             else
             {
@@ -162,6 +137,12 @@ namespace Pedidos.Controllers
             return View(p_Pedido);
         }
 
+        // GET: Pedidos/Edit/5
+        public async Task<IActionResult> GuardarPedido()
+        {
+            var p_Pedido = new P_Pedido();
+            return RedirectToAction(nameof(Index));
+        }
 
         // GET: Pedidos/Edit/5
         public async Task<IActionResult> Edit(int? id)

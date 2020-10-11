@@ -42,8 +42,8 @@ namespace Pedidos.Models
         {
             get
             {
-                var total = Productos.Sum(x => x.valor);
-                return total.ToString("C");
+                this.valor = Productos.Sum(x => x.valor);
+                return this.valor.Value.ToString("C");
             }
         }
 

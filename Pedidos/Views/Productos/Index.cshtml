@@ -63,10 +63,10 @@
                             <div style="font-size: 15px;font-weight: 500;color: blue;">
                                 <div>R$ @item.valor</div>
                             </div>
-                            @if(item.horasPreparacion.HasValue || item.horasPreparacion.HasValue){
-                            <div style="font-size:13px;color:gray" class="d-flex">
+                            @if(item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue){
+                            <div style="font-size:14px;color:gray;font-weight:600" class="d-flex">
                                 <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
-                                @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion)
+                                @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion):00
                             </div>
                             }
                         </div>

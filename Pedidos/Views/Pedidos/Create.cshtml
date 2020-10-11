@@ -71,11 +71,21 @@
                                 </div>
                             </td>
                             <td>
-                                <div >@producto.nombre</div>
+                                <div>@producto.nombre</div>
                             </td>
                             <td>
-                                <div >@producto.Observacion</div>
+                                <div>@producto.Observacion</div>
                             </td>
+                            <td>
+                                @if ((producto.horasPreparacion.HasValue && producto.horasPreparacion.Value > 0) || (producto.minutosPreparacion.HasValue && producto.minutosPreparacion.Value > 0))
+                                {
+                                    <div style="font-size:14px;color:black;font-weight:600" class="d-flex">
+                                        <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
+                                        @Html.DisplayFor(modelItem => producto.horasPreparacion):@Html.DisplayFor(modelItem => producto.minutosPreparacion):00
+                                    </div>
+                                }
+                            </td>
+
                             <td>
                                 <div class="row d-flex justify-content-end w-auto">
                                     @producto.valor.ToString("C")
@@ -90,6 +100,8 @@
                     {
                         <tr>
                             <td class="w-auto">
+                            </td>
+                            <td>
                             </td>
                             <td>
                             </td>

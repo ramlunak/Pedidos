@@ -24,7 +24,6 @@ namespace Pedidos.Models
 
         [NotMapped]      
         public int? IdProducto { get; set; }
-
         [Required(ErrorMessage = "O Produco é obrigatorio")]
         [NotMapped]
         public string Producto { get; set; }
@@ -32,6 +31,8 @@ namespace Pedidos.Models
         public int Cantidad { get; set; }
         [NotMapped]
         public string Observacion { get; set; }
+        [NotMapped]
+        public string IdsProducto { get; set; }
         [NotMapped]
         public List<P_Productos> Productos = new List<P_Productos>();
         [NotMapped]

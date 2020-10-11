@@ -44,7 +44,7 @@
             </div>
 
             <div class="form-group row d-flex justify-content-end">
-                <input type="submit" value="Criar" class="btn btn-primary btn-sm" />
+                <input type="submit" value="Add" class="btn btn-primary btn-sm" />
             </div>
 
         </div>
@@ -62,26 +62,26 @@
                 @if (Model != null)
                     @foreach (var producto in Model.Productos)
                     {
-                <tr>
-                    <td class="w-auto">
-                        <div class="row d-flex justify-content-start w-auto">
-                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
-                                <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="row d-flex justify-content-start">@producto.nombre</div>
-                    </td>
-                    <td>
-                        <div class="row d-flex justify-content-start">@producto.Observacion</div>
-                    </td>
-                    <td>
-                        <div class="row d-flex justify-content-end w-auto">
-                            @producto.valor.ToString("C")
-                        </div>
-                    </td>
-                </tr>
+                        <tr>
+                            <td class="w-auto">
+                                <div class="row d-flex justify-content-start w-auto">
+                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
+                                        <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div >@producto.nombre</div>
+                            </td>
+                            <td>
+                                <div >@producto.Observacion</div>
+                            </td>
+                            <td>
+                                <div class="row d-flex justify-content-end w-auto">
+                                    @producto.valor.ToString("C")
+                                </div>
+                            </td>
+                        </tr>
 
                     }
 

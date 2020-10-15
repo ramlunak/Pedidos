@@ -4,139 +4,21 @@
     ViewData["Title"] = "Create";
 }
 
-@*FORMULARIO*@
-<form asp-action="Create">
 
-    <div class="row container d-flex justify-content-center">
-        <div class="col-12 col-md-10 col-lg-8">
+<div class="row col-12">
 
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="col-12 col-xl-6">
 
-            <div class="row">
+        @*FORMULARIO CLIENTE*@
+        <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
-                <div class="form-group col-10">
-                    <input type="search" id="browserInputProducto" list="ProductoList" placeholder="Producto" value="@Model.Producto" class="form-control form-control-sm" />
-                    <datalist id="ProductoList">
-                        @if (ViewBag.Productos != null)
-                        {
-                            @foreach (var producto in ViewBag.Productos)
-                            {
-                                <option id="@(producto.id)" value="@(producto.nombre)"></option>
-                            }
-                        }
-                    </datalist>
-                    <input id="IdProducto" asp-for="IdProducto" value="@Model.IdProducto" hidden class="form-control" />
-                    <span asp-validation-for="IdProducto" class="text-danger"></span>
-                    @if (ViewBag.Erro != null)
-                    {
-                        <div class="alert small alert-danger m-1">@ViewBag.Erro</div>
-                    }
-                </div>
+            @*CLIENTE*@
+            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
-                <div class="form-group col-2 m-0">
-                    <input id="Cantidad" name="Cantidad" type="number" placeholder="Quant." value="1" class="form-control form-control-sm" />
-                </div>
-
-            </div>
-
-            <div class="form-group">
-                <input id="Observacion" name="Observacion" placeholder="Observação (Opcional)" class="form-control form-control-sm" />
-            </div>
-
-            <div class="form-group row d-flex justify-content-between">
-                <input type="submit" value="Adicionar à lista" class="btn btn-primary btn-sm" />
-                <div>
-                    <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar Pedido</a>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-</form>
-
-<hr />
-
-@*LISTA PEDIDOS*@
-<div class="row container d-flex justify-content-center">
-    <div class="col-12">
-
-        <table class="table table-sm">
-            <tbody>
-                @if (Model != null)
-                    @foreach (var producto in Model.Productos)
-                    {
-                        <tr>
-                            <td class="w-auto">
-                                <div class="row d-flex justify-content-start w-auto">
-                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
-                                        <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </td>
-                            <td>
-                                <div>@producto.nombre</div>
-                            </td>
-                            <td>
-                                <div>@producto.Observacion</div>
-                            </td>
-                            <td>
-                                @if ((producto.horasPreparacion.HasValue && producto.horasPreparacion.Value > 0) || (producto.minutosPreparacion.HasValue && producto.minutosPreparacion.Value > 0))
-                                {
-                                    <div style="font-size:14px;color:black;font-weight:600" class="d-flex">
-                                        <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
-                                        @Html.DisplayFor(modelItem => producto.horasPreparacion):@Html.DisplayFor(modelItem => producto.minutosPreparacion):00
-                                    </div>
-                                }
-                            </td>
-
-                            <td>
-                                <div class="row d-flex justify-content-end w-auto">
-                                    @producto.valor.ToString("C")
-                                </div>
-                            </td>
-                        </tr>
-
-                    }
-
-                @if (Model != null)
-                    @if (Model.Productos.Count > 0)
-                    {
-                        <tr>
-                            <td class="w-auto">
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                            </td>
-                            <td>
-                                <div class="row d-flex justify-content-end w-auto">
-                                    <strong>@Model.ValorTotal</strong>
-                                </div>
-                            </td>
-                        </tr>
-                    }
-
-                </tbody>
-            </table>
-
-
-        </div>
-    </div>
-
-
-    @***************@
-    <div hidden>
-
-        @*CLIENTE*@
-        <div class="row">
-            <div class="row col-12">
-                @*RUA*@
-                <div class="col-md-8">
+                @*NOMBRE*@
+                <div class="col-12 col-md-8">
                     <div class="form-group">
-                        <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control" />
+                        <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control form-control-sm" />
                         <datalist id="ClienteList">
                             @if (ViewBag.Clientes != null)
                             {
@@ -146,31 +28,20 @@
                                 }
                             }
                         </datalist>
-                        <input id="IdCliente" hidden class="form-control" />
+                        <input id="IdCliente" hidden class="form-control form-control-sm" />
                     </div>
                 </div>
+
                 @*NUMERO*@
-                <div class="col-md-4">
+                <div class="col-12 col-md-4">
                     <div class="form-group">
-
-                        <input id="telefono" type="number" placeholder="Telefone" class="form-control" />
-
+                        <input id="telefono" type="number" placeholder="Telefone" class="form-control form-control-sm" />
                     </div>
                 </div>
             </div>
 
-            <div class="row col-12" hidden>
-                <ul id="ListaDirecciones" style="display:inline-flex; list-style-type: none;">
-                </ul>
-            </div>
-
-        </div>
-
-        <hr />
-
-        @*dIRECCION*@
-        <div class="row">
-            <div class="row col-12">
+            @*dIRECCION*@
+            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
                 @*CEP*@
                 <div class="col-md-3">
@@ -179,7 +50,7 @@
 
 
                         <div class="input-group">
-                            <input id="code" type="number" placeholder="CEP" class="form-control">
+                            <input id="code" type="number" placeholder="CEP" class="form-control form-control-sm">
                             <div class="input-group-append">
                                 <span id="cepSearch" class="input-group-text" style="cursor:pointer">
                                     <i style="color:dodgerblue" class="fa fa-search"></i>
@@ -195,7 +66,7 @@
                 <div class="col-md-5">
                     <div class="form-group">
 
-                        <input id="address" placeholder="Rua" class="form-control" />
+                        <input id="address" placeholder="Rua" class="form-control form-control-sm" />
 
                     </div>
                 </div>
@@ -203,25 +74,23 @@
                 <div class="col-md-2">
                     <div class="form-group">
 
-                        <input id="numero" type="number" placeholder="Número" class="form-control" />
+                        <input id="numero" type="number" placeholder="Número" class="form-control form-control-sm" />
 
                     </div>
                 </div>
                 <div class="col-md-2">
                     <div class="form-group">
 
-                        <input id="complemento" placeholder="Complemento" class="form-control" />
+                        <input id="complemento" placeholder="Complemento" class="form-control form-control-sm" />
 
                     </div>
                 </div>
-            </div>
 
-            <div class="row col-12">
                 @*BARRIO*@
                 <div class="col-md-5">
                     <div class="form-group">
 
-                        <input id="district" placeholder="Barrio" class="form-control" />
+                        <input id="district" placeholder="Barrio" class="form-control form-control-sm" />
 
                     </div>
                 </div>
@@ -229,7 +98,7 @@
                 <div class="col-md-5">
                     <div class="form-group">
 
-                        <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control" />
+                        <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control form-control-sm" />
 
                     </div>
                 </div>
@@ -237,16 +106,149 @@
                 <div class="col-md-2">
                     <div class="form-group">
 
-                        <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control" />
+                        <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control form-control-sm" />
 
                     </div>
                 </div>
+
             </div>
+
         </div>
 
-        <hr />
+        @*FORMULARIO PRODUCTO*@
+
+        <form asp-action="Create" class="m-0 p-0">
+            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
+
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="col-10">
+                    <div class="form-group">
+                        <input type="search" id="browserInputProducto" list="ProductoList" placeholder="Producto" value="@Model.Producto" class="form-control form-control-sm" />
+                        <datalist id="ProductoList">
+                            @if (ViewBag.Productos != null)
+                            {
+                                @foreach (var producto in ViewBag.Productos)
+                                {
+                                    <option id="@(producto.id)" value="@(producto.nombre)"></option>
+                                }
+                            }
+                        </datalist>
+                        <input id="IdProducto" asp-for="IdProducto" value="@Model.IdProducto" hidden class="form-control" />
+                        <span asp-validation-for="IdProducto" class="text-danger"></span>
+                        @if (ViewBag.Erro != null)
+                        {
+                            <div class="alert small alert-danger m-1">@ViewBag.Erro</div>
+                        }
+                    </div>
+                </div>
+
+                <div class="col-2">
+                    <div class="form-group">
+                        <input id="Cantidad" name="Cantidad" type="number" placeholder="Quant." value="1" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="form-group">
+                        <input id="Observacion" name="Observacion" placeholder="Observação (Opcional)" class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                <div class="form-group row d-flex justify-content-end">
+                    <input type="submit" value="Adicionar à lista" class="btn btn-primary btn-sm" />
+                </div>
+
+            </div>
+        </form>
+
+
+
     </div>
 
+    <div class="col-12 col-xl-6 mr-0 ml-0">
+
+        @*LISTA PEDIDOS*@
+        <div class="row container d-flex justify-content-center">
+            <div class="col-12">
+
+                <table class="table table-sm">
+                    <tbody>
+                        @if (Model != null)
+                            @foreach (var producto in Model.Productos)
+                            {
+                                <tr>
+                                    <td>
+                                        <div>
+                                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
+                                                <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div>@producto.nombre</div>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        @if ((producto.horasPreparacion.HasValue && producto.horasPreparacion.Value > 0) || (producto.minutosPreparacion.HasValue && producto.minutosPreparacion.Value > 0))
+                                        {
+                                            <div style="font-size:14px;color:black;font-weight:600" class="d-flex">
+                                                <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
+                                                @Html.DisplayFor(modelItem => producto.horasPreparacion):@Html.DisplayFor(modelItem => producto.minutosPreparacion):00
+                                            </div>
+                                        }
+                                    </td>
+
+                                    <td>
+                                        <div class="w-auto d-flex">
+                                            @producto.valor.ToString("C")
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="border:none"></td>
+                                    <td colspan="4" style="border:none;text-transform:uppercase;color:gray;font-size:small">
+                                        <div>@producto.Observacion</div>
+                                    </td>
+                                </tr>
+
+                            }
+
+                        @if (Model != null)
+                            @if (Model.Productos.Count > 0)
+                            {
+                                <tr>
+                                    <td class="w-auto">
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                    </td>
+                                    <td>
+                                        <div class="row d-flex justify-content-end w-auto">
+                                            <strong>@Model.ValorTotal</strong>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+
+                        </tbody>
+                    </table>
+                    <div class="form-group row d-flex justify-content-end">
+                        <div>
+                            <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar Pedido</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
 
     @section Scripts {
 

@@ -40,6 +40,38 @@
                 </div>
             </div>
 
+            <hr class="w-100"/>
+
+            @*CLIENTE*@
+            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
+
+                @*NOMBRE*@
+                <div class="col-12 col-md-8">
+                    <div class="form-group">
+                        <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Aplicativo de delivery" class="form-control form-control-sm" />
+                        <datalist id="ClienteList">
+                            @if (ViewBag.Clientes != null)
+                            {
+                                @foreach (var cliente in ViewBag.Clientes)
+                                {
+                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                }
+                            }
+                        </datalist>
+                        <input id="IdCliente" hidden class="form-control form-control-sm" />
+                    </div>
+                </div>
+
+                @*NUMERO*@
+                <div class="col-12 col-md-4">
+                    <div class="form-group">
+                        <input id="idMesa" type="number" placeholder="Mesa" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
+
+            <hr class="w-100"/>
+
             @*dIRECCION*@
             <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
@@ -117,6 +149,12 @@
 
         <div class="row col-12">
             <div class="col-12">
+                <i class="fa fa-link" style="color:brown"></i> Ifood
+            </div>
+            <div class="col-12">
+                <i class="fa fa-box" style="color:black"></i> Mesa 5
+            </div>
+            <div class="col-12">
                 <i class="fa fa-user" style="color:coral"></i> Royber Arias Moreno
             </div>
             <div class="col-12">
@@ -130,8 +168,10 @@
                 <tr>
                     <td>
                         <div class="d-flex">
-                            <i class="fa fa-user" style="color:coral"></i>
-                            <i class="fa fa-home" style="color:darkcyan"></i>
+                            <i class="fa fa-user m-1" style="color:gray"></i>
+                            <i class="fa fa-home m-1" style="color:gray"></i>
+                            <i class="fa fa-box m-1" style="color:gray"></i>
+                            <i class="fa fa-link m-1" style="color:gray"></i>
                         </div>
                        
                     </td>
@@ -144,7 +184,6 @@
                     </td>
                 </tr>
             </table>
-
         </div>
 
         @*FORMULARIO PRODUCTO*@
@@ -403,6 +442,20 @@
 
             }
 
+             function faArrowDownClick() {
+                    $('#formClienteDireccion').removeAttr('hidden');
+                    $('#formClienteDireccion').show("slow");
+                    $('#faArrowDown').hide();
+
+                    $('#faArrowUp').removeAttr('hidden');
+                    $('#faArrowUp').show();
+                }
+
+                function faArrowUpClick() {
+                    $('#formClienteDireccion').hide("slow");
+                    $('#faArrowDown').show();
+                    $('#faArrowUp').hide();
+                }
 
         </script>
 

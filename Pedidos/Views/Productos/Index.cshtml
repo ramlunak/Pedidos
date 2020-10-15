@@ -4,10 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="d-flex justify-content-center align-items-center w-100">
-    <div style="background-color:lightgray;width:100%;height:1px"></div>
-    <div style="margin:5px"> Produtos</div>
-    <div style="background-color:lightgray;width:100%;height:1px"></div>
+<div class="row col-12 d-flex justify-content-center align-items-center ">
+    <div style="margin:5px;font-size: 25px;color: darkgray;text-transform: capitalize;"> Produtos</div>
 </div>
 
 <div class="d-flex justify-content-between m-1">
@@ -38,79 +36,81 @@
                 imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
             }
 
-        <tr>
-            <td>
-                <div class="row col-sm-12">
-                    <div class="col-2 p-0 m-0">
-                        <div style="width:60px;height: 60px">
-                            @if (item.imagen != null && item.imagen.Length > 0){
-                            <img style="flex:none;width:60px;border-radius:10px;object-fit:cover" src="@imgDataURL" />
-                        }
-                        </div>
-                    </div>
-                    <div class="col-7 col-md-6 p-0 m-0">
-                        <div class="d-block p-2">
-                            <div style="color:black;font-size:18px">
-                                <span style="text-transform:uppercase">@Html.DisplayFor(modelItem => item.nombre)</span>
-                            </div>
-                            <div style="font-style:italic">
-                                @Html.DisplayFor(modelItem => item.Categoria)
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-3 col-md-2 p-0">
-                        <div class="d-block justify-content-start justify-content-md-end p-0">
-                            <div style="font-size: 15px;font-weight: 500;color: blue;">
-                                <div>R$ @item.valor</div>
-                            </div>
-                            @if(item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue){
-                            <div style="font-size:14px;color:gray;font-weight:600" class="d-flex">
-                                <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
-                                @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion):00
-                            </div>
-                            }
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-2">
-                        <div class="d-flex justify-content-end p-2">
-                            <div class="m-1">
-                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <div class="m-1">
-                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @*@if (item.imagen != null && item.imagen.Length > 0)
-                    {*@
-
-                @*<img style="flex:none;width:60px;height: 60px;border-radius:10px;object-fit:fill" src="@imgDataURL" />*@
-
-                @*}*@
-
-            </td>
-            @*<td>
-                    @Html.DisplayFor(modelItem => item.Categoria)
-                </td>
+            <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.valor)
-                </td>
-                <td>
-                    <div>
-                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
-                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
+                    <div class="row col-sm-12">
+                        <div class="col-2 p-0 m-0">
+                            <div style="width:60px;height: 60px">
+                                @if (item.imagen != null && item.imagen.Length > 0)
+                                {
+                                    <img style="flex:none;width:60px;border-radius:10px;object-fit:cover" src="@imgDataURL" />
+                                }
+                            </div>
+                        </div>
+                        <div class="col-7 col-md-6 p-0 m-0">
+                            <div class="d-block p-2">
+                                <div style="color:black;font-size:18px">
+                                    <span style="text-transform:uppercase">@Html.DisplayFor(modelItem => item.nombre)</span>
+                                </div>
+                                <div style="font-style:italic">
+                                    @Html.DisplayFor(modelItem => item.Categoria)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-3 col-md-2 p-0">
+                            <div class="d-block justify-content-start justify-content-md-end p-0">
+                                <div style="font-size: 15px;font-weight: 500;color: blue;">
+                                    <div>R$ @item.valor</div>
+                                </div>
+                                @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
+                                {
+                                    <div style="font-size:14px;color:gray;font-weight:600" class="d-flex">
+                                        <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
+                                        @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion):00
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2">
+                            <div class="d-flex justify-content-end p-2">
+                                <div class="m-1">
+                                    <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                        <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                                <div class="m-1">
+                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                        <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </td>*@
-        </tr>
+                    @*@if (item.imagen != null && item.imagen.Length > 0)
+                        {*@
+
+                    @*<img style="flex:none;width:60px;height: 60px;border-radius:10px;object-fit:fill" src="@imgDataURL" />*@
+
+                    @*}*@
+
+                </td>
+                @*<td>
+                        @Html.DisplayFor(modelItem => item.Categoria)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nombre)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.valor)
+                    </td>
+                    <td>
+                        <div>
+                            <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Editar</a> |
+                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">Deletar</a>
+                        </div>
+                    </td>*@
+            </tr>
         }
     </tbody>
 </table>

@@ -117,10 +117,6 @@
     <None Include="wwwroot\lib\sweetalert2\src\variables.scss" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="SqlScripts\" />
-  </ItemGroup>
-
 
 
 </Project>

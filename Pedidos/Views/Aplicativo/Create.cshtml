@@ -1,12 +1,10 @@
 ﻿@model Pedidos.Models.P_Aplicativo
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Criar";
 }
 
-<h1>Create</h1>
-
-<h4>P_Aplicativo</h4>
+<h5>Criar Aplicativo</h5>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -17,25 +15,16 @@
                 <input asp-for="nombre" class="form-control" />
                 <span asp-validation-for="nombre" class="text-danger"></span>
             </div>
+
             <div class="form-group">
-                <label asp-for="idCuenta" class="control-label"></label>
-                <input asp-for="idCuenta" class="form-control" />
-                <span asp-validation-for="idCuenta" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="activo" /> @Html.DisplayNameFor(model => model.activo)
-                </label>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Criar" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Voltar</a>
 </div>
 
 @section Scripts {

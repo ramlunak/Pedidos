@@ -25,6 +25,22 @@ namespace Pedidos.Data
                    $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
         }
 
+        public static string GetSqlAllAplicativos(int idCuenta, int Skip, int Take, string nombre)
+        {
+            StringBuilder filtro = new StringBuilder();
+            if (nombre != null)
+            {
+                filtro.Append($" AND nombre LIKE '%{nombre}%'");
+            }
+
+            return $"DECLARE @Skip INT = {Skip}, @Take INT = {Take}" +
+                   $" SELECT* FROM[dbo].[P_Aplicativos]" +
+                   $" WHERE idCuenta = {idCuenta}" +
+                   filtro +
+                   $" ORDER BY id ASC" +
+                   $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
+        }
+
         public static string GetSqlAllSubCategorias(int idCuenta, int idCategoria, int Skip, int Take, string nombre)
         {
             StringBuilder filtro = new StringBuilder();

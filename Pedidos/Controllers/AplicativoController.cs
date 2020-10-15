@@ -4,13 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class AplicativoController : Controller
+    public class AplicativoController : BaseController
     {
         private readonly AppDbContext _context;
 
@@ -19,45 +20,55 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        // GET: Aplicativo
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
-            return View(await _context.P_Aplicativo.ToListAsync());
-        }
+            ValidarCuenta();
+            var cantidadRegistrosPorPagina = 10; // parámetro
 
-        // GET: Aplicativo/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
+            var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
+            var sql = SqlConsultas.GetSqlAllAplicativos(Cuenta.id, Skip, cantidadRegistrosPorPagina, nombre);
+
+            var lista = await _context.P_Aplicativos.FromSqlRaw(sql).ToListAsync();
+
+            var totalDeRegistros = 0;
+            if (nombre is null)
             {
-                return NotFound();
+                totalDeRegistros = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+            }
+            else
+            {
+                totalDeRegistros = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id && x.nombre.Contains(nombre)).CountAsync();
             }
 
-            var p_Aplicativo = await _context.P_Aplicativo
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Aplicativo == null)
-            {
-                return NotFound();
-            }
+            ViewBag.FlrNombre = nombre;
 
-            return View(p_Aplicativo);
+            var modelo = new ViewModels.VMAplicativos();
+            modelo.Aplicativos = lista;
+            modelo.PaginaActual = pagina;
+            modelo.TotalDeRegistros = totalDeRegistros;
+            modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;
+            modelo.ValoresQueryString = new RouteValueDictionary();
+            modelo.ValoresQueryString["pagina"] = pagina;
+            modelo.ValoresQueryString["nombre"] = nombre;
+
+            return View(modelo);
         }
 
-        // GET: Aplicativo/Create
         public IActionResult Create()
         {
+            ValidarCuenta();
             return View();
         }
-
-        // POST: Aplicativo/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_Aplicativo p_Aplicativo)
+        public async Task<IActionResult> Create(P_Aplicativo p_Aplicativo)
         {
+            ValidarCuenta();
             if (ModelState.IsValid)
             {
+                p_Aplicativo.idCuenta = Cuenta.id;
+
                 _context.Add(p_Aplicativo);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -65,29 +76,30 @@ namespace Pedidos.Controllers
             return View(p_Aplicativo);
         }
 
-        // GET: Aplicativo/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? pagina)
         {
+            ValidarCuenta();
             if (id == null)
             {
                 return NotFound();
             }
 
-            var p_Aplicativo = await _context.P_Aplicativo.FindAsync(id);
+            var p_Aplicativo = await _context.P_Aplicativos.FindAsync(id);
             if (p_Aplicativo == null)
             {
                 return NotFound();
             }
+
+            ViewBag.Pagina = pagina;
             return View(p_Aplicativo);
         }
 
-        // POST: Aplicativo/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,nombre,idCuenta,activo")] P_Aplicativo p_Aplicativo)
+        public async Task<IActionResult> Edit(int id, P_Aplicativo p_Aplicativo, int? pagina)
         {
+            ValidarCuenta();
+
             if (id != p_Aplicativo.id)
             {
                 return NotFound();
@@ -111,20 +123,21 @@ namespace Pedidos.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { pagina });
             }
             return View(p_Aplicativo);
         }
 
-        // GET: Aplicativo/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            ValidarCuenta();
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var p_Aplicativo = await _context.P_Aplicativo
+            var p_Aplicativo = await _context.P_Aplicativos
                 .FirstOrDefaultAsync(m => m.id == id);
             if (p_Aplicativo == null)
             {
@@ -134,20 +147,22 @@ namespace Pedidos.Controllers
             return View(p_Aplicativo);
         }
 
-        // POST: Aplicativo/Delete/5
+
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var p_Aplicativo = await _context.P_Aplicativo.FindAsync(id);
-            _context.P_Aplicativo.Remove(p_Aplicativo);
+            ValidarCuenta();
+            var p_Aplicativo = await _context.P_Aplicativos.FindAsync(id);
+            _context.P_Aplicativos.Remove(p_Aplicativo);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool P_AplicativoExists(int id)
         {
-            return _context.P_Aplicativo.Any(e => e.id == id);
+            ValidarCuenta();
+            return _context.P_Aplicativos.Any(e => e.id == id);
         }
     }
 }

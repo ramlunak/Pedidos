@@ -36,6 +36,6 @@ namespace Pedidos.Data
 
         public DbSet<Pedidos.Models.P_Venta> P_Ventas { get; set; }
 
-        public DbSet<Pedidos.Models.P_Aplicativo> P_Aplicativo { get; set; }
+        public DbSet<Pedidos.Models.P_Aplicativo> P_Aplicativos { get; set; }
     }
 }

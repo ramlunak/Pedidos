@@ -10,7 +10,7 @@
     <div class="col-12 col-xl-6">
 
         @*FORMULARIO CLIENTE*@
-        <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
+        <div id="formClienteDireccion" hidden class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
             @*CLIENTE*@
             <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
@@ -115,8 +115,35 @@
 
         </div>
 
-        @*FORMULARIO PRODUCTO*@
+        <div class="row col-12">
+            <div class="col-12">
+                Royber Arias Moreno
+            </div>
+            <div class="col-12">
+                Av. Pero Vaz De Caminha 178, Bom Retiro Ipatinga ,MG
+            </div>
+        </div>
 
+        <div class="row">
+
+            <table class="w-100">
+                <tr>
+                    <td>
+                        <i class="fa fa-user"></i>
+                    </td>
+                    <td class="w-100 p-4">
+                        <hr>
+                    </td>
+                    <td>
+                        <i id="faArrowDown" class="fa fa-arrow-down cursor-pointer" onclick="faArrowDownClick()"></i>
+                        <i id="faArrowUp" hidden class="fa fa-arrow-up cursor-pointer" onclick="faArrowUpClick()"></i>
+                    </td>
+                </tr>
+            </table>
+
+        </div>
+
+        @*FORMULARIO PRODUCTO*@
         <form asp-action="Create" class="m-0 p-0">
             <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
@@ -161,7 +188,6 @@
 
             </div>
         </form>
-
 
 
     </div>
@@ -258,6 +284,17 @@
 
             $(document).ready(function () {
 
+                $('#faArrowUp').hide();
+                $('#formClienteDireccion').hide();
+
+                $('#faArrowDown').on('click', function () {
+                    faArrowDownClick();
+                });
+
+                $('#faArrowUp').on('click', function () {
+                    faArrowUpClick();
+                });
+
                 $("#browserInputProducto").focus();
 
                 $('#cepSearch').on('click', function () {
@@ -322,6 +359,22 @@
                     $('#district').val('');
                     $('#address').val('');
                 }
+
+                function faArrowDownClick() {
+                    $('#formClienteDireccion').removeAttr('hidden');
+                    $('#formClienteDireccion').show("slow");
+                    $('#faArrowDown').hide();
+
+                    $('#faArrowUp').removeAttr('hidden');
+                    $('#faArrowUp').show();
+                }
+
+                function faArrowUpClick() {
+                    $('#formClienteDireccion').hide("slow");
+                    $('#faArrowDown').show();
+                    $('#faArrowUp').hide();
+                }
+
             });
 
             function SetDireccion(index) {

@@ -40,12 +40,10 @@
                 </div>
             </div>
 
-            <hr class="w-100"/>
-
-            @*CLIENTE*@
+            @*APLICATIVO MESA*@
             <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
-                @*NOMBRE*@
+                @*APLICATIVO*@
                 <div class="col-12 col-md-8">
                     <div class="form-group">
                         <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Aplicativo de delivery" class="form-control form-control-sm" />
@@ -58,19 +56,17 @@
                                 }
                             }
                         </datalist>
-                        <input id="IdCliente" hidden class="form-control form-control-sm" />
+                        <input id="IdAplicativo" hidden class="form-control form-control-sm" />
                     </div>
                 </div>
 
-                @*NUMERO*@
+                @*MESA*@
                 <div class="col-12 col-md-4">
                     <div class="form-group">
                         <input id="idMesa" type="number" placeholder="Mesa" class="form-control form-control-sm" />
                     </div>
                 </div>
             </div>
-
-            <hr class="w-100"/>
 
             @*dIRECCION*@
             <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
@@ -143,11 +139,17 @@
                     </div>
                 </div>
 
-            </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar</a>
+                    </div>
+                </div>
 
+            </div>
+                       
         </div>
 
-        <div class="row col-12">
+        <div id="divInfo" class="row col-12">
             <div class="col-12">
                 <i class="fa fa-link" style="color:brown"></i> Ifood
             </div>
@@ -173,7 +175,7 @@
                             <i class="fa fa-box m-1" style="color:gray"></i>
                             <i class="fa fa-link m-1" style="color:gray"></i>
                         </div>
-                       
+
                     </td>
                     <td class="w-100 p-4">
                         <hr>
@@ -225,7 +227,7 @@
                     </div>
                 </div>
 
-                <div class="form-group row d-flex justify-content-end">
+                <div class="col-12">
                     <input type="submit" value="Adicionar à lista" class="btn btn-primary btn-sm" />
                 </div>
 
@@ -406,6 +408,8 @@
                 function faArrowDownClick() {
                     $('#formClienteDireccion').removeAttr('hidden');
                     $('#formClienteDireccion').show("slow");
+                    $('#divInfo').hide('slow');
+
                     $('#faArrowDown').hide();
 
                     $('#faArrowUp').removeAttr('hidden');
@@ -414,6 +418,8 @@
 
                 function faArrowUpClick() {
                     $('#formClienteDireccion').hide("slow");
+                    $('#divInfo').show('slow');
+
                     $('#faArrowDown').show();
                     $('#faArrowUp').hide();
                 }
@@ -442,20 +448,20 @@
 
             }
 
-             function faArrowDownClick() {
-                    $('#formClienteDireccion').removeAttr('hidden');
-                    $('#formClienteDireccion').show("slow");
-                    $('#faArrowDown').hide();
+            function faArrowDownClick() {
+                $('#formClienteDireccion').removeAttr('hidden');
+                $('#formClienteDireccion').show("slow");
+                $('#faArrowDown').hide();
 
-                    $('#faArrowUp').removeAttr('hidden');
-                    $('#faArrowUp').show();
-                }
+                $('#faArrowUp').removeAttr('hidden');
+                $('#faArrowUp').show();
+            }
 
-                function faArrowUpClick() {
-                    $('#formClienteDireccion').hide("slow");
-                    $('#faArrowDown').show();
-                    $('#faArrowUp').hide();
-                }
+            function faArrowUpClick() {
+                $('#formClienteDireccion').hide("slow");
+                $('#faArrowDown').show();
+                $('#faArrowUp').hide();
+            }
 
         </script>
 

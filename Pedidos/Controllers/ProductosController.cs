@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Pedidos.Data;
 using Pedidos.Extensions;
 using Pedidos.Models;
@@ -54,7 +55,7 @@ namespace Pedidos.Controllers
             modelo.ValoresQueryString = new RouteValueDictionary();
             modelo.ValoresQueryString["pagina"] = pagina;
             modelo.ValoresQueryString["nombre"] = nombre;
-            
+
             return View(modelo);
 
         }
@@ -85,14 +86,14 @@ namespace Pedidos.Controllers
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(new P_Productos());
         }
-        
+
         // POST: Productos/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Productos p_Productos)
-        {            
+        {
             ValidarCuenta();
             if (ModelState.IsValid)
             {
@@ -115,10 +116,20 @@ namespace Pedidos.Controllers
                     }
                 }
                 p_Productos.valor = p_Productos.strValor.ToDecimal();
-                p_Productos.idCuenta = Cuenta.id;              
+                p_Productos.idCuenta = Cuenta.id;
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
-                Cuenta.Productos.Add(p_Productos);
+                
+                //Actualizar lista productos de la session
+                var SSproductos = GetSession("Productos");
+                if (SSproductos != null)
+                {
+                    var ListProductos = JsonConvert.DeserializeObject<List<P_Productos>>(SSproductos);
+                    ListProductos.Add(p_Productos);
+                    var json = JsonConvert.SerializeObject(ListProductos);
+                    SetSession("Productos", json);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
@@ -199,12 +210,20 @@ namespace Pedidos.Controllers
 
                     p_Productos.valor = p_Productos.strValor.ToDecimal();
                     _context.Update(p_Productos);
-
-                    var pold_roducto = await _context.P_Productos.FindAsync(p_Productos.id);
-                    Cuenta.Productos.Remove(pold_roducto);
-                    Cuenta.Productos.Add(p_Productos);
-
                     await _context.SaveChangesAsync();
+
+                    //Actualizar lista productos de la session
+                    var SSproductos = GetSession("Productos");
+                    if (SSproductos != null)
+                    {
+                        var ListProductos = JsonConvert.DeserializeObject<List<P_Productos>>(SSproductos);
+                        var oldProducto = ListProductos.Where(x => x.id == p_Productos.id).FirstOrDefault();
+                        ListProductos.Remove(oldProducto);
+                        ListProductos.Add(p_Productos);
+                        var json = JsonConvert.SerializeObject(ListProductos);
+                        SetSession("Productos", json);
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -250,7 +269,17 @@ namespace Pedidos.Controllers
             var p_Productos = await _context.P_Productos.FindAsync(id);
             _context.P_Productos.Remove(p_Productos);
             await _context.SaveChangesAsync();
-            Cuenta.Productos.Remove(p_Productos);
+
+            //Actualizar lista productos de la session
+            var SSproductos = GetSession("Productos");
+            if (SSproductos != null)
+            {
+                var ListProductos = JsonConvert.DeserializeObject<List<P_Productos>>(SSproductos);
+                ListProductos.Remove(p_Productos);
+                var json = JsonConvert.SerializeObject(ListProductos);
+                SetSession("Productos", json);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

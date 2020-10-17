@@ -30,8 +30,7 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Create()
         {
             ValidarCuenta();
-
-
+            
             if (GetSession("Productos") == null)
             {
                 var productos = ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
@@ -240,7 +239,37 @@ namespace Pedidos.Controllers
                 }
                 #endregion
 
+                //#region APLICATIVO
+                //if (pedidoDTO.IdCliente.HasValue)
+                //{
+                //    p_Pedido.idCliente = pedidoDTO.IdCliente;
 
+                //    //ACTUALIZAR DATOS CLIENTE
+                //    var Ncliente = new P_Cliente();
+                //    Ncliente.id = pedidoDTO.IdCliente.Value;
+                //    Ncliente.nombre = pedidoDTO.cliente;
+                //    Ncliente.telefono = pedidoDTO.telefono;
+                //    _context.Update(Ncliente);
+                //    await _context.SaveChangesAsync();
+                //}
+                //else
+                //{
+                //    if (!string.IsNullOrEmpty(pedidoDTO.cliente))
+                //    {
+                //        var Ncliente = new P_Cliente();
+                //        Ncliente.nombre = pedidoDTO.cliente;
+                //        Ncliente.telefono = pedidoDTO.telefono;
+                //        Ncliente.idCuenta = Cuenta.id;
+                //        Ncliente.activo = true;
+
+                //        _context.Add(Ncliente);
+                //        await _context.SaveChangesAsync();
+
+                //        p_Pedido.idCliente = Ncliente.id;
+                //    }
+
+                //}
+                //#endregion
 
             }
 

@@ -59,8 +59,7 @@ namespace Pedidos.Controllers
         public void Logof()
         {
             try
-            {
-                Cuenta.Productos = new List<P_Productos>();
+            {               
                 Response.Cookies.Delete("Pedidos");
             }
             catch (Exception)

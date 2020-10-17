@@ -56,7 +56,7 @@
                                     }
                                 }
                             </datalist>
-                            <input id="IdAplicativo" value="@Model.PedidoDTO.IdAplicativo" hidden  class="form-control form-control-sm" />
+                            <input id="IdAplicativo" value="@Model.PedidoDTO.IdAplicativo" hidden class="form-control form-control-sm" />
                         </div>
                     </div>
 
@@ -377,7 +377,7 @@
                 });
 
                 $('#browserInputProducto').on('input', function () {
-                    var opt = $('option[value="' + $(this).val() + '"]');                  
+                    var opt = $('option[value="' + $(this).val() + '"]');
                     $('#IdProducto').val(opt.length ? opt.attr('id') : '');
 
                 });
@@ -389,9 +389,9 @@
                     CargarDireccion();
                 });
 
-                 $('#browserInputAplicativo').on('input', function () {
+                $('#browserInputAplicativo').on('input', function () {
                     var opt = $('option[value="' + $(this).val() + '"]');
-                    $('#IdAplicativo').val(opt.length ? opt.attr('id') : '');                   
+                    $('#IdAplicativo').val(opt.length ? opt.attr('id') : '');
                 });
 
                 function CargarTelefono() {

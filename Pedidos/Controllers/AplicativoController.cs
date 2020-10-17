@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Routing;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Pedidos.Data;
 using Pedidos.Models;
 
@@ -59,7 +60,7 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             return View();
         }
-        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Aplicativo p_Aplicativo)
@@ -71,6 +72,17 @@ namespace Pedidos.Controllers
 
                 _context.Add(p_Aplicativo);
                 await _context.SaveChangesAsync();
+
+                //Actualizar lista aplicativos de la session
+                var SSaplicativos = GetSession("Aplicativos");
+                if (SSaplicativos != null)
+                {
+                    var ListAplicativos = JsonConvert.DeserializeObject<List<P_Aplicativo>>(SSaplicativos);
+                    ListAplicativos.Add(p_Aplicativo);
+                    var json = JsonConvert.SerializeObject(ListAplicativos);
+                    SetSession("Aplicativos", json);
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(p_Aplicativo);
@@ -111,6 +123,19 @@ namespace Pedidos.Controllers
                 {
                     _context.Update(p_Aplicativo);
                     await _context.SaveChangesAsync();
+
+                    //Actualizar lista aplicativos de la session
+                    var SSaplicativos = GetSession("Aplicativos");
+                    if (SSaplicativos != null)
+                    {
+                        var ListAplicativos = JsonConvert.DeserializeObject<List<P_Aplicativo>>(SSaplicativos);
+                        var oldAplicativo = ListAplicativos.Where(x => x.id == p_Aplicativo.id).FirstOrDefault();
+                        ListAplicativos.Remove(oldAplicativo);
+                        ListAplicativos.Add(p_Aplicativo);
+                        var json = JsonConvert.SerializeObject(ListAplicativos);
+                        SetSession("Aplicativos", json);
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -156,6 +181,19 @@ namespace Pedidos.Controllers
             var p_Aplicativo = await _context.P_Aplicativos.FindAsync(id);
             _context.P_Aplicativos.Remove(p_Aplicativo);
             await _context.SaveChangesAsync();
+
+            //Actualizar lista aplicativos de la session
+            var SSaplicativos = GetSession("Aplicativos");
+            if (SSaplicativos != null)
+            {
+                var ListAplicativos = JsonConvert.DeserializeObject<List<P_Aplicativo>>(SSaplicativos);
+                var oldAplicativo = ListAplicativos.Where(x => x.id == p_Aplicativo.id).FirstOrDefault();
+                ListAplicativos.Remove(oldAplicativo);
+                ListAplicativos.Add(p_Aplicativo);
+                var json = JsonConvert.SerializeObject(ListAplicativos);
+                SetSession("Aplicativos", json);
+            }
+
             return RedirectToAction(nameof(Index));
         }
 

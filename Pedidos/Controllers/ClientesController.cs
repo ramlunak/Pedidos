@@ -147,6 +147,19 @@ namespace Pedidos.Controllers
                 {
                     _context.Update(p_Cliente);
                     await _context.SaveChangesAsync();
+
+                    //Actualizar lista cliente de la session
+                    var SSclientes = GetSession("Clientes");
+                    if (SSclientes != null)
+                    {
+                        var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
+                        var oldCliente = ListClientes.Where(x => x.id == p_Cliente.id).FirstOrDefault();
+                        ListClientes.Remove(oldCliente);
+                        ListClientes.Add(p_Cliente);
+                        var json = JsonConvert.SerializeObject(ListClientes);
+                        SetSession("Clientes", json);
+                    }
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {

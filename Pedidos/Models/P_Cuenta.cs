@@ -22,5 +22,11 @@ namespace Pedidos.Models
         //AUXILIARES
         [NotMapped]
         public List<P_Productos> Productos { get; set; } = new List<P_Productos>();
+
+        [NotMapped]
+        public List<P_Cliente> Clientes { get; set; } = new List<P_Cliente>();
+
+        [NotMapped]
+        public List<P_Aplicativo> Aplicativos { get; set; } = new List<P_Aplicativo>();
     }
 }

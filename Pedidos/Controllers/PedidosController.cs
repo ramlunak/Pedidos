@@ -56,16 +56,44 @@ namespace Pedidos.Controllers
                 ViewBag.Clientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
             }
 
-            ViewBag.State = Cuenta.estado;
-            ViewBag.City = Cuenta.municipio;
+            if (GetSession("Aplicativos") == null)
+            {
+                var aplicativos = ViewBag.Aplicativos = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                var json = JsonConvert.SerializeObject(aplicativos);
+                SetSession("Aplicativos", json);
+            }
+            else
+            {
+                var SSaplicativos = GetSession("Aplicativos");
+                ViewBag.Aplicativos = JsonConvert.DeserializeObject<List<P_Aplicativo>>(SSaplicativos);
+            }
+
+            var jsonPedidoDTO = GetSession("PedidoDTO");
+            var pedidoDTO = new PedidoDTO();
+
+            if (jsonPedidoDTO != null)
+            {
+                pedidoDTO = JsonConvert.DeserializeObject<PedidoDTO>(jsonPedidoDTO);
+            }
+
+            ViewBag.State = string.IsNullOrEmpty(pedidoDTO.state) ? Cuenta.estado : pedidoDTO.state;
+            ViewBag.City = string.IsNullOrEmpty(pedidoDTO.city) ? Cuenta.municipio : pedidoDTO.city;
+
+            ViewBag.Aplicativo = pedidoDTO.aplicativo;
+            ViewBag.Mesa = pedidoDTO.idMesa;
+            ViewBag.Cliente = pedidoDTO.cliente;
+            ViewBag.Direccion = $"{pedidoDTO.address} {pedidoDTO.numero}, {pedidoDTO.district} {pedidoDTO.city}, {pedidoDTO.state}";
+            ViewBag.ShowDireccion = string.IsNullOrEmpty(pedidoDTO.address) ? false : true;
 
             var ProductosPedido = new List<P_Productos>();
             if (GetSession("ProductosPedido") != null)
             {
                 ProductosPedido = GetSession<List<P_Productos>>("ProductosPedido");
             }
+
             var newPedido = new P_Pedido();
             newPedido.Productos = ProductosPedido;
+            newPedido.PedidoDTO = pedidoDTO;
 
             return View(newPedido);
         }
@@ -132,15 +160,91 @@ namespace Pedidos.Controllers
                 ViewBag.Erro = "Seleccione um produto da lista";
             }
 
+            var jsonPedidoDTO = GetSession("PedidoDTO");
+            var pedidoDTO = new PedidoDTO();
+
+            if (jsonPedidoDTO != null)
+            {
+                pedidoDTO = JsonConvert.DeserializeObject<PedidoDTO>(jsonPedidoDTO);
+            }
+
+            ViewBag.State = string.IsNullOrEmpty(pedidoDTO.state) ? Cuenta.estado : pedidoDTO.state;
+            ViewBag.City = string.IsNullOrEmpty(pedidoDTO.city) ? Cuenta.municipio : pedidoDTO.city;
+
+            ViewBag.Aplicativo = pedidoDTO.aplicativo;
+            ViewBag.Mesa = pedidoDTO.idMesa;
+            ViewBag.Cliente = pedidoDTO.cliente;
+            ViewBag.Direccion = $"{pedidoDTO.address} {pedidoDTO.numero}, {pedidoDTO.district} {pedidoDTO.city}, {pedidoDTO.state}";
+            ViewBag.ShowDireccion = string.IsNullOrEmpty(pedidoDTO.address) ? false : true;
+
             p_Pedido.Productos = ProductosPedido;
+            p_Pedido.PedidoDTO = pedidoDTO;
 
             return View(p_Pedido);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> FormClienteDireccion(PedidoDTO pedidoDTO)
+        {
+            ValidarCuenta();
+
+            var jsonPedidoDTO = JsonConvert.SerializeObject(pedidoDTO);
+            SetSession("PedidoDTO", jsonPedidoDTO);
+
+            return RedirectToAction(nameof(Create));
+
         }
 
         // GET: Pedidos/Edit/5
         public async Task<IActionResult> GuardarPedido()
         {
             var p_Pedido = new P_Pedido();
+
+            var jsonPedidoDTO = GetSession("PedidoDTO");
+            var pedidoDTO = new PedidoDTO();
+            if (jsonPedidoDTO != null)
+            {
+                pedidoDTO = JsonConvert.DeserializeObject<PedidoDTO>(jsonPedidoDTO);
+
+                #region CLIENTE
+                if (pedidoDTO.IdCliente.HasValue)
+                {
+                    p_Pedido.idCliente = pedidoDTO.IdCliente;
+
+                    //ACTUALIZAR DATOS CLIENTE
+                    var Ncliente = new P_Cliente();
+                    Ncliente.id = pedidoDTO.IdCliente.Value;
+                    Ncliente.nombre = pedidoDTO.cliente;
+                    Ncliente.telefono = pedidoDTO.telefono;
+                    _context.Update(Ncliente);
+                    await _context.SaveChangesAsync();
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(pedidoDTO.cliente))
+                    {
+                        var Ncliente = new P_Cliente();
+                        Ncliente.nombre = pedidoDTO.cliente;
+                        Ncliente.telefono = pedidoDTO.telefono;
+                        Ncliente.idCuenta = Cuenta.id;
+                        Ncliente.activo = true;
+
+                        _context.Add(Ncliente);
+                        await _context.SaveChangesAsync();
+
+                        p_Pedido.idCliente = Ncliente.id;
+                    }
+
+                }
+                #endregion
+
+
+
+            }
+
+
             return RedirectToAction(nameof(Index));
         }
 

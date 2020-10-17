@@ -24,7 +24,7 @@ namespace Pedidos.Models
 
         //AUXILIARES
 
-        [NotMapped]      
+        [NotMapped]
         public int? IdProducto { get; set; }
         [Required(ErrorMessage = "O Produco é obrigatorio")]
         [NotMapped]
@@ -34,7 +34,7 @@ namespace Pedidos.Models
         [NotMapped]
         public string Observacion { get; set; }
         [NotMapped]
-        public string IdsProducto { get; set; }
+        public PedidoDTO PedidoDTO { get; set; }
         [NotMapped]
         public List<P_Productos> Productos = new List<P_Productos>();
         [NotMapped]
@@ -48,4 +48,27 @@ namespace Pedidos.Models
         }
 
     }
+
+
+    public class PedidoDTO
+    {
+        public int? IdCliente { get; set; }
+        public string cliente { get; set; }
+        public string telefono { get; set; }
+
+        public int? idMesa { get; set; }
+
+        public int? IdAplicativo { get; set; }
+        public string aplicativo { get; set; }
+
+        public string code { get; set; }
+        public string state { get; set; }
+        public string city { get; set; }
+        public string district { get; set; }
+        public string address { get; set; }
+        public string numero { get; set; }
+        public string complemento { get; set; }
+
+    }
+
 }

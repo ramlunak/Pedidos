@@ -11,142 +11,142 @@
 
         @*FORMULARIO CLIENTE*@
         <div id="formClienteDireccion" hidden class="row col-12 mr-0 ml-0 pr-0 pl-0">
+            <form>
+                @*CLIENTE*@
+                <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
-            @*CLIENTE*@
-            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
-
-                @*NOMBRE*@
-                <div class="col-12 col-md-8">
-                    <div class="form-group">
-                        <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control form-control-sm" />
-                        <datalist id="ClienteList">
-                            @if (ViewBag.Clientes != null)
+                    @*NOMBRE*@
+                    <div class="col-12 col-md-8">
+                        <div class="form-group">
+                            <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Cliente" class="form-control form-control-sm" />
+                            <datalist id="ClienteList">
+                                @if (ViewBag.Clientes != null)
                             {
                                 @foreach (var cliente in ViewBag.Clientes)
                                 {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
                                 }
                             }
-                        </datalist>
-                        <input id="IdCliente" hidden class="form-control form-control-sm" />
+                            </datalist>
+                            <input id="IdCliente" hidden class="form-control form-control-sm" />
+                        </div>
+                    </div>
+
+                    @*NUMERO*@
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <input id="telefono" type="number" placeholder="Telefone" class="form-control form-control-sm" />
+                        </div>
                     </div>
                 </div>
 
-                @*NUMERO*@
-                <div class="col-12 col-md-4">
-                    <div class="form-group">
-                        <input id="telefono" type="number" placeholder="Telefone" class="form-control form-control-sm" />
-                    </div>
-                </div>
-            </div>
+                @*APLICATIVO MESA*@
+                <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
-            @*APLICATIVO MESA*@
-            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
-
-                @*APLICATIVO*@
-                <div class="col-12 col-md-8">
-                    <div class="form-group">
-                        <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Aplicativo de delivery" class="form-control form-control-sm" />
-                        <datalist id="ClienteList">
-                            @if (ViewBag.Clientes != null)
+                    @*APLICATIVO*@
+                    <div class="col-12 col-md-8">
+                        <div class="form-group">
+                            <input type="search" id="browserInputCliente" list="ClienteList" placeholder="Aplicativo de delivery" class="form-control form-control-sm" />
+                            <datalist id="ClienteList">
+                                @if (ViewBag.Clientes != null)
                             {
                                 @foreach (var cliente in ViewBag.Clientes)
                                 {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
                                 }
                             }
-                        </datalist>
-                        <input id="IdAplicativo" hidden class="form-control form-control-sm" />
+                            </datalist>
+                            <input id="IdAplicativo" hidden class="form-control form-control-sm" />
+                        </div>
+                    </div>
+
+                    @*MESA*@
+                    <div class="col-12 col-md-4">
+                        <div class="form-group">
+                            <input id="idMesa" type="number" placeholder="Mesa" class="form-control form-control-sm" />
+                        </div>
                     </div>
                 </div>
 
-                @*MESA*@
-                <div class="col-12 col-md-4">
-                    <div class="form-group">
-                        <input id="idMesa" type="number" placeholder="Mesa" class="form-control form-control-sm" />
-                    </div>
-                </div>
-            </div>
+                @*dIRECCION*@
+                <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
-            @*dIRECCION*@
-            <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
+                    @*CEP*@
+                    <div class="col-md-3">
 
-                @*CEP*@
-                <div class="col-md-3">
-
-                    <div class="form-group">
+                        <div class="form-group">
 
 
-                        <div class="input-group">
-                            <input id="code" type="number" placeholder="CEP" class="form-control form-control-sm">
-                            <div class="input-group-append">
-                                <span id="cepSearch" class="input-group-text" style="cursor:pointer">
-                                    <i style="color:dodgerblue" class="fa fa-search"></i>
-                                </span>
+                            <div class="input-group">
+                                <input id="code" type="number" placeholder="CEP" class="form-control form-control-sm">
+                                <div class="input-group-append">
+                                    <span id="cepSearch" class="input-group-text" style="cursor:pointer">
+                                        <i style="color:dodgerblue" class="fa fa-search"></i>
+                                    </span>
+                                </div>
                             </div>
+
+
                         </div>
 
+                    </div>
+                    @*RUA*@
+                    <div class="col-md-5">
+                        <div class="form-group">
 
+                            <input id="address" placeholder="Rua" class="form-control form-control-sm" />
+
+                        </div>
+                    </div>
+                    @*NUMERO*@
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <input id="numero" type="number" placeholder="Número" class="form-control form-control-sm" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <input id="complemento" placeholder="Complemento" class="form-control form-control-sm" />
+
+                        </div>
+                    </div>
+
+                    @*BARRIO*@
+                    <div class="col-md-5">
+                        <div class="form-group">
+
+                            <input id="district" placeholder="Barrio" class="form-control form-control-sm" />
+
+                        </div>
+                    </div>
+                    @*CIUDAD*@
+                    <div class="col-md-5">
+                        <div class="form-group">
+
+                            <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control form-control-sm" />
+
+                        </div>
+                    </div>
+                    @*ESTADO*@
+                    <div class="col-md-2">
+                        <div class="form-group">
+
+                            <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control form-control-sm" />
+
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success btn-sm">Salvar</button>
+                        </div>
                     </div>
 
                 </div>
-                @*RUA*@
-                <div class="col-md-5">
-                    <div class="form-group">
-
-                        <input id="address" placeholder="Rua" class="form-control form-control-sm" />
-
-                    </div>
-                </div>
-                @*NUMERO*@
-                <div class="col-md-2">
-                    <div class="form-group">
-
-                        <input id="numero" type="number" placeholder="Número" class="form-control form-control-sm" />
-
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-
-                        <input id="complemento" placeholder="Complemento" class="form-control form-control-sm" />
-
-                    </div>
-                </div>
-
-                @*BARRIO*@
-                <div class="col-md-5">
-                    <div class="form-group">
-
-                        <input id="district" placeholder="Barrio" class="form-control form-control-sm" />
-
-                    </div>
-                </div>
-                @*CIUDAD*@
-                <div class="col-md-5">
-                    <div class="form-group">
-
-                        <input id="city" value="@ViewBag.City" placeholder="Municipio" class="form-control form-control-sm" />
-
-                    </div>
-                </div>
-                @*ESTADO*@
-                <div class="col-md-2">
-                    <div class="form-group">
-
-                        <input id="state" value="@ViewBag.State" placeholder="Estado" class="form-control form-control-sm" />
-
-                    </div>
-                </div>
-
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar</a>
-                    </div>
-                </div>
-
-            </div>
-                       
+            </form>
         </div>
 
         <div id="divInfo" class="row col-12">
@@ -200,9 +200,9 @@
                         <datalist id="ProductoList">
                             @if (ViewBag.Productos != null)
                             {
-                                @foreach (var producto in ViewBag.Productos)
+                            @foreach (var producto in ViewBag.Productos)
                                 {
-                                    <option id="@(producto.id)" value="@(producto.nombre)"></option>
+                            <option id="@(producto.id)" value="@(producto.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -210,7 +210,7 @@
                         <span asp-validation-for="IdProducto" class="text-danger"></span>
                         @if (ViewBag.Erro != null)
                         {
-                            <div class="alert small alert-danger m-1">@ViewBag.Erro</div>
+                        <div class="alert small alert-danger m-1">@ViewBag.Erro</div>
                         }
                     </div>
                 </div>
@@ -246,211 +246,170 @@
                 <table class="table table-sm">
                     <tbody>
                         @if (Model != null)
-                            @foreach (var producto in Model.Productos)
+                        @foreach (var producto in Model.Productos)
                             {
-                                <tr>
-                                    <td>
-                                        <div>
-                                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
-                                                <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
-                                            </a>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div>@producto.nombre</div>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        @if ((producto.horasPreparacion.HasValue && producto.horasPreparacion.Value > 0) || (producto.minutosPreparacion.HasValue && producto.minutosPreparacion.Value > 0))
+                        <tr>
+                            <td>
+                                <div>
+                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="DeleteProducto" asp-route-index="@producto.Index">
+                                        <i style="color:white" class="fa fa-trash fa-sm" aria-hidden="true"></i>
+                                    </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div>@producto.nombre</div>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                @if ((producto.horasPreparacion.HasValue && producto.horasPreparacion.Value > 0) || (producto.minutosPreparacion.HasValue && producto.minutosPreparacion.Value > 0))
                                         {
-                                            <div style="font-size:14px;color:black;font-weight:600" class="d-flex">
-                                                <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
-                                                @Html.DisplayFor(modelItem => producto.horasPreparacion):@Html.DisplayFor(modelItem => producto.minutosPreparacion):00
-                                            </div>
+                                <div style="font-size:14px;color:black;font-weight:600" class="d-flex">
+                                    <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
+                                    @Html.DisplayFor(modelItem => producto.horasPreparacion):@Html.DisplayFor(modelItem => producto.minutosPreparacion):00
+                                </div>
                                         }
-                                    </td>
+                            </td>
 
-                                    <td>
-                                        <div class="w-auto d-flex">
-                                            @producto.valor.ToString("C")
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td style="border:none"></td>
-                                    <td colspan="4" style="border:none;text-transform:uppercase;color:gray;font-size:small">
-                                        <div>@producto.Observacion</div>
-                                    </td>
-                                </tr>
+                            <td>
+                                <div class="w-auto d-flex">
+                                    @producto.valor.ToString("C")
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="border:none"></td>
+                            <td colspan="4" style="border:none;text-transform:uppercase;color:gray;font-size:small">
+                                <div>@producto.Observacion</div>
+                            </td>
+                        </tr>
 
                             }
 
                         @if (Model != null)
-                            @if (Model.Productos.Count > 0)
+                        @if (Model.Productos.Count > 0)
                             {
-                                <tr>
-                                    <td class="w-auto">
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                    </td>
-                                    <td>
-                                        <div class="row d-flex justify-content-end w-auto">
-                                            <strong>@Model.ValorTotal</strong>
-                                        </div>
-                                    </td>
-                                </tr>
+                        <tr>
+                            <td class="w-auto">
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                            </td>
+                            <td>
+                                <div class="row d-flex justify-content-end w-auto">
+                                    <strong>@Model.ValorTotal</strong>
+                                </div>
+                            </td>
+                        </tr>
                             }
 
-                        </tbody>
-                    </table>
-                    <div class="form-group row d-flex justify-content-end">
-                        <div>
-                            <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar Pedido</a>
-                        </div>
+                    </tbody>
+                </table>
+                <div class="form-group row d-flex justify-content-end">
+                    <div>
+                        <a class="btn btn-success btn-sm" asp-action="GuardarPedido">Salvar Pedido</a>
                     </div>
-
                 </div>
-            </div>
 
+            </div>
         </div>
 
     </div>
 
-    @section Scripts {
+</div>
 
-        <script type="text/javascript">
+@section Scripts {
 
-            var DIRECCIONES = [];
+    <script type="text/javascript">
 
-            $(document).ready(function () {
+        var DIRECCIONES = [];
 
-                $('#faArrowUp').hide();
-                $('#formClienteDireccion').hide();
+        $(document).ready(function () {
 
-                $('#faArrowDown').on('click', function () {
-                    faArrowDownClick();
+            $('#faArrowUp').hide();
+            $('#formClienteDireccion').hide();
+
+            $('#faArrowDown').on('click', function () {
+                faArrowDownClick();
+            });
+
+            $('#faArrowUp').on('click', function () {
+                faArrowUpClick();
+            });
+
+            $("#browserInputProducto").focus();
+
+            $('#cepSearch').on('click', function () {
+
+                $.getJSON('https://ws.apicep.com/cep.json', { code: $('#code').val() }, function (data) {
+                    console.log(data);
+                    if (JSON.parse(data.ok)) {
+                        $('#state').val(data.state);
+                        $('#city').val(data.city);
+                        $('#district').val(data.district);
+                        $('#address').val(data.address);
+                    } else {
+                        Swal.fire('Oops...', data.message, 'warning');
+                        LimpiarCamposDireccion();
+                    }
                 });
-
-                $('#faArrowUp').on('click', function () {
-                    faArrowUpClick();
-                });
-
-                $("#browserInputProducto").focus();
-
-                $('#cepSearch').on('click', function () {
-
-                    $.getJSON('https://ws.apicep.com/cep.json', { code: $('#code').val() }, function (data) {
-                        console.log(data);
-                        if (JSON.parse(data.ok)) {
-                            $('#state').val(data.state);
-                            $('#city').val(data.city);
-                            $('#district').val(data.district);
-                            $('#address').val(data.address);
-                        } else {
-                            Swal.fire('Oops...', data.message, 'warning');
-                            LimpiarCamposDireccion();
-                        }
-                    });
-
-                });
-
-                $('#browserInputProducto').on('input', function () {
-                    var opt = $('option[value="' + $(this).val() + '"]');
-                    console.log(opt.length ? opt.attr('id') : '');
-                    $('#IdProducto').val(opt.length ? opt.attr('id') : '');
-
-                });
-
-                $('#browserInputCliente').on('input', function () {
-                    var opt = $('option[value="' + $(this).val() + '"]');
-                    $('#IdCliente').val(opt.length ? opt.attr('id') : '');
-                    CargarTelefono();
-                    CargarDireccion();
-                });
-
-                function CargarTelefono() {
-                    $.getJSON('/Clientes/GetTelefono', { idCliente: $('#IdCliente').val() }, function (data) {
-                        $('#telefono').val(data);
-                    });
-                }
-
-                function CargarDireccion() {
-                    $.getJSON('/Clientes/GetDireccion', { idCliente: $('#IdCliente').val() }, function (data) {
-                        DIRECCIONES = data;
-
-                        var ul = $("#ListaDirecciones")[0];
-                        var listLength = ul.children.length;
-
-                        for (i = 0; i < listLength; i++) {
-                            ul.removeChild(ul.children[0]);
-                        }
-
-                        $.each(data, function (index, value) {
-                            $("#ListaDirecciones").append('<li> <a class="nav-link text-dark" style="cursor: pointer;" title="Endereços" onclick="SetDireccion(' + index + ')"><i class="fa fa-home fa-lg" style="color:steelblue" aria-hidden="true"></i></a> </li >');
-                        });
-
-                        SetDireccion(0);
-                    });
-                }
-
-                function LimpiarCamposDireccion() {
-                    $('#state').val('');
-                    $('#city').val('');
-                    $('#district').val('');
-                    $('#address').val('');
-                }
-
-                function faArrowDownClick() {
-                    $('#formClienteDireccion').removeAttr('hidden');
-                    $('#formClienteDireccion').show("slow");
-                    $('#divInfo').hide('slow');
-
-                    $('#faArrowDown').hide();
-
-                    $('#faArrowUp').removeAttr('hidden');
-                    $('#faArrowUp').show();
-                }
-
-                function faArrowUpClick() {
-                    $('#formClienteDireccion').hide("slow");
-                    $('#divInfo').show('slow');
-
-                    $('#faArrowDown').show();
-                    $('#faArrowUp').hide();
-                }
 
             });
 
-            function SetDireccion(index) {
+            $('#browserInputProducto').on('input', function () {
+                var opt = $('option[value="' + $(this).val() + '"]');
+                console.log(opt.length ? opt.attr('id') : '');
+                $('#IdProducto').val(opt.length ? opt.attr('id') : '');
 
-                if (DIRECCIONES.length == 0) {
-                    $('#code').val(null);
-                    $('#state').val(null);
-                    $('#city').val(null);
-                    $('#district').val(null);
-                    $('#address').val(null);
-                    $('#numero').val(null);
-                    $('#complemento').val(null);
-                } else {
-                    $('#code').val(DIRECCIONES[index].code);
-                    $('#state').val(DIRECCIONES[index].state);
-                    $('#city').val(DIRECCIONES[index].city);
-                    $('#district').val(DIRECCIONES[index].district);
-                    $('#address').val(DIRECCIONES[index].address);
-                    $('#numero').val(DIRECCIONES[index].numero);
-                    $('#complemento').val(DIRECCIONES[index].complemento);
-                }
+            });
 
+            $('#browserInputCliente').on('input', function () {
+                var opt = $('option[value="' + $(this).val() + '"]');
+                $('#IdCliente').val(opt.length ? opt.attr('id') : '');
+                CargarTelefono();
+                CargarDireccion();
+            });
+
+            function CargarTelefono() {
+                $.getJSON('/Clientes/GetTelefono', { idCliente: $('#IdCliente').val() }, function (data) {
+                    $('#telefono').val(data);
+                });
+            }
+
+            function CargarDireccion() {
+                $.getJSON('/Clientes/GetDireccion', { idCliente: $('#IdCliente').val() }, function (data) {
+                    DIRECCIONES = data;
+
+                    var ul = $("#ListaDirecciones")[0];
+                    var listLength = ul.children.length;
+
+                    for (i = 0; i < listLength; i++) {
+                        ul.removeChild(ul.children[0]);
+                    }
+
+                    $.each(data, function (index, value) {
+                        $("#ListaDirecciones").append('<li> <a class="nav-link text-dark" style="cursor: pointer;" title="Endereços" onclick="SetDireccion(' + index + ')"><i class="fa fa-home fa-lg" style="color:steelblue" aria-hidden="true"></i></a> </li >');
+                    });
+
+                    SetDireccion(0);
+                });
+            }
+
+            function LimpiarCamposDireccion() {
+                $('#state').val('');
+                $('#city').val('');
+                $('#district').val('');
+                $('#address').val('');
             }
 
             function faArrowDownClick() {
                 $('#formClienteDireccion').removeAttr('hidden');
                 $('#formClienteDireccion').show("slow");
+                $('#divInfo').hide('slow');
+
                 $('#faArrowDown').hide();
 
                 $('#faArrowUp').removeAttr('hidden');
@@ -459,11 +418,52 @@
 
             function faArrowUpClick() {
                 $('#formClienteDireccion').hide("slow");
+                $('#divInfo').show('slow');
+
                 $('#faArrowDown').show();
                 $('#faArrowUp').hide();
             }
 
-        </script>
+        });
 
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+        function SetDireccion(index) {
+
+            if (DIRECCIONES.length == 0) {
+                $('#code').val(null);
+                $('#state').val(null);
+                $('#city').val(null);
+                $('#district').val(null);
+                $('#address').val(null);
+                $('#numero').val(null);
+                $('#complemento').val(null);
+            } else {
+                $('#code').val(DIRECCIONES[index].code);
+                $('#state').val(DIRECCIONES[index].state);
+                $('#city').val(DIRECCIONES[index].city);
+                $('#district').val(DIRECCIONES[index].district);
+                $('#address').val(DIRECCIONES[index].address);
+                $('#numero').val(DIRECCIONES[index].numero);
+                $('#complemento').val(DIRECCIONES[index].complemento);
+            }
+
+        }
+
+        function faArrowDownClick() {
+            $('#formClienteDireccion').removeAttr('hidden');
+            $('#formClienteDireccion').show("slow");
+            $('#faArrowDown').hide();
+
+            $('#faArrowUp').removeAttr('hidden');
+            $('#faArrowUp').show();
+        }
+
+        function faArrowUpClick() {
+            $('#formClienteDireccion').hide("slow");
+            $('#faArrowDown').show();
+            $('#faArrowUp').hide();
+        }
+
+    </script>
+
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

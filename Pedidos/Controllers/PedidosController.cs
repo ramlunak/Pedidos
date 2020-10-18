@@ -25,7 +25,7 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Index()
         {
             ValidarCuenta();
-           // var pedidos = await _context.P_Pedidos.Where(x=>x.idCuenta == Cuenta.id).ToListAsync();
+            // var pedidos = await _context.P_Pedidos.Where(x=>x.idCuenta == Cuenta.id).ToListAsync();
             var pedidos = await _context.P_Pedidos.ToListAsync();
             return View(pedidos);
         }
@@ -294,6 +294,37 @@ namespace Pedidos.Controllers
                 }
                 #endregion
 
+                #region DIRECCION
+                if (pedidoDTO.idDireccion.HasValue)
+                {
+                    p_Pedido.idDireccion = pedidoDTO.idDireccion;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(pedidoDTO.address) && pedidoDTO.IdCliente.HasValue)
+                    {
+                        var Ndireccion = new P_Direcciones();
+                        Ndireccion.code = pedidoDTO.code;
+                        Ndireccion.address = pedidoDTO.address;
+                        Ndireccion.numero = pedidoDTO.numero;
+                        Ndireccion.complemento = pedidoDTO.complemento;
+                        Ndireccion.district = pedidoDTO.district;
+                        Ndireccion.city = pedidoDTO.city;
+                        Ndireccion.state = pedidoDTO.state;                      
+
+                        Ndireccion.idCliente = pedidoDTO.IdCliente;
+                        Ndireccion.idCuenta = Cuenta.id;
+                        Ndireccion.activo = true;
+
+                        _context.Add(Ndireccion);
+                        await _context.SaveChangesAsync();
+                        
+                        p_Pedido.idDireccion = Ndireccion.id;
+                    }
+
+                }
+                #endregion
+
             }
 
             if (valid)
@@ -302,7 +333,7 @@ namespace Pedidos.Controllers
                 p_Pedido.status = StatusPedido.Pendiente.ToString();
                 p_Pedido.fecha = DateTime.Now;
                 p_Pedido.idCliente = Cuenta.id;
-               
+
                 _context.Add(p_Pedido);
                 await _context.SaveChangesAsync();
 

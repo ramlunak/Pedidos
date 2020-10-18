@@ -12,6 +12,7 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int? idCliente { get; set; }
+        public int? idDireccion { get; set; }
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
         public DateTime fecha { get; set; }
@@ -61,6 +62,7 @@ namespace Pedidos.Models
         public int? IdAplicativo { get; set; }
         public string aplicativo { get; set; }
 
+        public int? idDireccion { get; set; }
         public string code { get; set; }
         public string state { get; set; }
         public string city { get; set; }

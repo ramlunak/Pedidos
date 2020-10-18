@@ -1,6 +1,7 @@
 ﻿CREATE TABLE P_Pedidos(
     id int not null identity(1,1),        
     idCliente int null,  
+    idDireccion int null,  
     idMesa int null,  
     idAplicativo int null,  
     fecha datetime not null,     

@@ -73,6 +73,10 @@
                 @*dIRECCION*@
                 <div class="row col-12 mr-0 ml-0 pr-0 pl-0">
 
+                    <div class="row col-12"><ul style="display: flex;list-style: none;" id="ListaDirecciones"></ul></div>
+
+                    <input class="form-control" hidden id="idDireccion"/>
+
                     @*CEP*@
                     <div class="col-md-3">
 
@@ -369,12 +373,15 @@
                 $('#cepSearch').on('click', function () {
 
                     $.getJSON('https://ws.apicep.com/cep.json', { code: $('#code').val() }, function (data) {
-                        console.log(data);
+
                         if (JSON.parse(data.ok)) {
                             $('#state').val(data.state);
                             $('#city').val(data.city);
                             $('#district').val(data.district);
                             $('#address').val(data.address);
+
+                            $('#idDireccion').val(null);
+                            
                         } else {
                             Swal.fire('Oops...', data.message, 'warning');
                             LimpiarCamposDireccion();
@@ -410,7 +417,7 @@
                 function CargarDireccion() {
                     $.getJSON('/Clientes/GetDireccion', { idCliente: $('#IdCliente').val() }, function (data) {
                         DIRECCIONES = data;
-
+                        console.log(data);
                         var ul = $("#ListaDirecciones")[0];
                         var listLength = ul.children.length;
 
@@ -457,6 +464,7 @@
             function SetDireccion(index) {
 
                 if (DIRECCIONES.length == 0) {
+                    $('#idDireccion').val(null);
                     $('#code').val(null);
                     $('#state').val(null);
                     $('#city').val(null);
@@ -465,6 +473,7 @@
                     $('#numero').val(null);
                     $('#complemento').val(null);
                 } else {
+                    $('#idDireccion').val(DIRECCIONES[index].id);
                     $('#code').val(DIRECCIONES[index].code);
                     $('#state').val(DIRECCIONES[index].state);
                     $('#city').val(DIRECCIONES[index].city);

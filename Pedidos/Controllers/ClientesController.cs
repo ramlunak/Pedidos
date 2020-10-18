@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Pedidos.Data;
 using Pedidos.Models;
+using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
@@ -96,15 +97,8 @@ namespace Pedidos.Controllers
                 _context.Add(p_Cliente);
                 await _context.SaveChangesAsync();
 
-                //Actualizar lista cliente de la session
-                var SSclientes = GetSession("Clientes");
-                if (SSclientes != null)
-                {
-                    var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
-                    ListClientes.Add(p_Cliente);
-                    var json = JsonConvert.SerializeObject(ListClientes);
-                    SetSession("Clientes", json);
-                }
+                //ACTUALIZAR SESSION
+                UpdateSessionCliente(SessionTransaction.Add, p_Cliente);
 
                 return RedirectToAction(nameof(Index));
             }
@@ -148,17 +142,8 @@ namespace Pedidos.Controllers
                     _context.Update(p_Cliente);
                     await _context.SaveChangesAsync();
 
-                    //Actualizar lista cliente de la session
-                    var SSclientes = GetSession("Clientes");
-                    if (SSclientes != null)
-                    {
-                        var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
-                        var oldCliente = ListClientes.Where(x => x.id == p_Cliente.id).FirstOrDefault();
-                        ListClientes.Remove(oldCliente);
-                        ListClientes.Add(p_Cliente);
-                        var json = JsonConvert.SerializeObject(ListClientes);
-                        SetSession("Clientes", json);
-                    }
+                    //ACTUALIZAR SESSION
+                    UpdateSessionCliente(SessionTransaction.Edit, p_Cliente);
 
                 }
                 catch (DbUpdateConcurrencyException)
@@ -206,15 +191,8 @@ namespace Pedidos.Controllers
             _context.P_Clientes.Remove(p_Cliente);
             await _context.SaveChangesAsync();
 
-            //Actualizar lista cliente de la session
-            var SSclientes = GetSession("Clientes");
-            if (SSclientes != null)
-            {
-                var ListClientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
-                ListClientes.Remove(p_Cliente);
-                var json = JsonConvert.SerializeObject(ListClientes);
-                SetSession("Clientes", json);
-            }
+            //ACTUALIZAR SESSION
+            UpdateSessionCliente(SessionTransaction.Delete, p_Cliente);
 
             return RedirectToAction(nameof(Index));
         }

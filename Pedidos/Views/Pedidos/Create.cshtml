@@ -4,6 +4,8 @@
     ViewData["Title"] = "Create";
 }
 
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="-1">
 
 <div class="row col-12">
 
@@ -343,6 +345,11 @@
         <script type="text/javascript">
 
             var DIRECCIONES = [];
+
+            @*var Productos = @Html.Raw(Json.Serialize(ViewBag.ProductosArr));
+            $.each($('#ProductoList')[0].children, function (index, value) {
+                $('#ProductoList')[0].removeChild(value);
+            });*@
 
             $(document).ready(function () {
 

@@ -30,41 +30,37 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Create()
         {
             ValidarCuenta();
-            
-            if (GetSession("Productos") == null)
+
+            if (GetSession<List<P_Productos>>("Productos") == null || !GetSession<List<P_Productos>>("Productos").Any())
             {
-                var productos = ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-                var json = JsonConvert.SerializeObject(productos);
-                SetSession("Productos", json);
+                var productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                ViewBag.Productos = productos;
+                SetSession("Productos", productos);
             }
             else
             {
-                var SSproductos = GetSession("Productos");
-                ViewBag.Productos = JsonConvert.DeserializeObject(SSproductos);
+                var productos = GetSession<List<P_Productos>>("Productos");
+                ViewBag.Productos = productos;
             }
 
-            if (GetSession("Clientes") == null)
+            if (GetSession<List<P_Cliente>>("Clientes") == null || !GetSession<List<P_Cliente>>("Clientes").Any())
             {
                 var clientes = ViewBag.Clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-                var json = JsonConvert.SerializeObject(clientes);
-                SetSession("Clientes", json);
+                SetSession("Clientes", clientes);
             }
             else
             {
-                var SSclientes = GetSession("Clientes");
-                ViewBag.Clientes = JsonConvert.DeserializeObject<List<P_Cliente>>(SSclientes);
+                ViewBag.Clientes = GetSession<List<P_Cliente>>("Clientes");
             }
 
-            if (GetSession("Aplicativos") == null)
+            if (GetSession<List<P_Aplicativo>>("Aplicativos") == null || !GetSession<List<P_Aplicativo>>("Aplicativos").Any())
             {
                 var aplicativos = ViewBag.Aplicativos = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-                var json = JsonConvert.SerializeObject(aplicativos);
-                SetSession("Aplicativos", json);
+                SetSession("Aplicativos", aplicativos);
             }
             else
             {
-                var SSaplicativos = GetSession("Aplicativos");
-                ViewBag.Aplicativos = JsonConvert.DeserializeObject<List<P_Aplicativo>>(SSaplicativos);
+                ViewBag.Aplicativos = GetSession<List<P_Aplicativo>>("Aplicativos");
             }
 
             var jsonPedidoDTO = GetSession("PedidoDTO");
@@ -103,21 +99,43 @@ namespace Pedidos.Controllers
         {
             ValidarCuenta();
 
-            //CARGAR PRODUCTOS SESSION
+            //CARGAR SESSION
             var productosDB = new List<P_Productos>();
-            if (GetSession("Productos") == null)
+
+            if (GetSession<List<P_Productos>>("Productos") == null || !GetSession<List<P_Productos>>("Productos").Any())
             {
-                var productos = ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                var productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                ViewBag.Productos = productos;
+                SetSession("Productos", productos);
                 productosDB = productos;
-                var jsonProductos = JsonConvert.SerializeObject(productos);
-                SetSession("Productos", jsonProductos);
             }
             else
             {
-                var SSproductos = GetSession("Productos");
-                productosDB = JsonConvert.DeserializeObject<List<P_Productos>>(SSproductos);
+                var productos = GetSession<List<P_Productos>>("Productos");
+                ViewBag.Productos = productos;
+                productosDB = productos;
             }
-            ViewBag.Productos = productosDB;
+
+            if (GetSession<List<P_Cliente>>("Clientes") == null || !GetSession<List<P_Cliente>>("Clientes").Any())
+            {
+                var clientes = ViewBag.Clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                SetSession("Clientes", clientes);
+            }
+            else
+            {
+                ViewBag.Clientes = GetSession<List<P_Cliente>>("Clientes");
+            }
+
+            if (GetSession<List<P_Aplicativo>>("Aplicativos") == null || !GetSession<List<P_Aplicativo>>("Aplicativos").Any())
+            {
+                var aplicativos = ViewBag.Aplicativos = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                SetSession("Aplicativos", aplicativos);
+            }
+            else
+            {
+                ViewBag.Aplicativos = GetSession<List<P_Aplicativo>>("Aplicativos");
+            }
+                      
             //-------------------------------------------
 
             var ProductosPedido = new List<P_Productos>();
@@ -212,13 +230,20 @@ namespace Pedidos.Controllers
                 {
                     p_Pedido.idCliente = pedidoDTO.IdCliente;
 
-                    //ACTUALIZAR DATOS CLIENTE
-                    var Ncliente = new P_Cliente();
-                    Ncliente.id = pedidoDTO.IdCliente.Value;
-                    Ncliente.nombre = pedidoDTO.cliente;
-                    Ncliente.telefono = pedidoDTO.telefono;
-                    _context.Update(Ncliente);
-                    await _context.SaveChangesAsync();
+                    //ACTUALIZAR TELEFONO CLIENTE
+                    var ssClientes = GetSession<List<P_Cliente>>("Clientes");
+                    if (ssClientes.Any(x => x.id == pedidoDTO.IdCliente.Value && string.IsNullOrEmpty(x.telefono)))
+                    {
+                        var Ncliente = new P_Cliente();
+                        Ncliente.id = pedidoDTO.IdCliente.Value;
+                        Ncliente.nombre = pedidoDTO.cliente;
+                        Ncliente.telefono = pedidoDTO.telefono;
+                        _context.Update(Ncliente);
+                        await _context.SaveChangesAsync();
+
+                        ssClientes.First(x => x.id == pedidoDTO.IdCliente.Value).telefono = pedidoDTO.telefono;
+                        SetSession("Clientes", ssClientes);
+                    }
                 }
                 else
                 {
@@ -233,43 +258,42 @@ namespace Pedidos.Controllers
                         _context.Add(Ncliente);
                         await _context.SaveChangesAsync();
 
+                        var ssClientes = GetSession<List<P_Cliente>>("Clientes");
+                        ssClientes.Add(Ncliente);
+                        SetSession("Clientes", ssClientes);
+
                         p_Pedido.idCliente = Ncliente.id;
                     }
 
                 }
                 #endregion
 
-                //#region APLICATIVO
-                //if (pedidoDTO.IdCliente.HasValue)
-                //{
-                //    p_Pedido.idCliente = pedidoDTO.IdCliente;
+                #region APLICATIVO
+                if (pedidoDTO.IdAplicativo.HasValue)
+                {
+                    p_Pedido.idAplicativo = pedidoDTO.IdAplicativo;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(pedidoDTO.aplicativo))
+                    {
+                        var Naplicativo = new P_Aplicativo();
+                        Naplicativo.nombre = pedidoDTO.aplicativo;
+                        Naplicativo.idCuenta = Cuenta.id;
+                        Naplicativo.activo = true;
 
-                //    //ACTUALIZAR DATOS CLIENTE
-                //    var Ncliente = new P_Cliente();
-                //    Ncliente.id = pedidoDTO.IdCliente.Value;
-                //    Ncliente.nombre = pedidoDTO.cliente;
-                //    Ncliente.telefono = pedidoDTO.telefono;
-                //    _context.Update(Ncliente);
-                //    await _context.SaveChangesAsync();
-                //}
-                //else
-                //{
-                //    if (!string.IsNullOrEmpty(pedidoDTO.cliente))
-                //    {
-                //        var Ncliente = new P_Cliente();
-                //        Ncliente.nombre = pedidoDTO.cliente;
-                //        Ncliente.telefono = pedidoDTO.telefono;
-                //        Ncliente.idCuenta = Cuenta.id;
-                //        Ncliente.activo = true;
+                        _context.Add(Naplicativo);
+                        await _context.SaveChangesAsync();
 
-                //        _context.Add(Ncliente);
-                //        await _context.SaveChangesAsync();
+                        //var ssClientes = GetSession<List<P_Aplicativo>>("Aplicativos");
+                        //ssClientes.First(x => x.id == pedidoDTO.IdCliente.Value).telefono = pedidoDTO.telefono;
+                        //SetSession("Clientes", ssClientes);
 
-                //        p_Pedido.idCliente = Ncliente.id;
-                //    }
+                        p_Pedido.idCliente = Naplicativo.id;
+                    }
 
-                //}
-                //#endregion
+                }
+                #endregion
 
             }
 

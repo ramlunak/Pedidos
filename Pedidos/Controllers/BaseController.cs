@@ -59,8 +59,9 @@ namespace Pedidos.Controllers
         public void Logof()
         {
             try
-            {               
+            {
                 Response.Cookies.Delete("Pedidos");
+                HttpContext.Session.Clear();
             }
             catch (Exception)
             {
@@ -96,7 +97,92 @@ namespace Pedidos.Controllers
         public T GetSession<T>(string key)
         {
             var value = string.IsNullOrEmpty(HttpContext.Session.GetString(key)) ? null : HttpContext.Session.GetString(key);
+            if (value is null) return default(T);
             return JsonConvert.DeserializeObject<T>(value);
+        }
+
+        public void UpdateSessionCliente(SessionTransaction action, P_Cliente obj)
+        {
+            var json = HttpContext.Session.GetString("Clientes");
+            if (json is null) return;
+
+            var list = JsonConvert.DeserializeObject<List<P_Cliente>>(json);
+
+            if (action == SessionTransaction.Add)
+            {
+                list.Add(obj);
+            }
+            else if (action == SessionTransaction.Edit && list.Any())
+            {
+                var old = list.First(x => x.id == obj.id);
+                if (old != null)
+                {
+                    list.Remove(old);
+                    list.Add(obj);
+                }
+            }
+            else if (action == SessionTransaction.Delete)
+            {
+                list.Remove(obj);
+            }
+
+            SetSession("Clientes", list);
+        }
+
+        public void UpdateSessionAplicativos(SessionTransaction action, P_Aplicativo obj)
+        {
+            var json = HttpContext.Session.GetString("Aplicativos");
+            if (json is null) return;
+
+            var list = JsonConvert.DeserializeObject<List<P_Aplicativo>>(json);
+
+            if (action == SessionTransaction.Add)
+            {
+                list.Add(obj);
+            }
+            else if (action == SessionTransaction.Edit && list.Any())
+            {
+                var old = list.First(x => x.id == obj.id);
+                if (old != null)
+                {
+                    list.Remove(old);
+                    list.Add(obj);
+                }
+            }
+            else if (action == SessionTransaction.Delete)
+            {
+                list.Remove(obj);
+            }
+
+            SetSession("Aplicativos", list);
+        }
+
+        public void UpdateSessionProductos(SessionTransaction action, P_Productos obj)
+        {
+            var json = HttpContext.Session.GetString("Productos");
+            if (json is null) return;
+
+            var list = JsonConvert.DeserializeObject<List<P_Productos>>(json);
+
+            if (action == SessionTransaction.Add)
+            {
+                list.Add(obj);
+            }
+            else if (action == SessionTransaction.Edit && list.Any())
+            {
+                var old = list.First(x => x.id == obj.id);
+                if (old != null)
+                {
+                    list.Remove(old);
+                    list.Add(obj);
+                }
+            }
+            else if (action == SessionTransaction.Delete)
+            {
+                list.Remove(obj);
+            }
+
+            SetSession("Aplicativos", list);
         }
 
         public P_Cuenta Cuenta

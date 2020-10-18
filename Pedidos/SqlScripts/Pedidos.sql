@@ -4,7 +4,7 @@
     idMesa int null,  
     idAplicativo int null,  
     fecha datetime not null,     
-    status tinyint null,
+    status varchar(100) null,
     descripcion varchar(255) null,
     valor decimal(18,5) null,
     descuento decimal(18,5) null,

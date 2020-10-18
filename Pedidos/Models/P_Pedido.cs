@@ -15,7 +15,7 @@ namespace Pedidos.Models
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
         public DateTime fecha { get; set; }
-        public StatusPedido status { get; set; }
+        public string status { get; set; }
         public string descripcion { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }

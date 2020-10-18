@@ -5,10 +5,10 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Models.Enums
 {
-    public enum StatusPedido
+    public enum StatusPedido : short
     {
         Pendiente,
         Concluido,
-        Cancelado
+        Cancelado 
     }
 }

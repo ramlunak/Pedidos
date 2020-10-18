@@ -37,5 +37,7 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_Venta> P_Ventas { get; set; }
 
         public DbSet<Pedidos.Models.P_Aplicativo> P_Aplicativos { get; set; }
+
+        public DbSet<Pedidos.Models.P_PedidoProductos> P_PedidoProductos { get; set; }
     }
 }

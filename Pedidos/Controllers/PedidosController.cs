@@ -9,6 +9,7 @@ using Pedidos.Data;
 using Pedidos.Models;
 using Newtonsoft;
 using Newtonsoft.Json;
+using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
@@ -24,7 +25,9 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Index()
         {
             ValidarCuenta();
-            return View(await _context.P_Pedidos.ToListAsync());
+           // var pedidos = await _context.P_Pedidos.Where(x=>x.idCuenta == Cuenta.id).ToListAsync();
+            var pedidos = await _context.P_Pedidos.ToListAsync();
+            return View(pedidos);
         }
 
         public async Task<IActionResult> Create()
@@ -135,7 +138,7 @@ namespace Pedidos.Controllers
             {
                 ViewBag.Aplicativos = GetSession<List<P_Aplicativo>>("Aplicativos");
             }
-                      
+
             //-------------------------------------------
 
             var ProductosPedido = new List<P_Productos>();
@@ -217,6 +220,7 @@ namespace Pedidos.Controllers
         // GET: Pedidos/Edit/5
         public async Task<IActionResult> GuardarPedido()
         {
+            var valid = true;
             var p_Pedido = new P_Pedido();
 
             var jsonPedidoDTO = GetSession("PedidoDTO");
@@ -241,8 +245,7 @@ namespace Pedidos.Controllers
                         _context.Update(Ncliente);
                         await _context.SaveChangesAsync();
 
-                        ssClientes.First(x => x.id == pedidoDTO.IdCliente.Value).telefono = pedidoDTO.telefono;
-                        SetSession("Clientes", ssClientes);
+                        UpdateSessionCliente(SessionTransaction.Edit, Ncliente);
                     }
                 }
                 else
@@ -258,9 +261,7 @@ namespace Pedidos.Controllers
                         _context.Add(Ncliente);
                         await _context.SaveChangesAsync();
 
-                        var ssClientes = GetSession<List<P_Cliente>>("Clientes");
-                        ssClientes.Add(Ncliente);
-                        SetSession("Clientes", ssClientes);
+                        UpdateSessionCliente(SessionTransaction.Add, Ncliente);
 
                         p_Pedido.idCliente = Ncliente.id;
                     }
@@ -285,9 +286,7 @@ namespace Pedidos.Controllers
                         _context.Add(Naplicativo);
                         await _context.SaveChangesAsync();
 
-                        //var ssClientes = GetSession<List<P_Aplicativo>>("Aplicativos");
-                        //ssClientes.First(x => x.id == pedidoDTO.IdCliente.Value).telefono = pedidoDTO.telefono;
-                        //SetSession("Clientes", ssClientes);
+                        UpdateSessionAplicativos(SessionTransaction.Add, Naplicativo);
 
                         p_Pedido.idCliente = Naplicativo.id;
                     }
@@ -297,6 +296,38 @@ namespace Pedidos.Controllers
 
             }
 
+            if (valid)
+            {
+                //INGRESAR PEDIDO
+                p_Pedido.status = StatusPedido.Pendiente.ToString();
+                p_Pedido.fecha = DateTime.Now;
+                p_Pedido.idCliente = Cuenta.id;
+               
+                _context.Add(p_Pedido);
+                await _context.SaveChangesAsync();
+
+                //INGRESAR LISTA PRODUCTOS PEDIDOS
+                var ProductosPedido = new List<P_Productos>();
+                if (GetSession("ProductosPedido") != null)
+                {
+                    ProductosPedido = JsonConvert.DeserializeObject<List<P_Productos>>(GetSession("ProductosPedido"));
+                }
+
+                if (ProductosPedido.Any())
+                {
+                    foreach (var producto in ProductosPedido)
+                    {
+                        var p_PedidoProductos = new P_PedidoProductos();
+                        p_PedidoProductos.idPedido = p_Pedido.id;
+                        p_PedidoProductos.idProducto = producto.id;
+                        p_PedidoProductos.valorProducto = producto.valor;
+
+                        _context.Add(p_PedidoProductos);
+                        await _context.SaveChangesAsync();
+                    }
+
+                }
+            }
 
             return RedirectToAction(nameof(Index));
         }

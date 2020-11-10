@@ -87,6 +87,7 @@ namespace Pedidos.Data
                    $" SELECT [id]" +
                    $" ,[nombre]" +
                    $" ,[codigo]" +
+                   $" ,[descripcion]" +
                    $" ,[idCategoria]" +
                    $" ,(SELECT TOP(1) nombre FROM P_Categorias where P_Categorias.id = PRO.idCategoria) AS Categoria" +
                    $" ,[activo]" +

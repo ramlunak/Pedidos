@@ -20,6 +20,9 @@ namespace Pedidos.Models
         [DisplayName("Nome")]
         public string nombre { get; set; }
 
+        [DisplayName("descrição")]
+        public string descripcion { get; set; }
+
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]
         public int idCategoria { get; set; }

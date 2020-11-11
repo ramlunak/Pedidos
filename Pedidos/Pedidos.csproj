@@ -117,6 +117,10 @@
     <None Include="wwwroot\lib\sweetalert2\src\variables.scss" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\js\views\ingredientes\" />
+  </ItemGroup>
+
 
 
 </Project>

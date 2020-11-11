@@ -9,6 +9,10 @@
     {
       "library": "sweetalert@2.1.2",
       "destination": "wwwroot/sweetalert/"
+    },
+    {
+      "library": "limonte-sweetalert2@10.9.1",
+      "destination": "wwwroot/lib/limonte-sweetalert2/"
     }
   ]
 }

@@ -9,6 +9,7 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
 <table class="table">
     <thead>
         <tr>
@@ -22,32 +23,35 @@
                 @Html.DisplayNameFor(model => model.idCuenta)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.activo)
+               
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Valor)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.idCuenta)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.activo)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                   <div>R$ @item.Valor.ToString("f2")</div>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idCuenta)
+                </td>
+                <td>
+                    <input name="switchbutton" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/views/adicionais/index.js"></script>

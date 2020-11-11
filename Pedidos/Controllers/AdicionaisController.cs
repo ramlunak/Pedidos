@@ -121,6 +121,34 @@ namespace Pedidos.Controllers
         }
 
         // GET: Adicionais/Delete/5
+        public async Task<IActionResult> ChangeStatus(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var p_Adicionais = await _context.P_Adicionais.FirstOrDefaultAsync(m => m.id == id);
+            if (p_Adicionais == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                p_Adicionais.activo = !p_Adicionais.activo;
+                _context.Update(p_Adicionais);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
+
+        // GET: Adicionais/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,7 +163,7 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            return View(p_Adicionais);
+            return Ok(true);
         }
 
         // POST: Adicionais/Delete/5

@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,13 +56,13 @@ namespace Pedidos
 
             services.AddAuthorization(options =>
             {
-                options.AddPolicy(RolesSistema.Establecimiento.ToString(), pol => pol.RequireClaim(ClaimTypes.Role, RolesSistema.Establecimiento.ToString()));               
+                options.AddPolicy(RolesSistema.Establecimiento.ToString(), pol => pol.RequireClaim(ClaimTypes.Role, RolesSistema.Establecimiento.ToString()));
             });
 
             var cultureInfo = new CultureInfo("pt-BR");
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-            
+
             services.AddControllers(options =>
             {
                 options.RespectBrowserAcceptHeader = true; // false by default
@@ -73,12 +74,19 @@ namespace Pedidos
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };
+            };                        
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var cultureInfo = new CultureInfo("en-US");
+            cultureInfo.NumberFormat.NumberGroupSeparator = " ";
+            cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+
+            CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+            CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+                        
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -120,6 +128,60 @@ namespace Pedidos
             public override void Write(Utf8JsonWriter writer, DateTime value, JsonSerializerOptions options)
             {
                 writer.WriteStringValue(value.ToUniversalTime().ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ssZ"));
+            }
+        }
+
+        public class CustomBinderProvider : IModelBinderProvider
+        {
+            public IModelBinder GetBinder(ModelBinderProviderContext context)
+            {
+                if (context == null)
+                {
+                    throw new ArgumentNullException(nameof(context));
+                }
+
+                if (context.Metadata.ModelType == typeof(decimal))
+                {
+                    return new DecimalModelBinder();
+                }
+
+                return null;
+            }
+        }
+
+        public class DecimalModelBinder : IModelBinder
+        {
+            public Task BindModelAsync(ModelBindingContext bindingContext)
+            {
+                var valueProviderResult = bindingContext.ValueProvider.GetValue(bindingContext.ModelName);
+
+                if (valueProviderResult == null)
+                {
+                    return Task.CompletedTask;
+                }
+
+                var value = valueProviderResult.FirstValue;
+
+                if (string.IsNullOrEmpty(value))
+                {
+                    return Task.CompletedTask;
+                }
+
+                // Remove unnecessary commas and spaces
+                value = value.Replace(",", string.Empty).Trim();
+
+                decimal myValue = 0;
+                if (!decimal.TryParse(value, out myValue))
+                {
+                    // Error
+                    bindingContext.ModelState.TryAddModelError(
+                                            bindingContext.ModelName,
+                                            "Could not parse MyValue.");
+                    return Task.CompletedTask;
+                }
+
+                bindingContext.Result = ModelBindingResult.Success(myValue);
+                return Task.CompletedTask;
             }
         }
 

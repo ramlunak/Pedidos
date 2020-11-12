@@ -22,7 +22,8 @@ namespace Pedidos.Controllers
         // GET: Adicionais
         public async Task<IActionResult> Index()
         {
-            return View(await _context.P_Adicionais.ToListAsync());
+            var model = await _context.P_Adicionais.ToListAsync();
+            return View(model.OrderByDescending(x=>x.paraTodos).ToList());
         }
 
         // GET: Adicionais/Details/5
@@ -55,10 +56,16 @@ namespace Pedidos.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Adicionais p_Adicionais)
-        {
+        {            
             ValidarCuenta();
             if (ModelState.IsValid)
             {
+                if (ExistsByName(p_Adicionais.nombre))
+                {
+                    NotifyError("Já existe um adicional com esse nome.");
+                    return View(p_Adicionais);
+                }
+
                 p_Adicionais.idCuenta = Cuenta.id;
                 p_Adicionais.activo = true;
 
@@ -138,7 +145,35 @@ namespace Pedidos.Controllers
             {
                 p_Adicionais.activo = !p_Adicionais.activo;
                 _context.Update(p_Adicionais);
+                await _context.SaveChangesAsync();               
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
+
+        public async Task<IActionResult> ChangeVsibilidad(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var p_Adicionais = await _context.P_Adicionais.FirstOrDefaultAsync(m => m.id == id);
+            if (p_Adicionais == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                p_Adicionais.paraTodos = !p_Adicionais.paraTodos;
+                _context.Update(p_Adicionais);
                 await _context.SaveChangesAsync();
+                
             }
             catch (Exception ex)
             {
@@ -180,6 +215,12 @@ namespace Pedidos.Controllers
         private bool P_AdicionaisExists(int id)
         {
             return _context.P_Adicionais.Any(e => e.id == id);
+        }
+
+
+        private bool ExistsByName(string nombre)
+        {
+            return _context.P_Adicionais.Any(e => e.nombre == nombre);
         }
     }
 }

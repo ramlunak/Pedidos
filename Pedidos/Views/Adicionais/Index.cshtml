@@ -3,55 +3,70 @@
 @{
     ViewData["Title"] = "Index";
 }
+<div class="card">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>ADICIONAIS</b>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
+            </div>
+        </div>
 
-<h1>Index</h1>
+    </div>
+    <div class="card-body">
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+        <table class="table" cellspacing="10">
+            <thead>
+                <tr>
+                    <th style="width:auto">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Valor)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idCuenta)
-            </th>
-            <th>
-               
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-                <td>
-                   <div>R$ @item.Valor.ToString("f2")</div>
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idCuenta)
-                </td>
-                <td>
-                    <input name="switchbutton" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nombre)
+                    </th>
+                    <th>
+                        <div class="d-flex justify-content-start">
+                            @Html.DisplayNameFor(model => model.Valor)
+                        </div>
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="width:auto">
+                            <input name="switchbuttonParaTodos" type="checkbox" asp-for="@item.paraTodos" id="@item.id" data-width="100" data-onlabel="Para Todos" data-offlabel="Individual" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
+                        </td>
 
+                        <td style="width:100%">
+                            @Html.DisplayFor(modelItem => item.nombre)
+                        </td>
+
+                        <td style="width:auto">
+                            <div style="width:100px;color:darkgoldenrod" class="d-flex justify-content-start"><b>R$ @item.Valor.ToString("f2")</b></div>
+                        </td>
+
+                        <td>
+                            <input name="switchbuttonActivo" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
+                        </td>
+
+                        <td>
+                            @*<a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>*@
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+
+    </div>
+</div>
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/views/adicionais/index.js"></script>

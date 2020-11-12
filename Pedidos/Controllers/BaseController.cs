@@ -212,5 +212,44 @@ namespace Pedidos.Controllers
             }
         }
 
+        public void NotifySuccess(string message)
+        {
+            var msg = new
+            {
+                message = message,
+                icon = NotificationType.success.ToString(),
+                type = NotificationType.success.ToString(),
+                provider = "sweetAlert"
+            };
+
+            TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
+        public void NotifyError(string message)
+        {
+            var msg = new
+            {
+                message = message,
+                icon = NotificationType.error.ToString(),
+                type = NotificationType.error.ToString(),
+                provider = "sweetAlert"
+            };
+
+            TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
+        public void Notifywarning(string message)
+        {
+            var msg = new
+            {
+                message = message,
+                icon = NotificationType.warning.ToString(),
+                type = NotificationType.warning.ToString(),
+                provider = "sweetAlert"
+            };
+
+            TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
     }
 }

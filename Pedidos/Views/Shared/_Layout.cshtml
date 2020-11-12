@@ -74,7 +74,8 @@
     <script src="~/lib/font-awesome/js/all.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
+    @await Html.PartialAsync("_notificationPartial")
     @RenderSection("Scripts", required: false)
-       
+
 </body>
 </html>

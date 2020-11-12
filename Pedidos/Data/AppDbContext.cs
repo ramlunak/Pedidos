@@ -43,5 +43,9 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_Ingredientes> P_Ingredientes { get; set; }
 
         public DbSet<Pedidos.Models.P_Adicionais> P_Adicionais { get; set; }
+
+        public DbSet<Pedidos.Models.P_Log> P_Logs { get; set; }
+
+        public DbSet<Pedidos.Models.P_AdicionalCategorias> P_AdicionalCategorias { get; set; }
     }
 }

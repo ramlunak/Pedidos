@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
+using Pedidos.Models.DTO;
 
 namespace Pedidos.Controllers
 {
@@ -19,14 +20,27 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        // GET: Adicionais
         public async Task<IActionResult> Index()
         {
-            var model = await _context.P_Adicionais.ToListAsync();
-            return View(model.OrderByDescending(x=>x.paraTodos).ToList());
+            var model = await _context.P_Adicionais.Where(x=>x.idCuenta == Cuenta.id).ToListAsync();
+            return View(model.OrderByDescending(x => x.paraTodos).ToList());
         }
 
-        // GET: Adicionais/Details/5
+        public async Task<IActionResult> Categorias(int id)
+        {
+            var query = await _context.P_Categorias.FromSqlRaw($"EXEC GetCategoriasPorAdicional @idAdicional = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
+            var model = from CT in query
+                        select new ListarCategoriasPorAdicional()
+                        {
+                            idAdicional = id,
+                            idCategoria = CT.id,
+                            categoria = CT.nombre,
+                            selected = CT.activo
+                        };
+
+            return View(model);
+        }
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -44,19 +58,15 @@ namespace Pedidos.Controllers
             return View(p_Adicionais);
         }
 
-        // GET: Adicionais/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View();
         }
 
-        // POST: Adicionais/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Adicionais p_Adicionais)
-        {            
+        {
             ValidarCuenta();
             if (ModelState.IsValid)
             {
@@ -66,17 +76,39 @@ namespace Pedidos.Controllers
                     return View(p_Adicionais);
                 }
 
-                p_Adicionais.idCuenta = Cuenta.id;
-                p_Adicionais.activo = true;
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        p_Adicionais.idCuenta = Cuenta.id;
+                        p_Adicionais.activo = true;
+                        _context.Add(p_Adicionais);
+                        await _context.SaveChangesAsync();
 
-                _context.Add(p_Adicionais);
-                await _context.SaveChangesAsync();
+                        var p_AdicionalCategorias = new P_AdicionalCategorias()
+                        {
+                            idAdicional = p_Adicionais.id,
+                            idCuenta = Cuenta.id
+                        };
+
+                        _context.Add(p_AdicionalCategorias);
+                        await _context.SaveChangesAsync();
+
+                        await transaction.CommitAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        NotifyError(ex.Message);
+                    }
+                }
+
+
                 return RedirectToAction(nameof(Index));
             }
             return View(p_Adicionais);
         }
 
-        // GET: Adicionais/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -92,12 +124,9 @@ namespace Pedidos.Controllers
             return View(p_Adicionais);
         }
 
-        // POST: Adicionais/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,P_Adicionais p_Adicionais)
+        public async Task<IActionResult> Edit(int id, P_Adicionais p_Adicionais)
         {
             if (id != p_Adicionais.id)
             {
@@ -127,7 +156,6 @@ namespace Pedidos.Controllers
             return View(p_Adicionais);
         }
 
-        // GET: Adicionais/Delete/5
         public async Task<IActionResult> ChangeStatus(int? id)
         {
             if (id == null)
@@ -145,7 +173,7 @@ namespace Pedidos.Controllers
             {
                 p_Adicionais.activo = !p_Adicionais.activo;
                 _context.Update(p_Adicionais);
-                await _context.SaveChangesAsync();               
+                await _context.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -173,7 +201,7 @@ namespace Pedidos.Controllers
                 p_Adicionais.paraTodos = !p_Adicionais.paraTodos;
                 _context.Update(p_Adicionais);
                 await _context.SaveChangesAsync();
-                
+
             }
             catch (Exception ex)
             {
@@ -183,7 +211,27 @@ namespace Pedidos.Controllers
             return Ok(true);
         }
 
-        // GET: Adicionais/Delete/5
+        [HttpPost]
+        public async Task<IActionResult> UpdateCategoriaInAdicionalCategorias([FromBody]ListarCategoriasPorAdicional listarCategoriasPorAdicional)
+        {
+            int result;
+            if (listarCategoriasPorAdicional.selected)
+            {
+                result = await _context.Database.ExecuteSqlRawAsync($"EXEC AddCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
+            }
+            else
+            {
+                result = await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
+            }
+
+            if (result == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
+
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -201,7 +249,6 @@ namespace Pedidos.Controllers
             return Ok(true);
         }
 
-        // POST: Adicionais/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -214,13 +261,13 @@ namespace Pedidos.Controllers
 
         private bool P_AdicionaisExists(int id)
         {
-            return _context.P_Adicionais.Any(e => e.id == id);
+            return _context.P_Adicionais.Any(e => e.id == id && e.idCuenta == Cuenta.id);
         }
 
 
         private bool ExistsByName(string nombre)
         {
-            return _context.P_Adicionais.Any(e => e.nombre == nombre);
+            return _context.P_Adicionais.Any(e => e.nombre == nombre && e.idCuenta == Cuenta.id);
         }
     }
 }

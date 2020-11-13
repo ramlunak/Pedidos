@@ -246,7 +246,7 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            return Ok(true);
+            return View(p_Adicionais);
         }
 
         [HttpPost, ActionName("Delete")]

@@ -53,17 +53,19 @@
                         </td>
 
                         <td>
-                            <a asp-action="Categorias" asp-route-id="@item.id">Categoria</a>
+                            <a asp-action="Categorias" asp-route-id="@item.id">Categorias</a>
+                        </td>
+                       
+                        <td>
+                            <input name="switchbuttonActivo" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
                         </td>
 
-                        <td>
-                            <input name="switchbuttonActivo" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
-                        </td>
-
-                        <td>
-                            @*<a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                                <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                                <a asp-action="Delete" asp-route-id="@item.id">Delete</a>*@
+                        <td style="width:auto">
+                            <div style="width:100px">
+                                <a asp-action="Edit" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.id"><i style="color:orangered" class="fa fa-trash"></i></a>
+                            </div>
+                          
                         </td>
                     </tr>
                 }

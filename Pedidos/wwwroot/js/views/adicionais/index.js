@@ -35,8 +35,7 @@ $(function () {
         });
 
     })
-
-
+    
     //CAMBIAR VISIBILIDAD DE LOS ADICIONAIS
     $("input[name='switchbuttonParaTodos']").change(function (e) {
         e.preventDefault();
@@ -71,4 +70,5 @@ $(function () {
         });
 
     })
+       
 });

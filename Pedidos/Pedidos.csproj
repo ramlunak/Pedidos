@@ -17,6 +17,14 @@
     <None Remove="SqlScripts\Produto.sql" />
     <None Remove="SqlScripts\SubCategoria.sql" />
     <None Remove="SqlScripts\Ventas.sql" />
+    <None Remove="Views\Home\print.css" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Views\Home\print.css">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
   <ItemGroup>

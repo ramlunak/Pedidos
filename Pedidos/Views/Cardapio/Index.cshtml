@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Pedidos.Models.P_Categoria>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+<div class="p-2">
+    @foreach (var item in Model)
+    {
+        <div class="accordion" id="accordionCategorias">
+            <div class="card">
+                <div class="card-header cursor-pointer d-flex justify-content-center" id="heading_@item.id" data-toggle="collapse" data-target="#collapse_@item.id" aria-expanded="true" aria-controls="collapse_@item.id">
+                    <h5 class="mb-0">
+                        @item.nombre
+                    </h5>
+                </div>
+
+                <div id="collapse_@item.id" class="collapse hide" aria-labelledby="heading_@item.id" data-parent="#accordionCategorias">
+                    <div class="card-body">
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@*<h1>Index</h1>
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.idCuenta)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.activo)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.idCuenta)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.activo)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>*@

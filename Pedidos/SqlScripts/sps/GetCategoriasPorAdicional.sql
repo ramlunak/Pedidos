@@ -1,4 +1,4 @@
-﻿ ALTER PROCEDURE GetCategoriasPorAdicional
+﻿ CREATE PROCEDURE GetCategoriasPorAdicional
     @idAdicional int,
     @idCuenta int
  AS

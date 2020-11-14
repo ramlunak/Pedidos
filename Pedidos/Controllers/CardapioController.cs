@@ -1,33 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
-using Pedidos.Extensions;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class CardapiosController : BaseController
+    public class CardapioController : BaseController
     {
         private readonly AppDbContext _context;
 
-        public CardapiosController(AppDbContext context)
+        public CardapioController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Cardapios
+        // GET: Cardapio
         public async Task<IActionResult> Index()
         {
-            return View(await _context.P_Cardapios.ToListAsync());
+            //var id = 1;
+            var query =
+                from P in _context.P_Productos
+                join C in _context.P_Categorias on P.idCategoria equals C.id
+                where P.idCuenta == Cuenta.id
+                select new
+                {
+                    Categoria = C,
+                    Producto = P
+                };
+
+            var result = await query.ToListAsync();
+
+            ValidarCuenta();
+            return View(await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync());
         }
 
-        // GET: Cardapios/Details/5
+        // GET: Cardapio/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,44 +47,39 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            var p_Cardapio = await _context.P_Cardapios
+            var p_Categoria = await _context.P_Categorias
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Cardapio == null)
+            if (p_Categoria == null)
             {
                 return NotFound();
             }
 
-            return View(p_Cardapio);
+            return View(p_Categoria);
         }
 
-        // GET: Cardapios/Create
-        public async Task<IActionResult> Create()
+        // GET: Cardapio/Create
+        public IActionResult Create()
         {
-            ValidarCuenta();
-            ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            return View(new P_Cardapio());
+            return View();
         }
 
-        // POST: Cardapios/Create
+        // POST: Cardapio/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(P_Cardapio p_Cardapio)
+        public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_Categoria p_Categoria)
         {
             if (ModelState.IsValid)
             {
-                p_Cardapio.valor = p_Cardapio.strValor.ToDecimal();
-                p_Cardapio.idCuenta = Cuenta.id;
-                _context.Add(p_Cardapio);
+                _context.Add(p_Categoria);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewBag.Productos = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            return View(p_Cardapio);
+            return View(p_Categoria);
         }
 
-        // GET: Cardapios/Edit/5
+        // GET: Cardapio/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,22 +87,22 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            var p_Cardapio = await _context.P_Cardapios.FindAsync(id);
-            if (p_Cardapio == null)
+            var p_Categoria = await _context.P_Categorias.FindAsync(id);
+            if (p_Categoria == null)
             {
                 return NotFound();
             }
-            return View(p_Cardapio);
+            return View(p_Categoria);
         }
 
-        // POST: Cardapios/Edit/5
+        // POST: Cardapio/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, P_Cardapio p_Cardapio)
+        public async Task<IActionResult> Edit(int id, [Bind("id,nombre,idCuenta,activo")] P_Categoria p_Categoria)
         {
-            if (id != p_Cardapio.id)
+            if (id != p_Categoria.id)
             {
                 return NotFound();
             }
@@ -104,13 +111,12 @@ namespace Pedidos.Controllers
             {
                 try
                 {
-                    p_Cardapio.valor = p_Cardapio.strValor.ToDecimal();
-                    _context.Update(p_Cardapio);
+                    _context.Update(p_Categoria);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!P_CardapioExists(p_Cardapio.id))
+                    if (!P_CategoriaExists(p_Categoria.id))
                     {
                         return NotFound();
                     }
@@ -121,10 +127,10 @@ namespace Pedidos.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(p_Cardapio);
+            return View(p_Categoria);
         }
 
-        // GET: Cardapios/Delete/5
+        // GET: Cardapio/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -132,30 +138,30 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            var p_Cardapio = await _context.P_Cardapios
+            var p_Categoria = await _context.P_Categorias
                 .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Cardapio == null)
+            if (p_Categoria == null)
             {
                 return NotFound();
             }
 
-            return View(p_Cardapio);
+            return View(p_Categoria);
         }
 
-        // POST: Cardapios/Delete/5
+        // POST: Cardapio/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var p_Cardapio = await _context.P_Cardapios.FindAsync(id);
-            _context.P_Cardapios.Remove(p_Cardapio);
+            var p_Categoria = await _context.P_Categorias.FindAsync(id);
+            _context.P_Categorias.Remove(p_Categoria);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool P_CardapioExists(int id)
+        private bool P_CategoriaExists(int id)
         {
-            return _context.P_Cardapios.Any(e => e.id == id);
+            return _context.P_Categorias.Any(e => e.id == id);
         }
     }
 }

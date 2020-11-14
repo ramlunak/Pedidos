@@ -22,7 +22,7 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var model = await _context.P_Adicionais.Where(x=>x.idCuenta == Cuenta.id).ToListAsync();
+            var model = await _context.P_Adicionais.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(model.OrderByDescending(x => x.paraTodos).ToList());
         }
 
@@ -215,14 +215,20 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> UpdateCategoriaInAdicionalCategorias([FromBody]ListarCategoriasPorAdicional listarCategoriasPorAdicional)
         {
             int result;
+
+            result = await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},@idCuenta = {Cuenta.id}");
+
             if (listarCategoriasPorAdicional.selected)
             {
                 result = await _context.Database.ExecuteSqlRawAsync($"EXEC AddCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
+               //await _context.Database.ExecuteSqlRawAsync($"EXEC AddCategoriaAdicional @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
             }
             else
             {
                 result = await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
+              //  await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteCategoriaAdicional @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
             }
+
 
             if (result == 0)
             {

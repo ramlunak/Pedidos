@@ -1,4 +1,4 @@
-﻿@model Pedidos.Models.P_Cardapio
+﻿@model Pedidos.Models.P_Categoria
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,7 @@
 
 <h1>Edit</h1>
 
-<h4>P_Cardapio</h4>
+<h4>P_Categoria</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,24 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="id" />
             <div class="form-group">
-                <label asp-for="idProducto" class="control-label"></label>
-                <input asp-for="idProducto" class="form-control" />
-                <span asp-validation-for="idProducto" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="strValor" class="control-label"></label>
-                <input asp-for="strValor" type="number" class="form-control" />
-                <span asp-validation-for="strValor" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="fecha" class="control-label"></label>
-                <input asp-for="fecha" class="form-control" />
-                <span asp-validation-for="fecha" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="minutosPreparacion" class="control-label"></label>
-                <input asp-for="minutosPreparacion" class="form-control" />
-                <span asp-validation-for="minutosPreparacion" class="text-danger"></span>
+                <label asp-for="nombre" class="control-label"></label>
+                <input asp-for="nombre" class="form-control" />
+                <span asp-validation-for="nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="idCuenta" class="control-label"></label>

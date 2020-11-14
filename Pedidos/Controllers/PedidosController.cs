@@ -25,8 +25,8 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Index()
         {
             ValidarCuenta();
-            // var pedidos = await _context.P_Pedidos.Where(x=>x.idCuenta == Cuenta.id).ToListAsync();
-            var pedidos = await _context.P_Pedidos.ToListAsync();
+          
+            var pedidos = await _context.P_Categorias.ToListAsync();
             return View(pedidos);
         }
 

@@ -9,9 +9,9 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
 
-        public int idAdicional { get; set; }
-
         public int idCategoria { get; set; }
+        
+        public string idsAdicionales { get; set; }       
 
         public int idCuenta { get; set; }
     }

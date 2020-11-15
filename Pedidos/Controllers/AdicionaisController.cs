@@ -219,14 +219,13 @@ namespace Pedidos.Controllers
             result = await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},@idCuenta = {Cuenta.id}");
 
             if (listarCategoriasPorAdicional.selected)
-            {
+            {               
                 result = await _context.Database.ExecuteSqlRawAsync($"EXEC AddCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
-               //await _context.Database.ExecuteSqlRawAsync($"EXEC AddCategoriaAdicional @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
             }
             else
             {
                 result = await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
-              //  await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteCategoriaAdicional @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
+                //  await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteCategoriaAdicional @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
             }
 
 

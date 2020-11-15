@@ -84,6 +84,8 @@ namespace Pedidos.Controllers
 
                 _context.Add(p_Categoria);
                 await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistCategoriaAdicional  @idCategoria = {p_Categoria.id},@idCuenta = {Cuenta.id}");
+
                 return RedirectToAction(nameof(Index));
             }
             return View(p_Categoria);
@@ -122,7 +124,7 @@ namespace Pedidos.Controllers
             {
                 try
                 {
-                    _context.Update(p_Categoria);
+                    _context.Update(p_Categoria);                  
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

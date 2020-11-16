@@ -53,6 +53,7 @@ namespace Pedidos.Models
         public bool activo { get; set; } = true;
 
         //PROPIEDADES AUXILIARES
+       
         [NotMapped]
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]

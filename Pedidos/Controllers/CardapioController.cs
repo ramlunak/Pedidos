@@ -22,21 +22,27 @@ namespace Pedidos.Controllers
         // GET: Cardapio
         public async Task<IActionResult> Index()
         {
-            //var id = 1;
-            var query =
-                from P in _context.P_Productos
-                join C in _context.P_Categorias on P.idCategoria equals C.id
-                where P.idCuenta == Cuenta.id
-                select new
-                {
-                    Categoria = C,
-                    Producto = P
-                };
-
-            var result = await query.ToListAsync();
-
             ValidarCuenta();
-            return View(await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync());
+            var data = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlCardapio(53,Cuenta.id)).ToListAsync();
+            ////var id = 1;
+            //var query =
+            //    from P in _context.P_Productos
+            //    join C in _context.P_Categorias on P.idCategoria equals C.id
+            //    where P.idCuenta == Cuenta.id
+            //    group C by C.nombre into G
+            //    select new
+            //    {
+            //        Categoria = G.Key,
+            //        Productos = G.ToList()
+            //    };
+
+
+            //var item = from d in data
+            //           group d by d.Categoria into g select g.ToList();
+
+            //var result = await query.ToListAsync();
+
+            return View(await _context.P_Categorias.Where(x=>x.idCuenta == Cuenta.id).ToListAsync());
         }
 
         // GET: Cardapio/Details/5

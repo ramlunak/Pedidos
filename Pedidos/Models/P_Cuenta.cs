@@ -18,5 +18,6 @@ namespace Pedidos.Models
         //Configuraciones
         public string estado { get; set; }
         public string municipio { get; set; }
+
     }
 }

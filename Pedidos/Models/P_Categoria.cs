@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -19,5 +20,8 @@ namespace Pedidos.Models
 
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
+
+        [NotMapped]
+        public List<P_Aux> P_AuxList { get; set; }
     }
 }

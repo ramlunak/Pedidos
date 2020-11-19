@@ -4,11 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-
-<div class="p-2">
+<div>
     @foreach (var item in Model)
     {
         <div class="accordion" id="accordionCategorias">
+            
             <div class="card">
                 <div class="card-header cursor-pointer d-flex justify-content-center" id="heading_@item.id" data-toggle="collapse" data-target="#collapse_@item.id" aria-expanded="true" aria-controls="collapse_@item.id">
                     <h5 class="mb-0">
@@ -16,9 +16,15 @@
                     </h5>
                 </div>
 
-                <div id="collapse_@item.id" class="collapse hide" aria-labelledby="heading_@item.id" data-parent="#accordionCategorias">
+                <div id="collapse_@item.id" class="collapse hide collapseCategoria" aria-labelledby="heading_@item.id" data-parent="#accordionCategorias">
                     <div class="card-body">
-                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+                        @*MODAL DETALLES PRODUCTO*@
+                                             
+                        @*LISTA PRODUCTOS*@
+                        <table class="table" id="tableProductosCategoria_@item.id" width="100%" cellspacing="0" cellpadding="0">
+                            
+                        </table>
                     </div>
                 </div>
             </div>
@@ -67,3 +73,6 @@
     }
         </tbody>
     </table>*@
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/views/cardapio/index.js"></script>

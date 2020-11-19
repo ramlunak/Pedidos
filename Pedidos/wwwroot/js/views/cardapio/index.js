@@ -40,12 +40,12 @@ function cargarProductosCategoria(idCategoria, productos) {
 
             //INFO PRODUCTO
             var TD1_Content = $('<div class="d-block">');
-            TD1_Content.append('<div>' + item.nombre + '</div>');
+            TD1_Content.append('<div style="font-size: 15px;"><b>' + item.nombre + '</b></div>');
             if (item.descripcion !== null) {
 
-                TD1_Content.append('<div style="font-size:11px">' + item.descripcion + '.</div>');
+                TD1_Content.append('<div style="font-size:14px;font-style: italic;">' + item.descripcion + '.</div>');
             }
-            TD1_Content.append('<div>R$ ' + item.valor.toFixed(2) + '</div>');
+            TD1_Content.append('<div style="color: green;font-weight: 600;font-size:14px;">R$ ' + item.valor.toFixed(2) + '</div>');
             //--
 
             //IMAGEN 
@@ -65,7 +65,7 @@ function cargarProductosCategoria(idCategoria, productos) {
     }
     else {
         var TD1_Content = $('<div class="d-block">');
-        var TD1 = $('<td style="width:100%;text-align: center;">').append('<div style="color:red">Não há produtos para mostrar</div>');       
+        var TD1 = $('<td style="width:100%;text-align: center;">').append('<div style="color:red">Não há produtos para mostrar</div>');
         var tr = $('<tr>').append(TD1);
         tabla.append(tr);
     }

@@ -12,8 +12,8 @@ $(function () {
 
     var basic = $('#main-cropper').croppie
         ({
-            viewport: { width: 300, height: 300 },
-            boundary: { width: 400, height: 400 },
+            viewport: { width: 200, height: 200 },
+            boundary: { width: 300, height: 300 },
             showZoomer: true,
            // enableResize: true,
             enableOrientation: true,
@@ -43,13 +43,10 @@ $(function () {
     $('#btnupload').on('click', function () {
         basic.croppie('result', 'blob').then(function (blob) {
             var formData = new FormData();
+
             var filename = $('#select').val();
             formData.append('filename', filename);
             formData.append('blob', blob);
-            var myAppUrlSettings =
-            {
-                MyUsefulUrl: '@Url.Action("CustomCrop", "Productos")'
-            }
 
             var request = new XMLHttpRequest();
             request.open('POST','/Productos/CustomCrop');
@@ -57,15 +54,12 @@ $(function () {
             request.onreadystatechange = function () { // Call a function when the state changes.
                 if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
                     var response = JSON.parse(request.responseText);
-                    console.log(response.message);
-                    $('#result').attr('src', 'data:image/png;base64,' + response.message);
-                    if (response.message == "OK") {
-                        alert('Photo Cropped Successfully!');
-                        window.location.reload();
-                    }
 
-                    if (response.message == "ERROR") {
-                        window.location.reload();
+                    console.log(response.message);                   
+
+                    if (response.message !== "ERROR") {
+                        $('#imgProducto').attr('src', 'data:image/png;base64,' + response.message);
+                        $('#ModalUploadImagen').modal('hide');
                     }
                 }
             }

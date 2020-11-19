@@ -5,156 +5,120 @@
     ViewData["Title"] = "Criar";
 }
 
-<h5>Criar Produto</h5>
-<hr />
-<div class="row">
-    <div class="col-sm-12">
-        <form asp-action="Create" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>PRODUCTOS</b>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
+            </div>
+        </div>
 
-            <div class="row">
-                <div class="col-sm-12 col-lg-3">
-                    <div class="form-group">
-                        <label class="control-label">Imagem</label>
-                        <div>
-                            <div class="custom-file">
-                                <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
-                                       Class="form-control custom-file-input" lang="pt-br" />
-                                <label class="custom-file-label">Imagem....</label>
+    </div>
+    <div class="card-body">
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-4">
+                <form asp-action="Create" enctype="multipart/form-data">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <div>
+                        <div class="form-group">
+
+                            <div>
+                                <div class="custom-file">
+                                    <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
+                                           Class="form-control custom-file-input" lang="pt-br" />
+                                    <label class="custom-file-label">Imagem....</label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="col-sm-12 col-lg-3">
-                    <div class="form-group">
-                        <label>Categorias</label>
-                        <input type="search" id="browserInputCategoria" list="CategoriaList" asp-for="Categoria" class="form-control" />
-                        <datalist id="CategoriaList">
-                            @if (ViewBag.Categorias != null)
-                            {
-                                @foreach (var categoria in ViewBag.Categorias)
+                    <div>
+                        <div class="form-group">
+
+                            <input type="search" id="browserInputCategoria" list="CategoriaList" placeholder="Categoria" asp-for="Categoria" class="form-control" />
+                            <datalist id="CategoriaList">
+                                @if (ViewBag.Categorias != null)
                                 {
-                                    <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
-                                }
-                            }
-                        </datalist>
-                        <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
-                        <span asp-validation-for="idCategoria" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-lg-6">
-                    <div class="form-group">
-                        <label asp-for="nombre" class="control-label"></label>
-                        <input asp-for="nombre" class="form-control" />
-                        <span asp-validation-for="nombre" class="text-danger"></span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row">
-
-                <div class="col-sm-12 col-lg-3">
-                    <div class="form-group">
-                        <label asp-for="strValor" class="control-label"></label>
-                        <input asp-for="strValor" type="number" class="form-control" />
-                        <span asp-validation-for="strValor" class="text-danger"></span>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-lg-3">
-                    <div class="form-group">
-                        <label>Sub Categorias</label>
-                        <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
-                            @*<option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
-                                @if (ViewBag.SubCategoria != null)
-                                {
-                                    @foreach (var subCategoria in ViewBag.SubCategoria)
+                                    @foreach (var categoria in ViewBag.Categorias)
                                     {
-                                        <option value="@(subCategoria.id)">@(subCategoria.nombre)</option>
+                                        <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
                                     }
-                                }*@
-
-                        </select>
-                    </div>
-                </div>
-
-                <div class="col-sm-12 col-lg-6">
-                    <div class="form-group">
-                        <label class="control-label">Tempo de preparação (Hr/Min)</label>
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-clock"></i></span>
-                            </div>
-                            <input type="number" asp-for="horasPreparacion" class="form-control" placeholder="Hr">
-                            <input type="number" asp-for="minutosPreparacion" class="form-control" placeholder="Min">
+                                }
+                            </datalist>
+                            <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
+                            <span asp-validation-for="idCategoria" class="text-danger"></span>
                         </div>
                     </div>
 
-                </div>
+                    <div>
+                        <div class="form-group">
 
-            </div>
-
-            <div class="row">
-
-                <div class="col-12">
-                    <div class="form-group">
-                        <label asp-for="descripcion" class="control-label"></label>
-                        <textarea asp-for="descripcion" rows="4" class="form-control"></textarea>
-                        <span asp-validation-for="descripcion" class="text-danger"></span>
+                            <input asp-for="nombre" class="form-control" placeholder="Nome" />
+                            <span asp-validation-for="nombre" class="text-danger"></span>
+                        </div>
                     </div>
-                </div>
+
+
+
+                    <div>
+                        <div class="form-group">
+                            <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" />
+                            <span asp-validation-for="valor" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    @*<div>
+                            <div class="form-group">
+                                <label>Sub Categorias</label>
+                                <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
+                                </select>
+                            </div>
+                        </div>*@
+
+                    <div>
+                        <div class="form-group">
+                            <label class="control-label">Tempo de preparação (Hr/Min)</label>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-clock"></i></span>
+                                </div>
+                                <input type="number" asp-for="horasPreparacion" class="form-control" placeholder="Hr">
+                                <input type="number" asp-for="minutosPreparacion" class="form-control" placeholder="Min">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="form-group">                            
+                            <textarea asp-for="descripcion" rows="3" class="form-control" placeholder="Descrição"></textarea>
+                            <span asp-validation-for="descripcion" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                        <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
+                    </div>
+
+                </form>
             </div>
+        </div>
 
-            <div class="form-group row col-sm-12 d-flex justify-content-between m-0 p-0">
 
-                <div class="btn btn-danger">
-                    <a style="color:white" asp-action="Index">Cancelar</a>
-                </div>
-
-                <div>
-                    <input type="submit" value="Criar" class="btn btn-success" />
-                </div>
-
-            </div>
-
-        </form>
     </div>
 </div>
 
-
 @section Scripts {
 
-    <script>
-        $(document).ready(function () {
-            $('.custom-file-input').on("change", function () {
-                console.log(this);
-                var fileName = $(this).val().split("\\").pop();
-                $(this).next('.custom-file-label').html(fileName);
-            })
-
-            $('#browserInputCategoria').on('input', function () {
-                var opt = $('option[value="' + $(this).val() + '"]');
-                $('#idCategoria').val(opt.length ? opt.attr('id') : '');
-                CargarSubCategorias();
-            });
-
-            function CargarSubCategorias() {
-
-                $.getJSON('/Categorias/GetSubCategarias', { idCategoria: $('#idCategoria').val() }, function (data) {
-                   
-                    $.each(data, function () {
-                        $('#idSubCategoria').append('<option value=' + this.value + '>' + this.text + '</option>');
-                    });
-                    $('#idSubCategoria').append('<option selected ></option>');
-
-                });
-            }
-
-        });
-    </script>
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
 }
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/jquery.mask.js"></script>
+<script src="~/js/views/productos/create.js"></script>

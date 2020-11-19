@@ -41,7 +41,7 @@ namespace Pedidos.Controllers
             //           group d by d.Categoria into g select g.ToList();
 
             //var result = await query.ToListAsync();
-            var model = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+            var model = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
 
             return View(model);
         }

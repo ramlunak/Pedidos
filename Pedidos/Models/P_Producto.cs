@@ -34,12 +34,11 @@ namespace Pedidos.Models
 
         public int idCuenta { get; set; }
 
-        [DisplayName("Valor")]
-        [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "O valor é obrigatorio")]
+        [DisplayName("Valor")]       
         public decimal valor { get; set; }
 
-        [NotMapped]
-        [Required(ErrorMessage = "O valor é obrigatorio")]
+        [NotMapped]      
         [DisplayName("Valor")]
         public string strValor { get; set; } = string.Empty;
 

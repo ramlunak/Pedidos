@@ -115,7 +115,7 @@ namespace Pedidos.Controllers
                         p_Productos.imagen = await imagen.ToByteArray();
                     }
                 }
-                p_Productos.valor = p_Productos.strValor.ToDecimal();
+               // p_Productos.valor = p_Productos.strValor.ToDecimal();
                 p_Productos.idCuenta = Cuenta.id;
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
@@ -151,7 +151,7 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-            p_Productos.strValor = p_Productos.valor.ToString(CultureInfo.InvariantCulture);
+           // p_Productos.strValor = p_Productos.valor.ToString(CultureInfo.InvariantCulture);
             var ListaCaterorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             ViewBag.Categorias = ListaCaterorias;
             ViewBag.Pagina = pagina;
@@ -208,7 +208,7 @@ namespace Pedidos.Controllers
                         }
                     }
 
-                    p_Productos.valor = p_Productos.strValor.ToDecimal();
+                   // p_Productos.valor = p_Productos.strValor.ToDecimal();
                     _context.Update(p_Productos);
                     await _context.SaveChangesAsync();
 

@@ -79,3 +79,8 @@ body {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.croppie-container {
+    width: 100%;
+    height: 80%;
+}

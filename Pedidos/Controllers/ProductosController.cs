@@ -12,6 +12,13 @@ using Pedidos.Data;
 using Pedidos.Extensions;
 using Pedidos.Models;
 
+//CROPPER
+using System.IO;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.FileProviders;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+
 namespace Pedidos.Controllers
 {
     public class ProductosController : BaseController
@@ -115,11 +122,11 @@ namespace Pedidos.Controllers
                         p_Productos.imagen = await imagen.ToByteArray();
                     }
                 }
-               // p_Productos.valor = p_Productos.strValor.ToDecimal();
+                // p_Productos.valor = p_Productos.strValor.ToDecimal();
                 p_Productos.idCuenta = Cuenta.id;
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
-                
+
                 //Actualizar lista productos de la session
                 var SSproductos = GetSession("Productos");
                 if (SSproductos != null)
@@ -151,7 +158,7 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
 
-           // p_Productos.strValor = p_Productos.valor.ToString(CultureInfo.InvariantCulture);
+            // p_Productos.strValor = p_Productos.valor.ToString(CultureInfo.InvariantCulture);
             var ListaCaterorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             ViewBag.Categorias = ListaCaterorias;
             ViewBag.Pagina = pagina;
@@ -208,7 +215,7 @@ namespace Pedidos.Controllers
                         }
                     }
 
-                   // p_Productos.valor = p_Productos.strValor.ToDecimal();
+                    // p_Productos.valor = p_Productos.strValor.ToDecimal();
                     _context.Update(p_Productos);
                     await _context.SaveChangesAsync();
 
@@ -288,5 +295,58 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             return _context.P_Productos.Any(e => e.id == id);
         }
+
+        [HttpPost]
+        public IActionResult CustomCrop(string filename, IFormFile blob)
+        {
+            try
+            {
+                string base64String;
+                using (var image = Image.Load(blob.OpenReadStream()))
+                {
+                    string systemFileExtenstion = filename.Substring(filename.LastIndexOf('.'));
+
+                    //image.Mutate(x => x.Resize(180, 180));
+                    //var newfileName180 = GenerateFileName("Photo_180_180_", systemFileExtenstion);
+                    // var filepath160 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img")).Root + $@"\{newfileName180}";
+                    //image.Save(newfileName180);
+                  
+                    using (MemoryStream m = new MemoryStream())
+                    {
+                        image.SaveAsPng(m);
+                        byte[] imageBytes = m.ToArray();
+
+                        // Convert byte[] to Base64 String
+                        base64String = Convert.ToBase64String(imageBytes);
+                        ;
+                    }
+
+                    //var newfileName200 = GenerateFileName("Photo_200_200_", systemFileExtenstion);
+                    //var filepath200 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"\{newfileName200}";
+                    //image.Mutate(x => x.Resize(200, 200));
+                    //image.Save(filepath200);
+
+                    //var newfileName32 = GenerateFileName("Photo_32_32_", systemFileExtenstion);
+                    //var filepath32 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"\{newfileName32}";
+                    //image.Mutate(x => x.Resize(32, 32));
+                    //image.Save(filepath32);
+
+                }
+
+                return Json(new { Message = base64String });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { Message = "ERROR" });
+            }
+        }
+
+        public string GenerateFileName(string fileTypeName, string fileextenstion)
+        {
+            if (fileTypeName == null) throw new ArgumentNullException(nameof(fileTypeName));
+            if (fileextenstion == null) throw new ArgumentNullException(nameof(fileextenstion));
+            return $"{fileTypeName}_{DateTime.Now:yyyyMMddHHmmssfff}_{Guid.NewGuid():N}{fileextenstion}";
+        }
+
     }
 }

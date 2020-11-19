@@ -5,6 +5,16 @@
     ViewData["Title"] = "Criar";
 }
 
+<div class="card" style="margin-top:10px;">
+    <div class="card-header">Cropper in ASP.NET Core</div>
+    <div class="card-body">
+        <div id="main-cropper"></div>
+        <input type="file" id="select" class="form-control" value="Choose Image" accept="image/*">
+        <img id="result" style="width:300px;height:300px" class=" form-control">
+        <button id="btnupload" style="margin-top: 10px;" name="btnupload" class="btn btn-success">Crop</button>
+    </div>
+</div>
+
 <div class="card m-2">
     <div class="card-header">
         <div class="row d-flex justify-content-between p-2">
@@ -94,7 +104,7 @@
                     </div>
 
                     <div>
-                        <div class="form-group">                            
+                        <div class="form-group">
                             <textarea asp-for="descripcion" rows="3" class="form-control" placeholder="Descrição"></textarea>
                             <span asp-validation-for="descripcion" class="text-danger"></span>
                         </div>
@@ -121,4 +131,5 @@
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/jquery/jquery.mask.js"></script>
+<script src="~/js/views/productos/cropper .js"></script>
 <script src="~/js/views/productos/create.js"></script>

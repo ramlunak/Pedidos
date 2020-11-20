@@ -331,7 +331,7 @@ namespace Pedidos.Controllers
                     //image.Mutate(x => x.Resize(32, 32));
                     //image.Save(filepath32);
 
-                }
+                }  
 
                 return Json(new { Message = base64String });
             }

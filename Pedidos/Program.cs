@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
@@ -20,6 +21,8 @@ namespace Pedidos
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
+                    webBuilder.UseContentRoot(Directory.GetCurrentDirectory());
+                    webBuilder.UseWebRoot("wwwroot");
                     webBuilder.UseStartup<Startup>();
                 });
     }

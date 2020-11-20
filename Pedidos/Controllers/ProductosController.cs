@@ -330,7 +330,7 @@ namespace Pedidos.Controllers
 
                     //var newfileName200 = GenerateFileName("Photo_200_200_", systemFileExtenstion);
                     //var filepath200 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"\{newfileName200}";
-                    //image.Mutate(x => x.Resize(200, 200));
+                   // image.Mutate(x => x.Resize(100, 100));
                     //image.Save(filepath200);
 
                     //var newfileName32 = GenerateFileName("Photo_32_32_", systemFileExtenstion);

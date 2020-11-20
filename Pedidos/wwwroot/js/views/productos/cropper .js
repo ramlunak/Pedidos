@@ -12,7 +12,7 @@ $(function () {
 
     var basic = $('#main-cropper').croppie
         ({
-            viewport: { width: 200, height: 200 },
+            viewport: { width: 150, height: 150 },
             boundary: { width: 300, height: 300 },
             showZoomer: true,
            // enableResize: true,

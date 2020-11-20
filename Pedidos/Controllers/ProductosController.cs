@@ -90,8 +90,10 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Create()
         {
             ValidarCuenta();
+            SetSession("base64String", "");
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            return View(new P_Productos());
+            var model = new P_Productos() { ImageBase64 = ImageLoad };
+            return View(model);
         }
 
         // POST: Productos/Create
@@ -104,26 +106,32 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             if (ModelState.IsValid)
             {
+                //var files = HttpContext.Request.Form.Files;
+                //foreach (var imagen in files)
+                //{
+                //    if (imagen != null && imagen.Length > 0)
+                //    {
+                //        if (!imagen.IsImage())
+                //        {
+                //            @ViewBag.Erro = "O arquivo selecionado não tem formato de imagem";
+                //            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+                //            return View(p_Productos);
+                //        }
 
-                var files = HttpContext.Request.Form.Files;
-                foreach (var imagen in files)
-                {
-                    if (imagen != null && imagen.Length > 0)
-                    {
-                        if (!imagen.IsImage())
-                        {
-                            @ViewBag.Erro = "O arquivo selecionado não tem formato de imagem";
-                            ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-                            return View(p_Productos);
-                        }
+                //        var imgBytes = await imagen.ToByteArray();
+                //        var newImg = imgBytes.Resize(50, 50);
+                //        p_Productos.imagen = await imagen.ToByteArray();
+                //    }
+                //}
 
-                        var imgBytes = await imagen.ToByteArray();
-                        var newImg = imgBytes.Resize(50, 50);
-                        p_Productos.imagen = await imagen.ToByteArray();
-                    }
-                }
                 // p_Productos.valor = p_Productos.strValor.ToDecimal();
                 p_Productos.idCuenta = Cuenta.id;
+                p_Productos.ImageBase64 = GetSession("base64String");
+                if (!string.IsNullOrEmpty(p_Productos.ImageBase64))
+                {
+                    p_Productos.imagen = Convert.FromBase64String(p_Productos.ImageBase64);
+                }
+
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
 
@@ -310,7 +318,7 @@ namespace Pedidos.Controllers
                     //var newfileName180 = GenerateFileName("Photo_180_180_", systemFileExtenstion);
                     // var filepath160 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "img")).Root + $@"\{newfileName180}";
                     //image.Save(newfileName180);
-                  
+
                     using (MemoryStream m = new MemoryStream())
                     {
                         image.SaveAsPng(m);
@@ -318,12 +326,11 @@ namespace Pedidos.Controllers
 
                         // Convert byte[] to Base64 String
                         base64String = Convert.ToBase64String(imageBytes);
-                        ;
                     }
 
                     //var newfileName200 = GenerateFileName("Photo_200_200_", systemFileExtenstion);
                     //var filepath200 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"\{newfileName200}";
-                    //image.Mutate(x => x.Resize(200, 200));
+                   // image.Mutate(x => x.Resize(100, 100));
                     //image.Save(filepath200);
 
                     //var newfileName32 = GenerateFileName("Photo_32_32_", systemFileExtenstion);
@@ -333,10 +340,13 @@ namespace Pedidos.Controllers
 
                 }  
 
+                SetSession("base64String", base64String);
                 return Json(new { Message = base64String });
+
             }
             catch (Exception ex)
             {
+                SetSession("base64String", "");
                 return Json(new { Message = "ERROR" });
             }
         }

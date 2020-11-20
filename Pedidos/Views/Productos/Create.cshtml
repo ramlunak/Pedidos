@@ -3,15 +3,28 @@
 
 @{
     ViewData["Title"] = "Criar";
+    var ads = Model;
 }
 
-<div class="card" style="margin-top:10px;">
-    <div class="card-header">Cropper in ASP.NET Core</div>
-    <div class="card-body">
-        <div id="main-cropper"></div>
-        <input type="file" id="select" class="form-control" value="Choose Image" accept="image/*">
-        <img id="result" style="width:300px;height:300px" class=" form-control">
-        <button id="btnupload" style="margin-top: 10px;" name="btnupload" class="btn btn-success">Crop</button>
+<!-- Modal -->
+<div class="modal fade" id="ModalUploadImagen" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Imagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="main-cropper"></div>
+                <input type="file" id="select" class="form-control" value="Choose Image" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="btnupload" name="btnupload" class="btn btn-success">Salvar</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -34,17 +47,20 @@
                 <form asp-action="Create" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-                    <div>
-                        <div class="form-group">
-
-                            <div>
+                    <div class="d-block" style="text-align:center">
+                        <div>
+                            <img id="imgProducto" class="cursor-pointer" src="data:image/png;base64,@Model.ImageBase64" style="height:150px;width:150px;object-fit:cover;border-radius:5px" data-toggle="modal" data-target="#ModalUploadImagen">
+                        </div>
+                        <div>
+                            <div class="btn btn-sm btn-danger cursor-pointer" style="width:150px;margin:1px;margin-bottom:5px">Apagar</div>
+                        </div>
+                        @*<div>
                                 <div class="custom-file">
                                     <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
                                            Class="form-control custom-file-input" lang="pt-br" />
                                     <label class="custom-file-label" style="word-break: break-all; overflow: hidden;">Imagem....</label>
                                 </div>
-                            </div>
-                        </div>
+                            </div>*@
                     </div>
 
                     <div>

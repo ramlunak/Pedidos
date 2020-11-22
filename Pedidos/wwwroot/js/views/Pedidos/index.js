@@ -14,17 +14,22 @@
 });
 
 function FiltrarProductos(productos) {
-  
+
     var TABLE = $('#tableProductos');
     TABLE.empty();
 
     $.each(productos, function (index, item) {
 
-        var TD = $('<td>');
+        var TD1 = $('<td class="hover" style="width:100%">');
+        var TD2 = $('<td style="width:auto">');
         var TR = $('<tr>');
 
-        TD.append('<div>' + item.nombre + '</div>');
-        TR.append(TD);
+        TD1.append('<div><b>' + item.nombre + '</b></div>');
+        TD1.append('<div style="font-size:13px;color:green;font-weight: 700;">R$ ' + item.valor.toFixed(2) + '</div>');
+
+        TD2.append('<div class="d-flex align-items-center unselectable" style="font-size:22px;color:green;font-weight: 600;cursor:pointer">+</div>');
+
+        TR.append(TD1, TD2);
         TABLE.append(TR);
 
     });

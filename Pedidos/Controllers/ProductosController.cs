@@ -304,6 +304,14 @@ namespace Pedidos.Controllers
             return _context.P_Productos.Any(e => e.id == id);
         }
 
+        public async Task<IActionResult> GetProductos()
+        {
+            ValidarCuenta();           
+          //  var items = await _context.P_Productos.Where(x=>x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            var items = await _context.P_Productos.ToListAsync();
+            return Ok(items);
+        }
+
         [HttpPost]
         public IActionResult CustomCrop(string filename, IFormFile blob)
         {

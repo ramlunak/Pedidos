@@ -18,10 +18,11 @@ namespace Pedidos.Models
         public DateTime fecha { get; set; }
         public string status { get; set; }
         public string descripcion { get; set; }
-        public int idCuenta { get; set; }
-        public bool activo { get; set; }
         public decimal? valor { get; set; }
         public decimal? descuento { get; set; }
+
+        public int idCuenta { get; set; }
+        public bool activo { get; set; }
 
         //AUXILIARES
 

@@ -281,7 +281,7 @@ namespace Pedidos.Data.Reports {
             
             private global::System.Data.DataColumn columnid;
             
-            private global::System.Data.DataColumn columnnome;
+            private global::System.Data.DataColumn columnnombre;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
@@ -326,9 +326,9 @@ namespace Pedidos.Data.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn nomeColumn {
+            public global::System.Data.DataColumn nombreColumn {
                 get {
-                    return this.columnnome;
+                    return this.columnnombre;
                 }
             }
             
@@ -369,11 +369,11 @@ namespace Pedidos.Data.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public dsVendasRow AdddsVendasRow(string id, string nome) {
+            public dsVendasRow AdddsVendasRow(string id, string nombre) {
                 dsVendasRow rowdsVendasRow = ((dsVendasRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         id,
-                        nome};
+                        nombre};
                 rowdsVendasRow.ItemArray = columnValuesArray;
                 this.Rows.Add(rowdsVendasRow);
                 return rowdsVendasRow;
@@ -397,7 +397,7 @@ namespace Pedidos.Data.Reports {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
                 this.columnid = base.Columns["id"];
-                this.columnnome = base.Columns["nome"];
+                this.columnnombre = base.Columns["nombre"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -405,8 +405,8 @@ namespace Pedidos.Data.Reports {
             private void InitClass() {
                 this.columnid = new global::System.Data.DataColumn("id", typeof(string), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnid);
-                this.columnnome = new global::System.Data.DataColumn("nome", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnnome);
+                this.columnnombre = new global::System.Data.DataColumn("nombre", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnnombre);
                 this.ExtendedProperties.Add("Generator_TablePropName", "_dsVendas");
                 this.ExtendedProperties.Add("Generator_UserTableName", "dsVendas");
             }
@@ -567,17 +567,17 @@ namespace Pedidos.Data.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string nome {
+            public string nombre {
                 get {
                     try {
-                        return ((string)(this[this.tabledsVendas.nomeColumn]));
+                        return ((string)(this[this.tabledsVendas.nombreColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'nome\' in table \'dsVendas\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'nombre\' in table \'dsVendas\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tabledsVendas.nomeColumn] = value;
+                    this[this.tabledsVendas.nombreColumn] = value;
                 }
             }
             
@@ -595,14 +595,14 @@ namespace Pedidos.Data.Reports {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsnomeNull() {
-                return this.IsNull(this.tabledsVendas.nomeColumn);
+            public bool IsnombreNull() {
+                return this.IsNull(this.tabledsVendas.nombreColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetnomeNull() {
-                this[this.tabledsVendas.nomeColumn] = global::System.Convert.DBNull;
+            public void SetnombreNull() {
+                this[this.tabledsVendas.nombreColumn] = global::System.Convert.DBNull;
             }
         }
         

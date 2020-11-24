@@ -80,6 +80,11 @@
     <None Include="Data\dsVendas.xss">
       <DependentUpon>dsVendas.xsd</DependentUpon>
     </None>
+    <None Include="Properties\DataSources\Form1.datasource" />
+    <None Include="Properties\DataSources\Program.datasource" />
+    <None Include="Properties\DataSources\RDLC.Reports.Data.dsVendas.datasource" />
+    <None Include="Properties\DataSources\RDLC.Reports.Properties.Resources.datasource" />
+    <None Include="Properties\DataSources\RDLC.Reports.Properties.Settings.datasource" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

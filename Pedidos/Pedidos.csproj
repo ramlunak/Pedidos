@@ -2,9 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UserSecretsId>d6deb5b2-0518-412a-b99c-433d00640b75</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Reports\Vendas.rdlc" />
     <None Remove="wwwroot\Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Cardapio.sql" />
     <None Remove="SqlScripts\Categoria - Copy.sql" />
@@ -29,12 +31,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Reports\Vendas.rdlc" />
     <EmbeddedResource Include="wwwroot\Reports\Vendas.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
-    <PackageReference Include="Microsoft.AspNet.Mvc.pt-br" Version="5.2.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="3.1.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.7">
       <PrivateAssets>all</PrivateAssets>

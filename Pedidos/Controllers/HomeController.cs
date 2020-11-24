@@ -32,22 +32,36 @@ namespace Pedidos.Controllers
 
         public IActionResult Print()
         {
-
-            var dt = new DataTable();
-            dt = GetData();
-
-            string minetype = "";
-            int extension = 1;
-
             var path = $"{this._webHostEnvironment.WebRootPath}\\Reports\\Vendas.rdlc";
 
-            Dictionary<string, string> parameters = new Dictionary<string, string>();
-            parameters.Add("Data", "Rdl Report");
-            LocalReport localReport = new LocalReport(path);
-            localReport.AddDataSource("ds", dt);           
-           // localReport.AddDataSource("ds", new List<P_Cuenta> { new P_Cuenta { id = 1 } });
-            var result = localReport.Execute(RenderType.Pdf, extension, parameters, minetype);           
-            return File(result.MainStream, "application/pdf");
+            try
+            {
+                //var dt = new DataTable();
+                //dt = GetData();
+
+                string minetype = "x";
+                int extension = 1;
+
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+                parameters.Add("Data", "Rdl Report");
+
+                LocalReport localReport = new LocalReport(path);
+                var data = new List<P_Categoria>(){
+                new P_Categoria { id = 1,nombre = "sadas"},
+                new P_Categoria { id = 2,nombre = "sadas"}
+                };
+
+                localReport.AddDataSource("ds", data);
+                // localReport.AddDataSource("ds", new List<P_Cuenta> { new P_Cuenta { id = 1 } });
+                var result = localReport.Execute(RenderType.Pdf, extension, null, minetype);
+                return File(result.MainStream, "application/pdf");
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erro = ex.Message.ToString();
+                ViewBag.Path = path;
+                return View();
+            }
 
         }
 
@@ -58,7 +72,7 @@ namespace Pedidos.Controllers
             dtsds.Columns.Add("id");
             dtsds.Columns.Add("nome");
             DataRow row = dtsds.NewRow();
-            row["id"] = "1";
+            row["id"] = 1;
             row["nome"] = "1";
             dtsds.Rows.Add(row);
             return dtsds;

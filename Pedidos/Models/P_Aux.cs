@@ -14,4 +14,5 @@ namespace Pedidos.Models
         public string JsonAdicionales { get; set; }
         public string JsonIngredientes { get; set; }
     }
+
 }

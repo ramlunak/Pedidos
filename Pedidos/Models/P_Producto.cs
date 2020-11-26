@@ -35,10 +35,10 @@ namespace Pedidos.Models
         public int idCuenta { get; set; }
 
         [Required(ErrorMessage = "O valor é obrigatorio")]
-        [DisplayName("Valor")]       
+        [DisplayName("Valor")]
         public decimal valor { get; set; }
 
-        [NotMapped]      
+        [NotMapped]
         [DisplayName("Valor")]
         public string strValor { get; set; } = string.Empty;
 
@@ -52,7 +52,7 @@ namespace Pedidos.Models
         public bool activo { get; set; } = true;
 
         //PROPIEDADES AUXILIARES
-       
+
         [NotMapped]
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]
@@ -72,4 +72,17 @@ namespace Pedidos.Models
         public int Index { get; set; }
 
     }
+
+    public class ProductoDetalle
+    {
+        public int id { get; set; }
+        public string codigo { get; set; }
+        public string nombre { get; set; }
+        public string descripcion { get; set; }
+        public int idCategoria { get; set; }
+        public decimal valor { get; set; }
+        public string JsonAdicionales { get; set; }
+        public string JsonIngredientes { get; set; }
+    }
+
 }

@@ -306,8 +306,19 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> GetProductos()
         {
-            ValidarCuenta();           
-          //  var items = await _context.P_Productos.Where(x=>x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            var data = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlCardapio(null, Cuenta.id)).ToListAsync();
+            //var id = 1;
+            //var query = from P in _context.P_Productos
+            //            join C in _context.P_Categorias on P.idCategoria equals C.id
+            //            where P.idCuenta == Cuenta.id
+            //            group C by C.nombre into G
+            //            select G;
+
+       //     var item = await query.ToListAsync();
+
+
+            ValidarCuenta();
+            //  var items = await _context.P_Productos.Where(x=>x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             var items = await _context.P_Productos.ToListAsync();
             return Ok(items);
         }
@@ -338,7 +349,7 @@ namespace Pedidos.Controllers
 
                     //var newfileName200 = GenerateFileName("Photo_200_200_", systemFileExtenstion);
                     //var filepath200 = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Images")).Root + $@"\{newfileName200}";
-                   // image.Mutate(x => x.Resize(100, 100));
+                    // image.Mutate(x => x.Resize(100, 100));
                     //image.Save(filepath200);
 
                     //var newfileName32 = GenerateFileName("Photo_32_32_", systemFileExtenstion);
@@ -346,7 +357,7 @@ namespace Pedidos.Controllers
                     //image.Mutate(x => x.Resize(32, 32));
                     //image.Save(filepath32);
 
-                }  
+                }
 
                 SetSession("base64String", base64String);
                 return Json(new { Message = base64String });

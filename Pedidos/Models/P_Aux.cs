@@ -15,4 +15,8 @@ namespace Pedidos.Models
         public string JsonIngredientes { get; set; }
     }
 
+    public class ResultJson
+    {        
+        public P_Adicionais[] A { get; set; }
+    }
 }

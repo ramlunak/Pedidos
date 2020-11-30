@@ -33,8 +33,8 @@ namespace Pedidos.Controllers
         // GET: Productos
         public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
-            ValidarCuenta();
 
+            ValidarCuenta();
             var cantidadRegistrosPorPagina = 10; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
@@ -306,21 +306,47 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> GetProductos()
         {
-            var data = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlCardapio(null, Cuenta.id)).ToListAsync();
-            //var id = 1;
-            //var query = from P in _context.P_Productos
-            //            join C in _context.P_Categorias on P.idCategoria equals C.id
-            //            where P.idCuenta == Cuenta.id
-            //            group C by C.nombre into G
-            //            select G;
+            try
+            {
+                //var data = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlCardapio(null, Cuenta.id)).ToListAsync();
+                //var id = 1;
+                //var query = from P in _context.P_Productos
+                //            join C in _context.P_Categorias on P.idCategoria equals C.id
+                //            where P.idCuenta == Cuenta.id
+                //            group C by C.nombre into G
+                //            select G;
 
-       //     var item = await query.ToListAsync();
+                //     var item = await query.ToListAsync();
 
 
-            ValidarCuenta();
-            //  var items = await _context.P_Productos.Where(x=>x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-            var items = await _context.P_Productos.ToListAsync();
-            return Ok(items);
+                ValidarCuenta();
+                var items = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+                return Ok(items);
+            }
+            catch (Exception ex)
+            {
+                return Ok();
+            }
+        }
+
+        public async Task<IActionResult> GetDetalleProducto(int id)
+        {
+            try
+            {
+                ValidarCuenta();
+                var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(Cuenta.id, id)).ToListAsync();
+                var data = items.FirstOrDefault();
+
+                var productos = JsonConvert.DeserializeObject<P_Productos[]>(data.JsonProducto);
+                var adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(data.JsonAdicionales);
+                var ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(data.JsonIngredientes);
+
+                return Ok(new { producto = productos[0], adicionales, ingredientes });
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         [HttpPost]

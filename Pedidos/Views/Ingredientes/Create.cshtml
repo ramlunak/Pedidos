@@ -4,42 +4,23 @@
     ViewData["Title"] = "Create";
 }
 
-<div class="card">
-    <div class="card-header">
-        <div class="row d-flex justify-content-between p-2">
-            <div>
-                <b>ADICIONAIS</b>
-            </div>
-            <div>
-                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
-            </div>
-        </div>
 
-    </div>
-    <div class="card-body">
-
-        <div class="row">
-            <div class="col-md-4">
+        <div class="row d-flex justify-content-center">
+            <div class="col-12 col-md-4">
                 <form asp-action="Create">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group small">
-                        <label asp-for="nombre" class="control-label"></label>
-                        <input asp-for="nombre" class="form-control form-control-sm" />
+                       
+                        <input asp-for="nombre" class="form-control form-control-sm" placeholder="Nome" />
                         <span asp-validation-for="nombre" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <input type="submit" value="Create" class="btn btn-primary" />
+                        <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                        <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
                     </div>
                 </form>
             </div>
-        </div>
-
-        <div>
-            <a asp-action="Index">Back to List</a>
-        </div>
-
-    </div>
-</div>
+        </div> 
 
 
 @section Scripts {

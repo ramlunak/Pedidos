@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
+using Pedidos.Models.DTO;
 
 namespace Pedidos.Controllers
 {
@@ -65,6 +66,23 @@ namespace Pedidos.Controllers
 
             return View(modelo);
 
+        }
+
+        public async Task<IActionResult> Ingredientes(int id)
+        {
+            await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
+
+            var query = await _context.P_Ingredientes.FromSqlRaw($"EXEC GetIngredientesPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
+            var model = from ING in query
+                        select new ListarIngredientesPorProducto()
+                        {
+                            idProducto = id,
+                            idIngrediente = ING.id,
+                            ingrediente = ING.nombre,
+                            selected = ING.activo
+                        };
+
+            return View(model);
         }
 
         // GET: Productos/Details/5
@@ -134,6 +152,7 @@ namespace Pedidos.Controllers
 
                 _context.Add(p_Productos);
                 await _context.SaveChangesAsync();
+                await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {p_Productos.id},@idCuenta = {Cuenta.id}");
 
                 //Actualizar lista productos de la session
                 var SSproductos = GetSession("Productos");
@@ -348,6 +367,31 @@ namespace Pedidos.Controllers
                 return NotFound();
             }
         }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateIngredienteInProducto([FromBody] ListarIngredientesPorProducto listarIngredientesPorProducto)
+        {
+            int result;
+
+            result = await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {listarIngredientesPorProducto.idProducto},@idCuenta = {Cuenta.id}");
+
+            if (listarIngredientesPorProducto.selected)
+            {
+                result = await _context.Database.ExecuteSqlRawAsync($"EXEC AddIngredienteInProducto @idIngrediente = {listarIngredientesPorProducto.idIngrediente},  @idProducto = {listarIngredientesPorProducto.idProducto},@idCuenta = {Cuenta.id}");
+            }
+            else
+            {
+                result = await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteIngredienteInProducto @idIngrediente = {listarIngredientesPorProducto.idIngrediente},  @idProducto = {listarIngredientesPorProducto.idProducto},@idCuenta = {Cuenta.id}");
+            }
+
+            if (result == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
+
 
         [HttpPost]
         public IActionResult CustomCrop(string filename, IFormFile blob)

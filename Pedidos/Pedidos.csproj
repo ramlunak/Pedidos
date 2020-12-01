@@ -137,10 +137,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\js\views\ingredientes\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Compile Update="Data\Reports\dsVendas.Designer.cs">
       <DependentUpon>dsVendas.xsd</DependentUpon>
       <DesignTime>True</DesignTime>

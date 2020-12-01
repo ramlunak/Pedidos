@@ -35,152 +35,152 @@
                 string imreBase64Data = Convert.ToBase64String(item.imagen);
                 imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
             }
-        <tr>
-            <td>
-                <div>
-                    @if (item.imagen != null && item.imagen.Length > 0)
+            <tr>
+                <td>
+                    <div>
+                        @if (item.imagen != null && item.imagen.Length > 0)
                         {
-                    <img style="max-height:100px;max-width:100px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
+                            <img style="max-height:100px;max-width:100px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
                         }
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content" style="background-color: transparent;border: none;">
+                        <!-- Modal -->
+                        <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content" style="background-color: transparent;border: none;">
 
-                                <div class="modal-body">
-                                    <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
+                                    <div class="modal-body">
+                                        <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
 
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </td>
-            <td>
-                <div class="row col-12">
-                    <div class="col-10">
-                        <div>@item.nombre</div>
-                        <div>@item.Categoria</div>
-                    </div>
-                    <div class="col-2 align-items-end">
-                        <div class="d-block justify-content-end p-0">
-
-                            <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
-                                <div style="text-align:end">R$ @item.valor</div>
-                            </div>
-
-                            @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
-                               {
-
-                            <div style="font-size: 15px;font-weight: 500;color:gray;">
-                                <div style="text-align:end"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i> @item.horasPreparacion:@item.minutosPreparacion:00 </div>
-                            </div>
-                            }
-
-                        </div>
-                    </div>
-                    <div class="col-12">
-                        <samp>@item.descripcion</samp>
-                    </div>
-                </div>
-            </td>
-            <td>
-                <div class="d-flex justify-content-center p-2">
-                    <a><img width="20" style="margin-right:5px" src="~/img/adicionales.png" /></a>
-                    <span style="margin-right:20px">7</span>
-                    <a><img width="25" style="margin-right:5px" src="~/img/ingredientes.png" /></a>
-                    <span style="margin-right:20px">10</span>
-                </div>
-            </td>
-            <td>
-                <div class="d-flex justify-content-end p-2">
-                    <div class="m-1">
-                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                            <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                    <div class="m-1">
-                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                            <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </td>
-        </tr>
-
-
-        @*<tr>
-                <td>
-                    <div class="row col-sm-12">
-                        <div class="row col-12">
-
-                            <div class="col-2 p-0 m-0">
-                                <div style="width:100px;height: 100px">
-                                    @if (item.imagen != null && item.imagen.Length > 0)
-                                    {
-                                        <img style="flex:none;width:100px;border-radius:100px;object-fit:cover" src="@imgDataURL" />
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-7 col-md-6 p-0 m-0">
-                                <div class="d-block p-2">
-                                    <div style="color:black;font-size:18px">
-                                        <span style="text-transform:uppercase">@Html.DisplayFor(modelItem => item.nombre)</span>
                                     </div>
-                                    <div style="font-style:italic">
-                                        @Html.DisplayFor(modelItem => item.Categoria)
-                                    </div>
+
                                 </div>
-                            </div>
-                            <div class="col-3 col-md-2 p-0">
-                                <div class="d-block justify-content-start justify-content-md-end p-0">
-                                    <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
-                                        <div>R$ @item.valor</div>
-                                    </div>
-                                    @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
-                                    {
-                                        <div style="font-size:14px;color:gray;font-weight:600" class="d-flex">
-                                            <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
-                                            @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion):00
-                                        </div>
-                                    }
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-2">
-                                <div class="d-flex justify-content-end p-2">
-                                    <div class="m-1">
-                                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                            <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                    <div class="m-1">
-                                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                            <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row col-12">
-                            <div class="col-2 p-0 m-0">
-                            </div>
-                            <div class="col-6">
-                                <div style="font-size: 15px;color: dimgrey;">
-                                    <div>@item.descripcion</div>
-                                </div>
-                            </div>
-                            <div class="col-2 p-0 m-0">
-                            </div>
-                            <div class="col-2 p-0 m-0">
                             </div>
                         </div>
 
                     </div>
                 </td>
-            </tr>*@
+                <td>
+                    <div class="row col-12">
+                        <div class="col-10">
+                            <div>@item.nombre</div>
+                            <div>@item.Categoria</div>
+                        </div>
+                        <div class="col-2 align-items-end">
+                            <div class="d-block justify-content-end p-0">
+
+                                <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
+                                    <div style="text-align:end">R$ @item.valor</div>
+                                </div>
+
+                                @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
+                                {
+
+                                    <div style="font-size: 15px;font-weight: 500;color:gray;">
+                                        <div style="text-align:end"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i> @item.horasPreparacion:@item.minutosPreparacion:00 </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <samp>@item.descripcion</samp>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-center p-2">
+                        @*<a><img width="20" style="margin-right:5px" src="~/img/adicionales.png" /></a>
+                        <span style="margin-right:20px">7</span>*@
+                        <a asp-action="Ingredientes" asp-route-id="@item.id" class="cursor-pointer"><img width="25" style="margin-right:5px" src="~/img/ingredientes.png" /></a>
+                        @*<span style="margin-right:20px">10</span>*@
+                    </div>
+                </td>
+                <td>
+                    <div class="d-flex justify-content-end p-2">
+                        <div class="m-1">
+                            <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                        <div class="m-1">
+                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+
+
+            @*<tr>
+                    <td>
+                        <div class="row col-sm-12">
+                            <div class="row col-12">
+
+                                <div class="col-2 p-0 m-0">
+                                    <div style="width:100px;height: 100px">
+                                        @if (item.imagen != null && item.imagen.Length > 0)
+                                        {
+                                            <img style="flex:none;width:100px;border-radius:100px;object-fit:cover" src="@imgDataURL" />
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-7 col-md-6 p-0 m-0">
+                                    <div class="d-block p-2">
+                                        <div style="color:black;font-size:18px">
+                                            <span style="text-transform:uppercase">@Html.DisplayFor(modelItem => item.nombre)</span>
+                                        </div>
+                                        <div style="font-style:italic">
+                                            @Html.DisplayFor(modelItem => item.Categoria)
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-3 col-md-2 p-0">
+                                    <div class="d-block justify-content-start justify-content-md-end p-0">
+                                        <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
+                                            <div>R$ @item.valor</div>
+                                        </div>
+                                        @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
+                                        {
+                                            <div style="font-size:14px;color:gray;font-weight:600" class="d-flex">
+                                                <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
+                                                @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion):00
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-2">
+                                    <div class="d-flex justify-content-end p-2">
+                                        <div class="m-1">
+                                            <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                                <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div class="m-1">
+                                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                                <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row col-12">
+                                <div class="col-2 p-0 m-0">
+                                </div>
+                                <div class="col-6">
+                                    <div style="font-size: 15px;color: dimgrey;">
+                                        <div>@item.descripcion</div>
+                                    </div>
+                                </div>
+                                <div class="col-2 p-0 m-0">
+                                </div>
+                                <div class="col-2 p-0 m-0">
+                                </div>
+                            </div>
+
+                        </div>
+                    </td>
+                </tr>*@
         }
     </tbody>
 </table>

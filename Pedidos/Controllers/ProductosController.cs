@@ -356,9 +356,18 @@ namespace Pedidos.Controllers
                 var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(Cuenta.id, id)).ToListAsync();
                 var data = items.FirstOrDefault();
 
+                var adicionales = new List<P_Adicionais>().ToArray();
+                var ingredientes = new List<P_Ingredientes>().ToArray();
+
                 var productos = JsonConvert.DeserializeObject<P_Productos[]>(data.JsonProducto);
-                var adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(data.JsonAdicionales);
-                var ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(data.JsonIngredientes);
+                if (!string.IsNullOrEmpty(data.JsonAdicionales))
+                {
+                    adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(data.JsonAdicionales);
+                }
+                if (!string.IsNullOrEmpty(data.JsonIngredientes))
+                {
+                    ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(data.JsonIngredientes);
+                }
 
                 return Ok(new { producto = productos[0], adicionales, ingredientes });
             }

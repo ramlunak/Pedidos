@@ -43,7 +43,7 @@ namespace Pedidos.Data
 
             query.Append($" SELECT P.id as id");
             query.Append($" ,(SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsAdicionales from [dbo].[P_CategoriaAdicional] where idCategoria = P.idCategoria and idCuenta = {idCuenta}) AS varchar), ',') WHERE RTRIM(value) <> '') AS V JOIN[dbo].[P_Adicionais] AS A on V.value = A.id FOR JSON PATH) as JsonAdicionales ");
-            query.Append($" ,'' as JsonIngredientes ");
+            query.Append($" ,(SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsIngrediente from [dbo].[P_IngredientesProducto] where idProducto = P.id and idCuenta = 5) AS varchar), ',') WHERE RTRIM(value) <> '') AS V JOIN [dbo].[P_Ingredientes] AS A on V.value = A.id FOR JSON PATH) as JsonIngredientes  ");
 
             query.Append($" ,C.nombre as categoria ");
             query.Append($" ,(SELECT * FROM[dbo].[P_Productos] where id = P.id FOR JSON PATH) as JsonProducto ");

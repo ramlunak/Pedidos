@@ -63,13 +63,16 @@ namespace Pedidos.Models
         [NotMapped]
         public string ImageBase64 { get; set; }
 
+        [NotMapped]
+        public float desconto { get; set; }
+
         //PARA LOS PEDIDOS
         [NotMapped]
-        public DateTime DataPedido { get; set; }
+        public int cantidad { get; set; }
         [NotMapped]
-        public string Observacion { get; set; }
+        public List<P_Adicionais> Adicionales { get; set; } = new List<P_Adicionais>();
         [NotMapped]
-        public int Index { get; set; }
+        public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
 
     }
 
@@ -83,6 +86,17 @@ namespace Pedidos.Models
         public decimal valor { get; set; }
         public string JsonAdicionales { get; set; }
         public string JsonIngredientes { get; set; }
+    }
+
+    public class ProductosDTO
+    {
+        public int id { get; set; }
+        public string nombre { get; set; }
+        public decimal valor { get; set; }
+        public float descuento { get; set; }
+        public string jsonAdicionales { get; set; }
+        //Ingredientes que serén retirados
+        public string jsonIngredientes { get; set; }
     }
 
 }

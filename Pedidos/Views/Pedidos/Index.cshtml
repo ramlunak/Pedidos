@@ -1,5 +1,4 @@
-﻿@model IEnumerable<Pedidos.Models.P_Categoria>
-
+﻿
 @{
     ViewData["Title"] = "Pedidos";
 }
@@ -159,11 +158,11 @@
                 </div>
 
                 <div class="position-absolute  w-100">
-                                      
+
                     <!-- Modal -->
                     <div class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content"  style="font-size:13px;">
+                            <div class="modal-content" style="font-size:13px;">
 
                                 <div class="modal-header">
                                     <div class="d-flex justify-content-between w-100">
@@ -174,7 +173,7 @@
 
                                 <div class="modal-body">
                                     <div>
-                                      <span id="spanDescripcionProducto"></span>
+                                        <span id="spanDescripcionProducto"></span>
                                     </div>
 
                                     <div class="d-flex align-content-center">
@@ -187,57 +186,7 @@
                                     <div class="ml-2" style="color:darkcyan">
 
                                         <table id="modalTableAdicionales" class="w-100">
-                                            <tr>
-                                                <td style="width:100%">
-                                                    <div>+ 1 Quijo Branco</div>
-                                                </td>
-                                                <td>
-                                                    <div style="width:50px;text-align:end">
-                                                        R$ 5.00
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div style="width: 50px;text-align: end">
-                                                        <samp class="mr-2"><i class="fa fa-minus cursor-pointer"></i></samp>
-                                                        <i class="fa fa-plus cursor-pointer"></i>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td style="width:100%">
-                                                    <div>+ 1 Quijo Branco</div>
-                                                </td>
-                                                <td>
-                                                    <div style="width:50px;text-align:end">
-                                                        R$ 5.00
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div style="width: 50px;text-align: end">
-                                                        <samp class="mr-2"><i class="fa fa-minus cursor-pointer"></i></samp>
-                                                        <i class="fa fa-plus cursor-pointer"></i>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
-                                            <tr>
-                                                <td style="width:100%">
-                                                    <div>+ 1 Quijo Branco</div>
-                                                </td>
-                                                <td>
-                                                    <div style="width:50px;text-align:end">
-                                                        R$ 5.00
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div style="width: 50px;text-align: end">
-                                                        <samp class="mr-2"><i class="fa fa-minus cursor-pointer"></i></samp>
-                                                        <i class="fa fa-plus cursor-pointer"></i>
-                                                    </div>
-                                                </td>
-                                            </tr>
-
+                                            @*LISTA DE ADICIONALES DINAMICA*@
                                         </table>
 
                                     </div>
@@ -247,7 +196,6 @@
                                         <div class="m-1" style="color:gray">INGREDIENTES</div>
                                         <hr class="w-100" />
                                     </div>
-
 
                                     @*INGREDIENTES*@
                                     <div class="ml-2" style="color:brown">
@@ -260,7 +208,7 @@
                                             <div>- Hovo</div>
                                             <div class="cursor-pointer"> <input type="checkbox" checked /></div>
                                         </div>
-
+                                        
                                         <div class="d-flex justify-content-between">
                                             <div>- Alface</div>
                                             <div class="cursor-pointer"> <input type="checkbox" checked /></div>
@@ -270,8 +218,8 @@
                                 </div>
 
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                    <a class="cursor-pointer" onclick="MinusProducto()"><i class="fa fa-minus-circle"></i></a>
+                                    <a class="cursor-pointer" onclick="AddProducto()"><i class="fa fa-plus-circle"></i></a>
                                 </div>
                             </div>
                         </div>

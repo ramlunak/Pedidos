@@ -99,8 +99,20 @@ body {
 
 .hover:hover {
     background-color: #D6EDFC;
-    border-radius:5px;
+    border-radius: 5px;
     -webkit-box-shadow: 3px 3px 12px 0px rgba(50, 50, 50, 0.71);
     -moz-box-shadow: 3px 3px 12px 0px rgba(50, 50, 50, 0.71);
     box-shadow: 3px 3px 12px 0px rgba(50, 50, 50, 0.71);
 }
+
+.btn-plano {
+    border: none;
+    background-color: transparent;
+    outline: none;
+}
+
+    .btn-plano:active {
+        border: none;
+        background-color: transparent;
+        outline: none;
+    }

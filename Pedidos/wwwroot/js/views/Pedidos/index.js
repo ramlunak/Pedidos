@@ -83,7 +83,9 @@ function ShowDetallesProducto(id) {
         dataType: "json",
         success: function (data) {
             _ModalProducto = data.producto;
+            _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
+
             CargarDatosModalDetalles(data);
         },
         failure: function (response) {
@@ -102,7 +104,7 @@ function CargarDatosModalDetalles(data) {
     $('#spanValorProducto').html(data.producto.valor.toFixed(2));
     $('#spanDescripcionProducto').html(data.producto.descripcion);
 
-    TABLE_Adicional(data.adicionales,data.producto.id);
+    TABLE_Adicional(data.adicionales, data.producto.id);
 
     $('#ModalDetalleProducto').modal('show');
 }
@@ -119,16 +121,16 @@ function TABLE_Adicional(adicionales, idProducto) {
         var TD3 = $('<td>');
         var TR = $('<tr>');
 
-        var codigo = "ADC_" + item.id + "_" + item.nombre;
+        var codigo = "ADC_" + item.id + "_" + idProducto;
+        var minusId = "Minus_" + item.id + "_" + idProducto;
 
-        TD1.append('<div><a id='+codigo+' style="color:blue">+0</a> ' + item.nombre + '</div>');
-        TD2.append('<div style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
-        TD3.append('<div style="width:50px;text-align: end"> <samp class="mr-2"><i class="fa fa-minus cursor-pointer"></i></samp><i onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="fa fa-plus cursor-pointer"></i></div>');
+        TD1.append('<div class="unselectable"><a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
+        TD2.append('<div class="unselectable" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
+        TD3.append('<div style="width:60px;text-align: end"> <button id=' + minusId + ' disabled="disabled" onclick="adicionalMinus(' + item.id + ',' + idProducto + ')" class="btn-plano mr-2 unselectable"><i  class="fa fa-minus cursor-pointer"></i></button><button onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="btn-plano unselectable"><i  class="fa fa-plus cursor-pointer"></i></button></div>');
 
         TR.append(TD1, TD2, TD3);
         TABLE.append(TR);
     });
-
 }
 
 function AddProducto() {
@@ -159,6 +161,45 @@ function AddProducto() {
     });
 }
 
-function adicionalPlus(item,ds) {
-    console.log(item,ds);
+function adicionalPlus(id, idProducto) {
+
+    var codigo = "#ADC_" + id + "_" + idProducto;
+    var minusId = "#Minus_" + id + "_" + idProducto;
+    console.log(minusId);
+    var item = $.grep(_ModalAdicionales, (item, index) => {
+        if (item.id === id) {
+            if (item.cantidad === null || item.cantidad === undefined) {
+                item.cantidad = 1;
+                $(minusId).removeAttr('disabled');
+            } else {
+                item.cantidad++;
+                $(minusId).removeAttr('disabled');
+            }
+
+            $(codigo).html('+' + item.cantidad);
+        }
+        return item.id === id;
+    });
+}
+
+
+function adicionalMinus(id, idProducto) {
+
+    var codigo = "#ADC_" + id + "_" + idProducto;
+    var minusId = "#Minus_" + id + "_" + idProducto;
+    console.log(minusId);
+    var item = $.grep(_ModalAdicionales, (item, index) => {
+        if (item.id === id) {
+            if (item.cantidad === null || item.cantidad === undefined) {
+                return;
+            } else {
+                item.cantidad--;
+                if (parseInt(item.cantidad) === 0) {
+                    $(minusId).attr('disabled', 'disabled');
+                }
+            }
+            $(codigo).html('+' + item.cantidad);
+        }
+        return item.id === id;
+    });
 }

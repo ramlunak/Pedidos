@@ -60,7 +60,7 @@ function CargarProductos() {
         success: function (data) {
             // window.location.href = '/AlumnoPrueba/Resultado/';
             _Productos = data;
-          
+
             // cargarProductosCategoria(parseInt(idCategoria), data);
         },
         failure: function (response) {
@@ -85,8 +85,9 @@ function ShowDetallesProducto(id) {
             _ModalProducto = data.producto;
             _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
-
             CargarDatosModalDetalles(data);
+
+            console.log(_ModalIngredientes);
         },
         failure: function (response) {
             console.log('failure', response);
@@ -149,7 +150,7 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
         //var minusId = "Minus_" + item.id + "_" + idProducto;
 
         TD1.append('<div>' + item.nombre + '</div>');
-        TD2.append('<div class="cursor-pointer"> <input type="checkbox" checked /></div>');
+        TD2.append('<div class="cursor-pointer"> <input id="" onchange="ingredienteOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" checked /></div>');
 
         TR.append(TD1, TD2);
         TABLE.append(TR);
@@ -188,7 +189,7 @@ function adicionalPlus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
     var minusId = "#Minus_" + id + "_" + idProducto;
-  
+
     var item = $.grep(_ModalAdicionales, (item, index) => {
         if (item.id === id) {
             if (item.cantidad === null || item.cantidad === undefined) {
@@ -204,15 +205,13 @@ function adicionalPlus(id, idProducto) {
         return item.id === id;
     });
 
-    console.log(_ModalAdicionales);
 }
-
 
 function adicionalMinus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
     var minusId = "#Minus_" + id + "_" + idProducto;
-    
+
     var item = $.grep(_ModalAdicionales, (item, index) => {
         if (item.id === id) {
             if (item.cantidad === null || item.cantidad === undefined) {
@@ -227,4 +226,16 @@ function adicionalMinus(id, idProducto) {
         }
         return item.id === id;
     });
+}
+
+function ingredienteOnChange(input, id, idProducto) {
+      
+    $.grep(_ModalIngredientes, (item, index) => {
+        if (item.id === id) {
+            item.selected = $(input).is(":checked");             
+        }
+        return item.id === id;
+    });
+
+    console.log(_ModalIngredientes);
 }

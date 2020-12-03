@@ -22,7 +22,7 @@ namespace Pedidos.Controllers
         // GET: Ingredientes
         public async Task<IActionResult> Index()
         {
-            return View(await _context.P_Ingredientes.ToListAsync());
+            return View(await _context.P_Ingredientes.Where(x=>x.idCuenta == Cuenta.id).ToListAsync());
         }
 
         // GET: Ingredientes/Details/5

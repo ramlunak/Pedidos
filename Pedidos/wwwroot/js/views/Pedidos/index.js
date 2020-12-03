@@ -60,7 +60,7 @@ function CargarProductos() {
         success: function (data) {
             // window.location.href = '/AlumnoPrueba/Resultado/';
             _Productos = data;
-            console.log(data);
+          
             // cargarProductosCategoria(parseInt(idCategoria), data);
         },
         failure: function (response) {
@@ -105,6 +105,7 @@ function CargarDatosModalDetalles(data) {
     $('#spanDescripcionProducto').html(data.producto.descripcion);
 
     TABLE_Adicional(data.adicionales, data.producto.id);
+    TABLE_Ingredientes(data.ingredientes, data.producto.id)
 
     $('#ModalDetalleProducto').modal('show');
 }
@@ -129,6 +130,28 @@ function TABLE_Adicional(adicionales, idProducto) {
         TD3.append('<div style="width:60px;text-align: end"> <button id=' + minusId + ' disabled="disabled" onclick="adicionalMinus(' + item.id + ',' + idProducto + ')" class="btn-plano mr-2 unselectable"><i  class="fa fa-minus cursor-pointer"></i></button><button onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="btn-plano unselectable"><i  class="fa fa-plus cursor-pointer"></i></button></div>');
 
         TR.append(TD1, TD2, TD3);
+        TABLE.append(TR);
+    });
+}
+
+function TABLE_Ingredientes(ingredientes, idProducto) {
+
+    var TABLE = $('#modalTableIngredientes');
+    TABLE.empty();
+
+    $.each(ingredientes, function (index, item) {
+
+        var TD1 = $('<td style="width:100%">');
+        var TD2 = $('<td>');
+        var TR = $('<tr>');
+
+        // var codigo = "ADC_" + item.id + "_" + idProducto;
+        //var minusId = "Minus_" + item.id + "_" + idProducto;
+
+        TD1.append('<div>' + item.nombre + '</div>');
+        TD2.append('<div class="cursor-pointer"> <input type="checkbox" checked /></div>');
+
+        TR.append(TD1, TD2);
         TABLE.append(TR);
     });
 }
@@ -165,7 +188,7 @@ function adicionalPlus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
     var minusId = "#Minus_" + id + "_" + idProducto;
-    console.log(minusId);
+  
     var item = $.grep(_ModalAdicionales, (item, index) => {
         if (item.id === id) {
             if (item.cantidad === null || item.cantidad === undefined) {
@@ -180,6 +203,8 @@ function adicionalPlus(id, idProducto) {
         }
         return item.id === id;
     });
+
+    console.log(_ModalAdicionales);
 }
 
 
@@ -187,7 +212,7 @@ function adicionalMinus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
     var minusId = "#Minus_" + id + "_" + idProducto;
-    console.log(minusId);
+    
     var item = $.grep(_ModalAdicionales, (item, index) => {
         if (item.id === id) {
             if (item.cantidad === null || item.cantidad === undefined) {

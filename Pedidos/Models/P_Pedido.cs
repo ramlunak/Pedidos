@@ -10,7 +10,27 @@ namespace Pedidos.Models
 {
     public class P_Pedido
     {
+        public P_Pedido(int idCuenta)
+        {
+            this.idCuenta = idCuenta;
+        }
+
         public int id { get; set; }
+        public string codigo
+        {
+            get
+            {
+                var cuenta = this.idCuenta.ToString();
+                var year = DateTime.Now.Year.ToString();
+                var mes = DateTime.Now.Month.ToString();
+                var dia = DateTime.Now.Day.ToString();
+                var hora = DateTime.Now.Hour.ToString();
+                var min = DateTime.Now.Minute.ToString();
+                var sec = DateTime.Now.Second.ToString();
+
+                return "P" + cuenta + year + mes + dia + hora + min + sec;
+            }
+        }
         public int? idCliente { get; set; }
         public int? idDireccion { get; set; }
         public int? idMesa { get; set; }

@@ -25,7 +25,8 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Index()
         {
             ValidarCuenta();
-            return View();
+            var pedido = new P_Pedido(Cuenta.id);           
+            return View(pedido);
         }
 
         [HttpPost]
@@ -35,7 +36,7 @@ namespace Pedidos.Controllers
             var currentPedido = GetSession<P_Pedido>("currentPedido");
             if (currentPedido is null)
             {
-                currentPedido = new P_Pedido();
+                currentPedido = new P_Pedido(Cuenta.id);
             }
             currentPedido.productos.Add(producto);
             SetSession("currentPedido", currentPedido);

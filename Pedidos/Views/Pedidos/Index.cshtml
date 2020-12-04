@@ -1,4 +1,4 @@
-﻿
+﻿@model Pedidos.Models.P_Pedido
 @{
     ViewData["Title"] = "Pedidos";
 }
@@ -12,9 +12,17 @@
             <div class="card mb-2">
                 <div class="card-body  p-1">
                     <div class="d-flex justify-content-between">
-                        <div class="d-block" style="text-align:left">
-                            <div style="font-size:11px"><span id="spanNombre"></span></div>
-                            <div style="font-size:11px"><span id="spanEndereco"></span></div>
+
+                        <div class="d-flex justify-content-between">
+
+                            <div class="d-flex align-items-center" style="text-align:left">
+                                <div class="m-2" style="font-size:11px"><b>@Model.codigo</b></div>
+                            </div>
+
+                            <div class="d-block" style="text-align:left">
+                                <div style="font-size:11px"><span id="spanNombre"></span></div>
+                                <div style="font-size:11px"><span id="spanEndereco"></span></div>
+                            </div>
                         </div>
 
                         <div class="d-block" style="text-align:right">
@@ -203,21 +211,21 @@
                                         <table id="modalTableIngredientes" class="w-100">
                                             @*LISTA DE INGREDIENTES DINAMICA*@
                                         </table>
-                                        
+
                                         @*<div class="d-flex justify-content-between">
-                                            <div>- Tomate</div>
-                                            <div class="cursor-pointer"> <input type="checkbox" checked /></div>
-                                        </div>
+                                                <div>- Tomate</div>
+                                                <div class="cursor-pointer"> <input type="checkbox" checked /></div>
+                                            </div>
 
-                                        <div class="d-flex justify-content-between">
-                                            <div>- Hovo</div>
-                                            <div class="cursor-pointer"> <input type="checkbox" checked /></div>
-                                        </div>
+                                            <div class="d-flex justify-content-between">
+                                                <div>- Hovo</div>
+                                                <div class="cursor-pointer"> <input type="checkbox" checked /></div>
+                                            </div>
 
-                                        <div class="d-flex justify-content-between">
-                                            <div>- Alface</div>
-                                            <div class="cursor-pointer"> <input type="checkbox" checked /></div>
-                                        </div>*@
+                                            <div class="d-flex justify-content-between">
+                                                <div>- Alface</div>
+                                                <div class="cursor-pointer"> <input type="checkbox" checked /></div>
+                                            </div>*@
 
                                     </div>
 

@@ -46,7 +46,8 @@ function FiltrarProductos(productos) {
 }
 
 const filterItems = (query) => {
-    return _Productos.filter(el => el.nombre.toLowerCase().indexOf(query.toLowerCase()) > -1);
+
+    return _Productos.filter(el => el.nombre.toLocaleLowerCase('pt-BR').indexOf(query.toLocaleLowerCase('pt-BR')) > -1);
 };
 
 function CargarProductos() {
@@ -159,15 +160,18 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
 
 function AddProducto() {
 
-    var data = _ModalProducto;
+    _ModalProducto.adicionales = _ModalAdicionales;
+    _ModalProducto.ingredientes = _ModalIngredientes;
+    
     console.log(_ModalProducto);
-    console.log(_ModalIngredientes);
+  
     return;
+
     $.ajax({
         type: "POST",
         url: "/Pedidos/AddProducto",
         traditional: true,
-        data: JSON.stringify(data),
+        data: JSON.stringify(_ModalProducto),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
@@ -229,13 +233,38 @@ function adicionalMinus(id, idProducto) {
 }
 
 function ingredienteOnChange(input, id, idProducto) {
-      
+
     $.grep(_ModalIngredientes, (item, index) => {
         if (item.id === id) {
-            item.selected = $(input).is(":checked");             
+            item.selected = $(input).is(":checked");
         }
         return item.id === id;
     });
+}
 
-    console.log(_ModalIngredientes);
+var btnMinus;
+function productoMinus(btn) {
+
+    btnMinus = btn;
+   
+    if (parseInt(_ModalProducto.cantidad) === 1) {
+        return;
+    }
+
+    _ModalProducto.cantidad--;
+    $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
+
+    if (parseInt(_ModalProducto.cantidad) === 1) {
+        $(btn).attr('disabled', 'disabled');
+    }
+
+}
+
+function productoPlus() {
+    _ModalProducto.cantidad++;
+    $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
+
+    if (btnMinus) {
+        $(btnMinus).removeAttr('disabled');
+    }
 }

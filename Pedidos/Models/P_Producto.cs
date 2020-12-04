@@ -68,7 +68,7 @@ namespace Pedidos.Models
 
         //PARA LOS PEDIDOS
         [NotMapped]
-        public int cantidad { get; set; }
+        public int cantidad { get; set; } = 1;
         [NotMapped]
         public List<P_Adicionais> Adicionales { get; set; } = new List<P_Adicionais>();
         [NotMapped]

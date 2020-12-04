@@ -196,7 +196,6 @@
                                         <table id="modalTableAdicionales" class="w-100">
                                             @*LISTA DE ADICIONALES DINAMICA*@
                                         </table>
-
                                     </div>
 
                                     <div class="d-flex align-content-center">
@@ -231,9 +230,14 @@
 
                                 </div>
 
-                                <div class="modal-footer">
-                                    <a class="cursor-pointer" onclick="MinusProducto()"><i class="fa fa-minus-circle"></i></a>
-                                    <a class="cursor-pointer" onclick="AddProducto()"><i class="fa fa-plus-circle"></i></a>
+                                <div class="modal-footer d-flex justify-content-between">
+                                    <div>
+                                        <button class="btn btn-sm cursor-pointer" onclick="productoMinus(this)" disabled="disabled"><i class="fa fa-minus-circle"></i></button>
+                                        <button class="btn btn-sm cursor-pointer" onclick="productoPlus(this)"><i class="fa fa-plus-circle"></i></button>
+                                    </div>
+                                    <div>
+                                        <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

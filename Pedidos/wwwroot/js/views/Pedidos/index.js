@@ -1,5 +1,10 @@
 ﻿var _Productos;
-var _ModalProducto;
+var _CurrentPedido;
+var _ModalProducto = {
+    cliente: '',
+    direccion: '',
+    telefono: ''
+};;
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
@@ -9,10 +14,16 @@ $(function () {
 
     $('#inputNome').on('input propertychange', function (e) {
         $('#spanNombre').html($('#inputNome').val());
+        _ModalProducto.cliente = $('#inputNome').val();
     });
 
     $('#inputEndereco').on('input propertychange', function (e) {
         $('#spanEndereco').html($('#inputEndereco').val());
+        _ModalProducto.direccion = $('#inputEndereco').val();
+    });
+
+    $('#inputTelefone').on('input propertychange', function (e) {       
+        _ModalProducto.telefono = $('#inputTelefone').val();
     });
 
     $('#inputProducto').on('input propertychange', function (e) {
@@ -83,12 +94,16 @@ function ShowDetallesProducto(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
+
+            var datosClienteFormulario = _ModalProducto;
             _ModalProducto = data.producto;
+            _ModalProducto.cliente = datosClienteFormulario.cliente;
+            _ModalProducto.direccion = datosClienteFormulario.direccion;
+            _ModalProducto.telefono = datosClienteFormulario.telefono;
+
             _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
             CargarDatosModalDetalles(data);
-
-            console.log(_ModalIngredientes);
         },
         failure: function (response) {
             console.log('failure', response);
@@ -158,37 +173,6 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
     });
 }
 
-function AddProducto() {
-
-    _ModalProducto.adicionales = _ModalAdicionales;
-    _ModalProducto.ingredientes = _ModalIngredientes;
-    
-    console.log(_ModalProducto);
-  
-    return;
-
-    $.ajax({
-        type: "POST",
-        url: "/Pedidos/AddProducto",
-        traditional: true,
-        data: JSON.stringify(_ModalProducto),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (result) {
-            console.log('ok', result);
-
-        },
-        failure: function (response) {
-            console.log('failure', response);
-
-        },
-        error: function (response) {
-            console.log('error', response);
-
-        }
-    });
-}
-
 function adicionalPlus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
@@ -246,7 +230,7 @@ var btnMinus;
 function productoMinus(btn) {
 
     btnMinus = btn;
-   
+
     if (parseInt(_ModalProducto.cantidad) === 1) {
         return;
     }
@@ -267,4 +251,62 @@ function productoPlus() {
     if (btnMinus) {
         $(btnMinus).removeAttr('disabled');
     }
+}
+
+
+function AddProducto() {
+
+    _ModalProducto.adicionales = _ModalAdicionales;
+    _ModalProducto.ingredientes = _ModalIngredientes;
+
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/AddProducto",
+        traditional: true,
+        data: JSON.stringify(_ModalProducto, _CurrentPedido),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+
+            $('#ModalDetalleProducto').modal('hide');
+            _CurrentPedido = result;
+            console.log('_CurrentPedido', _CurrentPedido);
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
+function UpdataDatosCliente() {
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/UpdataDatosCliente",
+        traditional: true,
+        data: JSON.stringify(_CurrentPedido),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+            console.log('ok', result);
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+
 }

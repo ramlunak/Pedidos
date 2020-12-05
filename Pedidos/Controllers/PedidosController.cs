@@ -24,9 +24,19 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Index()
         {
+
             ValidarCuenta();
-            var pedido = new P_Pedido(Cuenta.id);           
-            return View(pedido);
+            var currentPedido = new P_Pedido(Cuenta.id);
+            if (GetSession<P_Pedido>("currentPedido") is null)
+            {
+                SetSession("currentPedido", currentPedido);
+            }
+            else
+            {
+                currentPedido = GetSession<P_Pedido>("currentPedido");
+            }
+
+            return View(currentPedido);
         }
 
         [HttpPost]
@@ -38,12 +48,20 @@ namespace Pedidos.Controllers
             {
                 currentPedido = new P_Pedido(Cuenta.id);
             }
+
+            producto.Adicionales.RemoveAll(a => a.cantidad == 0);
+            producto.Ingredientes.RemoveAll(i =>i.selected);
+
             currentPedido.productos.Add(producto);
+            currentPedido.cliente = producto.cliente;
+            currentPedido.direccion = producto.direccion;
+            currentPedido.telefono = producto.telefono;
+
             SetSession("currentPedido", currentPedido);
             return Ok(new { currentPedido });
         }
 
-      
+
         //public async Task<IActionResult> Create()
         //{
         //    ValidarCuenta();

@@ -74,6 +74,14 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
 
+        //Solo para enviar esos dados al controlador y ponercelos al pedido
+        [NotMapped]
+        public string cliente { get; set; }
+        [NotMapped]
+        public string direccion { get; set; }
+        [NotMapped]
+        public string telefono { get; set; }
+
     }
 
     public class ProductoDetalle

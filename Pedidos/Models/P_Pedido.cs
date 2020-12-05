@@ -48,6 +48,13 @@ namespace Pedidos.Models
 
         [NotMapped]
         public List<P_Productos> productos { get; set; } = new List<P_Productos>();
+        [NotMapped]
+        public string cliente { get; set; }
+        [NotMapped]
+        public string direccion { get; set; }
+        [NotMapped]
+        public string telefono { get; set; }
+
         //[Required(ErrorMessage = "O Produco é obrigatorio")]
         //[NotMapped]
         //public string Producto { get; set; }

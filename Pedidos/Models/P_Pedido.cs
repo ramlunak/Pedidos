@@ -13,24 +13,11 @@ namespace Pedidos.Models
         public P_Pedido(int idCuenta)
         {
             this.idCuenta = idCuenta;
+            this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);
         }
 
         public int id { get; set; }
-        public string codigo
-        {
-            get
-            {
-                var cuenta = this.idCuenta.ToString();
-                var year = DateTime.Now.Year.ToString();
-                var mes = DateTime.Now.Month.ToString();
-                var dia = DateTime.Now.Day.ToString();
-                var hora = DateTime.Now.Hour.ToString();
-                var min = DateTime.Now.Minute.ToString();
-                var sec = DateTime.Now.Second.ToString();
-
-                return "P" + cuenta + year + mes + dia + hora + min + sec;
-            }
-        }
+        public string codigo { get; set; }
         public int? idCliente { get; set; }
         public int? idDireccion { get; set; }
         public int? idMesa { get; set; }

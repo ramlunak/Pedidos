@@ -10,6 +10,7 @@ var _ModalIngredientes = [];
 
 $(function () {
 
+    CargarCurrentPedido();
     CargarProductos();
 
     $('#inputNome').on('input propertychange', function (e) {
@@ -22,7 +23,7 @@ $(function () {
         _ModalProducto.direccion = $('#inputEndereco').val();
     });
 
-    $('#inputTelefone').on('input propertychange', function (e) {       
+    $('#inputTelefone').on('input propertychange', function (e) {
         _ModalProducto.telefono = $('#inputTelefone').val();
     });
 
@@ -32,7 +33,7 @@ $(function () {
     });
 
 });
-
+//filtar productos para escojer
 function FiltrarProductos(productos) {
 
     var TABLE = $('#tableProductos');
@@ -61,6 +62,7 @@ const filterItems = (query) => {
     return _Productos.filter(el => el.nombre.toLocaleLowerCase('pt-BR').indexOf(query.toLocaleLowerCase('pt-BR')) > -1);
 };
 
+//Cargar info del pedido que está en edicion
 function CargarProductos() {
 
     $.ajax({
@@ -85,6 +87,30 @@ function CargarProductos() {
     });
 }
 
+//cargar lista de producto para el combo
+function CargarCurrentPedido() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetCurrentPedido/",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            _CurrentPedido = data.currentPedido;
+            MostarCurrentPedido();
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+//cargar info para mostrar en el modal 
 function ShowDetallesProducto(id) {
 
     $.ajax({
@@ -115,6 +141,7 @@ function ShowDetallesProducto(id) {
 
 }
 
+//cargar indo del producto en el modal 
 function CargarDatosModalDetalles(data) {
 
     $('#spanNomeProducto').html(data.producto.nombre.toUpperCase());
@@ -127,6 +154,7 @@ function CargarDatosModalDetalles(data) {
     $('#ModalDetalleProducto').modal('show');
 }
 
+//crear tabla de los adicionales en el modal
 function TABLE_Adicional(adicionales, idProducto) {
 
     var TABLE = $('#modalTableAdicionales');
@@ -151,6 +179,7 @@ function TABLE_Adicional(adicionales, idProducto) {
     });
 }
 
+//crear tabla de los ingredientes en el modal
 function TABLE_Ingredientes(ingredientes, idProducto) {
 
     var TABLE = $('#modalTableIngredientes');
@@ -173,6 +202,7 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
     });
 }
 
+//evento de adicionar contidad del adicional
 function adicionalPlus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
@@ -195,6 +225,7 @@ function adicionalPlus(id, idProducto) {
 
 }
 
+//evento de restar contidad del adicional
 function adicionalMinus(id, idProducto) {
 
     var codigo = "#ADC_" + id + "_" + idProducto;
@@ -216,6 +247,7 @@ function adicionalMinus(id, idProducto) {
     });
 }
 
+//evento de marcar y desmarcar ingredeinte
 function ingredienteOnChange(input, id, idProducto) {
 
     $.grep(_ModalIngredientes, (item, index) => {
@@ -226,6 +258,7 @@ function ingredienteOnChange(input, id, idProducto) {
     });
 }
 
+//evento de restar contidad producto
 var btnMinus;
 function productoMinus(btn) {
 
@@ -244,6 +277,7 @@ function productoMinus(btn) {
 
 }
 
+//evento de adicionar contidad de productos
 function productoPlus() {
     _ModalProducto.cantidad++;
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
@@ -253,12 +287,11 @@ function productoPlus() {
     }
 }
 
-
+//agregar el producto al pedido en adicion
 function AddProducto() {
 
     _ModalProducto.adicionales = _ModalAdicionales;
     _ModalProducto.ingredientes = _ModalIngredientes;
-
 
     $.ajax({
         type: "POST",
@@ -270,8 +303,8 @@ function AddProducto() {
         success: function (result) {
 
             $('#ModalDetalleProducto').modal('hide');
-            _CurrentPedido = result;
-            console.log('_CurrentPedido', _CurrentPedido);
+            _CurrentPedido = result.currentPedido;
+            MostarCurrentPedido();
 
         },
         failure: function (response) {
@@ -285,7 +318,7 @@ function AddProducto() {
     });
 }
 
-
+//actualizar los datos del cliente en el pedido en edicion
 function UpdataDatosCliente() {
 
     $.ajax({
@@ -309,4 +342,32 @@ function UpdataDatosCliente() {
         }
     });
 
+}
+
+//cargar datos del pedido en la pantalla
+function MostarCurrentPedido() {
+
+    console.log(_CurrentPedido);
+    TABLE_PedidoProductos();
+}
+
+
+//crear tabla de productos del pedido en edicion
+function TABLE_PedidoProductos() {
+
+    var TABLE = $('#CurrentPedidoProductos');
+    TABLE.empty();
+
+    $.each(_CurrentPedido.productos, function (index, item) {
+
+        var TD1 = $('<td style="width:100%">');
+        var TD2 = $('<td>');
+        var TR = $('<tr>');
+
+        TD1.append('<div>' + item.nombre.toUpperCase() + '</div>');
+        TD2.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + item.valorMasAdicionales.toFixed(2) + '</div>');
+
+        TR.append(TD1, TD2);
+        TABLE.append(TR);
+    });
 }

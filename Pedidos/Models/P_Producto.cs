@@ -73,6 +73,25 @@ namespace Pedidos.Models
         public List<P_Adicionais> Adicionales { get; set; } = new List<P_Adicionais>();
         [NotMapped]
         public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
+        [NotMapped]
+        public decimal ValorMasAdicionales
+        {
+            get
+            {
+                var valor_producto = this.valor;
+                decimal valor_adicionales = 0;
+
+                foreach (var item in this.Adicionales)
+                {
+                    if (item.cantidad > 0)
+                    {
+                        valor_adicionales += (item.Valor * item.cantidad);
+                    }
+                }
+
+                return valor_producto + valor_adicionales;
+            }
+        }
 
         //Solo para enviar esos dados al controlador y ponercelos al pedido
         [NotMapped]

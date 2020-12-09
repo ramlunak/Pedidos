@@ -351,7 +351,6 @@ function MostarCurrentPedido() {
     TABLE_PedidoProductos();
 }
 
-
 //crear tabla de productos del pedido en edicion
 function TABLE_PedidoProductos() {
 

@@ -134,3 +134,13 @@ input[type=checkbox] {
     padding: 10px;
     cursor:pointer;
 }
+
+.ticket .centrado {
+    text-align: center;
+    align-content: center;
+}
+
+.ticket {
+    font-size: 12px;
+    font-family: 'Times New Roman';
+}

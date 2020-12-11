@@ -32,38 +32,42 @@ namespace Pedidos.Controllers
 
         public IActionResult Print()
         {
-            var path = $"{this._webHostEnvironment.WebRootPath}\\Reports\\Vendas.rdlc";
 
-            try
-            {
-                //var dt = new DataTable();
-                //dt = GetData();
+            return View();
 
-                string minetype = "x";
-                int extension = 1;
+            //var path = $"{this._webHostEnvironment.WebRootPath}\\Reports\\Vendas.rdlc";
 
-                Dictionary<string, string> parameters = new Dictionary<string, string>();
-                parameters.Add("Data", "Rdl Report");
+            //try
+            //{
+            //    //var dt = new DataTable();
+            //    //dt = GetData();
 
-                LocalReport localReport = new LocalReport(path);
-                var data = new List<P_Categoria>(){
-                new P_Categoria { id = 1,nombre = "sadas"},
-                new P_Categoria { id = 2,nombre = "sadas"}
-                };
+            //    string minetype = "x";
+            //    int extension = 1;
 
-                localReport.AddDataSource("ds", data);
-                // localReport.AddDataSource("ds", new List<P_Cuenta> { new P_Cuenta { id = 1 } });
-                var result = localReport.Execute(RenderType.Pdf, extension, null, minetype);
-                return File(result.MainStream, "application/pdf");
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Erro = ex.Message.ToString();
-                ViewBag.Path = path;
-                return View();
-            }
+            //    Dictionary<string, string> parameters = new Dictionary<string, string>();
+            //    parameters.Add("Data", "Rdl Report");
+
+            //    LocalReport localReport = new LocalReport(path);
+            //    var data = new List<P_Categoria>(){
+            //    new P_Categoria { id = 1,nombre = "sadas"},
+            //    new P_Categoria { id = 2,nombre = "sadas"}
+            //    };
+
+            //    localReport.AddDataSource("ds", data);
+            //    // localReport.AddDataSource("ds", new List<P_Cuenta> { new P_Cuenta { id = 1 } });
+            //    var result = localReport.Execute(RenderType.Pdf, extension, null, minetype);
+            //    return File(result.MainStream, "application/pdf");
+            //}
+            //catch (Exception ex)
+            //{
+            //    ViewBag.Erro = ex.Message.ToString();
+            //    ViewBag.Path = path;
+            //    return View();
+            //}
 
         }
+
 
 
         public DataTable GetData()

@@ -129,6 +129,7 @@ function ShowDetallesProducto(id) {
 
             _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
+
             CargarDatosModalDetalles(data);
         },
         failure: function (response) {
@@ -147,6 +148,8 @@ function CargarDatosModalDetalles(data) {
     $('#spanNomeProducto').html(data.producto.nombre.toUpperCase());
     $('#spanValorProducto').html(data.producto.valor.toFixed(2));
     $('#spanDescripcionProducto').html(data.producto.descripcion);
+    $('#modalCantidadProducto').html('(' + data.producto.cantidad + ')');
+    $("#MINUS_Producto").attr('disabled', 'disabled');
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
@@ -259,10 +262,8 @@ function ingredienteOnChange(input, id, idProducto) {
 }
 
 //evento de restar contidad producto
-var btnMinus;
-function productoMinus(btn) {
 
-    btnMinus = btn;
+function productoMinus(btn) {
 
     if (parseInt(_ModalProducto.cantidad) === 1) {
         return;
@@ -272,7 +273,7 @@ function productoMinus(btn) {
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
 
     if (parseInt(_ModalProducto.cantidad) === 1) {
-        $(btn).attr('disabled', 'disabled');
+        $("#MINUS_Producto").attr('disabled', 'disabled');
     }
 
 }
@@ -282,9 +283,8 @@ function productoPlus() {
     _ModalProducto.cantidad++;
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
 
-    if (btnMinus) {
-        $(btnMinus).removeAttr('disabled');
-    }
+    $("#MINUS_Producto").removeAttr('disabled');
+
 }
 
 //agregar el producto al pedido en adicion
@@ -347,7 +347,7 @@ function UpdataDatosCliente() {
 //cargar datos del pedido en la pantalla
 function MostarCurrentPedido() {
 
-    console.log(_CurrentPedido);
+    $('#spanCodigo').html(_CurrentPedido.codigo);
     TABLE_PedidoProductos();
 }
 
@@ -363,10 +363,41 @@ function TABLE_PedidoProductos() {
         var TD2 = $('<td>');
         var TR = $('<tr>');
 
-        TD1.append('<div>' + item.nombre.toUpperCase() + '</div>');
+        TD1.append('<div>(<b>' + item.cantidad + '</b>) ' + item.nombre.toUpperCase() + '</div>');
         TD2.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + item.valorMasAdicionales.toFixed(2) + '</div>');
 
         TR.append(TD1, TD2);
         TABLE.append(TR);
     });
+}
+
+function GuardarCurrentPedido() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GuardarCurrentPedido",
+        traditional: true,
+        //data: JSON.stringify(_CurrentPedido),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (result) {
+
+            if (result.ok) {
+                _CurrentPedido = result.currentPedido;
+                MostarCurrentPedido();
+            }
+
+            console.log('ok', result);
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+
 }

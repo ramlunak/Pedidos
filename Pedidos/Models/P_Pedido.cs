@@ -1,4 +1,5 @@
-﻿using Pedidos.Models.Enums;
+﻿using Newtonsoft.Json;
+using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,7 +28,8 @@ namespace Pedidos.Models
         public string descripcion { get; set; }
         public decimal? valor { get; set; }
         public decimal? descuento { get; set; }
-        public string JsonProductosDTO { get; set; }
+        public string jsonListProductos { get; set; }
+        
         public int idCuenta { get; set; }
         public bool activo { get; set; }
 

@@ -89,7 +89,7 @@ namespace Pedidos.Models
                     }
                 }
 
-                return valor_producto + valor_adicionales;
+                return this.cantidad * ( valor_producto + valor_adicionales);
             }
         }
 

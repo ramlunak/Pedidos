@@ -23,7 +23,7 @@
                         <div class="d-flex justify-content-between">
 
                             <div class="d-flex align-items-center" style="text-align:left">
-                                <div class="m-2" style="font-size:11px"><b>@Model.codigo</b></div>
+                                <div class="m-2" style="font-size:11px"><b><span id="spanCodigo"></span></b></div>
                             </div>
 
                             <div class="d-block" style="text-align:left">
@@ -60,7 +60,7 @@
                             <samp class="ml-1">00:40:00</samp>
                         </div>
                         <div>
-                            <i style="color:green" class="fa fa-check"></i>
+                            <i style="color:green" class="fa fa-check cursor-pointer" onclick="GuardarCurrentPedido()"></i>
                         </div>
                     </div>
                 </div>
@@ -150,11 +150,11 @@
 
                                 <div class="modal-footer d-flex justify-content-between">
                                     <div>
-                                        <button class="btn btn-sm cursor-pointer" onclick="productoMinus(this)" disabled="disabled"><i class="fa fa-minus-circle"></i></button>
-                                        <button class="btn btn-sm cursor-pointer" onclick="productoPlus(this)"><i class="fa fa-plus-circle"></i></button>
+                                        <button class="btn btn-sm cursor-pointer" id="MINUS_Producto" onclick="productoMinus(this)" disabled="disabled"><i class="fa fa-minus-circle"></i></button>
+                                        <button class="btn btn-sm cursor-pointer" id="ADD_Producto" onclick="productoPlus(this)"><i class="fa fa-plus-circle"></i></button>
                                     </div>
                                     <div>
-                                        <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
+                                        <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
                                     </div>
                                 </div>
                             </div>

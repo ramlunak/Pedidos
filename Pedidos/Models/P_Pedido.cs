@@ -29,7 +29,7 @@ namespace Pedidos.Models
         public decimal? valor { get; set; }
         public decimal? descuento { get; set; }
         public string jsonListProductos { get; set; }
-        
+
         public int idCuenta { get; set; }
         public bool activo { get; set; }
 
@@ -43,27 +43,15 @@ namespace Pedidos.Models
         public string direccion { get; set; }
         [NotMapped]
         public string telefono { get; set; }
-
-        //[Required(ErrorMessage = "O Produco é obrigatorio")]
-        //[NotMapped]
-        //public string Producto { get; set; }
-        //[NotMapped]
-        //public int Cantidad { get; set; }
-        //[NotMapped]
-        //public string Observacion { get; set; }
-        //[NotMapped]
-        //public PedidoDTO PedidoDTO { get; set; }
-        //[NotMapped]
-        //public List<P_Productos> Productos = new List<P_Productos>();
-        //[NotMapped]
-        //public string ValorTotal
-        //{
-        //    get
-        //    {
-        //        this.valor = Productos.Sum(x => x.valor);
-        //        return this.valor.Value.ToString("C");
-        //    }
-        //}
+        [NotMapped]
+        public decimal total
+        {
+            get
+            {
+                var valorProductos = productos.Sum(x => x.ValorMasAdicionales);
+                return valorProductos - (this.descuento.HasValue ? this.descuento.Value : 0);
+            }
+        }
 
     }
 

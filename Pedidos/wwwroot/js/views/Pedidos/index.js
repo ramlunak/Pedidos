@@ -348,6 +348,7 @@ function UpdataDatosCliente() {
 function MostarCurrentPedido() {
 
     $('#spanCodigo').html(_CurrentPedido.codigo);
+    $('#spanTotal').html(_CurrentPedido.total.toFixed(2));
     TABLE_PedidoProductos();
 }
 

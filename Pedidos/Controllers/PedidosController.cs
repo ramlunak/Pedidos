@@ -71,8 +71,10 @@ namespace Pedidos.Controllers
             return Ok(new { currentPedido });
         }
 
-        public async Task<IActionResult> GuardarCurrentPedido()
+        [HttpPost]
+        public async Task<IActionResult> GuardarCurrentPedido([FromBody] PedidoDatosAux pedidoaux)
         {
+
             var currentPedido = GetSession<P_Pedido>("currentPedido");
             if (currentPedido.productos.Count > 0)
             {
@@ -81,13 +83,21 @@ namespace Pedidos.Controllers
                     currentPedido.fecha = DateTime.Now;
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
+                    currentPedido.total = currentPedido.valorProductos;
+
+                    currentPedido.cliente = pedidoaux.cliente;
+                    currentPedido.direccion = pedidoaux.direccion;
+                    currentPedido.telefono = pedidoaux.telefono;
+
                     _context.Add(currentPedido);
                     await _context.SaveChangesAsync();
 
                     currentPedido = new P_Pedido(Cuenta.id);
                     SetSession("currentPedido", currentPedido);
 
-                    return Ok(new { ok = true, currentPedido });
+                    var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
+
+                    return Ok(new { ok = true, currentPedido, pedidosPendientes });
                 }
                 catch (Exception ex)
                 {
@@ -98,6 +108,13 @@ namespace Pedidos.Controllers
             {
                 return Ok(new { erro = "Sem produtos" });
             }
+        }
+
+        public async Task<IActionResult> CargarPedidosPendientes()
+        {
+            var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
+
+            return Ok(new { pedidosPendientes = pedidosPendientes });
         }
 
         private bool P_PedidoExists(int id)

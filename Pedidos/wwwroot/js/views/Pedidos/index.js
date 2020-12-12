@@ -1,5 +1,6 @@
 ﻿var _Productos;
 var _CurrentPedido;
+var _PedidosPendientes;
 var _ModalProducto = {
     cliente: '',
     direccion: '',
@@ -11,6 +12,7 @@ var _ModalIngredientes = [];
 $(function () {
 
     CargarCurrentPedido();
+    CargarPedidosPendientes();
     CargarProductos();
 
     $('#inputNome').on('input propertychange', function (e) {
@@ -109,6 +111,30 @@ function CargarCurrentPedido() {
         }
     });
 }
+
+//cargar lista de pedidos pendientes
+function CargarPedidosPendientes() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CargarPedidosPendientes/",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            _PedidosPendientes = data.pedidosPendientes;
+            MostarPedidosPendientes();
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
 
 //cargar info para mostrar en el modal 
 function ShowDetallesProducto(id) {
@@ -348,7 +374,7 @@ function UpdataDatosCliente() {
 function MostarCurrentPedido() {
 
     $('#spanCodigo').html(_CurrentPedido.codigo);
-    $('#spanTotal').html(_CurrentPedido.total.toFixed(2));
+    $('#spanTotal').html(_CurrentPedido.valorProductos.toFixed(2));
     TABLE_PedidoProductos();
 }
 
@@ -374,11 +400,17 @@ function TABLE_PedidoProductos() {
 
 function GuardarCurrentPedido() {
 
+    var pedido = {
+        cliente: $('#inputNome').val(),
+        direccion: $('#inputEndereco').val(),
+        telefono: $('#inputTelefone').val()
+    }
+
     $.ajax({
-        type: "GET",
+        type: "POST",
         url: "/Pedidos/GuardarCurrentPedido",
         traditional: true,
-        //data: JSON.stringify(_CurrentPedido),
+        data: JSON.stringify(pedido),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
@@ -386,6 +418,9 @@ function GuardarCurrentPedido() {
             if (result.ok) {
                 _CurrentPedido = result.currentPedido;
                 MostarCurrentPedido();
+
+                _PedidosPendientes = result.pedidosPendientes;
+                MostarPedidosPendientes();
             }
 
             console.log('ok', result);
@@ -402,3 +437,67 @@ function GuardarCurrentPedido() {
     });
 
 }
+
+function MostarPedidosPendientes() {
+    TABLE_PedidosPendientes();
+}
+
+
+//crear tabla de productos del pedido en edicion
+function TABLE_PedidosPendientes() {
+
+    var TABLE = $('#ListaPedidosPendientes');
+    TABLE.empty();
+
+    $.each(_PedidosPendientes, function (index, pedido) {
+
+
+        var CARD = $('<div class="card mb-2">');
+        var CARD_BODY = $('<div class="card-body  p-1">');
+
+        //INFO DEL PEDIDO 
+        var div_infopedido = '<div class="d-flex justify-content-between">  ' +
+            '               <div class="d-block" style="text-align:left">  ' +
+            '                   <div style="font-size:11px">' + pedido.cliente + '</div>  ' +
+            '                   <div style="font-size:11px">' + pedido.direccion + '</div>  ' +
+            '               </div>  ' +
+            '               <div class="d-block" style="text-align:right">  ' +
+            '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
+            '                   <div style="font-size:11px"><b>R$ ' + pedido.total.toFixed(2) + '</b></div>  ' +
+            '               </div>  ' +
+            '           </div>  ' +
+            '          <hr class="m-2" />  ';
+
+        CARD_BODY.append(div_infopedido);
+
+        //LISTA DE PRODUCTOS
+        var TABLA_PRD = $('<table>');
+
+        $.each(JSON.parse(pedido.jsonListProductos), function (index, producto) {
+            var TD1_PRD = $('<td style="width:100%">');
+            var TR_PRD = $('<tr>');
+
+            TD1_PRD.append('<div class="unselectable"><a id=' + 7 + ' style="color:blue">+0</a> ' + 9 + '</div>');
+
+            TR_PRD.append(TD1_PRD);
+            TABLA_PRD.append(TR_PRD);
+        });
+
+
+        //AGREGAR PRODUCTOS
+        CARD_BODY.append(TABLA_PRD);
+
+        var CARD_FUTTER = $(' <div class="card-footer text-muted p-2" style="background-color: #C4C5C5;color: white;">');
+
+        CARD.append(CARD_BODY);
+        CARD.append(CARD_FUTTER);
+
+        var TD1 = $('<td style="width:100%">');
+        var TR = $('<tr>');
+        TD1.append(CARD);
+
+        TR.append(TD1);
+        TABLE.append(TR);
+    });
+}
+

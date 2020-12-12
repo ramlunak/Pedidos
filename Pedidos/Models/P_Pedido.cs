@@ -20,16 +20,20 @@ namespace Pedidos.Models
         public int id { get; set; }
         public string codigo { get; set; }
         public int? idCliente { get; set; }
+        public string cliente { get; set; }
         public int? idDireccion { get; set; }
+        public string direccion { get; set; }
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
+        public string aplicativo { get; set; }
         public DateTime fecha { get; set; }
         public string status { get; set; }
         public string descripcion { get; set; }
         public decimal? valor { get; set; }
         public decimal? descuento { get; set; }
         public string jsonListProductos { get; set; }
-
+        public string telefono { get; set; }
+        public decimal total { get; set; } = 0;
         public int idCuenta { get; set; }
         public bool activo { get; set; }
 
@@ -38,13 +42,7 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_Productos> productos { get; set; } = new List<P_Productos>();
         [NotMapped]
-        public string cliente { get; set; }
-        [NotMapped]
-        public string direccion { get; set; }
-        [NotMapped]
-        public string telefono { get; set; }
-        [NotMapped]
-        public decimal total
+        public decimal valorProductos
         {
             get
             {
@@ -56,26 +54,12 @@ namespace Pedidos.Models
     }
 
 
-    //public class PedidoDTO
-    //{
-    //    public int? IdCliente { get; set; }
-    //    public string cliente { get; set; }
-    //    public string telefono { get; set; }
+    public class PedidoDatosAux
+    {
+        public string cliente { get; set; }
+        public string direccion { get; set; }
+        public string telefono { get; set; }
 
-    //    public int? idMesa { get; set; }
-
-    //    public int? IdAplicativo { get; set; }
-    //    public string aplicativo { get; set; }
-
-    //    public int? idDireccion { get; set; }
-    //    public string code { get; set; }
-    //    public string state { get; set; }
-    //    public string city { get; set; }
-    //    public string district { get; set; }
-    //    public string address { get; set; }
-    //    public string numero { get; set; }
-    //    public string complemento { get; set; }
-
-    //}
+    }
 
 }

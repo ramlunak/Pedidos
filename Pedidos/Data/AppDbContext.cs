@@ -51,5 +51,7 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_CategoriaAdicional> P_CategoriaAdicional { get; set; }
 
         public DbSet<Pedidos.Models.P_Aux> P_Aux { get; set; }
+
+        public DbSet<Pedidos.Models.P_FormaPagamento> P_FormaPagamento { get; set; }
     }
 }

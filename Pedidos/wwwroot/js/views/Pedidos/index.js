@@ -482,8 +482,8 @@ function TABLE_PedidosPendientes() {
 
             var btnDesplegar = '<button class="btn btn-primary btn-sm p-1" type="button"   ' +
                 '   data-toggle="collapse"   ' +
-                '   data-target="#collapseExample_' + pedido.id + '' + producto.id + '"   ' +
-                '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '' + producto.id + '">  ' +
+                '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
+                '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '">  ' +
                 '   ↕  ' +
                 '  </button>  ';
 
@@ -527,7 +527,7 @@ function TABLE_PedidosPendientes() {
             panelBody.append($('<hr>'));
             panelBody.append(TABLA_INGD);
 
-            var panelInredientesAdicionales = $('<div class="collapse" id="collapseExample_' + pedido.id + '' + producto.id + '">');
+            var panelInredientesAdicionales = $('<div class="collapse" id="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '">');
             panelInredientesAdicionales.append(panelBody);
 
             TD1_PRD.append(panelInredientesAdicionales);

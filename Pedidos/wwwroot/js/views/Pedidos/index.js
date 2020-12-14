@@ -474,13 +474,68 @@ function TABLE_PedidosPendientes() {
         var TABLA_PRD = $('<table>');
 
         $.each(JSON.parse(pedido.jsonListProductos), function (index, producto) {
+
+            //PRODUCTO
+            var TR1_PRD = $('<tr>');
             var TD1_PRD = $('<td style="width:100%">');
-            var TR_PRD = $('<tr>');
+            var TD2_PRD = $('<td>');
 
-            TD1_PRD.append('<div class="unselectable"><a id=' + 7 + ' style="color:blue">+0</a> ' + 9 + '</div>');
+            var btnDesplegar = '<button class="btn btn-primary btn-sm p-1" type="button"   ' +
+                '   data-toggle="collapse"   ' +
+                '   data-target="#collapseExample_' + pedido.id + '' + producto.id + '"   ' +
+                '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '' + producto.id + '">  ' +
+                '   ↕  ' +
+                '  </button>  ';
 
-            TR_PRD.append(TD1_PRD);
-            TABLA_PRD.append(TR_PRD);
+            TD1_PRD.append('<div style="text-align: start;"> ' + btnDesplegar + ' (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
+            TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
+            TR1_PRD.append(TD1_PRD, TD2_PRD);
+
+            //ADICIONALES E INGREDIENTES DEL PRODUCTO
+            var TR2_PRD = $('<tr>');
+            var TD1_PRD = $('<td style="width:100%" colspan="2">');
+
+            var TABLA_ADIC = $('<table class="w-100 unselectable">');
+            $.each(producto.Adicionales, function (index, item) {
+             
+                var TD1 = $('<td style="width:100%">');
+                var TD2 = $('<td>');
+                var TR = $('<tr>');
+
+                TD1.append('<div class="unselectable" style="text-align:start;"><a style="color:blue;">+' + item.cantidad + '</a> ' + item.nombre + '</div>');
+                TD2.append('<div class="unselectable" style="width:70px;text-align:end;font-size: 13px;">R$ ' + (item.Valor * item.cantidad).toFixed(2) + '</div>');
+
+                TR.append(TD1, TD2);
+                TABLA_ADIC.append(TR);
+            });
+
+            var TABLA_INGD = $('<table class="w-100 unselectable">');
+            $.each(producto.Ingredientes, function (index, item) {
+                console.log(item);
+                var TD1 = $('<td style="width:100%">');
+                var TD2 = $('<td>');
+                var TR = $('<tr>');
+
+                TD1.append('<div class="unselectable" style="text-align:start;"><a style="color:blue;">- </a> ' + item.nombre + '</div>');
+              
+                TR.append(TD1);
+                TABLA_INGD.append(TR);
+            });
+
+            var panelBody = $('<div class="card card-body">');
+            panelBody.append(TABLA_ADIC);
+            panelBody.append($('<hr>'));
+            panelBody.append(TABLA_INGD);
+
+            var panelInredientesAdicionales = $('<div class="collapse" id="collapseExample_' + pedido.id + '' + producto.id + '">');
+            panelInredientesAdicionales.append(panelBody);
+
+            TD1_PRD.append(panelInredientesAdicionales);
+            TR2_PRD.append(TD1_PRD);
+
+            //ADD TRS A LA TABLA
+            TABLA_PRD.append(TR1_PRD, TR2_PRD);
+
         });
 
 

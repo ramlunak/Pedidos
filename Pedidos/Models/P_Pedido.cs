@@ -60,7 +60,7 @@ namespace Pedidos.Models
         public string cliente { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
-        public int idFormaPagamento { get; set; }
+        public string idFormaPagamento { get; set; }
 
     }
 

@@ -96,7 +96,7 @@ namespace Pedidos.Controllers
                     currentPedido.telefono = pedidoaux.telefono;
 
                     var formaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                    currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x=>x.id == pedidoaux.idFormaPagamento).nombre;
+                    currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x=>x.id == Convert.ToInt32(pedidoaux.idFormaPagamento)).nombre;
 
                     _context.Add(currentPedido);
                     await _context.SaveChangesAsync();

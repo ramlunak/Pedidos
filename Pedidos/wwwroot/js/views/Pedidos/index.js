@@ -488,6 +488,10 @@ function TABLE_PedidosPendientes() {
                 '   ↕  ' +
                 '  </button>  ';
 
+            if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
+                btnDesplegar = '<i></i>';
+            }
+
             TD1_PRD.append('<div style="text-align: start;"> ' + btnDesplegar + ' (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);

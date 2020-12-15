@@ -5,7 +5,8 @@ var _ModalProducto = {
     cliente: '',
     direccion: '',
     telefono: ''
-};;
+};
+
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
@@ -134,7 +135,6 @@ function CargarPedidosPendientes() {
         }
     });
 }
-
 
 //cargar info para mostrar en el modal 
 function ShowDetallesProducto(id) {
@@ -443,7 +443,6 @@ function MostarPedidosPendientes() {
     TABLE_PedidosPendientes();
 }
 
-
 //crear tabla de productos del pedido en edicion
 function TABLE_PedidosPendientes() {
 
@@ -502,7 +501,7 @@ function TABLE_PedidosPendientes() {
 
             var TABLA_ADIC = $('<table class="w-100 unselectable">');
             $.each(producto.Adicionales, function (index, item) {
-             
+
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
                 var TR = $('<tr>');
@@ -522,7 +521,7 @@ function TABLE_PedidosPendientes() {
                 var TR = $('<tr>');
 
                 TD1.append('<div class="unselectable" style="text-align:start;"><a style="color:blue;">- </a> ' + item.nombre + '</div>');
-              
+
                 TR.append(TD1);
                 TABLA_INGD.append(TR);
             });
@@ -547,7 +546,8 @@ function TABLE_PedidosPendientes() {
         //AGREGAR PRODUCTOS
         CARD_BODY.append(TABLA_PRD);
 
-        var CARD_FUTTER = $(' <div class="card-footer text-muted p-2" style="background-color: #C4C5C5;color: white;">');
+        var CARD_FUTTER = $(' <div class="card-footer text-muted p-2" >');
+        CARD_FUTTER.append('<a href="/Pedidos/Print" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color:green"></i></a>');
 
         CARD.append(CARD_BODY);
         CARD.append(CARD_FUTTER);
@@ -560,4 +560,3 @@ function TABLE_PedidosPendientes() {
         TABLE.append(TR);
     });
 }
-

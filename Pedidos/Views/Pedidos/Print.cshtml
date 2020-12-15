@@ -1,0 +1,90 @@
+﻿@model Pedidos.Models.P_Pedido
+
+@{
+    ViewData["Title"] = "";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <style type="text/css">
+        body {
+            margin-top: 0px;
+        }
+
+        * {
+            font-size: 13px;
+            font-family: Calibri;
+        }
+
+        td, th, tr, table {
+            border-collapse: collapse;
+            margin-top: 2px;
+        }
+
+        .centrado {
+            text-align: center;
+            align-content: center;
+        }
+
+        .ticket {
+            width: 200px;
+            max-width: 200px;
+        }
+
+        img {
+            max-width: inherit;
+            width: inherit;
+        }
+    </style>
+</head>
+<body>
+    <div class="ticket">
+        <p class="col centrado" style="margin-top:2px">
+            <b>ass</b>
+            <br />
+            <span>1 - 454</span>
+        </p>
+
+        <div class="col centrado">
+
+            <table style="width:200px">
+                <tr>
+                    <td style="text-align:end"><b>Comprador:</b></td>
+                    <td style="text-align:start"> das</td>
+                </tr>
+                <tr>
+                    <td style="text-align:end"><b>Telefone:</b></td>
+                    <td style="text-align:start"> ewew</td>
+                </tr>
+                <tr>
+                    <td style="text-align:end"><b>Valor Entrega:</b></td>
+                    <td style="text-align:start"> R$ 898</td>
+                </tr>
+
+                <tr style="margin-top: 5px">
+                    <td style="text-align:center" colspan="2"><b>Forma Pagamento</b></td>
+                </tr>
+                <tr>
+                    <td style="text-align:center" colspan="2"> cvvcv</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <hr />
+
+        <p class="centrado">
+            <b>¡obrigado por sua preferência!</b>
+        </p>
+    </div>
+
+</body>
+</html>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/Views/Pedidos/print.js"></script>

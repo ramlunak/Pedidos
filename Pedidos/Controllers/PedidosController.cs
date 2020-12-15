@@ -132,5 +132,10 @@ namespace Pedidos.Controllers
 
             return _context.P_Pedidos.Any(e => e.id == id);
         }
+
+        public async Task<IActionResult> Print()
+        {
+            return View();
+        }
     }
 }

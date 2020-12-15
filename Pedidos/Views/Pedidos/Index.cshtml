@@ -76,14 +76,14 @@
 
                 <div class="row m-1">
                     <input id="inputEndereco" class="form-control form-control-sm col-12 col-md-8" placeholder="Endereço" />
-                    <select asp-for="idFormaPagamento"  id="idFormaPagamento" class="form-control form-control-sm col-12 col-md-4">
+                    <select asp-for="idFormaPagamento" id="idFormaPagamento" class="form-control form-control-sm col-12 col-md-4">
                         @if (ViewBag.FormaPagamento != null)
                         {
                             @foreach (var Categoria in ViewBag.FormaPagamento)
                             {
                                 <option value="@(Categoria.id)">@(Categoria.nombre)</option>
                             }
-                        }                        
+                        }
                     </select>
                 </div>
 
@@ -180,7 +180,6 @@
 
         @*LISTA PEDIDOS*@
         <div class="col-6">
-
             <div class="card text-center">
                 <div class="card-header" style="background-color: #0380D2; color: white;">
                     @*<img src="~/img/red-loading-circle.gif" width="30"/>*@

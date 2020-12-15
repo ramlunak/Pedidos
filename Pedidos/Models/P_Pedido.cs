@@ -26,6 +26,8 @@ namespace Pedidos.Models
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
         public string aplicativo { get; set; }
+        public int? idFormaPagamento { get; set; }
+        public string formaPagamento { get; set; }
         public DateTime fecha { get; set; }
         public string status { get; set; }
         public string descripcion { get; set; }
@@ -53,12 +55,12 @@ namespace Pedidos.Models
 
     }
 
-
     public class PedidoDatosAux
     {
         public string cliente { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
+        public int idFormaPagamento { get; set; }
 
     }
 

@@ -26,10 +26,16 @@ namespace Pedidos.Controllers
         {
 
             ValidarCuenta();
+
+            var formaPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            ViewBag.FormaPagamento = formaPagamento;
+            SetSession("FormaPagamento", formaPagamento);
+
             if (GetSession<P_Pedido>("currentPedido") is null)
             {
                 var currentPedido = new P_Pedido(Cuenta.id);
                 SetSession("currentPedido", currentPedido);
+
                 return View(currentPedido);
             }
             else
@@ -88,6 +94,9 @@ namespace Pedidos.Controllers
                     currentPedido.cliente = pedidoaux.cliente;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
+
+                    var formaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                    currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x=>x.id == pedidoaux.idFormaPagamento).nombre;
 
                     _context.Add(currentPedido);
                     await _context.SaveChangesAsync();

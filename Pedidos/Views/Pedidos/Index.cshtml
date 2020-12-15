@@ -47,7 +47,6 @@
                     @*PRODUCTO*@
                     <div>
                         <table id="CurrentPedidoProductos" class="w-100 unselectable">
-                           
                         </table>
                     </div>
 
@@ -76,7 +75,16 @@
                 </div>
 
                 <div class="row m-1">
-                    <input id="inputEndereco" class="form-control form-control-sm" placeholder="Endereço" />
+                    <input id="inputEndereco" class="form-control form-control-sm col-12 col-md-8" placeholder="Endereço" />
+                    <select asp-for="idFormaPagamento"  id="idFormaPagamento" class="form-control form-control-sm col-12 col-md-4">
+                        @if (ViewBag.FormaPagamento != null)
+                        {
+                            @foreach (var Categoria in ViewBag.FormaPagamento)
+                            {
+                                <option value="@(Categoria.id)">@(Categoria.nombre)</option>
+                            }
+                        }                        
+                    </select>
                 </div>
 
                 <hr />
@@ -183,7 +191,6 @@
                     @*LISTA PEDIDO*@
 
                     <table id="ListaPedidosPendientes" style="width:100%">
-
                     </table>
 
 

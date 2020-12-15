@@ -403,7 +403,8 @@ function GuardarCurrentPedido() {
     var pedido = {
         cliente: $('#inputNome').val(),
         direccion: $('#inputEndereco').val(),
-        telefono: $('#inputTelefone').val()
+        telefono: $('#inputTelefone').val(),
+        idFormaPagamento: $('#idFormaPagamento').val()
     }
 
     $.ajax({

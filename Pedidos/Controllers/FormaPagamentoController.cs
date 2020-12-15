@@ -10,7 +10,7 @@ using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
-    public class FormaPagamentoController : Controller
+    public class FormaPagamentoController : BaseController
     {
         private readonly AppDbContext _context;
 
@@ -22,7 +22,7 @@ namespace Pedidos.Controllers
         // GET: FormaPagamento
         public async Task<IActionResult> Index()
         {
-            return View(await _context.P_FormaPagamento.ToListAsync());
+            return View(await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync());
         }
 
         // GET: FormaPagamento/Details/5
@@ -58,6 +58,9 @@ namespace Pedidos.Controllers
         {
             if (ModelState.IsValid)
             {
+                p_FormaPagamento.idCuenta = Cuenta.id;
+                p_FormaPagamento.activo = true;
+
                 _context.Add(p_FormaPagamento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));

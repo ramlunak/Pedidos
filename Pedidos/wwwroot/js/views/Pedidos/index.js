@@ -500,7 +500,7 @@ function TABLE_PedidosPendientes() {
             }, 1000);
 
             var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
-            TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' ><span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+            TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
             //FIN
 
             var TR1_PRD = $('<tr style="' + tr_background_color + '">');

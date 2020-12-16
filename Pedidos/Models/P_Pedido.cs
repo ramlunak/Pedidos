@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Pedidos.Extensions;
 using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ namespace Pedidos.Models
         public P_Pedido(int idCuenta)
         {
             this.idCuenta = idCuenta;
-            this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);
+            this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);                       
+            this.date_teste = DateTime.Now.ToTimeZone("E. South America Standard Time").ToString();
         }
 
         public int id { get; set; }
@@ -42,12 +44,15 @@ namespace Pedidos.Models
         //AUXILIARES
 
         [NotMapped]
+        public string date_teste { get; set; }
+
+        [NotMapped]
         public int tiempo_pedido
         {
             get
             {
                 if (fecha < new DateTime(2020, 1, 1)) return 0;
-                var tiempo = DateTime.Now - fecha;
+                var tiempo = DateTime.Now.ToUniversalTime() - fecha;
                 var segusdos = tiempo.TotalSeconds;
                 return Convert.ToInt32(segusdos);
             }

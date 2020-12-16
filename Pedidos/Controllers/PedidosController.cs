@@ -86,7 +86,7 @@ namespace Pedidos.Controllers
             {
                 try
                 {
-                    currentPedido.fecha = DateTime.Now;
+                    currentPedido.fecha = DateTime.Now.ToUniversalTime();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
                     currentPedido.total = currentPedido.valorProductos;

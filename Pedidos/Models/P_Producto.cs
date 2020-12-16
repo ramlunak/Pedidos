@@ -70,6 +70,8 @@ namespace Pedidos.Models
         [NotMapped]
         public int cantidad { get; set; } = 1;
         [NotMapped]
+        public string observacion { get; set; }
+        [NotMapped]
         public List<P_Adicionais> Adicionales { get; set; } = new List<P_Adicionais>();
         [NotMapped]
         public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();

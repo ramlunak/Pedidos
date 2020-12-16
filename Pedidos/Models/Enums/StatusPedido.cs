@@ -8,7 +8,7 @@ namespace Pedidos.Models.Enums
     public enum StatusPedido : short
     {
         Pendiente,
-        Concluido,
+        Finalizado,
         Cancelado 
     }
 }

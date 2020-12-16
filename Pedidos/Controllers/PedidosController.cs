@@ -96,7 +96,7 @@ namespace Pedidos.Controllers
                     currentPedido.telefono = pedidoaux.telefono;
 
                     var formaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                    currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x=>x.id == Convert.ToInt32(pedidoaux.idFormaPagamento)).nombre;
+                    currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x => x.id == Convert.ToInt32(pedidoaux.idFormaPagamento)).nombre;
 
                     _context.Add(currentPedido);
                     await _context.SaveChangesAsync();
@@ -122,7 +122,6 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> CargarPedidosPendientes()
         {
             var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
-
             return Ok(new { pedidosPendientes = pedidosPendientes });
         }
 
@@ -131,6 +130,38 @@ namespace Pedidos.Controllers
             ValidarCuenta();
 
             return _context.P_Pedidos.Any(e => e.id == id);
+        }
+
+        public async Task<IActionResult> Cancelar(int id)
+        {
+            try
+            {
+                var pedido = await _context.P_Pedidos.FindAsync(id);
+                pedido.status = StatusPedido.Cancelado.ToString();
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Finalizar(int id)
+        {
+            try
+            {
+                var pedido = await _context.P_Pedidos.FindAsync(id);
+                pedido.status = StatusPedido.Finalizado.ToString();
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
         }
 
         public async Task<IActionResult> Print()

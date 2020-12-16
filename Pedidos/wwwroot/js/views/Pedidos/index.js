@@ -4,7 +4,8 @@ var _PedidosPendientes;
 var _ModalProducto = {
     cliente: '',
     direccion: '',
-    telefono: ''
+    telefono: '',
+    observacion: ''
 };
 
 var _ModalAdicionales = [];
@@ -168,7 +169,7 @@ function ShowDetallesProducto(id) {
 
 }
 
-//cargar indo del producto en el modal 
+//cargar info del producto en el modal 
 function CargarDatosModalDetalles(data) {
 
     $('#spanNomeProducto').html(data.producto.nombre.toUpperCase());
@@ -179,6 +180,8 @@ function CargarDatosModalDetalles(data) {
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
+
+    $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" oninput="observacionOnInput()" class="form-control" placeholder="Observação"></textarea>');
 
     $('#ModalDetalleProducto').modal('show');
 }
@@ -288,7 +291,6 @@ function ingredienteOnChange(input, id, idProducto) {
 }
 
 //evento de restar contidad producto
-
 function productoMinus(btn) {
 
     if (parseInt(_ModalProducto.cantidad) === 1) {
@@ -318,12 +320,13 @@ function AddProducto() {
 
     _ModalProducto.adicionales = _ModalAdicionales;
     _ModalProducto.ingredientes = _ModalIngredientes;
+    _ModalProducto.observacion = $('#inputObservacion').val();
 
     $.ajax({
         type: "POST",
         url: "/Pedidos/AddProducto",
         traditional: true,
-        data: JSON.stringify(_ModalProducto, _CurrentPedido),
+        data: JSON.stringify(_ModalProducto),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
@@ -452,7 +455,7 @@ function TABLE_PedidosPendientes() {
     $.each(_PedidosPendientes, function (index, pedido) {
 
 
-        var CARD = $('<div class="card mb-2">');
+        var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2">');
         var CARD_BODY = $('<div class="card-body  p-1">');
 
         //INFO DEL PEDIDO 
@@ -542,11 +545,17 @@ function TABLE_PedidosPendientes() {
 
         });
 
-
         //AGREGAR PRODUCTOS
         CARD_BODY.append(TABLA_PRD);
 
-        var CARD_FUTTER = $(' <div class="card-footer text-muted p-2" >');
+        //FUTTER
+        var CARD_FUTTER = $(' <div class="card-footer text-muted p-2 d-flex justify-content-between ">');
+
+        var futter_botones = $('<div class="d-flex">');
+        futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer mr-2"  style="color:white">cancelar</a>');
+        futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
+        CARD_FUTTER.append(futter_botones);
+
         CARD_FUTTER.append('<a href="/Pedidos/Print" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color:green"></i></a>');
 
         CARD.append(CARD_BODY);
@@ -559,4 +568,118 @@ function TABLE_PedidosPendientes() {
         TR.append(TD1);
         TABLE.append(TR);
     });
+}
+
+function cancelar(idPedido) {
+
+    Swal.fire({
+        title: 'Tem certeza que deseja cancelar o pedido?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: 'Não'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                type: "GET",
+                url: "/Pedidos/Cancelar/" + idPedido,
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: '',
+                        showConfirmButton: false,
+                        timer: 800
+                    })
+
+                    $('#CARD_PEDIDO_' + idPedido + '').remove();
+
+                },
+                failure: function (response) {
+
+                    Swal.fire(
+                        'Error!',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                },
+                error: function (response) {
+
+                    Swal.fire(
+                        'Error',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                }
+            });
+
+        }
+    })
+
+
+}
+
+
+function finalizado(idPedido) {
+
+    Swal.fire({
+        title: 'O pedido será marcado como preparado',
+        text: "",
+        icon: 'info',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: 'Não'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                type: "GET",
+                url: "/Pedidos/Finalizar/" + idPedido,
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    Swal.fire({
+                        position: 'top-end',
+                        icon: 'success',
+                        title: '',
+                        showConfirmButton: false,
+                        timer: 800
+                    })
+
+                    $('#CARD_PEDIDO_' + idPedido + '').remove();
+
+                },
+                failure: function (response) {
+
+                    Swal.fire(
+                        'Error!',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                },
+                error: function (response) {
+
+                    Swal.fire(
+                        'Error',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                }
+            });
+
+        }
+    })
+
 }

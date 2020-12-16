@@ -489,6 +489,20 @@ function TABLE_PedidosPendientes() {
                 tr_background_color = "";
             }
 
+            // CONTADOR
+            var TR0_PRD = $('<tr>');
+
+            var sec = pedido.tiempo_pedido;
+            function pad(val) { return val > 9 ? val : "0" + val; }
+            setInterval(function () {
+                $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
+                $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
+            }, 1000);
+
+            var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
+            TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' ><span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+            //FIN
+
             var TR1_PRD = $('<tr style="' + tr_background_color + '">');
             var TD1_PRD = $('<td style="width:100%">');
             var TD2_PRD = $('<td>');
@@ -541,7 +555,7 @@ function TABLE_PedidosPendientes() {
             TR2_PRD.append(TD1_PRD);
 
             //ADD TRS A LA TABLA
-            TABLA_PRD.append(TR1_PRD, TR2_PRD);
+            TABLA_PRD.append(TR0_PRD, TR1_PRD, TR2_PRD);
 
         });
 

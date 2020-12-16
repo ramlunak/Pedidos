@@ -42,6 +42,18 @@ namespace Pedidos.Models
         //AUXILIARES
 
         [NotMapped]
+        public int tiempo_pedido
+        {
+            get
+            {
+                if (fecha < new DateTime(2020, 1, 1)) return 0;
+                var tiempo = DateTime.Now - fecha;
+                var segusdos = tiempo.TotalSeconds;
+                return Convert.ToInt32(segusdos);
+            }
+        }
+
+        [NotMapped]
         public List<P_Productos> productos { get; set; } = new List<P_Productos>();
         [NotMapped]
         public decimal valorProductos

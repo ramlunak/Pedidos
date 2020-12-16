@@ -474,27 +474,27 @@ function TABLE_PedidosPendientes() {
         CARD_BODY.append(div_infopedido);
 
         //LISTA DE PRODUCTOS
-        var TABLA_PRD = $('<table>');
+        var TABLA_PRD = $('<table cellspacing="0" class="table-tr-border-radius unselectable" style="font-size: 13px;">');
 
         $.each(JSON.parse(pedido.jsonListProductos), function (index, producto) {
 
             //PRODUCTO
-            var TR1_PRD = $('<tr>');
+            var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
+                '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
+                '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '" ';
+            var tr_background_color = "background-color: powderblue";
+
+            if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
+                Desplegar = "";
+                tr_background_color = "";
+            }
+
+            var TR1_PRD = $('<tr style="' + tr_background_color + '">');
             var TD1_PRD = $('<td style="width:100%">');
             var TD2_PRD = $('<td>');
 
-            var btnDesplegar = '<button class="btn btn-primary btn-sm p-1" type="button"   ' +
-                '   data-toggle="collapse"   ' +
-                '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
-                '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '">  ' +
-                '   ↕  ' +
-                '  </button>  ';
 
-            if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
-                btnDesplegar = '<i></i>';
-            }
-
-            TD1_PRD.append('<div style="text-align: start;"> ' + btnDesplegar + ' (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
+            TD1_PRD.append('<div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 
@@ -529,9 +529,9 @@ function TABLE_PedidosPendientes() {
                 TABLA_INGD.append(TR);
             });
 
-            var panelBody = $('<div class="card card-body">');
+            var panelBody = $('<div class="card card-body" style="padding: 8px;">');
             panelBody.append(TABLA_ADIC);
-            panelBody.append($('<hr>'));
+            panelBody.append($('<hr style="margin: 5px;">'));
             panelBody.append(TABLA_INGD);
 
             var panelInredientesAdicionales = $('<div class="collapse" id="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '">');

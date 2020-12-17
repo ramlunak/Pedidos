@@ -162,3 +162,11 @@ input[type=checkbox] {
         border-bottom-right-radius: 3px;
         border-top-right-radius: 3px;
     }
+
+.producto-image-50px {
+    max-height: 60px;
+    max-width: 60px;
+    min-height: 60px;
+    min-width: 60px;
+    object-fit: cover;
+}

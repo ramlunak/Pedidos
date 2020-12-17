@@ -4,15 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="row col-12 d-flex justify-content-center align-items-center ">
-    <div style="margin:5px;font-size: 25px;color: darkgray;text-transform: capitalize;"> Produtos</div>
-</div>
-
-<div class="d-flex justify-content-between m-1">
-    <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Novo Produto</a></div>
-    <div>
-        <!-- Search form -->
-        <form id="formSearchCategoria">
+<!--div class="d-flex justify-content-between m-1">
+   <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Novo Produto</a></div>
+   <div>-->
+<!-- Search form -->
+<!--<form id="formSearchCategoria">
             <div class="d-flex align-items-center">
                 <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="search" placeholder="Buscar"
                        aria-label="Search">
@@ -22,134 +18,106 @@
             </div>
         </form>
     </div>
-</div>
+</div>-->
 
-<table class="table table-striped">
-    <tbody>
-        @foreach (var item in Model.Productos)
-        {
-            var modalId = $"modal{item.id}";
-            var imgDataURL = string.Empty;
-            if (item.imagen != null)
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>PRODUTOS</b>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+        <div class="row">
+            @foreach (var item in Model.Productos)
             {
-                string imreBase64Data = Convert.ToBase64String(item.imagen);
-                imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-            }
-            <tr>
-                <td>
-                    <div>
-                        @if (item.imagen != null && item.imagen.Length > 0)
-                        {
-                            <img style="max-height:100px;max-width:100px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
-                        }
+                var modalId = $"modal{item.id}";
+                var imgDataURL = string.Empty;
+                if (item.imagen != null)
+                {
+                    string imreBase64Data = Convert.ToBase64String(item.imagen);
+                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                }
 
-                        <!-- Modal -->
-                        <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                                <div class="modal-content" style="background-color: transparent;border: none;">
+                <div class="col-12 col-md-6 col-xl-4 mb-2">
+                    <div class="card">
+                        <div class="card-header bg-primary p-2">
+                            <div class="row d-flex align-content-center pl-3">
 
-                                    <div class="modal-body">
-                                        <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
-
-                                    </div>
-
+                                <div>
+                                    @if (item.imagen != null && item.imagen.Length > 0)
+                                    {
+                                        <img class="rounded-circle border border-primary producto-image-50px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
+                                    }
                                 </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </td>
-                <td>
-                    <div class="row col-12">
-                        <div class="col-10">
-                            <div>@item.nombre</div>
-                            <div>@item.Categoria</div>
-                        </div>
-                        <div class="col-2 align-items-end">
-                            <div class="d-block justify-content-end p-0">
-
-                                <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
-                                    <div style="text-align:end">R$ @item.valor</div>
+                                <div class="text-center d-flex align-content-center">
+                                    <b class="ml-2" style="align-items: center; display: flex; color:white">@item.nombre.ToUpper()</b>
                                 </div>
-
-                                @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
-                                {
-
-                                    <div style="font-size: 15px;font-weight: 500;color:gray;">
-                                        <div style="text-align:end"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i> @item.horasPreparacion:@item.minutosPreparacion:00 </div>
-                                    </div>
-                                }
 
                             </div>
                         </div>
-                        <div class="col-12">
-                            <samp>@item.descripcion</samp>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-center p-2">
-                        @*<a><img width="20" style="margin-right:5px" src="~/img/adicionales.png" /></a>
-                        <span style="margin-right:20px">7</span>*@
-                        <a asp-action="Ingredientes" asp-route-id="@item.id" class="cursor-pointer"><img width="25" style="margin-right:5px" src="~/img/ingredientes.png" /></a>
-                        @*<span style="margin-right:20px">10</span>*@
-                    </div>
-                </td>
-                <td>
-                    <div class="d-flex justify-content-end p-2">
-                        <div class="m-1">
-                            <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                        <div class="m-1">
-                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                            </a>
-                        </div>
-                    </div>
-                </td>
-            </tr>
+                        <div class="card-body">
 
+                            <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content" style="background-color: transparent;border: none;">
 
-            @*<tr>
-                    <td>
-                        <div class="row col-sm-12">
-                            <div class="row col-12">
+                                        <div class="modal-body">
+                                            <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
 
-                                <div class="col-2 p-0 m-0">
-                                    <div style="width:100px;height: 100px">
-                                        @if (item.imagen != null && item.imagen.Length > 0)
-                                        {
-                                            <img style="flex:none;width:100px;border-radius:100px;object-fit:cover" src="@imgDataURL" />
-                                        }
+                                        </div>
+
                                     </div>
                                 </div>
-                                <div class="col-7 col-md-6 p-0 m-0">
-                                    <div class="d-block p-2">
-                                        <div style="color:black;font-size:18px">
-                                            <span style="text-transform:uppercase">@Html.DisplayFor(modelItem => item.nombre)</span>
+                            </div>
+
+                            <div class="row">
+                                <table>
+                                    <tr>
+                                        <td><b>Preço</b></td>
+                                        <td>: <b style="color:green">R$ @item.valor.ToString("F2")</b> </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>Categoría</b></td>
+                                        <td>: @item.Categoria</td>
+                                    </tr>
+                                    @if (!string.IsNullOrEmpty(item.tempo))
+                                    {
+                                        <tr>
+                                            <td><b>Tempo</b></td>
+                                            <td>:   <i class="fa fa-clock" style="color:gray"></i> @item.tempo</td>
+                                        </tr>
+                                    }
+                                </table>
+                            </div>
+                            @if (!string.IsNullOrEmpty(item.descripcion))
+                            {
+                                <div class="row">
+                                    <p>
+                                        <b>descrição:</b> @item.descripcion
+                                    </p>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="card-footer text-muted p-2" style="color: black;">
+                            <div class="d-flex justify-content-between">
+
+                                <div>
+                                    <div class="d-flex justify-content-end p-2">
+                                        <div class="m-1">
+                                            <a asp-action="Ingredientes" asp-route-id="@item.id" class="cursor-pointer"><img width="25" style="margin-right:5px" src="~/img/ingredientes.png" /></a>
                                         </div>
-                                        <div style="font-style:italic">
-                                            @Html.DisplayFor(modelItem => item.Categoria)
-                                        </div>
+
                                     </div>
                                 </div>
-                                <div class="col-3 col-md-2 p-0">
-                                    <div class="d-block justify-content-start justify-content-md-end p-0">
-                                        <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
-                                            <div>R$ @item.valor</div>
-                                        </div>
-                                        @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
-                                        {
-                                            <div style="font-size:14px;color:gray;font-weight:600" class="d-flex">
-                                                <div style="margin-right:5px"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i></div>
-                                                @Html.DisplayFor(modelItem => item.horasPreparacion):@Html.DisplayFor(modelItem => item.minutosPreparacion):00
-                                            </div>
-                                        }
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-2">
+
+                                <div>
                                     <div class="d-flex justify-content-end p-2">
                                         <div class="m-1">
                                             <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
@@ -164,31 +132,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row col-12">
-                                <div class="col-2 p-0 m-0">
-                                </div>
-                                <div class="col-6">
-                                    <div style="font-size: 15px;color: dimgrey;">
-                                        <div>@item.descripcion</div>
-                                    </div>
-                                </div>
-                                <div class="col-2 p-0 m-0">
-                                </div>
-                                <div class="col-2 p-0 m-0">
-                                </div>
-                            </div>
-
                         </div>
-                    </td>
-                </tr>*@
-        }
-    </tbody>
-</table>
+                    </div>
+                </div>
+            }
+        </div>
+
+    </div>
+</div>
+
+
 
 <div class="d-flex justify-content-end">
     @{ Html.RenderPartial("_Paginador");}
 </div>
-
 
 @section Scripts{
     <script type="text/javascript">
@@ -207,3 +164,95 @@
         });
     </script>
 }
+
+@*<table class="table table-striped">
+        <tbody>
+
+
+            @foreach (var item in Model.Productos)
+            {
+                var modalId = $"modal{item.id}";
+                var imgDataURL = string.Empty;
+                if (item.imagen != null)
+                {
+                    string imreBase64Data = Convert.ToBase64String(item.imagen);
+                    imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                }
+                <tr>
+                    <td>
+                        <div>
+                            @if (item.imagen != null && item.imagen.Length > 0)
+                            {
+                                <img style="max-height:100px;max-width:100px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
+                            }
+
+
+                            <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content" style="background-color: transparent;border: none;">
+
+                                        <div class="modal-body">
+                                            <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="row col-12">
+                            <div class="col-10">
+                                <div>@item.nombre</div>
+                                <div>@item.Categoria</div>
+                            </div>
+                            <div class="col-2 align-items-end">
+                                <div class="d-block justify-content-end p-0">
+
+                                    <div style="font-size: 15px;font-weight: 500;color: #C09C0A;">
+                                        <div style="text-align:end">R$ @item.valor</div>
+                                    </div>
+
+                                    @if (item.horasPreparacion.HasValue || item.minutosPreparacion.HasValue)
+                                    {
+
+                                        <div style="font-size: 15px;font-weight: 500;color:gray;">
+                                            <div style="text-align:end"> <i style="color:gray;font-size:12px" class="fa fa-clock" aria-hidden="true"></i> @item.horasPreparacion:@item.minutosPreparacion:00 </div>
+                                        </div>
+                                    }
+
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <samp>@item.descripcion</samp>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center p-2">
+
+                            <a asp-action="Ingredientes" asp-route-id="@item.id" class="cursor-pointer"><img width="25" style="margin-right:5px" src="~/img/ingredientes.png" /></a>
+
+                        </div>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-end p-2">
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                            <div class="m-1">
+                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>*@

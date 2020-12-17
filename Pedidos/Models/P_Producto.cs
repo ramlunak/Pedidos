@@ -54,6 +54,27 @@ namespace Pedidos.Models
         //PROPIEDADES AUXILIARES
 
         [NotMapped]
+        public string tempo
+        {
+            get
+            {
+                if (this.horasPreparacion is null)
+                {
+                    if (this.minutosPreparacion != null)
+                        return $"00:{this.minutosPreparacion}:00";
+                }
+                else
+                {
+                    if (this.minutosPreparacion is null)
+                        return $"{this.horasPreparacion}:00:00";
+                    else
+                        return $"{this.horasPreparacion}:{this.minutosPreparacion}:00";
+                }
+
+                return null;
+            }
+        }
+        [NotMapped]
         [Required(ErrorMessage = "A Categoria é obrigatoria")]
         [DisplayName("Categoria")]
         public string Categoria { get; set; }
@@ -91,7 +112,7 @@ namespace Pedidos.Models
                     }
                 }
 
-                return this.cantidad * ( valor_producto + valor_adicionales);
+                return this.cantidad * (valor_producto + valor_adicionales);
             }
         }
 

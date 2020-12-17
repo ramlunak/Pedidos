@@ -104,7 +104,7 @@ namespace Pedidos.Controllers
             return View(p_Productos);
         }
 
-        // GET: Productos/Create
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Create()
         {
             ValidarCuenta();
@@ -119,6 +119,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Create(P_Productos p_Productos)
         {
             ValidarCuenta();
@@ -164,7 +165,7 @@ namespace Pedidos.Controllers
                     SetSession("Productos", json);
                 }
 
-                return RedirectToAction(nameof(Ingredientes),new { id = p_Productos .id});
+                return RedirectToAction(nameof(Ingredientes), new { id = p_Productos.id });
             }
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(p_Productos);

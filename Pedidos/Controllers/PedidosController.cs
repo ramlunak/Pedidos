@@ -21,7 +21,7 @@ namespace Pedidos.Controllers
         {
             _context = context;
         }
-        
+
         public async Task<IActionResult> Index()
         {
 
@@ -164,9 +164,10 @@ namespace Pedidos.Controllers
             }
         }
 
-        public async Task<IActionResult> Print()
+        public async Task<IActionResult> Print(int id)
         {
-            return View();
+            var pedido = await _context.P_Pedidos.FindAsync(id);
+            return View(pedido);
         }
     }
 }

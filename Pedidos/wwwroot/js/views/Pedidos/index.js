@@ -575,7 +575,7 @@ function TABLE_PedidosPendientes() {
         futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
         CARD_FUTTER.append(futter_botones);
 
-        CARD_FUTTER.append('<a href="/Pedidos/Print" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color:green"></i></a>');
+        CARD_FUTTER.append('<a href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
 
         CARD.append(CARD_BODY);
         CARD.append(CARD_FUTTER);

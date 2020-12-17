@@ -44,10 +44,11 @@
 </head>
 <body>
     <div class="ticket">
-        <p class="col centrado" style="margin-top:2px">
-            <b>ass</b>
-            <br />
-            <span>1 - 454</span>
+        <div class="centrado">@Model.codigo.ToUpper()</div>
+        
+        <p class="col" style="margin-top:2px">
+            <div style="margin-bottom:5px">@Model.cliente.ToUpper()</div>
+            <div>@Model.direccion.ToUpper()</div>
         </p>
 
         <div class="col centrado">

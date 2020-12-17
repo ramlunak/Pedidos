@@ -180,7 +180,7 @@ function CargarDatosModalDetalles(data) {
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
-
+    $('#modalObservacionContent').html('');
     $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" oninput="observacionOnInput()" class="form-control" placeholder="Observação"></textarea>');
 
     $('#ModalDetalleProducto').modal('show');

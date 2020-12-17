@@ -153,12 +153,12 @@ input[type=checkbox] {
 
     .table-tr-border-radius td:first-child {
         border-left-style: none;
-        border-top-left-radius: 5px;
-        border-bottom-left-radius: 5px;
+        border-top-left-radius: 3px;
+        border-bottom-left-radius: 3px;
     }
 
     .table-tr-border-radius td:last-child {
         border-right-style: none;
-        border-bottom-right-radius: 5px;
-        border-top-right-radius: 5px;
+        border-bottom-right-radius: 3px;
+        border-top-right-radius: 3px;
     }

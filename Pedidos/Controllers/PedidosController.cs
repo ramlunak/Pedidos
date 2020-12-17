@@ -21,7 +21,7 @@ namespace Pedidos.Controllers
         {
             _context = context;
         }
-
+        
         public async Task<IActionResult> Index()
         {
 
@@ -115,7 +115,7 @@ namespace Pedidos.Controllers
             }
             else
             {
-                return Ok(new { erro = "Sem produtos" });
+                return Ok(new { erro = "Adicione pelo menos um produto" });
             }
         }
 

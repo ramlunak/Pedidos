@@ -164,7 +164,7 @@ namespace Pedidos.Controllers
                     SetSession("Productos", json);
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Ingredientes),new { id = p_Productos .id});
             }
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(p_Productos);

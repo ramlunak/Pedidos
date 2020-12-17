@@ -425,9 +425,14 @@ function GuardarCurrentPedido() {
 
                 _PedidosPendientes = result.pedidosPendientes;
                 MostarPedidosPendientes();
-            }
+            } else {
 
-            console.log('ok', result);
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Oops...',
+                    text: result.erro
+                })
+            }
 
         },
         failure: function (response) {

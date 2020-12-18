@@ -112,18 +112,21 @@
                                         <span id="spanDescripcionProducto"></span>
                                     </div>
 
-                                    <div class="d-flex align-content-center">
+                                    <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
                                         <hr class="w-100" />
-                                        <div class="m-1" style="color:gray">ADICIONALES</div>
+                                        <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONALES</div>
                                         <hr class="w-100" />
                                     </div>
 
                                     @*ADICIONALES*@
                                     <div class="ml-2" style="color:darkcyan">
 
-                                        <table id="modalTableAdicionales" class="w-100">
-                                            @*LISTA DE ADICIONALES DINAMICA*@
-                                        </table>
+                                        <div class="collapse" id="collapseAdicionales">
+                                            <table id="modalTableAdicionales" class="w-100">
+                                                @*LISTA DE ADICIONALES DINAMICA*@
+                                            </table>
+                                        </div>
+
                                     </div>
 
                                     <div class="d-flex align-content-center">

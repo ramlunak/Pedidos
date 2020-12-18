@@ -646,7 +646,6 @@ function cancelar(idPedido) {
 
 }
 
-
 function finalizado(idPedido) {
 
     Swal.fire({

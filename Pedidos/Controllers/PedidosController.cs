@@ -67,6 +67,11 @@ namespace Pedidos.Controllers
             currentPedido.direccion = producto.direccion;
             currentPedido.telefono = producto.telefono;
 
+            if (!string.IsNullOrEmpty(producto.tamanhoSeleccionado))
+            {
+                producto.valor = producto.valorTamanhoSeleccionado;
+            }
+
             SetSession("currentPedido", currentPedido);
             return Ok(new { currentPedido });
         }

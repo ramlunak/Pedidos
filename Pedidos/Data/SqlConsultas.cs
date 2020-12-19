@@ -156,6 +156,12 @@ namespace Pedidos.Data
                    $" ,[horasPreparacion]" +
                    $" ,[minutosPreparacion]" +
                    $" ,[imagen]" +
+                   $" ,[tamanho1]" +
+                   $" ,[valorTamanho1]" +
+                   $" ,[tamanho2]" +
+                   $" ,[valorTamanho2]" +
+                   $" ,[tamanho3]" +
+                   $" ,[valorTamanho3]" +
                    $" FROM[dbo].[P_Productos] AS PRO" +
                    $" WHERE idCuenta = {idCuenta}" +
                    filtro +

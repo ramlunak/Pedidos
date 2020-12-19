@@ -44,6 +44,9 @@
                     imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                 }
 
+                bool tieneTemanhos = string.IsNullOrEmpty(item.tamanho1) && string.IsNullOrEmpty(item.tamanho2) && string.IsNullOrEmpty(item.tamanho3) ? false : true;
+
+
                 <div class="col-12 col-md-6 col-xl-4 mb-2">
                     <div class="card">
                         <div class="card-header bg-primary p-2">
@@ -78,10 +81,31 @@
 
                             <div class="row">
                                 <table>
-                                    <tr>
-                                        <td><b>Preço</b></td>
-                                        <td>: <b style="color:green">R$ @item.valor.ToString("F2")</b> </td>
-                                    </tr>
+                                    @if (tieneTemanhos)
+                                    {
+                                        <tr>
+                                            <td colspan="2">
+                                                <div class="d-flex justify-content-between">
+                                                    @if (!string.IsNullOrEmpty(item.tamanho1))
+                                                    {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
+
+                                                    @if (!string.IsNullOrEmpty(item.tamanho2))
+                                                    {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
+
+                                                    @if (!string.IsNullOrEmpty(item.tamanho3))
+                                                    {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
+
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                    else
+                                    {
+                                        <tr>
+                                            <td><b>Preço</b></td>
+                                            <td>: <b style="color:green">R$ @item.valor.ToString("F2")</b> </td>
+                                        </tr>
+                                    }
                                     <tr>
                                         <td><b>Categoría</b></td>
                                         <td>: @item.Categoria</td>

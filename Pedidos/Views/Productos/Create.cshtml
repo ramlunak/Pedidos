@@ -28,116 +28,136 @@
     </div>
 </div>
 
-<div class="card m-2">
-    <div class="card-header">
-        <div class="row d-flex justify-content-between p-2">
-            <div>
-                <b>PRODUCTOS</b>
+<div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-4">
+        <form id="form_create" asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="d-block" style="text-align:center">
+                <div>
+                    <img id="imgProducto" class="cursor-pointer" src="data:image/png;base64,@Model.ImageBase64" style="height:150px;width:150px;object-fit:cover;border-radius:5px" data-toggle="modal" data-target="#ModalUploadImagen">
+                </div>
+                <div>
+                    <div class="btn btn-sm btn-danger cursor-pointer" style="width:150px;margin:1px;margin-bottom:5px">Apagar</div>
+                </div>
+                @*<div>
+                        <div class="custom-file">
+                            <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
+                                   Class="form-control custom-file-input" lang="pt-br" />
+                            <label class="custom-file-label" style="word-break: break-all; overflow: hidden;">Imagem....</label>
+                        </div>
+                    </div>*@
             </div>
+
             <div>
-                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
+                <div class="form-group">
+
+                    <input type="search" id="browserInputCategoria" list="CategoriaList" placeholder="Categoria" asp-for="Categoria" class="form-control" />
+                    <datalist id="CategoriaList">
+                        @if (ViewBag.Categorias != null)
+                        {
+                            @foreach (var categoria in ViewBag.Categorias)
+                            {
+                                <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
+                            }
+                        }
+                    </datalist>
+                    <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
+                    <span asp-validation-for="idCategoria" class="text-danger"></span>
+                </div>
             </div>
-        </div>
 
-    </div>
-    <div class="card-body">
+            <div>
+                <div class="form-group">
 
-        <div class="row d-flex justify-content-center">
-            <div class="col-12 col-md-4">
-                <form id="form_create" asp-action="Create" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="nombre" class="form-control" placeholder="Nome" />
+                    <span asp-validation-for="nombre" class="text-danger"></span>
+                </div>
+            </div>
 
-                    <div class="d-block" style="text-align:center">
-                        <div>
-                            <img id="imgProducto" class="cursor-pointer" src="data:image/png;base64,@Model.ImageBase64" style="height:150px;width:150px;object-fit:cover;border-radius:5px" data-toggle="modal" data-target="#ModalUploadImagen">
-                        </div>
-                        <div>
-                            <div class="btn btn-sm btn-danger cursor-pointer" style="width:150px;margin:1px;margin-bottom:5px">Apagar</div>
-                        </div>
-                        @*<div>
-                                <div class="custom-file">
-                                    <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
-                                           Class="form-control custom-file-input" lang="pt-br" />
-                                    <label class="custom-file-label" style="word-break: break-all; overflow: hidden;">Imagem....</label>
-                                </div>
-                            </div>*@
+
+            <div>
+                <div class="form-group">
+                    <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" />
+                    <span asp-validation-for="valor" class="text-danger"></span>
+                </div>
+            </div>
+
+            @*<div>
+                    <div class="form-group">
+                        <label>Sub Categorias</label>
+                        <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
+                        </select>
                     </div>
+                </div>*@
 
-                    <div>
-                        <div class="form-group">
-
-                            <input type="search" id="browserInputCategoria" list="CategoriaList" placeholder="Categoria" asp-for="Categoria" class="form-control" />
-                            <datalist id="CategoriaList">
-                                @if (ViewBag.Categorias != null)
-                                {
-                                    @foreach (var categoria in ViewBag.Categorias)
-                                    {
-                                        <option id="@(categoria.id)" value="@(categoria.nombre)"></option>
-                                    }
-                                }
-                            </datalist>
-                            <input id="idCategoria" asp-for="idCategoria" hidden class="form-control" />
-                            <span asp-validation-for="idCategoria" class="text-danger"></span>
+            <div>
+                <div class="form-group">
+                    <label class="control-label">Tempo de preparação (Hr/Min)</label>
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-clock"></i></span>
                         </div>
+                        <input type="number" asp-for="horasPreparacion" class="form-control" placeholder="Hr">
+                        <input type="number" asp-for="minutosPreparacion" class="form-control" placeholder="Min">
                     </div>
+                </div>
+            </div>
 
-                    <div>
-                        <div class="form-group">
+            <div>
+                <div class="form-group">
+                    <textarea asp-for="descripcion" rows="3" class="form-control" placeholder="Descrição"></textarea>
+                    <span asp-validation-for="descripcion" class="text-danger"></span>
+                </div>
+            </div>
 
-                            <input asp-for="nombre" class="form-control" placeholder="Nome" />
-                            <span asp-validation-for="nombre" class="text-danger"></span>
-                        </div>
-                    </div>
+            <div class="card mb-2">
+                <div class="card-header text-center bg-info text-white p-2">TAMANHOS</div>
+                <div class="card-body p-1">
 
-
-
-                    <div>
-                        <div class="form-group">
-                            <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" />
-                            <span asp-validation-for="valor" class="text-danger"></span>
-                        </div>
-                    </div>
-
-                    @*<div>
-                            <div class="form-group">
-                                <label>Sub Categorias</label>
-                                <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
-                                </select>
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
                             </div>
-                        </div>*@
-
-                    <div>
-                        <div class="form-group">
-                            <label class="control-label">Tempo de preparação (Hr/Min)</label>
-                            <div class="input-group mb-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-clock"></i></span>
-                                </div>
-                                <input type="number" asp-for="horasPreparacion" class="form-control" placeholder="Hr">
-                                <input type="number" asp-for="minutosPreparacion" class="form-control" placeholder="Min">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <div class="form-group">
-                            <textarea asp-for="descripcion" rows="3" class="form-control" placeholder="Descrição"></textarea>
-                            <span asp-validation-for="descripcion" class="text-danger"></span>
+                            <input type="text" asp-for="tamanho1" class="form-control col-8" placeholder="Tamanho 1">
+                            <input type="number" asp-for="valorTamanho1" class="form-control col-4" placeholder="Preço">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
-                        <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input type="text" asp-for="tamanho2" class="form-control col-8" placeholder="Tamanho 2">
+                            <input type="number" asp-for="valorTamanho2" class="form-control col-4" placeholder="Preço">
+                        </div>
                     </div>
 
-                </form>
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input type="text" asp-for="tamanho3" class="form-control col-8" placeholder="Tamanho 3">
+                            <input type="number" asp-for="valorTamanho3" class="form-control col-4" placeholder="Preço">
+                        </div>
+                    </div>
+
+                </div>
             </div>
-        </div>
 
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
+            </div>
 
+        </form>
     </div>
 </div>
+
+
 
 @section Scripts {
 

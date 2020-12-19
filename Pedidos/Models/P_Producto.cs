@@ -51,6 +51,13 @@ namespace Pedidos.Models
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 
+        public string tamanho1 { get; set; }
+        public decimal? valorTamanho1 { get; set; }
+        public string tamanho2 { get; set; }
+        public decimal? valorTamanho2 { get; set; }
+        public string tamanho3 { get; set; }
+        public decimal? valorTamanho3 { get; set; }
+
         //PROPIEDADES AUXILIARES
 
         [NotMapped]

@@ -69,27 +69,55 @@
 
             <div>
                 <div class="form-group">
-
                     <input asp-for="nombre" class="form-control" placeholder="Nome" />
                     <span asp-validation-for="nombre" class="text-danger"></span>
                 </div>
             </div>
 
-
             <div>
-                <div class="form-group">
-                    <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" />
+                <div id="form_group_valor" class="form-group">
+                    <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" onclick="this.select()"/>
                     <span asp-validation-for="valor" class="text-danger"></span>
                 </div>
             </div>
 
-            @*<div>
+            <div class="card mb-2">
+                <div class="card-header text-center bg-info text-white p-2 cursor-pointer" data-toggle="collapse" data-target="#panelTamanhos" aria-expanded="false" aria-controls="panelTamanhos">
+                    TAMANHOS
+                </div>
+                <div id="panelTamanhos" class="card-body p-1 collapse">
                     <div class="form-group">
-                        <label>Sub Categorias</label>
-                        <select asp-for="idSubCategoria" class="form-control" id="idSubCategoria">
-                        </select>
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input asp-for="tamanho1" class="form-control col-8" placeholder="Tamanho 1">
+                            <input asp-for="valorTamanho1" class="form-control col-4 inputDecimal" placeholder="Preço" onclick="this.select()">
+                        </div>
                     </div>
-                </div>*@
+
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input asp-for="tamanho2" class="form-control col-8" placeholder="Tamanho 2">
+                            <input asp-for="valorTamanho2" class="form-control col-4 inputDecimal" placeholder="Preço" onclick="this.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input asp-for="tamanho3" class="form-control col-8" placeholder="Tamanho 3">
+                            <input asp-for="valorTamanho3" class="form-control col-4 inputDecimal" placeholder="Preço" onclick="this.select()">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
 
             <div>
                 <div class="form-group">
@@ -108,43 +136,6 @@
                 <div class="form-group">
                     <textarea asp-for="descripcion" rows="3" class="form-control" placeholder="Descrição"></textarea>
                     <span asp-validation-for="descripcion" class="text-danger"></span>
-                </div>
-            </div>
-
-            <div class="card mb-2">
-                <div class="card-header text-center bg-info text-white p-2">TAMANHOS</div>
-                <div class="card-body p-1">
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
-                            </div>
-                            <input type="text" asp-for="tamanho1" class="form-control col-8" placeholder="Tamanho 1">
-                            <input type="number" asp-for="valorTamanho1" class="form-control col-4" placeholder="Preço">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
-                            </div>
-                            <input type="text" asp-for="tamanho2" class="form-control col-8" placeholder="Tamanho 2">
-                            <input type="number" asp-for="valorTamanho2" class="form-control col-4" placeholder="Preço">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
-                            </div>
-                            <input type="text" asp-for="tamanho3" class="form-control col-8" placeholder="Tamanho 3">
-                            <input type="number" asp-for="valorTamanho3" class="form-control col-4" placeholder="Preço">
-                        </div>
-                    </div>
-
                 </div>
             </div>
 

@@ -218,8 +218,12 @@ namespace Pedidos.Controllers
             if (ModelState.ErrorCount == 1)
                 ModelState.Clear();
 
-            if (p_Productos.ImageBase64 != null)
-                p_Productos.imagen = System.Convert.FromBase64String(p_Productos.ImageBase64);
+            p_Productos.ImageBase64 = GetSession("base64String");
+            if (!string.IsNullOrEmpty(p_Productos.ImageBase64))
+            {
+                p_Productos.imagen = Convert.FromBase64String(p_Productos.ImageBase64);
+            }
+
 
             if (ModelState.IsValid)
             {

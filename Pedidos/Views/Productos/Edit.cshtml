@@ -10,8 +10,32 @@
         imreBase64Data = Convert.ToBase64String(Model.imagen);
         imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
     }
+
+    bool tieneTemanhos = string.IsNullOrEmpty(Model.tamanho1) && string.IsNullOrEmpty(Model.tamanho1) && string.IsNullOrEmpty(Model.tamanho1) ? false : true;
+    ;
 }
 
+<!-- Modal -->
+<div class="modal fade" id="ModalUploadImagen" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Imagem</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="main-cropper"></div>
+                <input type="file" id="select" class="form-control" value="Choose Image" accept="image/*">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button id="btnupload" name="btnupload" class="btn btn-success">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <div class="row d-flex justify-content-center">
     <div class="col-12 col-md-4">
@@ -23,22 +47,21 @@
             <input asp-for="codigo" hidden class="form-control" />
             <input asp-for="idCuenta" hidden class="form-control" />
             <input asp-for="activo" hidden class="form-control" />
-            <input asp-for="tamanho1" hidden class="form-control" />
-            <input asp-for="tamanho2" hidden class="form-control" />
-            <input asp-for="tamanho3" hidden class="form-control" />
-            <input asp-for="valorTamanho1" hidden class="form-control" />
-            <input asp-for="valorTamanho2" hidden class="form-control" />
-            <input asp-for="valorTamanho3" hidden class="form-control" />
 
-            <div class="form-group">
-                @*<label class="control-label">Imagem</label>*@
+            <div class="d-block" style="text-align:center">
                 <div>
-                    <div class="custom-file">
-                        <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
-                               Class="form-control custom-file-input" lang="pt-br" />
-                        <label class="custom-file-label" style="word-break: break-all; overflow: hidden;">Imagem....</label>
-                    </div>
+                    <img id="imgProducto" class="cursor-pointer" src="data:image/png;base64,@Model.ImageBase64" style="height:150px;width:150px;object-fit:cover;border-radius:5px" data-toggle="modal" data-target="#ModalUploadImagen">
                 </div>
+                <div>
+                    <div class="btn btn-sm btn-danger cursor-pointer" style="width:150px;margin:1px;margin-bottom:5px">Apagar</div>
+                </div>
+                @*<div>
+                        <div class="custom-file">
+                            <input name="ImageName" id="ImageName" asp-for="ImageName" accept="image/x-png,image/gif,image/jpeg,image/jfif"
+                                   Class="form-control custom-file-input" lang="pt-br" />
+                            <label class="custom-file-label" style="word-break: break-all; overflow: hidden;">Imagem....</label>
+                        </div>
+                    </div>*@
             </div>
 
             <div class="form-group">
@@ -63,10 +86,48 @@
                 <span asp-validation-for="nombre" class="text-danger"></span>
             </div>
 
-            <div class="form-group">
+            <div id="form_group_valor" class="form-group" style="@(tieneTemanhos ? "display:none" : "")">
                 @*<label asp-for="valor" class="control-label"></label>*@
-                <input asp-for="valor" class="form-control inputDecimal" />
+                <input asp-for="valor" class="form-control inputDecimal" onclick="this.select()" />
                 <span asp-validation-for="valor" class="text-danger"></span>
+            </div>
+
+            <div class="card mb-2">
+                <div id="btnToggleTamanhos" class="card-header text-center bg-info text-white p-2 cursor-pointer" data-toggle="collapse" data-target="#panelTamanhos" aria-expanded="false" aria-controls="panelTamanhos">
+                    TAMANHOS
+                </div>
+                <div id="panelTamanhos" class="card-body p-1 @(tieneTemanhos ?"":"collapse") ">
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input asp-for="tamanho1" class="form-control col-8" placeholder="Tamanho 1">
+                            <input id="inputValorTamanho1" asp-for="valorTamanho1" class="form-control col-4 inputDecimal" placeholder="Preço" onclick="this.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input asp-for="tamanho2" class="form-control col-8" placeholder="Tamanho 2">
+                            <input id="inputValorTamanho2" asp-for="valorTamanho2" class="form-control col-4 inputDecimal" placeholder="Preço" onclick="this.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
+                            </div>
+                            <input asp-for="tamanho3" class="form-control col-8" placeholder="Tamanho 3">
+                            <input id="inputValorTamanho3" asp-for="valorTamanho3" class="form-control col-4 inputDecimal" placeholder="Preço" onclick="this.select()">
+                        </div>
+                    </div>
+
+                </div>
             </div>
 
             <div class="form-group">
@@ -91,42 +152,6 @@
                 </div>
             </div>
 
-            <div class="card mb-2">
-                <div class="card-header text-center bg-info text-white p-2">TAMANHOS</div>
-                <div class="card-body p-1">
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
-                            </div>
-                            <input type="text" asp-for="tamanho1" class="form-control col-8" placeholder="Tamanho 1">
-                            <input type="number" asp-for="valorTamanho1" class="form-control col-4" placeholder="Preço">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
-                            </div>
-                            <input type="text" asp-for="tamanho2" class="form-control col-8" placeholder="Tamanho 2">
-                            <input type="number" asp-for="valorTamanho2" class="form-control col-4" placeholder="Preço">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-group mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text"><i style="color:dodgerblue" class="fa fa-arrows"></i></span>
-                            </div>
-                            <input type="text" asp-for="tamanho3" class="form-control col-8" placeholder="Tamanho 3">
-                            <input type="number" asp-for="valorTamanho3" class="form-control col-4" placeholder="Preço">
-                        </div>
-                    </div>
-
-                </div>
-            </div>
 
             <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
@@ -140,23 +165,11 @@
 
 @section Scripts {
 
-    <script>
-        $(document).ready(function () {
-
-            $('.custom-file-input').on("change", function () {
-                console.log(this);
-                var fileName = $(this).val().split("\\").pop();
-                $(this).next('.custom-file-label').html(fileName);
-            })
-
-            $('#browserInputCategoria').on('input', function () {
-                var opt = $('option[value="' + $(this).val() + '"]');
-                $('#idCategoria').val(opt.length ? opt.attr('id') : '');
-            });
-
-        });
-    </script>
-
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
 }
+
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/lib/jquery/jquery.mask.js"></script>
+<script src="~/js/views/productos/cropper.js"></script>
+<script src="~/js/views/productos/edit.js"></script>

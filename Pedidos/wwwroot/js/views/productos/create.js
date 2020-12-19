@@ -26,6 +26,15 @@ $(function () {
         });
     }
 
+    //TAMANHOS
+    $('#panelTamanhos').on('show.bs.collapse', function () {
+        $('#form_group_valor').hide('slow');
+    })
+
+    $('#panelTamanhos').on('hide.bs.collapse', function () {
+        $('#form_group_valor').show('slow');
+    })
+
 });
 
 window.onbeforeunload = function () {

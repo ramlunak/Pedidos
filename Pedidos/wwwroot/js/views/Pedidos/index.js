@@ -183,8 +183,98 @@ function CargarDatosModalDetalles(data) {
     $('#modalObservacionContent').html('');
     $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" oninput="observacionOnInput()" class="form-control" placeholder="Observação"></textarea>');
 
+    //TAMAHOS
+    mostrarTamanhos(data.producto);
     $('#ModalDetalleProducto').modal('show');
 }
+
+function mostrarTamanhos(producto) {
+
+    $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary');
+    $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary');
+    $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary');
+    $('#checkedTamanho1').hide();
+    $('#checkedTamanho2').hide();
+    $('#checkedTamanho3').hide();
+
+    if (producto.tamanho1 !== null && producto.tamanho1 !== "" && producto.tamanho1 !== undefined) {
+        $('#nomeTamanho1').html(producto.tamanho1);
+        $('#valorTamanho1').html(producto.valorTamanho1.toFixed(2));
+        $('#btnTamanho1').addClass('btn-primary');
+        $('#btnTamanho1').show();
+        $('#checkedTamanho1').show();
+        _ModalProducto.tamanhoSeleccionado = producto.tamanho1;
+        _ModalProducto.valorTamanhoSeleccionado = producto.valorTamanho1;
+        $('#spanValorProducto').html(producto.valorTamanho1.toFixed(2));
+    }
+    else {
+        $('#btnTamanho1').hide();
+    }
+
+    if (producto.tamanho2 !== null && producto.tamanho2 !== "" && producto.tamanho2 !== undefined) {
+        $('#nomeTamanho2').html(producto.tamanho2);
+        $('#valorTamanho2').html(producto.valorTamanho2.toFixed(2));
+        $('#btnTamanho2').addClass('btn-outline-primary');
+        $('#btnTamanho2').show();
+        $('#checkedTamanho2').hide();
+    } else {
+        $('#btnTamanho2').hide();
+    }
+
+    if (producto.tamanho3 !== null && producto.tamanho3 !== "" && producto.tamanho3 !== undefined) {
+        $('#nomeTamanho3').html(producto.tamanho3);
+        $('#valorTamanho3').html(producto.valorTamanho3.toFixed(2));
+        $('#btnTamanho3').addClass('btn-outline-primary');
+        $('#btnTamanho3').show();
+        $('#checkedTamanho3').hide();
+    } else {
+        $('#btnTamanho3').hide();
+    }
+
+}
+
+function checkTamanho(tamanho) {
+
+
+    if (tamanho === 1) {
+
+        $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
+        $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#checkedTamanho1').show('slow');
+        $('#checkedTamanho2').hide('slow');
+        $('#checkedTamanho3').hide('slow');
+        _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho1;
+        _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho1;
+        $('#spanValorProducto').html(_ModalProducto.valorTamanho1.toFixed(2));
+
+    } else if (tamanho === 2) {
+
+        $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
+        $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#checkedTamanho1').hide('slow');
+        $('#checkedTamanho2').show('slow');
+        $('#checkedTamanho3').hide('slow');
+        _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho2;
+        _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho2;
+        $('#spanValorProducto').html(_ModalProducto.valorTamanho2.toFixed(2));
+
+    } else if (tamanho === 3) {
+
+        $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
+        $('#checkedTamanho1').hide('slow');
+        $('#checkedTamanho2').hide('slow');
+        $('#checkedTamanho3').show('slow');
+        _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho3;
+        _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho3;
+        $('#spanValorProducto').html(_ModalProducto.valorTamanho3.toFixed(2));
+    }
+
+}
+
 
 //crear tabla de los adicionales en el modal
 function TABLE_Adicional(adicionales, idProducto) {

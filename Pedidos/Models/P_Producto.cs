@@ -122,7 +122,10 @@ namespace Pedidos.Models
                 return this.cantidad * (valor_producto + valor_adicionales);
             }
         }
-
+        [NotMapped]
+        public string tamanhoSeleccionado { get; set; }
+        [NotMapped]
+        public decimal valorTamanhoSeleccionado { get; set; }
         //Solo para enviar esos dados al controlador y ponercelos al pedido
         [NotMapped]
         public string cliente { get; set; }

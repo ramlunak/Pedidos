@@ -16,7 +16,7 @@ namespace Pedidos.Models
         {
             this.idCuenta = idCuenta;
             this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);                       
-            this.date_teste = DateTime.Now.ToTimeZone("E. South America Standard Time").ToString();
+            this.date_teste = DateTime.Now.ToSouthAmericaStandard().ToString();
         }
 
         public int id { get; set; }
@@ -52,7 +52,7 @@ namespace Pedidos.Models
             get
             {
                 if (fecha < new DateTime(2020, 1, 1)) return 0;
-                var tiempo = DateTime.Now.ToUniversalTime() - fecha;
+                var tiempo = DateTime.Now.ToSouthAmericaStandard() - fecha;
                 var segusdos = tiempo.TotalSeconds;
                 return Convert.ToInt32(segusdos);
             }

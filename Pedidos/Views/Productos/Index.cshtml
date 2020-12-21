@@ -24,10 +24,18 @@
     <div class="card-header">
         <div class="row d-flex justify-content-between p-2">
             <div>
-                <b>PRODUTOS</b>
+                <a class="btn btn-sm btn-primary" asp-action="Create">NOVO PRODUTO</a>
             </div>
             <div>
-                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
+                <form id="formSearchCategoria">
+                    <div class="d-flex align-items-center">
+                        <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
+                               aria-label="Search">
+                        <button class="btn btn-sm btn-outline-primary"><i class="fa fa-search"></i></button>
+                        <div onclick="LimpiarNombre()" class="btn btn-sm btn-outline-danger cursor-pointer"><i class="fa fa-ban" aria-hidden="true"></i></div>
+
+                    </div>
+                </form>
             </div>
         </div>
 

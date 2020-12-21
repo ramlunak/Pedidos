@@ -67,122 +67,132 @@
             </div>
 
             @*FORMULARIO*@
-            <div class="form-group position-relative">
+        <div class="form-group position-relative">
 
-                <div class="row m-1">
-                    <input id="inputNome" class="form-control form-control-sm col-12 col-md-8" placeholder="Cliente" />
-                    <input id="inputTelefone" class="form-control form-control-sm col-12 col-md-4" placeholder="Telefone" />
-                </div>
+            <div class="row m-1">
 
-                <div class="row m-1">
-                    <input id="inputEndereco" class="form-control form-control-sm col-12 col-md-8" placeholder="Endereço" />
-                    <select asp-for="idFormaPagamento" id="idFormaPagamento" class="form-control form-control-sm col-12 col-md-4">
-                        @if (ViewBag.FormaPagamento != null)
+                <input id="inputNome" class="form-control form-control-sm col-12 mb-1" placeholder="Cliente" />
+                <input id="inputAplicativo" class="form-control form-control-sm col-12 col-md-8" placeholder="Aplicativo" />
+                <input id="inputMesa" class="form-control form-control-sm col-12 col-md-4" placeholder="Mesa" />
+
+            </div>
+
+            <div class="row m-1">
+
+                <input id="inputTelefone" class="form-control form-control-sm col-12 col-md-4" placeholder="Telefone" />
+            </div>
+
+            <div class="row m-1">
+                <input id="inputEndereco" class="form-control form-control-sm col-12 col-md-8" placeholder="Endereço" />
+                <select asp-for="idFormaPagamento" id="idFormaPagamento" class="form-control form-control-sm col-12 col-md-4">
+                    @if (ViewBag.FormaPagamento != null)
                         {
-                            @foreach (var Categoria in ViewBag.FormaPagamento)
-                            {
-                                <option value="@(Categoria.id)">@(Categoria.nombre)</option>
-                            }
+                    <option value="" selected style="color:gray">-Indefinido-</option>
+                    @foreach (var Categoria in ViewBag.FormaPagamento)
+                        {
+                    <option value="@(Categoria.id)">@(Categoria.nombre)</option>
                         }
-                    </select>
-                </div>
 
-                <hr />
+                        }
+                </select>
+            </div>
 
-                <div class="row m-1">
-                    <input id="inputProducto" class="form-control form-control-sm" placeholder="Producto" />
-                </div>
+            <hr />
 
-                <div class="position-absolute  w-100">
+            <div class="row m-1">
+                <input id="inputProducto" class="form-control form-control-sm" placeholder="Producto" />
+            </div>
 
-                    <!-- Modal -->
-                    <div class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content" style="font-size:13px;">
+            <div class="position-absolute  w-100">
 
-                                <div class="modal-header">
-                                    <div class="d-flex justify-content-between w-100">
-                                        <div><samp id="spanNomeProducto"></samp></div>
-                                        <div>R$ <samp id="spanValorProducto"></samp></div>
-                                    </div>
+                <!-- Modal -->
+                <div class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="font-size:13px;">
+
+                            <div class="modal-header">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div><samp id="spanNomeProducto"></samp></div>
+                                    <div>R$ <samp id="spanValorProducto"></samp></div>
+                                </div>
+                            </div>
+
+                            <div class="modal-body">
+                                <div>
+                                    <span id="spanDescripcionProducto"></span>
                                 </div>
 
-                                <div class="modal-body">
-                                    <div>
-                                        <span id="spanDescripcionProducto"></span>
-                                    </div>
+                                <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
+                                    <hr class="w-100" />
+                                    <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONALES</div>
+                                    <hr class="w-100" />
+                                </div>
 
-                                    <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
-                                        <hr class="w-100" />
-                                        <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONALES</div>
-                                        <hr class="w-100" />
-                                    </div>
+                                @*ADICIONALES*@
+                                <div class="ml-2" style="color:darkcyan">
 
-                                    @*ADICIONALES*@
-                                    <div class="ml-2" style="color:darkcyan">
-
-                                        <div class="collapse" id="collapseAdicionales">
-                                            <table id="modalTableAdicionales" class="w-100">
-                                                @*LISTA DE ADICIONALES DINAMICA*@
-                                            </table>
-                                        </div>
-
-                                    </div>
-
-                                    <div class="d-flex align-content-center">
-                                        <hr class="w-100" />
-                                        <div class="m-1" style="color:gray">INGREDIENTES</div>
-                                        <hr class="w-100" />
-                                    </div>
-
-                                    @*INGREDIENTES*@
-                                    <div class="ml-2" style="color:brown">
-
-                                        <table id="modalTableIngredientes" class="w-100">
-                                            @*LISTA DE INGREDIENTES DINAMICA*@
+                                    <div class="collapse" id="collapseAdicionales">
+                                        <table id="modalTableAdicionales" class="w-100">
+                                            @*LISTA DE ADICIONALES DINAMICA*@
                                         </table>
-
-                                    </div>
-
-                                    <div class="mt-2">
-                                        <div id="modalObservacionContent" class="form-group">
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-2">
-                                        <div id="modalTamanhos" class="form-group">
-                                            <div id="btnTamanho1" class="btn btn-sm mr-2" onclick="checkTamanho(1)">
-                                                <span id="nomeTamanho1" class="mr-2"></span>R$ <span id="valorTamanho1" class="mr-2"></span> <i id="checkedTamanho1" class="fa fa-check" aria-hidden="true"></i>
-                                            </div>
-                                            <div id="btnTamanho2" class="btn btn-sm mr-2" onclick="checkTamanho(2)">
-                                                <span id="nomeTamanho2" class="mr-2"></span>R$ <span id="valorTamanho2" class="mr-2"></span><i id="checkedTamanho2" class="fa fa-check" aria-hidden="true"></i>
-                                            </div>
-                                            <div id="btnTamanho3" class="btn btn-sm mr-2" onclick="checkTamanho(3)">
-                                                <span id="nomeTamanho3" class="mr-2"></span> R$<span id="valorTamanho3" class="mr-2"></span><i id="checkedTamanho3" class="fa fa-check" aria-hidden="true"></i>
-                                            </div>
-                                        </div>
                                     </div>
 
                                 </div>
 
-                                <div class="modal-footer d-flex justify-content-between">
-                                    <div>
-                                        <button class="btn btn-sm cursor-pointer" id="MINUS_Producto" onclick="productoMinus(this)" disabled="disabled"><i class="fa fa-minus-circle"></i></button>
-                                        <button class="btn btn-sm cursor-pointer" id="ADD_Producto" onclick="productoPlus(this)"><i class="fa fa-plus-circle"></i></button>
+                                <div class="d-flex align-content-center">
+                                    <hr class="w-100" />
+                                    <div class="m-1" style="color:gray">INGREDIENTES</div>
+                                    <hr class="w-100" />
+                                </div>
+
+                                @*INGREDIENTES*@
+                                <div class="ml-2" style="color:brown">
+
+                                    <table id="modalTableIngredientes" class="w-100">
+                                        @*LISTA DE INGREDIENTES DINAMICA*@
+                                    </table>
+
+                                </div>
+
+                                <div class="mt-2">
+                                    <div id="modalObservacionContent" class="form-group">
                                     </div>
-                                    <div>
-                                        <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
+                                </div>
+
+                                <div class="mt-2">
+                                    <div id="modalTamanhos" class="form-group">
+                                        <div id="btnTamanho1" class="btn btn-sm mr-2" onclick="checkTamanho(1)">
+                                            <span id="nomeTamanho1" class="mr-2"></span>R$ <span id="valorTamanho1" class="mr-2"></span> <i id="checkedTamanho1" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="btnTamanho2" class="btn btn-sm mr-2" onclick="checkTamanho(2)">
+                                            <span id="nomeTamanho2" class="mr-2"></span>R$ <span id="valorTamanho2" class="mr-2"></span><i id="checkedTamanho2" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="btnTamanho3" class="btn btn-sm mr-2" onclick="checkTamanho(3)">
+                                            <span id="nomeTamanho3" class="mr-2"></span> R$<span id="valorTamanho3" class="mr-2"></span><i id="checkedTamanho3" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
                                     </div>
+                                </div>
+
+                            </div>
+
+                            <div class="modal-footer d-flex justify-content-between">
+                                <div>
+                                    <button class="btn btn-sm cursor-pointer" id="MINUS_Producto" onclick="productoMinus(this)" disabled="disabled"><i class="fa fa-minus-circle"></i></button>
+                                    <button class="btn btn-sm cursor-pointer" id="ADD_Producto" onclick="productoPlus(this)"><i class="fa fa-plus-circle"></i></button>
+                                </div>
+                                <div>
+                                    <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <table id="tableProductos" class="table">
-                    </table>
                 </div>
 
+                <table id="tableProductos" class="table">
+                </table>
             </div>
+
+        </div>
         </div>
 
         @*LISTA PEDIDOS*@

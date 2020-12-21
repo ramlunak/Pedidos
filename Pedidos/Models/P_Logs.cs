@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pedidos.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,7 +10,7 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int idCuenta { get; set; }
-        public DateTime data { get; set; } = DateTime.Now;
+        public DateTime data { get; set; } = DateTime.Now.ToSouthAmericaStandard();
         public string ex { get; set; }      
     }
 }

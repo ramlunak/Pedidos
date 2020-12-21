@@ -10,6 +10,7 @@ using Pedidos.Models;
 using Newtonsoft;
 using Newtonsoft.Json;
 using Pedidos.Models.Enums;
+using Pedidos.Extensions;
 
 namespace Pedidos.Controllers
 {
@@ -91,7 +92,7 @@ namespace Pedidos.Controllers
             {
                 try
                 {
-                    currentPedido.fecha = DateTime.Now.ToUniversalTime();
+                    currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
                     currentPedido.total = currentPedido.valorProductos;

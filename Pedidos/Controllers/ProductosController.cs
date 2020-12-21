@@ -454,12 +454,12 @@ namespace Pedidos.Controllers
             }
         }
 
-        public string GenerateFileName(string fileTypeName, string fileextenstion)
-        {
-            if (fileTypeName == null) throw new ArgumentNullException(nameof(fileTypeName));
-            if (fileextenstion == null) throw new ArgumentNullException(nameof(fileextenstion));
-            return $"{fileTypeName}_{DateTime.Now:yyyyMMddHHmmssfff}_{Guid.NewGuid():N}{fileextenstion}";
-        }
+        //public string GenerateFileName(string fileTypeName, string fileextenstion)
+        //{
+        //    if (fileTypeName == null) throw new ArgumentNullException(nameof(fileTypeName));
+        //    if (fileextenstion == null) throw new ArgumentNullException(nameof(fileextenstion));
+        //    return $"{fileTypeName}_{DateTime.Now:yyyyMMddHHmmssfff}_{Guid.NewGuid():N}{fileextenstion}";
+        //}
 
     }
 }

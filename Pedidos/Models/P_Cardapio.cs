@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Pedidos.Extensions;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,7 @@ namespace Pedidos.Models
         [DisplayName("Valor")]
         public string strValor { get; set; } = string.Empty;
         
-        public DateTime fecha { get; set; } = DateTime.Now;
+        public DateTime fecha { get; set; } = DateTime.Now.ToSouthAmericaStandard();
 
         [Required(ErrorMessage = "O produto é obrigatorio")]
         [DisplayName("Tempo de preparação")]

@@ -25,8 +25,13 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Index()
         {
-
             ValidarCuenta();
+
+            var clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            ViewBag.Clientes = clientes;
+
+            var aplicativos = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            ViewBag.Aplicativos = aplicativos;
 
             var formaPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             ViewBag.FormaPagamento = formaPagamento;
@@ -97,6 +102,7 @@ namespace Pedidos.Controllers
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
                     currentPedido.total = currentPedido.valorProductos;
 
+                    currentPedido.idCliente = pedidoaux.idCliente;
                     currentPedido.cliente = pedidoaux.cliente;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;

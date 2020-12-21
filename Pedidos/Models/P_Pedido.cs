@@ -74,6 +74,7 @@ namespace Pedidos.Models
 
     public class PedidoDatosAux
     {
+        public int? idCliente { get; set; }
         public string cliente { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }

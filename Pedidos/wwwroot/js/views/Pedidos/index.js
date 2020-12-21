@@ -19,7 +19,26 @@ $(function () {
 
     $('#inputNome').on('input propertychange', function (e) {
         $('#spanNombre').html($('#inputNome').val());
+
+        var opt = $('option[value="' + $(this).val() + '"]');
+        var id = opt.length ? opt.attr('id') : '';
+
+        if (id !== '' && id !== undefined) {
+            $('#inputNome').css({ "border-color": "#82E0AA", "border-weight": "1px", "border-style": "solid" });
+            $('#idCliente').val(id);
+            _CurrentPedido.idCliente = id;
+        } else {
+            $('#inputNome').css({ "border": "none" });
+            _CurrentPedido.idCliente = null;
+        }
+
+        //CargarDirecciones();
+
         _ModalProducto.cliente = $('#inputNome').val();
+        _ModalProducto.idCliente = id;
+
+        console.log(_CurrentPedido);
+
     });
 
     $('#inputEndereco').on('input propertychange', function (e) {
@@ -495,6 +514,7 @@ function GuardarCurrentPedido() {
 
     var pedido = {
         cliente: $('#inputNome').val(),
+        idCliente: _CurrentPedido.idCliente,
         direccion: $('#inputEndereco').val(),
         telefono: $('#inputTelefone').val(),
         idFormaPagamento: $('#idFormaPagamento').val()

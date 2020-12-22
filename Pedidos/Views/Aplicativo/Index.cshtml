@@ -2,81 +2,65 @@
 @{
     ViewData["Title"] = "Index";}
 
-<div class="row col-12 d-flex justify-content-center align-items-center ">   
-    <div style="margin:5px;font-size: 25px;color: darkgray;text-transform: capitalize;"> Aplicativos</div>   
-</div>
-
-<div class="d-flex justify-content-between m-1">
-    <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Nova Aplicativo</a></div>
-    <div>
-        <!-- Search form -->
-        <form id="formSearchAplicativo">
-
-            <div class="input-group">
-                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm " type="text" placeholder="Buscar"
-                       aria-label="Search">
-                <div class="input-group-append">
-                    <span class="input-group-text">
-                        <i style="color:dodgerblue" class="fa fa-search"></i>
-                    </span>
-                </div>
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>APLICATIVOS</b>
             </div>
+            <div>
+                <a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>
+            </div>
+        </div>
 
-            @*<div class="d-flex align-items-center">
-                    <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
-                           aria-label="Search">
-                    <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
-                    <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
+    </div>
+    <div class="card-body">
 
-                </div>*@
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="col-8">
+                        @Html.DisplayNameFor(model => model.Aplicativos.First().nombre)
+                    </th>
+                    <th class="col-4">
 
-        </form>
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Aplicativos)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.nombre)
+                        </td>
+                        <td>
+                        </td>
+                        <td>
+                            <div>
+                                <div class="d-flex justify-content-end p-2">
+                                    <div class="m-1">
+                                        <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                            <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                    <div class="m-1">
+                                        <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
+                                            <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+
     </div>
 </div>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th class="col-8">
-                @Html.DisplayNameFor(model => model.Aplicativos.First().nombre)
-            </th>
-            <th class="col-4">
-
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Aplicativos)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-                <td>
-                   
-                </td>
-                <td>
-                    <div>
-                        <div class="d-flex justify-content-end p-2">
-                            <div class="m-1">
-                                <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                    <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                            <div class="m-1">
-                                <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-pagina="@Model.PaginaActual" asp-route-id="@item.id">
-                                    <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </td>
-
-            </tr>
-        }
-    </tbody>
-</table>
 
 <div class="d-flex justify-content-end">
     @{ Html.RenderPartial("_Paginador");}

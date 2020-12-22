@@ -3,6 +3,10 @@ var _CurrentPedido;
 var _PedidosPendientes;
 var _ModalProducto = {
     cliente: '',
+    idCliente: null,
+    aplicativo: '',
+    idAplicativo: null,
+    idMesa: null,
     direccion: '',
     telefono: '',
     observacion: ''
@@ -24,20 +28,36 @@ $(function () {
         var id = opt.length ? opt.attr('id') : '';
 
         if (id !== '' && id !== undefined) {
-            $('#inputNome').css({ "border-color": "#82E0AA", "border-weight": "1px", "border-style": "solid" });
+            $('#inputNome').css({ "border-color": "#04CD5A", "border-weight": "2px", "border-style": "solid" });
             $('#idCliente').val(id);
-            _CurrentPedido.idCliente = id;
         } else {
-            $('#inputNome').css({ "border": "none" });
-            _CurrentPedido.idCliente = null;
+            $('#inputNome').css({ "border": "1px solid #ced4da" });
+            $('#idCliente').val('');
         }
 
         //CargarDirecciones();
 
+        _CurrentPedido.cliente = $('#inputNome').val();
         _ModalProducto.cliente = $('#inputNome').val();
-        _ModalProducto.idCliente = id;
 
-        console.log(_CurrentPedido);
+    });
+
+    $('#inputAplicativo').on('input propertychange', function (e) {
+        $('#spanNombre').html($('#inputAplicativo').val());
+
+        var opt = $('option[value="' + $(this).val() + '"]');
+        var id = opt.length ? opt.attr('id') : '';
+
+        if (id !== '' && id !== undefined) {
+            $('#inputAplicativo').css({ "border-color": "#04CD5A", "border-weight": "2px", "border-style": "solid" });
+            $('#idAplicativo').val(id);
+        } else {
+            $('#inputAplicativo').css({ "border": "1px solid #ced4da" });
+            $('#idAplicativo').val('');
+        }
+
+        _CurrentPedido.aplicativo = $('#inputAplicativo').val();
+        _ModalProducto.aplicativo = $('#inputAplicativo').val();
 
     });
 
@@ -47,7 +67,9 @@ $(function () {
     });
 
     $('#inputTelefone').on('input propertychange', function (e) {
+
         _ModalProducto.telefono = $('#inputTelefone').val();
+
     });
 
     $('#inputProducto').on('input propertychange', function (e) {
@@ -170,6 +192,10 @@ function ShowDetallesProducto(id) {
             var datosClienteFormulario = _ModalProducto;
             _ModalProducto = data.producto;
             _ModalProducto.cliente = datosClienteFormulario.cliente;
+            _ModalProducto.idCliente = parseInt(datosClienteFormulario.idCliente);
+            _ModalProducto.aplicativo = datosClienteFormulario.aplicativo;
+            _ModalProducto.idAplicativo = parseInt(datosClienteFormulario.idAplicativo);
+            _ModalProducto.idMesa = parseInt(datosClienteFormulario.idMesa);
             _ModalProducto.direccion = datosClienteFormulario.direccion;
             _ModalProducto.telefono = datosClienteFormulario.telefono;
 
@@ -431,6 +457,10 @@ function AddProducto() {
     _ModalProducto.ingredientes = _ModalIngredientes;
     _ModalProducto.observacion = $('#inputObservacion').val();
 
+    _ModalProducto.idCliente = parseInt($('#idCliente').val());
+    _ModalProducto.idAplicativo = parseInt($('#idAplicativo').val());
+    _ModalProducto.idMesa = parseInt($('#idMesa').val());
+
     $.ajax({
         type: "POST",
         url: "/Pedidos/AddProducto",
@@ -486,7 +516,17 @@ function UpdataDatosCliente() {
 function MostarCurrentPedido() {
 
     $('#spanCodigo').html(_CurrentPedido.codigo);
+
+    $('#idCliente').val(_CurrentPedido.idCliente);
+    $('#inputNome').val(_CurrentPedido.cliente);
+    $('#inputTelefono').val(_CurrentPedido.telefono);
+    $('#inputAplicativo').val(_CurrentPedido.aplicativo);
+    $('#idAplicativo').val(_CurrentPedido.idAplicativo);
+    $('#idMesa').val(_CurrentPedido.idMesa);
+    $('#inputEndereco').val(_CurrentPedido.direccion);
+
     $('#spanTotal').html(_CurrentPedido.valorProductos.toFixed(2));
+
     TABLE_PedidoProductos();
 }
 
@@ -514,7 +554,10 @@ function GuardarCurrentPedido() {
 
     var pedido = {
         cliente: $('#inputNome').val(),
-        idCliente: _CurrentPedido.idCliente,
+        idCliente: parseInt($('#idCliente').val()),
+        idAplicativo: parseInt($('#idAplicativo').val()),
+        aplicativo: $('#InputAplicativo').val(),
+        idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
         telefono: $('#inputTelefone').val(),
         idFormaPagamento: $('#idFormaPagamento').val()
@@ -532,9 +575,11 @@ function GuardarCurrentPedido() {
             if (result.ok) {
                 _CurrentPedido = result.currentPedido;
                 MostarCurrentPedido();
-
                 _PedidosPendientes = result.pedidosPendientes;
                 MostarPedidosPendientes();
+                if (result.reload) {
+                    location.href = '/Pedidos/Index';
+                }
             } else {
 
                 Swal.fire({

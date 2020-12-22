@@ -69,7 +69,12 @@ namespace Pedidos.Controllers
             producto.imagen = null;
 
             currentPedido.productos.Add(producto);
+
             currentPedido.cliente = producto.cliente;
+            currentPedido.idCliente = producto.idCliente;
+            currentPedido.aplicativo = producto.aplicativo;
+            currentPedido.idAplicativo = producto.idAplicativo;
+            currentPedido.idMesa = producto.idMesa;
             currentPedido.direccion = producto.direccion;
             currentPedido.telefono = producto.telefono;
 
@@ -104,6 +109,9 @@ namespace Pedidos.Controllers
 
                     currentPedido.idCliente = pedidoaux.idCliente;
                     currentPedido.cliente = pedidoaux.cliente;
+                    currentPedido.idAplicativo = pedidoaux.idAplicativo;
+                    currentPedido.aplicativo = pedidoaux.aplicativo;
+                    currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
 
@@ -111,6 +119,33 @@ namespace Pedidos.Controllers
                     {
                         var formaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
                         currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x => x.id == Convert.ToInt32(pedidoaux.idFormaPagamento)).nombre;
+                    }
+
+                    var actualizarPagina = false;
+
+                    if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
+                    {
+                        var cliente = new P_Cliente();
+                        cliente.idCuenta = Cuenta.id;
+                        cliente.activo = true;
+                        cliente.telefono = currentPedido.telefono;
+                        cliente.nombre = currentPedido.cliente;
+                        _context.P_Clientes.Add(cliente);
+                        await _context.SaveChangesAsync();
+                        currentPedido.idCliente = cliente.id;
+                        actualizarPagina = true;
+                    }
+
+                    if (currentPedido.idAplicativo is null && !string.IsNullOrEmpty(currentPedido.aplicativo))
+                    {
+                        var aplicativo = new P_Aplicativo();
+                        aplicativo.idCuenta = Cuenta.id;
+                        aplicativo.activo = true;
+                        aplicativo.nombre = currentPedido.aplicativo;
+                        _context.P_Aplicativos.Add(aplicativo);
+                        await _context.SaveChangesAsync();
+                        currentPedido.idAplicativo = aplicativo.id;
+                        actualizarPagina = true;
                     }
 
                     _context.Add(currentPedido);
@@ -121,7 +156,7 @@ namespace Pedidos.Controllers
 
                     var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
 
-                    return Ok(new { ok = true, currentPedido, pedidosPendientes });
+                    return Ok(new { ok = true, reload = actualizarPagina, currentPedido, pedidosPendientes });
                 }
                 catch (Exception ex)
                 {

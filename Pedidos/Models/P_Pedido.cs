@@ -76,6 +76,9 @@ namespace Pedidos.Models
     {
         public int? idCliente { get; set; }
         public string cliente { get; set; }
+        public int? idAplicativo { get; set; }
+        public string aplicativo { get; set; }
+        public int? idMesa { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
         public string idFormaPagamento { get; set; }

@@ -114,6 +114,7 @@ namespace Pedidos.Controllers
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
+                    currentPedido.pago = pedidoaux.pago;
 
                     if (currentPedido.idFormaPagamento.HasValue)
                     {
@@ -172,7 +173,7 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> CargarPedidosPendientes()
         {
             var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
-            return Ok(new { pedidosPendientes = pedidosPendientes });
+            return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x=>x.fecha).ToList() });
         }
 
         private bool P_PedidoExists(int id)

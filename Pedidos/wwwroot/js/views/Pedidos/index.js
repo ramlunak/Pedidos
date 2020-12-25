@@ -117,10 +117,7 @@ function CargarProductos() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            // window.location.href = '/AlumnoPrueba/Resultado/';
             _Productos = data;
-
-            // cargarProductosCategoria(parseInt(idCategoria), data);
         },
         failure: function (response) {
             console.log('failure', response);
@@ -524,6 +521,7 @@ function MostarCurrentPedido() {
     $('#idAplicativo').val(_CurrentPedido.idAplicativo);
     $('#idMesa').val(_CurrentPedido.idMesa);
     $('#inputEndereco').val(_CurrentPedido.direccion);
+    $('#inputPago').prop("checked", _CurrentPedido.pago);
 
     $('#spanTotal').html(_CurrentPedido.valorProductos.toFixed(2));
 
@@ -560,7 +558,8 @@ function GuardarCurrentPedido() {
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
         telefono: $('#inputTelefone').val(),
-        idFormaPagamento: $('#idFormaPagamento').val()
+        idFormaPagamento: $('#idFormaPagamento').val(),
+        pago: $('#inputPago').is(':checked')
     }
 
     $.ajax({
@@ -655,10 +654,10 @@ function TABLE_PedidosPendientes() {
             var sec = pedido.tiempo_pedido;
             function pad(val) { return val > 9 ? val : "0" + val; }
 
-            //setInterval(function () {
-            //    $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
-            //    $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
-            //}, 1000);
+            setInterval(function () {
+                $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
+                $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
+            }, 1000);
 
             var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
             TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');

@@ -16,7 +16,7 @@ var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
 $(function () {
-
+         
     $("#inputDescuento").mask("###0.00", { reverse: true });
 
     CargarCurrentPedido();
@@ -225,7 +225,7 @@ function CargarDatosModalDetalles(data) {
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
     $('#modalObservacionContent').html('');
-    $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" oninput="observacionOnInput()" class="form-control" placeholder="Observação"></textarea>');
+    $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" class="form-control" placeholder="Observação"></textarea>');
 
     //TAMAHOS
     mostrarTamanhos(data.producto);
@@ -770,12 +770,21 @@ function cancelar(idPedido) {
                 dataType: "json",
                 success: function (data) {
 
-                    Swal.fire({
+                    const Toast = Swal.mixin({
+                        toast: true,
                         position: 'top-end',
-                        icon: 'success',
-                        title: '',
                         showConfirmButton: false,
-                        timer: 800
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ação realizada com sucesso'
                     })
 
                     $('#CARD_PEDIDO_' + idPedido + '').remove();
@@ -806,16 +815,17 @@ function cancelar(idPedido) {
 
 function finalizado(idPedido) {
 
-    var formaPagamentoContainer = '<div>';
-    for (var i = 0; i < 3; i++) {
+    var formaPagamentoContainer = '<div style="display: block;text-align:start;">';
+    $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
         var formaPagamento = '                       <div class="form-check">  ' +
             '                           <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamento' + 1 + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
-            '                               Default ' + 1 + '  ' +
+            '                                ' + formaPagamento.nombre + '  ' +
             '                           </label>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
-    }
+    });
+
     formaPagamentoContainer += '</div>';
 
     Swal.fire({
@@ -825,13 +835,13 @@ function finalizado(idPedido) {
             '                       <div class="row col-12 d-block justify-content-center">  ' +
             '                           <div class="d-flex mb-2">  ' +
             '                               <label class="mr-2">Desconto:</label>  ' +
-            '                               <input id="inputDescuento" name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm " />  ' +
+            '                               <input id="inputDescontoFinalizado" name="inputDescontoFinalizado" placeholder="Desconto" class="form-control form-control-sm " />  ' +
             '                           </div>  ' +
             '     ' +
-            '                           <div class="d-flex mb-2">  ' +
-            '                               <label class="mr-2">Desconto:</label>  ' +
-            '                               <input id="inputDescuento" name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm " />  ' +
-            '                           </div>  ' +
+            '    <div class="form-check d-flex mb-2">  ' +
+            '                                   <input class="form-check-input" type="checkbox" id="inputPago" name="inputPagoFinalizado">  ' +
+            '                                   <label class="form-check-label">Pago</label>  ' +
+            '                              </div>  ' +
             '                       </div>  ' +
             '     ' + formaPagamentoContainer +
             '                  </div>  ',
@@ -851,12 +861,21 @@ function finalizado(idPedido) {
                 dataType: "json",
                 success: function (data) {
 
-                    Swal.fire({
+                    const Toast = Swal.mixin({
+                        toast: true,
                         position: 'top-end',
-                        icon: 'success',
-                        title: '',
                         showConfirmButton: false,
-                        timer: 800
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ação realizada com sucesso'
                     })
 
                     $('#CARD_PEDIDO_' + idPedido + '').remove();
@@ -884,5 +903,13 @@ function finalizado(idPedido) {
     })
 
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
+
+    var findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === idPedido);
+    });
+    var pedido = findResult[0];
+
+    $("#inputDescontoFinalizado").val(pedido.descuento);
+    //$("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
 
 }

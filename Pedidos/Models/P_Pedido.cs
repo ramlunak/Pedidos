@@ -67,9 +67,11 @@ namespace Pedidos.Models
             get
             {
                 var valorProductos = productos.Sum(x => x.ValorMasAdicionales);
-                return valorProductos - (this.descuento.HasValue ? this.descuento.Value : 0);
+                return valorProductos;
             }
         }
+        [NotMapped]
+        public List<P_FormaPagamento> listaFormaPagamento { get; set; } = new List<P_FormaPagamento>();
 
     }
 

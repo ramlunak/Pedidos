@@ -3,53 +3,6 @@
     ViewData["Title"] = "Pedidos";
 }
 
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
-    Launch demo modal
-</button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="card card-body">
-                    <div class="row col-12 d-block justify-content-center">
-                        <div class="d-flex mb-2">
-                            <label class="mr-2">Desconto:</label>
-                            <input id="inputDescuento" name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm " />
-                        </div>
-
-                        <div class="d-flex mb-2 ">
-                            <label class="mr-2">Desconto:</label>
-                            <input id="inputDescuento" name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm " />
-                        </div>
-                    </div>
-
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                        <label class="form-check-label">
-                            Default radio
-                        </label>
-                    </div>
-                </div>
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
-        </div>
-    </div>
-</div>
-
 <div class="p-2">
     <div class="row ">
 
@@ -114,7 +67,7 @@
                         <div>
                             <div class="form-check form-check-inline">
                                 <input class="form-check-input" type="checkbox" id="inputPago" name="inputPago">
-                                <label class="form-check-label" for="inlineCheckbox1">Pago</label>
+                                <label class="form-check-label">Pago</label>
                             </div>
                             <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
                         </div>

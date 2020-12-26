@@ -40,6 +40,7 @@ namespace Pedidos.Controllers
             if (GetSession<P_Pedido>("currentPedido") is null)
             {
                 var currentPedido = new P_Pedido(Cuenta.id);
+                currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
                 SetSession("currentPedido", currentPedido);
 
                 return View(currentPedido);
@@ -47,6 +48,7 @@ namespace Pedidos.Controllers
             else
             {
                 var currentPedido = GetSession<P_Pedido>("currentPedido");
+                currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
                 return View(currentPedido);
             }
 
@@ -78,6 +80,8 @@ namespace Pedidos.Controllers
             currentPedido.direccion = producto.direccion;
             currentPedido.telefono = producto.telefono;
 
+            currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+
             if (!string.IsNullOrEmpty(producto.tamanhoSeleccionado))
             {
                 producto.valor = producto.valorTamanhoSeleccionado;
@@ -105,8 +109,7 @@ namespace Pedidos.Controllers
                     currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
-                    currentPedido.total = currentPedido.valorProductos;
-
+                  
                     currentPedido.idCliente = pedidoaux.idCliente;
                     currentPedido.cliente = pedidoaux.cliente;
                     currentPedido.idAplicativo = pedidoaux.idAplicativo;
@@ -116,6 +119,9 @@ namespace Pedidos.Controllers
                     currentPedido.telefono = pedidoaux.telefono;
                     currentPedido.descuento = pedidoaux.descuento;
                     currentPedido.pago = pedidoaux.pago;
+
+                    currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
+
 
                     if (currentPedido.idFormaPagamento.HasValue)
                     {
@@ -154,9 +160,10 @@ namespace Pedidos.Controllers
                     await _context.SaveChangesAsync();
 
                     currentPedido = new P_Pedido(Cuenta.id);
+                    currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
                     SetSession("currentPedido", currentPedido);
 
-                    var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).OrderByDescending(x=>x.fecha).ToArrayAsync();
+                    var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).OrderByDescending(x => x.fecha).ToArrayAsync();
 
                     return Ok(new { ok = true, reload = actualizarPagina, currentPedido, pedidosPendientes });
                 }
@@ -174,7 +181,7 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> CargarPedidosPendientes()
         {
             var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
-            return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x=>x.fecha).ToList() });
+            return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ToList() });
         }
 
         private bool P_PedidoExists(int id)

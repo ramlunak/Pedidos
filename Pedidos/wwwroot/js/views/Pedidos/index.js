@@ -806,10 +806,35 @@ function cancelar(idPedido) {
 
 function finalizado(idPedido) {
 
+    var formaPagamentoContainer = '<div>';
+    for (var i = 0; i < 3; i++) {
+        var formaPagamento = '                       <div class="form-check">  ' +
+            '                           <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamento' + 1 + '" >  ' +
+            '                           <label class="form-check-label unselectable">  ' +
+            '                               Default ' + 1 + '  ' +
+            '                           </label>  ' +
+            '                       </div>  ';
+        formaPagamentoContainer += formaPagamento;
+    }
+    formaPagamentoContainer += '</div>';
+
     Swal.fire({
         title: 'Marcar como preparado',
         icon: 'info',
-        html: '<div><input class="form-control m-1" placeholder="Cliente" /> <textarea class="form-control m-1" rows="3" placeholder="Endereço"></textarea><input class="form-control m-1" /><input class="form-control m-1" /><input class="form-control m-1" /></div> ',
+        html: '   <div class="card card-body">  ' +
+            '                       <div class="row col-12 d-block justify-content-center">  ' +
+            '                           <div class="d-flex mb-2">  ' +
+            '                               <label class="mr-2">Desconto:</label>  ' +
+            '                               <input id="inputDescuento" name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm " />  ' +
+            '                           </div>  ' +
+            '     ' +
+            '                           <div class="d-flex mb-2">  ' +
+            '                               <label class="mr-2">Desconto:</label>  ' +
+            '                               <input id="inputDescuento" name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm " />  ' +
+            '                           </div>  ' +
+            '                       </div>  ' +
+            '     ' + formaPagamentoContainer +
+            '                  </div>  ',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
@@ -857,5 +882,7 @@ function finalizado(idPedido) {
 
         }
     })
+
+    $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
 
 }

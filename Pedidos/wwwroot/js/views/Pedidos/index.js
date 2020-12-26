@@ -17,6 +17,8 @@ var _ModalIngredientes = [];
 
 $(function () {
 
+    $("#inputDescuento").mask("###0.00", { reverse: true });
+
     CargarCurrentPedido();
     CargarPedidosPendientes();
     CargarProductos();
@@ -521,6 +523,7 @@ function MostarCurrentPedido() {
     $('#idAplicativo').val(_CurrentPedido.idAplicativo);
     $('#idMesa').val(_CurrentPedido.idMesa);
     $('#inputEndereco').val(_CurrentPedido.direccion);
+    $('#inputDescuento').val(_CurrentPedido.descuento);
     $('#inputPago').prop("checked", _CurrentPedido.pago);
 
     $('#spanTotal').html(_CurrentPedido.valorProductos.toFixed(2));
@@ -558,6 +561,7 @@ function GuardarCurrentPedido() {
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
         telefono: $('#inputTelefone').val(),
+        descuento: parseFloat($('#inputDescuento').val()),
         idFormaPagamento: $('#idFormaPagamento').val(),
         pago: $('#inputPago').is(':checked')
     }

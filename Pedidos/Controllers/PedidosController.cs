@@ -114,6 +114,7 @@ namespace Pedidos.Controllers
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
+                    currentPedido.descuento = pedidoaux.descuento;
                     currentPedido.pago = pedidoaux.pago;
 
                     if (currentPedido.idFormaPagamento.HasValue)
@@ -155,7 +156,7 @@ namespace Pedidos.Controllers
                     currentPedido = new P_Pedido(Cuenta.id);
                     SetSession("currentPedido", currentPedido);
 
-                    var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
+                    var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).OrderByDescending(x=>x.fecha).ToArrayAsync();
 
                     return Ok(new { ok = true, reload = actualizarPagina, currentPedido, pedidosPendientes });
                 }

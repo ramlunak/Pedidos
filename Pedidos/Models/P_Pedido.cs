@@ -83,6 +83,7 @@ namespace Pedidos.Models
         public string direccion { get; set; }
         public string telefono { get; set; }
         public string idFormaPagamento { get; set; }
+        public decimal? descuento { get; set; }
         public bool pago { get; set; }
 
     }

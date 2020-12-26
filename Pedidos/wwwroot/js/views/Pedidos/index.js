@@ -802,15 +802,14 @@ function cancelar(idPedido) {
         }
     })
 
-
 }
 
 function finalizado(idPedido) {
 
     Swal.fire({
-        title: 'O pedido será marcado como preparado',
-        text: "",
+        title: 'Marcar como preparado',
         icon: 'info',
+        html: '<div><input class="form-control m-1" placeholder="Cliente" /> <textarea class="form-control m-1" rows="3" placeholder="Endereço"></textarea><input class="form-control m-1" /><input class="form-control m-1" /><input class="form-control m-1" /></div> ',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',

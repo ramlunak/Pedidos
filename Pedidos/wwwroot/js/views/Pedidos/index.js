@@ -16,7 +16,7 @@ var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
 $(function () {
-         
+
     $("#inputDescuento").mask("###0.00", { reverse: true });
 
     CargarCurrentPedido();
@@ -818,7 +818,7 @@ function finalizado(idPedido) {
     var formaPagamentoContainer = '<div style="display: block;text-align:start;">';
     $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
         var formaPagamento = '                       <div class="form-check">  ' +
-            '                           <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamento' + 1 + '" >  ' +
+            '                           <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamento' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
             '                                ' + formaPagamento.nombre + '  ' +
             '                           </label>  ' +
@@ -839,7 +839,7 @@ function finalizado(idPedido) {
             '                           </div>  ' +
             '     ' +
             '    <div class="form-check d-flex mb-2">  ' +
-            '                                   <input class="form-check-input" type="checkbox" id="inputPago" name="inputPagoFinalizado">  ' +
+            '                                   <input class="form-check-input" type="checkbox" id="inputPagoFinalizado" name="inputPagoFinalizado">  ' +
             '                                   <label class="form-check-label">Pago</label>  ' +
             '                              </div>  ' +
             '                       </div>  ' +
@@ -910,6 +910,8 @@ function finalizado(idPedido) {
     var pedido = findResult[0];
 
     $("#inputDescontoFinalizado").val(pedido.descuento);
-    //$("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
-
+    $("#inputPagoFinalizado").prop('checked', pedido.pago);
+    if (pedido.idFormaPagamento !== null) {
+        $('#radioFormaPagamento' + pedido.idFormaPagamento + '').prop('checked', true);
+    }
 }

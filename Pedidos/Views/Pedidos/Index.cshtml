@@ -120,14 +120,14 @@
                 </div>
 
                 <div class="row m-1">
-                    <input id="inputEndereco" class="form-control form-control-sm col-12 col-md-8" placeholder="Endereço" />
+                    @*<input id="inputEndereco" class="form-control form-control-sm col-12 col-md-8" placeholder="Endereço" />*@
                     <select asp-for="idFormaPagamento" id="idFormaPagamento" class="form-control form-control-sm col-12 col-md-4">
                         @if (ViewBag.FormaPagamento != null)
                         {
                             <option value="" selected style="color:gray">-Indefinido-</option>
-                            @foreach (var Categoria in ViewBag.FormaPagamento)
+                            @foreach (var formaPagamento in ViewBag.FormaPagamento)
                             {
-                                <option value="@(Categoria.id)">@(Categoria.nombre)</option>
+                                <option value="@(formaPagamento.id)">@(formaPagamento.nombre)</option>
                             }
 
                         }

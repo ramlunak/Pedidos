@@ -109,7 +109,7 @@ namespace Pedidos.Controllers
                     currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
-                  
+
                     currentPedido.idCliente = pedidoaux.idCliente;
                     currentPedido.cliente = pedidoaux.cliente;
                     currentPedido.idAplicativo = pedidoaux.idAplicativo;
@@ -121,7 +121,7 @@ namespace Pedidos.Controllers
                     currentPedido.pago = pedidoaux.pago;
 
                     currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
-
+                    currentPedido.idFormaPagamento = Convert.ToInt32(pedidoaux.idFormaPagamento);
 
                     if (currentPedido.idFormaPagamento.HasValue)
                     {

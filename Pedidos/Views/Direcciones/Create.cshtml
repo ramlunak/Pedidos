@@ -3,104 +3,69 @@
 @{
     ViewData["Title"] = "Criar";
 }
-
-<h5>Novo Endereço</h5>
-<hr />
-
-
-
-<div class="row">
-    <div class="col-12">
-
+<div class="m-4"></div>
+<div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-4">
         <form asp-action="Create">
 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input asp-for="idCliente" hidden value="@ViewBag.idCliente" class="form-control" />
+            <input asp-for="idCliente" hidden value="@Model.idCliente" class="form-control" />
 
-            <div class="row col-12">
-
-                @*CEP*@
-                <div class="col-md-3">
-
-                    <div class="form-group">
-                        <label asp-for="code" class="control-label"></label>
-
-                        <div class="input-group">
-                            <input id="code" type="number" class="form-control" asp-for="code">
-                            <div class="input-group-append">
-                                <span id="cepSearch" class="input-group-text" style="cursor:pointer">
-                                    <i style="color:dodgerblue" class="fa fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <span asp-validation-for="code" class="text-danger"></span>
-                    </div>
-
-                </div>
-                @*RUA*@
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label asp-for="address" class="control-label"></label>
-                        <input id="address" asp-for="address" class="form-control" />
-                        <span asp-validation-for="address" class="text-danger"></span>
+            <div class="form-group">
+                
+                <div class="input-group">
+                    <input id="code" type="number" class="form-control form-control-sm" asp-for="code" placeholder="CEP">
+                    <div class="input-group-append">
+                        <span id="cepSearch" class="input-group-text" style="cursor:pointer">
+                            <i style="color:dodgerblue" class="fa fa-search"></i>
+                        </span>
                     </div>
                 </div>
-                @*NUMERO*@
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label asp-for="numero" class="control-label"></label>
-                        <input id="numero" type="number" asp-for="numero" class="form-control" />
-                        <span asp-validation-for="numero" class="text-danger"></span>
-                    </div>
-                </div>
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label asp-for="complemento" class="control-label"></label>
-                        <input id="complemento" asp-for="complemento" class="form-control" />
-                        <span asp-validation-for="complemento" class="text-danger"></span>
-                    </div>
-                </div>
+
+                <span asp-validation-for="code" class="text-danger"></span>
             </div>
 
-            <div class="row col-12">
-                @*BARRIO*@
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label asp-for="district" class="control-label"></label>
-                        <input id="district" asp-for="district" class="form-control" />
-                        <span asp-validation-for="district" class="text-danger"></span>
-                    </div>
-                </div>
-                @*CIUDAD*@
-                <div class="col-md-5">
-                    <div class="form-group">
-                        <label asp-for="city" class="control-label"></label>
-                        <input id="city" asp-for="city" class="form-control" />
-                        <span asp-validation-for="city" class="text-danger"></span>
-                    </div>
-                </div>
-                @*ESTADO*@
-                <div class="col-md-2">
-                    <div class="form-group">
-                        <label asp-for="state" class="control-label"></label>
-                        <input id="state" asp-for="state" class="form-control" />
-                        <span asp-validation-for="state" class="text-danger"></span>
-                    </div>
-                </div>
+
+            <div class="form-group">
+                <input id="address" asp-for="address" class="form-control form-control-sm" placeholder="Rua" />
+                <span asp-validation-for="address" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">              
+                <input id="numero" type="number" asp-for="numero" class="form-control form-control-sm" placeholder="Número" />
+                <span asp-validation-for="numero" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">               
+                <input id="complemento" asp-for="complemento" class="form-control form-control-sm" placeholder="Complemento" />
+                <span asp-validation-for="complemento" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">              
+                <input id="district" asp-for="district" class="form-control form-control-sm" placeholder="Barrio" />
+                <span asp-validation-for="district" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">              
+                <input id="city" asp-for="city" class="form-control form-control-sm" placeholder="Municipio" />
+                <span asp-validation-for="city" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">             
+                <input id="state" asp-for="state" class="form-control form-control-sm" placeholder="Estado" />
+                <span asp-validation-for="state" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                <a class="btn btn-danger btn-sm form-control form-control-sm" asp-route-idCliente="@Model.idCliente" asp-action="Index">Cancelar</a>
             </div>
         </form>
 
     </div>
 </div>
 
-<div>
-    <a asp-route-idCliente="@ViewBag.idCliente" asp-action="Index">Voltar</a>
-</div>
 
 @section Scripts {
 

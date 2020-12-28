@@ -4,73 +4,83 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="row col-12 d-flex justify-content-center align-items-center ">
+@*<div class="row col-12 d-flex justify-content-center align-items-center ">
     <div style="margin:5px;font-size: 25px;color: darkgray;text-transform: capitalize;"> Endereços</div>
-</div>
+</div>*@
 
-<div class="d-flex justify-content-between m-1">
-    <div class="btn btn-sm btn-primary"><a style="color:white" asp-route-idCliente="@ViewBag.idCliente" asp-action="Create">Novo Endereço</a></div>
-    <div>
-        <!-- Search form -->
-        <form id="formSearch">
+@*<div class="d-flex justify-content-between m-1">
+        <div class="btn btn-sm btn-primary"><a style="color:white" asp-route-idCliente="@ViewBag.idCliente" asp-action="Create">Novo Endereço</a></div>
+        <div>
 
-            <div class="input-group">
-                <input id="idCategoria" name="idCategoria" hidden value="@ViewBag.idCliente" />
-                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm " type="text" placeholder="Buscar"
-                       aria-label="Search">
-                <div class="input-group-append">
-                    <span id="btnSearch" class="input-group-text">
-                        <i style="color:dodgerblue" class="fa fa-search"></i>
-                    </span>
-                </div>
-            </div>
+            <form id="formSearch">
 
-            @*<div class="d-flex align-items-center">
-                    <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
+                <div class="input-group">
+                    <input id="idCategoria" name="idCategoria" hidden value="@ViewBag.idCliente" />
+                    <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm " type="text" placeholder="Buscar"
                            aria-label="Search">
-                    <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
-                    <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
+                    <div class="input-group-append">
+                        <span id="btnSearch" class="input-group-text">
+                            <i style="color:dodgerblue" class="fa fa-search"></i>
+                        </span>
+                    </div>
+                </div>
 
-                </div>*@
 
-        </form>
+            </form>
+        </div>
+    </div>*@
+
+
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <a class="btn btn-sm btn-primary" asp-route-idCliente="@ViewBag.idCliente" asp-action="Create">Novo Endereço</a>
+            </div>
+            <div>
+                
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <table class="table">
+            <tbody>
+                @foreach (var item in Model.Direcciones)
+                {
+                    <tr>
+                        <td>
+                            <div class="row col-12 d-flex">
+
+                                <div class="col-12 col-md-10" style="color: black;font-size: 18px;">
+                                    @item.text
+                                </div>
+
+                                <div class="col-12 col-md-2">
+                                    <div class="d-flex justify-content-end p-2">
+                                        <div class="m-1">
+                                            <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-id="@item.id">
+                                                <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                        <div class="m-1">
+                                            <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-id="@item.id">
+                                                <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
     </div>
 </div>
-
-<table class="table">
-    <tbody>
-        @foreach (var item in Model.Direcciones)
-        {
-            <tr>
-                <td>
-                    <div class="row col-12 d-flex">
-
-                        <div class="col-12 col-md-10" style="color: black;font-size: 18px;">
-                            @item.text
-                        </div>
-
-                        <div class="col-12 col-md-2">
-                            <div class="d-flex justify-content-end p-2">
-                                <div class="m-1">
-                                    <a class="btn btn-sm btn-success" style="color:white" asp-action="Edit" asp-route-id="@item.id">
-                                        <i style="color:white" class="fa fa-edit" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                                <div class="m-1">
-                                    <a class="btn btn-sm btn-danger" style="color:white" asp-action="Delete" asp-route-id="@item.id">
-                                        <i style="color:white" class="fa fa-trash" aria-hidden="true"></i>
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
-
 
 @section Scripts{
     <script type="text/javascript">
@@ -82,7 +92,7 @@
 
         $(document).ready(function () {
             $('#btnSearch').on('click', function () {
-                 $('#formSearch').submit();
+                $('#formSearch').submit();
             });
 
         });

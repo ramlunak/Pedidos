@@ -80,12 +80,12 @@ namespace Pedidos.Controllers
         public IActionResult Create(int? idCliente)
         {
             ValidarCuenta();
-            ViewBag.idCliente = idCliente;
 
             //Cargar configuracion de la cuenta
             var newDireccion = new P_Direcciones();
             newDireccion.state = Cuenta.estado;
             newDireccion.city = Cuenta.municipio;
+            newDireccion.idCliente = idCliente;
 
             return View(newDireccion);
         }

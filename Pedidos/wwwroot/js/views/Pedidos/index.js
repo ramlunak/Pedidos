@@ -1092,11 +1092,13 @@ function finalizado(idPedido) {
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;">';
     $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
-        var formaPagamento = '                       <div class="form-check">  ' +
-            '                           <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamento' + formaPagamento.id + '" >  ' +
+        var formaPagamento = '                     <hr/>  <div class="d-flex justify-content-between"><div class="form-check">  ' +
+            '                           <input class="form-check-input" type="checkbox" name="exampleRadios" id="radioFormaPagamento' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
             '                                ' + formaPagamento.nombre + '  ' +
             '                           </label>  ' +
+            '                           </div> ' +
+            '                           <div><input class="form-control form-control-sm  float-right " /></div>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
     });
@@ -1105,7 +1107,6 @@ function finalizado(idPedido) {
 
     Swal.fire({
         title: 'Finalizar Pedido',
-        icon: 'info',
         html: '   <div class="card card-body">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +
             '                           <div class="d-flex mb-2">  ' +

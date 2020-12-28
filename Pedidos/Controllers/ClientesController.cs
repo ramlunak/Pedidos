@@ -203,7 +203,6 @@ namespace Pedidos.Controllers
             return _context.P_Clientes.Any(e => e.id == id);
         }
 
-
         public async Task<IActionResult> GetTelefono(int idCliente)
         {
             string telefono = null;
@@ -221,10 +220,10 @@ namespace Pedidos.Controllers
             return Json(telefono);
         }
 
-        public async Task<IActionResult> GetDireccion(int idCliente)
+        public async Task<IActionResult> GetDireccion(int id)
         {
-            var direciones = await _context.P_Direcciones.Where(x => x.idCliente == idCliente).ToArrayAsync();
-            return Json(direciones.ToArray());
+            var direciones = await _context.P_Direcciones.Where(x => x.idCliente == id).ToArrayAsync();
+            return Ok(direciones);
         }
 
     }

@@ -11,7 +11,7 @@ namespace Pedidos.Models
     public class P_Direcciones
     {
         public int id { get; set; }
-              
+
         [DisplayName("CEP")]
         public string code { get; set; }
 
@@ -36,9 +36,9 @@ namespace Pedidos.Models
         [DisplayName("Número")]
         public string numero { get; set; }
         public string complemento { get; set; }
-        
+
         public int? idCliente { get; set; }
-        public int idPedido { get; set; }
+        public string auxiliar { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; } = true;
 
@@ -48,7 +48,16 @@ namespace Pedidos.Models
         {
             get
             {
-                return $"{address}, {numero} {complemento} - {district}, {city} - {state} {(code is null ? "":", "+code)}";
+                if (this.address == "N/A")
+                {
+
+                    return auxiliar;
+                }
+                else
+                {
+
+                    return $"{address}, {numero} {complemento} - {district}, {city} - {state} {(code is null ? "" : ", " + code)}";
+                }
             }
         }
     }

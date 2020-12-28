@@ -25,7 +25,7 @@ namespace Pedidos.Controllers
         {
 
             ValidarCuenta();
-            var cantidadRegistrosPorPagina = 3; // parámetro
+            var cantidadRegistrosPorPagina = 100; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
             var sql = SqlConsultas.GetSqlAllDirecciones(Cuenta.id, idCliente is null ? 0 : idCliente.Value, Skip, cantidadRegistrosPorPagina, nombre);

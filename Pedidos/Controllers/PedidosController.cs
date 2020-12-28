@@ -37,6 +37,9 @@ namespace Pedidos.Controllers
             ViewBag.FormaPagamento = formaPagamento;
             SetSession("FormaPagamento", formaPagamento);
 
+            var direcciones = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            SetSession("Direcciones", direcciones);
+
             if (GetSession<P_Pedido>("currentPedido") is null)
             {
                 var currentPedido = new P_Pedido(Cuenta.id);
@@ -77,6 +80,7 @@ namespace Pedidos.Controllers
             currentPedido.aplicativo = producto.aplicativo;
             currentPedido.idAplicativo = producto.idAplicativo;
             currentPedido.idMesa = producto.idMesa;
+            currentPedido.idDireccion = producto.idDireccion;
             currentPedido.direccion = producto.direccion;
             currentPedido.telefono = producto.telefono;
 
@@ -121,7 +125,6 @@ namespace Pedidos.Controllers
                     currentPedido.pago = pedidoaux.pago;
 
                     currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
-                    currentPedido.idFormaPagamento = Convert.ToInt32(pedidoaux.idFormaPagamento);
 
                     if (currentPedido.idFormaPagamento.HasValue)
                     {
@@ -142,6 +145,49 @@ namespace Pedidos.Controllers
                         await _context.SaveChangesAsync();
                         currentPedido.idCliente = cliente.id;
                         actualizarPagina = true;
+
+                        if (currentPedido.idDireccion is null && !string.IsNullOrEmpty(currentPedido.direccion))
+                        {
+                            var direccion = new P_Direcciones();
+                            direccion.idCuenta = Cuenta.id;
+                            direccion.idCliente = cliente.id;
+                            direccion.activo = true;
+                            direccion.code = "N/A";
+                            direccion.address = "N/A";
+                            direccion.numero = "N/A";
+                            direccion.complemento = "N/A";
+                            direccion.state = "N/A";
+                            direccion.city = "N/A";
+                            direccion.district = "N/A";
+                            direccion.auxiliar = currentPedido.direccion;
+                            _context.P_Direcciones.Add(direccion);
+                            await _context.SaveChangesAsync();
+                            currentPedido.idDireccion = direccion.id;
+                            actualizarPagina = true;
+                        }
+
+                    }
+                    else
+                    {
+                        if (currentPedido.idDireccion is null && !string.IsNullOrEmpty(currentPedido.direccion))
+                        {
+                            var direccion = new P_Direcciones();
+                            direccion.idCuenta = Cuenta.id;
+                            direccion.idCliente = currentPedido.idCliente;
+                            direccion.activo = true;
+                            direccion.code = "N/A";
+                            direccion.address = "N/A";
+                            direccion.numero = "N/A";
+                            direccion.complemento = "N/A";
+                            direccion.state = "N/A";
+                            direccion.city = "N/A";
+                            direccion.district = "N/A";
+                            direccion.auxiliar = currentPedido.direccion;
+                            _context.P_Direcciones.Add(direccion);
+                            await _context.SaveChangesAsync();
+                            currentPedido.idDireccion = direccion.id;
+                            actualizarPagina = true;
+                        }
                     }
 
                     if (currentPedido.idAplicativo is null && !string.IsNullOrEmpty(currentPedido.aplicativo))
@@ -227,6 +273,21 @@ namespace Pedidos.Controllers
         {
             var pedido = await _context.P_Pedidos.FindAsync(id);
             return View(pedido);
+        }
+
+        public async Task<IActionResult> GetDireccion(int id)
+        {
+            if (GetSession<List<P_Direcciones>>("Direcciones") != null)
+            {
+                var direciones = GetSession<List<P_Direcciones>>("Direcciones");
+                var clienteDirecciones = direciones.Where(x => x.idCliente == id);
+                return Ok(clienteDirecciones);
+            }
+            else
+            {
+                var direciones = await _context.P_Direcciones.Where(x => x.idCliente == id).ToArrayAsync();
+                return Ok(direciones);
+            }
         }
     }
 }

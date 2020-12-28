@@ -37,7 +37,7 @@ $(function () {
             $('#idCliente').val('');
         }
 
-        //CargarDirecciones();
+        CargarDirecciones(id);
 
         _CurrentPedido.cliente = $('#inputNome').val();
         _ModalProducto.cliente = $('#inputNome').val();
@@ -65,7 +65,21 @@ $(function () {
 
     $('#inputEndereco').on('input propertychange', function (e) {
         $('#spanEndereco').html($('#inputEndereco').val());
+
+        var opt = $('option[value="' + $(this).val() + '"]');
+        var id = opt.length ? opt.attr('id') : '';
+
+        if (id !== '' && id !== undefined) {
+            $('#inputEndereco').css({ "border-color": "#04CD5A", "border-weight": "2px", "border-style": "solid" });
+            $('#idDireccion').val(id);
+        } else {
+            $('#inputEndereco').css({ "border": "1px solid #ced4da" });
+            $('#idDireccion').val('');
+        }
+
+        _CurrentPedido.direccion = $('#inputEndereco').val();
         _ModalProducto.direccion = $('#inputEndereco').val();
+
     });
 
     $('#inputTelefone').on('input propertychange', function (e) {
@@ -80,6 +94,36 @@ $(function () {
     });
 
 });
+
+//Cargar Direcciones del cliente
+function CargarDirecciones(id) {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetDireccion/" + parseInt(id),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            //Llanar lista direcciones
+            $("#EnderecoList").empty();
+            $.each(data, (index, item) => {
+                $("#EnderecoList").append($('<option id="' + item.id + '">').attr('value', item.text));
+            });
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
+
 //filtar productos para escojer
 function FiltrarProductos(productos) {
 
@@ -196,6 +240,7 @@ function ShowDetallesProducto(id) {
             _ModalProducto.idAplicativo = parseInt(datosClienteFormulario.idAplicativo);
             _ModalProducto.idMesa = parseInt(datosClienteFormulario.idMesa);
             _ModalProducto.direccion = datosClienteFormulario.direccion;
+            _ModalProducto.idDireccion = datosClienteFormulario.idDireccion;
             _ModalProducto.telefono = datosClienteFormulario.telefono;
 
             _ModalAdicionales = data.adicionales;
@@ -459,6 +504,7 @@ function AddProducto() {
     _ModalProducto.idCliente = parseInt($('#idCliente').val());
     _ModalProducto.idAplicativo = parseInt($('#idAplicativo').val());
     _ModalProducto.idMesa = parseInt($('#idMesa').val());
+    _ModalProducto.idDireccion = parseInt($('#idDireccion').val());
 
     $.ajax({
         type: "POST",
@@ -521,6 +567,8 @@ function MostarCurrentPedido() {
     $('#inputTelefono').val(_CurrentPedido.telefono);
     $('#inputAplicativo').val(_CurrentPedido.aplicativo);
     $('#idAplicativo').val(_CurrentPedido.idAplicativo);
+    $('#inputEndereco').val(_CurrentPedido.direccion);
+    $('#idDireccion').val(_CurrentPedido.idDireccion);
     $('#idMesa').val(_CurrentPedido.idMesa);
     $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#inputDescuento').val(_CurrentPedido.descuento);
@@ -551,6 +599,21 @@ function TABLE_PedidoProductos() {
     });
 }
 
+var loading;
+
+function showLoading() {
+    loading = Swal.fire({
+        showConfirmButton: false,
+        allowOutsideClick: false,
+        imageAlt: 'A tall image',
+        html: "<div class='d-block justify-content-center'> <div class='spinner-border text-primary mr-3' role='status'></div > <div>Espere un momento por favor. </div> </div >"
+    })
+}
+
+function hideLoading() {
+    loading.close();
+}
+
 function GuardarCurrentPedido() {
 
     var pedido = {
@@ -560,11 +623,14 @@ function GuardarCurrentPedido() {
         aplicativo: $('#InputAplicativo').val(),
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
+        idDireccion: parseInt($('#idDireccion').val()),
         telefono: $('#inputTelefone').val(),
         descuento: parseFloat($('#inputDescuento').val()),
-        idFormaPagamento: $('#idFormaPagamento').val(),
+        idFormaPagamento: parseInt($('#idFormaPagamento').val()),
         pago: $('#inputPago').is(':checked')
     }
+
+    showLoading();
 
     $.ajax({
         type: "POST",
@@ -574,6 +640,8 @@ function GuardarCurrentPedido() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
+
+            hideLoading();
 
             if (result.ok) {
                 _CurrentPedido = result.currentPedido;

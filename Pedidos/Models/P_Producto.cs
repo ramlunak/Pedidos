@@ -139,8 +139,11 @@ namespace Pedidos.Models
         public int? idMesa { get; set; }
         [NotMapped]
         public string direccion { get; set; }
+        [NotMapped]       
+        public int? idDireccion { get; set; }
         [NotMapped]
         public string telefono { get; set; }
+       
 
     }
 

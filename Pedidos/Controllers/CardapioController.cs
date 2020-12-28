@@ -22,7 +22,10 @@ namespace Pedidos.Controllers
         // GET: Cardapio
         public async Task<IActionResult> Index()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             //var data = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlCardapio(53,Cuenta.id)).ToListAsync();
             ////var id = 1;
             //var query =
@@ -49,7 +52,10 @@ namespace Pedidos.Controllers
        
         public async Task<IActionResult> GetProductos(int id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             //var data = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlCardapio(id, Cuenta.id)).ToListAsync();
             ////var id = 1;
             //var query =
@@ -74,6 +80,10 @@ namespace Pedidos.Controllers
         // GET: Cardapio/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -92,6 +102,10 @@ namespace Pedidos.Controllers
         // GET: Cardapio/Create
         public IActionResult Create()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 
@@ -102,6 +116,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_Categoria p_Categoria)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (ModelState.IsValid)
             {
                 _context.Add(p_Categoria);
@@ -114,6 +132,10 @@ namespace Pedidos.Controllers
         // GET: Cardapio/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -134,6 +156,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,nombre,idCuenta,activo")] P_Categoria p_Categoria)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id != p_Categoria.id)
             {
                 return NotFound();
@@ -165,6 +191,10 @@ namespace Pedidos.Controllers
         // GET: Cardapio/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -185,6 +215,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var p_Categoria = await _context.P_Categorias.FindAsync(id);
             _context.P_Categorias.Remove(p_Categoria);
             await _context.SaveChangesAsync();

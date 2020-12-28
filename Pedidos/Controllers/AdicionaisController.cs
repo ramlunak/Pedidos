@@ -22,12 +22,20 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Index()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var model = await _context.P_Adicionais.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(model.OrderByDescending(x => x.paraTodos).ToList());
         }
 
         public async Task<IActionResult> Categorias(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var query = await _context.P_Categorias.FromSqlRaw($"EXEC GetCategoriasPorAdicional @idAdicional = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
             var model = from CT in query
                         select new ListarCategoriasPorAdicional()
@@ -43,6 +51,11 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -60,6 +73,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Create()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 
@@ -67,7 +84,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Adicionais p_Adicionais)
         {
-            ValidarCuenta();
+            if(!ValidarCuenta()){
+                Response.Redirect("/Login");
+            }
+
             if (ModelState.IsValid)
             {
                 if (ExistsByName(p_Adicionais.nombre))
@@ -111,6 +131,11 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -128,6 +153,11 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, P_Adicionais p_Adicionais)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
             if (id != p_Adicionais.id)
             {
                 return NotFound();
@@ -158,6 +188,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> ChangeStatus(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -185,6 +219,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> ChangeVsibilidad(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -214,6 +252,10 @@ namespace Pedidos.Controllers
         [HttpPost]
         public async Task<IActionResult> UpdateCategoriaInAdicionalCategorias([FromBody]ListarCategoriasPorAdicional listarCategoriasPorAdicional)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             int result;
 
             result = await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},@idCuenta = {Cuenta.id}");
@@ -239,6 +281,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -258,6 +304,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var p_Adicionais = await _context.P_Adicionais.FindAsync(id);
             _context.P_Adicionais.Remove(p_Adicionais);
             await _context.SaveChangesAsync();
@@ -266,6 +316,7 @@ namespace Pedidos.Controllers
 
         private bool P_AdicionaisExists(int id)
         {
+
             return _context.P_Adicionais.Any(e => e.id == id && e.idCuenta == Cuenta.id);
         }
 

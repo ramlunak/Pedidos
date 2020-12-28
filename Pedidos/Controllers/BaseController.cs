@@ -70,21 +70,15 @@ namespace Pedidos.Controllers
             }
         }
 
-        public void ValidarCuenta()
+        public bool ValidarCuenta()
         {
             if (Cuenta is null || !Cuenta.activo)
             {
-                Logof();
-                Response.Redirect("/Login");
+                Logof();                
+                return false;
             }
-            try
-            {
-                TempData["Email"] = Cuenta.usuario;
-            }
-            catch (Exception ex)
-            {
-                Response.Redirect("/Login");
-            }
+            TempData["Email"] = Cuenta.usuario;
+            return true;
         }
 
         public void SetSession(string key, string value)

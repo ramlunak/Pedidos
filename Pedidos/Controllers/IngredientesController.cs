@@ -22,12 +22,20 @@ namespace Pedidos.Controllers
         // GET: Ingredientes
         public async Task<IActionResult> Index()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View(await _context.P_Ingredientes.Where(x=>x.idCuenta == Cuenta.id).ToListAsync());
         }
 
         // GET: Ingredientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -46,6 +54,10 @@ namespace Pedidos.Controllers
         // GET: Ingredientes/Create
         public IActionResult Create()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 
@@ -56,6 +68,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_Ingredientes p_Ingredientes)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (ModelState.IsValid)
             {
                 p_Ingredientes.idCuenta = Cuenta.id;
@@ -70,6 +86,10 @@ namespace Pedidos.Controllers
         // GET: Ingredientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -90,6 +110,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,nombre,idCuenta,activo")] P_Ingredientes p_Ingredientes)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id != p_Ingredientes.id)
             {
                 return NotFound();
@@ -121,6 +145,10 @@ namespace Pedidos.Controllers
         // GET: Ingredientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -141,6 +169,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var p_Ingredientes = await _context.P_Ingredientes.FindAsync(id);
             _context.P_Ingredientes.Remove(p_Ingredientes);
             await _context.SaveChangesAsync();

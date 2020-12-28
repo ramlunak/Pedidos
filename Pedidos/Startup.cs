@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -98,6 +99,19 @@ namespace Pedidos
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            //app.UseStatusCodePages(async context =>
+            //{
+            //    var response = context.HttpContext.Response;
+
+            //    if (response.StatusCode == (int)HttpStatusCode.Unauthorized ||
+            //        response.StatusCode == (int)HttpStatusCode.InternalServerError)
+            //        response.Redirect("/Login");
+
+            //    //if (response.StatusCode == (int)HttpStatusCode.NotFound)
+            //    //    response.Redirect("/Login/Salir");
+            //});
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 

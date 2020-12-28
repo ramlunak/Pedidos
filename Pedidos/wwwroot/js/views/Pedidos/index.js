@@ -1098,9 +1098,10 @@ function finalizado(idPedido) {
             '                                ' + formaPagamento.nombre + '  ' +
             '                           </label>  ' +
             '                           </div> ' +
-            '                           <div><input class="form-control form-control-sm  float-right " /></div>  ' +
+            '                           <div><input id="valorFormaPagamento_' + formaPagamento.id + '" class="form-control form-control-sm  float-right " /></div>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
+        $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
     });
 
     formaPagamentoContainer += '</div>';

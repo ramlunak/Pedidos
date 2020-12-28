@@ -25,7 +25,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Index()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
 
             var clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             ViewBag.Clientes = clientes;
@@ -60,7 +63,10 @@ namespace Pedidos.Controllers
         [HttpPost]
         public IActionResult AddProducto([FromBody] P_Productos producto)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var currentPedido = GetSession<P_Pedido>("currentPedido");
             if (currentPedido is null)
             {
@@ -104,7 +110,10 @@ namespace Pedidos.Controllers
         [HttpPost]
         public async Task<IActionResult> GuardarCurrentPedido([FromBody] PedidoDatosAux pedidoaux)
         {
-
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var currentPedido = GetSession<P_Pedido>("currentPedido");
             if (currentPedido.productos.Count > 0)
             {
@@ -245,6 +254,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Cancelar(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             try
             {
                 var pedido = await _context.P_Pedidos.FindAsync(id);
@@ -261,6 +274,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Preparado(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             try
             {
                 var pedido = await _context.P_Pedidos.FindAsync(id);
@@ -277,6 +294,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Finalizar(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             try
             {
                 var pedido = await _context.P_Pedidos.FindAsync(id);
@@ -293,6 +314,10 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Print(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var pedido = await _context.P_Pedidos.FindAsync(id);
             return View(pedido);
         }

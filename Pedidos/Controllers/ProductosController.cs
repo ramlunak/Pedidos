@@ -34,8 +34,10 @@ namespace Pedidos.Controllers
         // GET: Productos
         public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
-
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var cantidadRegistrosPorPagina = 12; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
@@ -88,7 +90,10 @@ namespace Pedidos.Controllers
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -107,7 +112,10 @@ namespace Pedidos.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Create()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             SetSession("base64String", "");
             ViewBag.Categorias = await _context.P_Categorias.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             var model = new P_Productos() { ImageBase64 = ImageLoad };
@@ -122,7 +130,10 @@ namespace Pedidos.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public async Task<IActionResult> Create(P_Productos p_Productos)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (ModelState.IsValid)
             {
                 //var files = HttpContext.Request.Form.Files;
@@ -174,7 +185,10 @@ namespace Pedidos.Controllers
         // GET: Productos/Edit/5
         public async Task<IActionResult> Edit(int? id, int? pagina)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -209,7 +223,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, P_Productos p_Productos)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id != p_Productos.id)
             {
                 return NotFound();
@@ -283,7 +300,10 @@ namespace Pedidos.Controllers
         // GET: Productos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -304,7 +324,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var p_Productos = await _context.P_Productos.FindAsync(id);
             _context.P_Productos.Remove(p_Productos);
             await _context.SaveChangesAsync();
@@ -343,7 +366,10 @@ namespace Pedidos.Controllers
                 //     var item = await query.ToListAsync();
 
 
-                ValidarCuenta();
+                if (!ValidarCuenta())
+                {
+                    return RedirectToAction("Salir", "Login");
+                }
                 var items = await _context.P_Productos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
                 return Ok(items);
             }
@@ -357,7 +383,10 @@ namespace Pedidos.Controllers
         {
             try
             {
-                ValidarCuenta();
+                if (!ValidarCuenta())
+                {
+                    return RedirectToAction("Salir", "Login");
+                }
                 var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(Cuenta.id, id)).ToListAsync();
                 var data = items.FirstOrDefault();
 

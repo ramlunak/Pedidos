@@ -25,7 +25,10 @@ namespace Pedidos.Controllers
         // GET: Clientes
         public async Task<IActionResult> Index(string nombre, int pagina = 1)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var cantidadRegistrosPorPagina = 10; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
@@ -60,7 +63,10 @@ namespace Pedidos.Controllers
         // GET: Clientes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -79,7 +85,10 @@ namespace Pedidos.Controllers
         // GET: Clientes/Create
         public IActionResult Create()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View(new P_Cliente());
         }
 
@@ -90,7 +99,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Cliente p_Cliente)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (ModelState.IsValid)
             {
                 p_Cliente.idCuenta = Cuenta.id;
@@ -108,7 +120,10 @@ namespace Pedidos.Controllers
         // GET: Clientes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -129,7 +144,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,telefono,nombre,idCuenta,activo")] P_Cliente p_Cliente)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id != p_Cliente.id)
             {
                 return NotFound();
@@ -165,7 +183,10 @@ namespace Pedidos.Controllers
         // GET: Clientes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -186,7 +207,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var p_Cliente = await _context.P_Clientes.FindAsync(id);
             _context.P_Clientes.Remove(p_Cliente);
             await _context.SaveChangesAsync();

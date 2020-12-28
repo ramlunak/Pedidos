@@ -24,7 +24,10 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> Index(int? idCliente, string nombre, int pagina = 1)
         {
 
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var cantidadRegistrosPorPagina = 100; // parámetro
 
             var Skip = ((pagina - 1) * cantidadRegistrosPorPagina);
@@ -61,6 +64,10 @@ namespace Pedidos.Controllers
         // GET: Direcciones/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -79,7 +86,10 @@ namespace Pedidos.Controllers
         // GET: Direcciones/Create
         public IActionResult Create(int? idCliente)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
 
             //Cargar configuracion de la cuenta
             var newDireccion = new P_Direcciones();
@@ -97,7 +107,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Direcciones p_Direcciones)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (ModelState.IsValid)
             {
                 p_Direcciones.idCuenta = Cuenta.id;
@@ -111,7 +124,10 @@ namespace Pedidos.Controllers
         // GET: Direcciones/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -132,7 +148,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, P_Direcciones p_Direcciones, int? pagina)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id != p_Direcciones.id)
             {
                 return NotFound();
@@ -164,7 +183,10 @@ namespace Pedidos.Controllers
         // GET: Direcciones/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             if (id == null)
             {
                 return NotFound();
@@ -185,7 +207,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var p_Direcciones = await _context.P_Direcciones.FindAsync(id);
             _context.P_Direcciones.Remove(p_Direcciones);
             await _context.SaveChangesAsync();

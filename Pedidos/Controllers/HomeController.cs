@@ -26,7 +26,10 @@ namespace Pedidos.Controllers
 
         public IActionResult Index()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 
@@ -68,10 +71,9 @@ namespace Pedidos.Controllers
 
         }
 
-
-
         public DataTable GetData()
         {
+
             var dtsds = new DataTable();
             dtsds.Columns.Add("id");
             dtsds.Columns.Add("nome");
@@ -84,14 +86,20 @@ namespace Pedidos.Controllers
 
         public IActionResult Privacy()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            ValidarCuenta();
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

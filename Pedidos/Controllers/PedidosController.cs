@@ -209,7 +209,10 @@ namespace Pedidos.Controllers
                     currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
                     SetSession("currentPedido", currentPedido);
 
-                    var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).OrderByDescending(x => x.fecha).ToArrayAsync();
+                    var pedidos = await _context.P_Pedidos.Where(x =>
+                                     x.idCuenta == Cuenta.id &&
+                                    (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
+                    var pedidosPendientes = pedidos.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList();
 
                     return Ok(new { ok = true, reload = actualizarPagina, currentPedido, pedidosPendientes });
                 }
@@ -226,8 +229,11 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> CargarPedidosPendientes()
         {
-            var pedidosPendientes = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Pendiente.ToString()).ToArrayAsync();
-            return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ToList() });
+            var pedidosPendientes = await _context.P_Pedidos.Where(x =>
+                                     x.idCuenta == Cuenta.id &&
+                                    (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
+
+            return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
         }
 
         private bool P_PedidoExists(int id)
@@ -246,6 +252,22 @@ namespace Pedidos.Controllers
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
                 return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Preparado(int id)
+        {
+            try
+            {
+                var pedido = await _context.P_Pedidos.FindAsync(id);
+                pedido.status = StatusPedido.Preparado.ToString();
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+                return Ok(pedido);
             }
             catch (Exception ex)
             {

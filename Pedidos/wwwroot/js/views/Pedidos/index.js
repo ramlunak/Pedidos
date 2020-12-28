@@ -798,8 +798,14 @@ function TABLE_PedidosPendientes() {
         var CARD_FUTTER = $(' <div class="card-footer text-muted p-2 d-flex justify-content-between ">');
 
         var futter_botones = $('<div class="d-flex">');
-        futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer mr-2"  style="color:white">cancelar</a>');
+
+        if (pedido.status == "Pendiente") {
+            futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer mr-2"  style="color:white">cancelar</a>');
+            futter_botones.append('<a onclick="preparado(' + pedido.id + ')" class="btn btn-sm btn-info cursor-pointer mr-2" style="color:white">preparado</a>');
+        }
+
         futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
+
         CARD_FUTTER.append(futter_botones);
 
         CARD_FUTTER.append('<a href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
@@ -814,6 +820,143 @@ function TABLE_PedidosPendientes() {
         TR.append(TD1);
         TABLE.append(TR);
     });
+}
+
+function addPedidoToEnd(pedido) {
+
+    //Eliminar pedido de la lista
+    $('#CARD_PEDIDO_' + pedido.id + '').remove();
+
+    //Agregar al final de la tabla
+
+    var TABLE = $('#ListaPedidosPendientes');
+    var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2">');
+    var CARD_BODY = $('<div class="card-body  p-1">');
+
+    //INFO DEL PEDIDO 
+    var div_infopedido = '<div class="d-flex justify-content-between">  ' +
+        '               <div class="d-block" style="text-align:left">  ' +
+        '                   <div style="font-size:11px">' + pedido.cliente + '</div>  ' +
+        '                   <div style="font-size:11px">' + pedido.direccion + '</div>  ' +
+        '               </div>  ' +
+        '               <div class="d-block" style="text-align:right">  ' +
+        '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
+        '                   <div style="font-size:11px"><b>R$ ' + pedido.total.toFixed(2) + '</b></div>  ' +
+        '               </div>  ' +
+        '           </div>  ' +
+        '          <hr class="m-2" />  ';
+
+    CARD_BODY.append(div_infopedido);
+
+    //LISTA DE PRODUCTOS
+    var TABLA_PRD = $('<table cellspacing="0" class="table-tr-border-radius unselectable" style="font-size: 13px;">');
+
+    $.each(JSON.parse(pedido.jsonListProductos), function (index, producto) {
+
+        //PRODUCTO
+        var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
+            '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
+            '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '" ';
+        var tr_background_color = "background-color: powderblue";
+
+        if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
+            Desplegar = "";
+            tr_background_color = "";
+        }
+
+        // CONTADOR
+        var TR0_PRD = $('<tr>');
+
+        var sec = pedido.tiempo_pedido;
+        function pad(val) { return val > 9 ? val : "0" + val; }
+
+        setInterval(function () {
+            $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
+            $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
+        }, 1000);
+
+        var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
+        TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+        //FIN
+
+        var TR1_PRD = $('<tr style="' + tr_background_color + '">');
+        var TD1_PRD = $('<td style="width:100%">');
+        var TD2_PRD = $('<td>');
+
+
+        TD1_PRD.append('<div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
+        TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
+        TR1_PRD.append(TD1_PRD, TD2_PRD);
+
+        //ADICIONALES E INGREDIENTES DEL PRODUCTO
+        var TR2_PRD = $('<tr>');
+        var TD1_PRD = $('<td style="width:100%" colspan="2">');
+
+        var TABLA_ADIC = $('<table class="w-100 unselectable">');
+        $.each(producto.Adicionales, function (index, item) {
+
+            var TD1 = $('<td style="width:100%">');
+            var TD2 = $('<td>');
+            var TR = $('<tr>');
+
+            TD1.append('<div class="unselectable" style="text-align:start;"><a style="color:blue;">+' + item.cantidad + '</a> ' + item.nombre + '</div>');
+            TD2.append('<div class="unselectable" style="width:70px;text-align:end;font-size: 13px;">R$ ' + (item.Valor * item.cantidad).toFixed(2) + '</div>');
+
+            TR.append(TD1, TD2);
+            TABLA_ADIC.append(TR);
+        });
+
+        var TABLA_INGD = $('<table class="w-100 unselectable">');
+        $.each(producto.Ingredientes, function (index, item) {
+            console.log(item);
+            var TD1 = $('<td style="width:100%">');
+            var TD2 = $('<td>');
+            var TR = $('<tr>');
+
+            TD1.append('<div class="unselectable" style="text-align:start;"><a style="color:blue;">- </a> ' + item.nombre + '</div>');
+
+            TR.append(TD1);
+            TABLA_INGD.append(TR);
+        });
+
+        var panelBody = $('<div class="card card-body" style="padding: 8px;">');
+        panelBody.append(TABLA_ADIC);
+        panelBody.append($('<hr style="margin: 5px;">'));
+        panelBody.append(TABLA_INGD);
+
+        var panelInredientesAdicionales = $('<div class="collapse" id="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '">');
+        panelInredientesAdicionales.append(panelBody);
+
+        TD1_PRD.append(panelInredientesAdicionales);
+        TR2_PRD.append(TD1_PRD);
+
+        //ADD TRS A LA TABLA
+        TABLA_PRD.append(TR0_PRD, TR1_PRD, TR2_PRD);
+
+    });
+
+    //AGREGAR PRODUCTOS
+    CARD_BODY.append(TABLA_PRD);
+
+    //FUTTER
+    var CARD_FUTTER = $(' <div class="card-footer text-muted p-2 d-flex justify-content-between ">');
+
+    var futter_botones = $('<div class="d-flex">');
+    futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
+    CARD_FUTTER.append(futter_botones);
+
+    CARD_FUTTER.append('<a href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
+
+    CARD.append(CARD_BODY);
+    CARD.append(CARD_FUTTER);
+
+    var TD1 = $('<td style="width:100%">');
+    var TR = $('<tr>');
+    TD1.append(CARD);
+
+    TR.append(TD1);
+    TABLE.append(TR);
+
 }
 
 function cancelar(idPedido) {
@@ -854,8 +997,72 @@ function cancelar(idPedido) {
                         icon: 'success',
                         title: 'Ação realizada com sucesso'
                     })
-
                     $('#CARD_PEDIDO_' + idPedido + '').remove();
+                },
+                failure: function (response) {
+
+                    Swal.fire(
+                        'Error!',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                },
+                error: function (response) {
+
+                    Swal.fire(
+                        'Error',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                }
+            });
+
+        }
+    })
+
+}
+
+function preparado(idPedido) {
+
+    Swal.fire({
+        title: 'Marcar como preparado?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: 'Não'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            $.ajax({
+                type: "GET",
+                url: "/Pedidos/Preparado/" + idPedido,
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
+
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ação realizada com sucesso'
+                    })
+
+
+                    addPedidoToEnd(data);
 
                 },
                 failure: function (response) {
@@ -897,7 +1104,7 @@ function finalizado(idPedido) {
     formaPagamentoContainer += '</div>';
 
     Swal.fire({
-        title: 'Marcar como preparado',
+        title: 'Finalizar Pedido',
         icon: 'info',
         html: '   <div class="card card-body">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +

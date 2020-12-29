@@ -1088,27 +1088,38 @@ function preparado(idPedido) {
 
 }
 
+var valorInputFormaPagamento = 0;
+var totalPedido = 0;
+var firstInputChecked = null;
+
 function finalizado(idPedido) {
 
-    var formaPagamentoContainer = '<div style="display: block;text-align:start;">';
+    valorInputFormaPagamento = 0;
+    totalPedido = 0;
+    var firstInputChecked = null;
+
+    var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
     $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
         var formaPagamento = '                     <hr/>  <div class="d-flex justify-content-between"><div class="form-check">  ' +
-            '                           <input class="form-check-input" type="checkbox" name="exampleRadios" id="radioFormaPagamento' + formaPagamento.id + '" >  ' +
+            '                           <input class="form-check-input" type="checkbox" onchange="radioFormaPagamentoChange(this,' + idPedido + ')" name="radioFormaPagamento" id="radioFormaPagamento_' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
             '                                ' + formaPagamento.nombre + '  ' +
             '                           </label>  ' +
             '                           </div> ' +
-            '                           <div><input id="valorFormaPagamento_' + formaPagamento.id + '" class="form-control form-control-sm  float-right " /></div>  ' +
+            '                           <div><input name="valorFormaPagamento" id="valorFormaPagamento_' + formaPagamento.id + '" onchange="valorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " /></div>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
-        $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
     });
+
+    formaPagamentoContainer += '<hr/><div style="font-size: 13px;font-weight:700"><div class="d-flex mb-2 justify-content-between"><div><b>Total</b></div><div id="divTotalPagar"></div></div>';
+    formaPagamentoContainer += '<div class="d-flex mb-2 justify-content-between"><div><b>Pago</b></div><div id="divResultadoCalculoFormaPagamento"></div></div>';
+    formaPagamentoContainer += '<div class="d-flex mb-2 justify-content-between"><div><b>Diferença</b></div><div id="divDiferençaCalculoFormaPagamento"></div></div></div>';
 
     formaPagamentoContainer += '</div>';
 
     Swal.fire({
         title: 'Finalizar Pedido',
-        html: '   <div class="card card-body">  ' +
+        html: '   <div class="card card-body" style="font-size: 14px;">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +
             '                           <div class="d-flex mb-2">  ' +
             '                               <label class="mr-2">Desconto:</label>  ' +
@@ -1181,6 +1192,11 @@ function finalizado(idPedido) {
 
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
 
+    $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
+        $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
+        $('#valorFormaPagamento_' + formaPagamento.id + '').prop('disabled', true);
+    });
+
     var findResult = _PedidosPendientes.filter(function (item) {
         return (item.id === idPedido);
     });
@@ -1191,4 +1207,100 @@ function finalizado(idPedido) {
     if (pedido.idFormaPagamento !== null) {
         $('#radioFormaPagamento' + pedido.idFormaPagamento + '').prop('checked', true);
     }
+}
+
+function radioFormaPagamentoChange(input, idPedido) {
+    var idFormaPagamento = $(input).prop('id').split('_')[1];
+    var selected = $(input).prop('checked');
+    var numberOfChecked = $('input[name="radioFormaPagamento"]:checked').length;
+
+    if (firstInputChecked === null) {
+        firstInputChecked = input;
+    }
+
+    //TOTAL DEL PEDIDO
+    var findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === idPedido);
+    });
+    var pedido = findResult[0];
+
+    totalPedido = pedido.total;
+
+    var desconto = $('#inputDescontoFinalizado').val();
+    if (!isNaN(parseFloat(desconto))) {
+        totalPedido = totalPedido - desconto;
+    }
+
+
+    //HABILITAR DESCUENTO
+
+    if (numberOfChecked > 0) {
+        $('#inputDescontoFinalizado').prop('disabled', true);
+    } else {
+        $('#inputDescontoFinalizado').prop('disabled', false);
+        firstInputChecked = null;
+        valorInputFormaPagamento = 0;
+    }
+
+    if (numberOfChecked > 3) {
+        $(input).prop("checked", false);
+        return;
+    }
+
+    //HABILITAR CAMPOS DE TEXTO
+
+    if (selected) {
+        $('#valorFormaPagamento_' + idFormaPagamento + '').prop('disabled', false);
+
+        if (numberOfChecked === 1) {
+            $('#valorFormaPagamento_' + idFormaPagamento + '').val(totalPedido.toFixed(2));
+        }
+
+    } else {
+        $('#valorFormaPagamento_' + idFormaPagamento + '').prop('disabled', true);
+        $('#valorFormaPagamento_' + idFormaPagamento + '').val(null);
+    }
+
+    $('#divTotalPagar').html('R$ ' + totalPedido.toFixed(2));
+    calcularTotalPagado();
+}
+
+function valorFormaPagamentoInput(input, idPedido) {
+    var idFormaPagamento = $(input).prop('id').split('_')[1];
+    var numberOfChecked = $('input[name="radioFormaPagamento"]:checked').length;
+    var valor = $(input).val();
+
+    //PRIMER INPUT ABLITADO
+    if (numberOfChecked === 2) {
+        var firstInputCheckedID = "valorFormaPagamento_" + $(firstInputChecked).prop('id').split('_')[1];
+
+        if ($(input).prop('id') !== firstInputCheckedID) {
+
+            if (isNaN(valor)) {
+                valor = 0;
+            }
+            var diferencia = totalPedido - valor;
+            if (diferencia < 0) {
+                $(input).val(0);
+            } else {
+                $('#' + firstInputCheckedID + '').val(diferencia.toFixed(2));
+            }
+        }
+    }
+
+    calcularTotalPagado();
+
+}
+
+function calcularTotalPagado() {
+
+    valorInputFormaPagamento = 0;
+    $.each($('input[name="valorFormaPagamento"]'), function (index, input) {
+        if (!isNaN(parseFloat($(input).val()))) {
+            valorInputFormaPagamento += parseFloat($(input).val());
+        }
+    });
+
+    $('#divResultadoCalculoFormaPagamento').html('R$ ' + valorInputFormaPagamento.toFixed(2));
+    $('#divDiferençaCalculoFormaPagamento').html('R$ ' + (totalPedido - valorInputFormaPagamento).toFixed(2));
 }

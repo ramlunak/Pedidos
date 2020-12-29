@@ -20,5 +20,9 @@ namespace Pedidos.Models
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 
+        //Para Guardar Por Pedido
+        [NotMapped]
+        public decimal valor { get; set; }
+
     }
 }

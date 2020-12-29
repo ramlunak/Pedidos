@@ -15,7 +15,7 @@ namespace Pedidos.Models
         public P_Pedido(int idCuenta)
         {
             this.idCuenta = idCuenta;
-            this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);                       
+            this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);
             this.date_teste = DateTime.Now.ToSouthAmericaStandard().ToString();
         }
 
@@ -88,7 +88,7 @@ namespace Pedidos.Models
         public int? idFormaPagamento { get; set; }
         public decimal? descuento { get; set; }
         public bool pago { get; set; }
-
+        public List<P_FormaPagamento> formaPagamentos { get; set; }
     }
 
 }

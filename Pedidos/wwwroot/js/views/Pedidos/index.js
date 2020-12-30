@@ -649,6 +649,17 @@ function GuardarCurrentPedido() {
                 _CurrentPedido = result.currentPedido;
                 MostarCurrentPedido();
                 _PedidosPendientes = result.pedidosPendientes;
+                 _ModalProducto = {
+                    cliente: '',
+                    idCliente: null,
+                    aplicativo: '',
+                    idAplicativo: null,
+                    idMesa: null,
+                    direccion: '',
+                    telefono: '',
+                    observacion: ''
+                };
+
                 MostarPedidosPendientes();
                 if (result.reload) {
                     location.href = '/Pedidos/Index';
@@ -1369,6 +1380,16 @@ function editar(idPedido) {
         success: function (data) {
             _CurrentPedido = data.currentPedido;
             _CurrentPedido.isNew = false;
+
+            _ModalProducto.cliente = _CurrentPedido.cliente;
+            _ModalProducto.idCliente = _CurrentPedido.idCliente;
+            _ModalProducto.aplicativo = _CurrentPedido.aplicativo;
+            _ModalProducto.idAplicativo = _CurrentPedido.idAplicativo;
+            _ModalProducto.idMesa = _CurrentPedido.idMesa;
+            _ModalProducto.direccion = _CurrentPedido.direccion;
+            _ModalProducto.idDireccion = _CurrentPedido.idDireccion;
+            _ModalProducto.telefono = _CurrentPedido.telefono;
+
             MostarCurrentPedido();
         },
         failure: function (response) {
@@ -1390,6 +1411,16 @@ function CancelarCurrentPedido() {
         dataType: "json",
         success: function (data) {
             _CurrentPedido = data.currentPedido;
+             _ModalProducto = {
+                cliente: '',
+                idCliente: null,
+                aplicativo: '',
+                idAplicativo: null,
+                idMesa: null,
+                direccion: '',
+                telefono: '',
+                observacion: ''
+            };
             MostarCurrentPedido();
         },
         failure: function (response) {

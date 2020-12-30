@@ -734,7 +734,7 @@ function TABLE_PedidosPendientes() {
             //}, 1000);
 
             var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
-           // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+            // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
             //FIN
 
             var TR1_PRD = $('<tr style="' + tr_background_color + '">');
@@ -1112,7 +1112,10 @@ function finalizado(idPedido) {
             '                                ' + formaPagamento.nombre + '  ' +
             '                           </label>  ' +
             '                           </div> ' +
+            '                           <div class="d-flex justify-content-between"> ' +
             '                           <div><input name="valorFormaPagamento" id="valorFormaPagamento_' + formaPagamento.id + '" onchange="valorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " /></div>  ' +
+            '                           <div><input name="sumarvalorFormaPagamento" id="sumarvalorFormaPagamento_' + formaPagamento.id + '" onchange="sumarvalorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " style="width:70px" placeholder="+" /></div>  ' +
+            '                       </div>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
     });
@@ -1200,7 +1203,9 @@ function finalizado(idPedido) {
 
     $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
         $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
+        $('#sumarvalorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
         $('#valorFormaPagamento_' + formaPagamento.id + '').prop('disabled', true);
+        $('#sumarvalorFormaPagamento_' + formaPagamento.id + '').prop('disabled', true);
     });
 
     var findResult = _PedidosPendientes.filter(function (item) {
@@ -1257,6 +1262,7 @@ function radioFormaPagamentoChange(input, idPedido) {
 
     if (selected) {
         $('#valorFormaPagamento_' + idFormaPagamento + '').prop('disabled', false);
+        $('#sumarvalorFormaPagamento_' + idFormaPagamento + '').prop('disabled', false);
 
         if (numberOfChecked === 1) {
             $('#valorFormaPagamento_' + idFormaPagamento + '').val(totalPedido.toFixed(2));
@@ -1264,7 +1270,9 @@ function radioFormaPagamentoChange(input, idPedido) {
 
     } else {
         $('#valorFormaPagamento_' + idFormaPagamento + '').prop('disabled', true);
+        $('#sumarvalorFormaPagamento_' + idFormaPagamento + '').prop('disabled', true);
         $('#valorFormaPagamento_' + idFormaPagamento + '').val(null);
+        $('#sumarvalorFormaPagamento_' + idFormaPagamento + '').val(null);
     }
 
     $('#divTotalPagar').html('R$ ' + totalPedido.toFixed(2));
@@ -1293,6 +1301,46 @@ function valorFormaPagamentoInput(input, idPedido) {
             }
         }
     }
+
+    calcularTotalPagado();
+
+}
+
+
+function sumarvalorFormaPagamentoInput(input, idPedido) {
+    var idFormaPagamento = $(input).prop('id').split('_')[1];
+    var numberOfChecked = $('input[name="radioFormaPagamento"]:checked').length;
+    var valor = $(input).val();
+    var oldValue = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
+
+    if (valor !== null && valor !== undefined && valor !== "") {
+        if (oldValue === null || oldValue === undefined || oldValue === "") {
+            oldValue = 0;
+        }
+        $('#valorFormaPagamento_' + idFormaPagamento + '').val((parseFloat(valor) + parseFloat(oldValue)).toFixed(2));
+    }
+
+    //PRIMER INPUT ABLITADO
+    var newValue = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
+    if (numberOfChecked === 2) {
+        var firstInputCheckedID = "valorFormaPagamento_" + $(firstInputChecked).prop('id').split('_')[1];
+
+        if ($(input).prop('id') !== firstInputCheckedID) {
+
+            if (isNaN(newValue)) {
+                newValue = 0;
+            }
+            var diferencia = totalPedido - newValue;
+            if (diferencia < 0) {
+                $(input).val(0);
+            } else {
+                $('#' + firstInputCheckedID + '').val(diferencia.toFixed(2));
+            }
+        }
+    }
+
+    $(input).val(null);
+    console.log(valor, oldValue);
 
     calcularTotalPagado();
 
@@ -1341,7 +1389,7 @@ function CancelarCurrentPedido() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            _CurrentPedido = data.currentPedido;            
+            _CurrentPedido = data.currentPedido;
             MostarCurrentPedido();
         },
         failure: function (response) {

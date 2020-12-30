@@ -561,6 +561,8 @@ function UpdataDatosCliente() {
 function MostarCurrentPedido() {
 
     $('#spanCodigo').html(_CurrentPedido.codigo);
+    $('#spanNombre').html(_CurrentPedido.cliente);
+    $('#spanEndereco').html(_CurrentPedido.direccion);
 
     $('#idCliente').val(_CurrentPedido.idCliente);
     $('#inputNome').val(_CurrentPedido.cliente);
@@ -726,13 +728,13 @@ function TABLE_PedidosPendientes() {
             var sec = pedido.tiempo_pedido;
             function pad(val) { return val > 9 ? val : "0" + val; }
 
-            setInterval(function () {
-                $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
-                $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
-            }, 1000);
+            //setInterval(function () {
+            //    $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
+            //    $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
+            //}, 1000);
 
             var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
-            TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+           // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
             //FIN
 
             var TR1_PRD = $('<tr style="' + tr_background_color + '">');
@@ -801,10 +803,14 @@ function TABLE_PedidosPendientes() {
 
         if (pedido.status == "Pendiente") {
             futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer mr-2"  style="color:white">cancelar</a>');
-            futter_botones.append('<a onclick="preparado(' + pedido.id + ')" class="btn btn-sm btn-info cursor-pointer mr-2" style="color:white">preparado</a>');
+            futter_botones.append('<a onclick="preparado(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
         }
 
-        futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
+        futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">finalizado</a>');
+
+        if (pedido.status == "Pendiente") {
+            futter_botones.append('<a onclick="editar(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer ml-2" style="color:white"><i class="fas fa-edit"></i></a>');
+        }
 
         CARD_FUTTER.append(futter_botones);
 
@@ -1303,4 +1309,47 @@ function calcularTotalPagado() {
 
     $('#divResultadoCalculoFormaPagamento').html('R$ ' + valorInputFormaPagamento.toFixed(2));
     $('#divDiferençaCalculoFormaPagamento').html('R$ ' + (totalPedido - valorInputFormaPagamento).toFixed(2));
+}
+
+function editar(idPedido) {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetCurrentPedido/" + idPedido,
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            _CurrentPedido = data.currentPedido;
+            _CurrentPedido.isNew = false;
+            MostarCurrentPedido();
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+function CancelarCurrentPedido() {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CancelarCurrentPedido/",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            _CurrentPedido = data.currentPedido;            
+            MostarCurrentPedido();
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
 }

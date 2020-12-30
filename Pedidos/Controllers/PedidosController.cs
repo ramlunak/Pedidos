@@ -101,10 +101,24 @@ namespace Pedidos.Controllers
             return Ok(new { currentPedido });
         }
 
-        public async Task<IActionResult> GetCurrentPedido()
+        public async Task<IActionResult> GetCurrentPedido(int? id)
         {
-            var currentPedido = GetSession<P_Pedido>("currentPedido");
-            return Ok(new { currentPedido });
+            if (id.HasValue)
+            {
+                var currentPedido = await _context.P_Pedidos.FindAsync(id);
+                foreach (var item in JsonConvert.DeserializeObject<P_Productos[]>(currentPedido.jsonListProductos))
+                {
+                    currentPedido.productos.Add(item);
+                }
+                currentPedido.isNew = false;
+                SetSession("currentPedido", currentPedido);
+                return Ok(new { currentPedido });
+            }
+            else
+            {
+                var currentPedido = GetSession<P_Pedido>("currentPedido");
+                return Ok(new { currentPedido });
+            }
         }
 
         [HttpPost]
@@ -119,10 +133,10 @@ namespace Pedidos.Controllers
             {
                 try
                 {
+
                     currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
-
                     currentPedido.idCliente = pedidoaux.idCliente;
                     currentPedido.cliente = pedidoaux.cliente;
                     currentPedido.idAplicativo = pedidoaux.idAplicativo;
@@ -132,8 +146,6 @@ namespace Pedidos.Controllers
                     currentPedido.telefono = pedidoaux.telefono;
                     currentPedido.descuento = pedidoaux.descuento;
                     currentPedido.pago = pedidoaux.pago;
-
-                    currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
 
                     if (currentPedido.idFormaPagamento.HasValue)
                     {
@@ -210,20 +222,43 @@ namespace Pedidos.Controllers
                         currentPedido.idAplicativo = aplicativo.id;
                         actualizarPagina = true;
                     }
+                    currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
 
-                    _context.Add(currentPedido);
-                    await _context.SaveChangesAsync();
+                    if (currentPedido.isNew)
+                    {
+                        _context.Add(currentPedido);
+                        await _context.SaveChangesAsync();
 
-                    currentPedido = new P_Pedido(Cuenta.id);
-                    currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                    SetSession("currentPedido", currentPedido);
+                        currentPedido = new P_Pedido(Cuenta.id);
+                        currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                        SetSession("currentPedido", currentPedido);
 
-                    var pedidos = await _context.P_Pedidos.Where(x =>
-                                     x.idCuenta == Cuenta.id &&
-                                    (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
-                    var pedidosPendientes = pedidos.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList();
+                        var pedidos = await _context.P_Pedidos.Where(x =>
+                                         x.idCuenta == Cuenta.id &&
+                                        (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
+                        var pedidosPendientes = pedidos.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList();
 
-                    return Ok(new { ok = true, reload = actualizarPagina, currentPedido, pedidosPendientes });
+                        return Ok(new { ok = true, reload = actualizarPagina, currentPedido, pedidosPendientes });
+                    }
+                    else
+                    {
+                        currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
+
+                        _context.Update(currentPedido);
+                        await _context.SaveChangesAsync();
+
+                        currentPedido = new P_Pedido(Cuenta.id);
+                        currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                        SetSession("currentPedido", currentPedido);
+
+                        var pedidos = await _context.P_Pedidos.Where(x =>
+                                         x.idCuenta == Cuenta.id &&
+                                        (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
+                        var pedidosPendientes = pedidos.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList();
+
+                        return Ok(new { ok = true, reload = false, currentPedido, pedidosPendientes });
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -335,6 +370,14 @@ namespace Pedidos.Controllers
                 var direciones = await _context.P_Direcciones.Where(x => x.idCliente == id).ToArrayAsync();
                 return Ok(direciones);
             }
+        }
+
+        public async Task<IActionResult> CancelarCurrentPedido()
+        {
+            var currentPedido = new P_Pedido(Cuenta.id);
+            currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+            SetSession("currentPedido", currentPedido);
+            return Ok(new { ok = true, reload = false, currentPedido });
         }
     }
 }

@@ -40,9 +40,12 @@ namespace Pedidos.Models
         public decimal total { get; set; } = 0;
         public int idCuenta { get; set; }
         public bool activo { get; set; }
-        public bool pago { get; set; } = false;
+        public bool pago { get; set; } = false;      
 
         //AUXILIARES
+
+        [NotMapped]
+        public bool isNew { get; set; } = true;
 
         [NotMapped]
         public string date_teste { get; set; }

@@ -50,39 +50,8 @@
 
                 <div class="card-footer text-muted p-2" style="color: black;">
                     <div class="d-flex justify-content-between">
-                        <div style="font-size:12px">
-
-                            @*<div class="form-group">
-                                <select asp-for="idFormaPagamento" id="idFormaPagamento" class="form-control form-control-sm">
-                                    @if (ViewBag.FormaPagamento != null)
-                                    {
-                                        <option value="" selected style="color:gray">-Indefinido-</option>
-                                        @foreach (var formaPagamento in ViewBag.FormaPagamento)
-                                        {
-                                            <option value="@(formaPagamento.id)">@(formaPagamento.nombre)</option>
-                                        }
-
-                                    }
-                                </select>
-                            </div>*@
-
-                            @*<div class="form-group">
-                                <div class="input-group input-group-sm">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">R$</span>
-                                    </div>
-                                    <input id="inputDescuento"  name="inputDescuento" placeholder="Desconto" class="form-control form-control-sm col-5" />
-                                </div>
-                            </div>*@
-                        </div>
-
-                        <div>
-                            @*<div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="inputPago" name="inputPago">
-                                <label class="form-check-label">Pago</label>
-                            </div>*@
-                            <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
-                        </div>
+                        <div> <a class="btn btn-sm btn-danger cursor-pointer" onclick="CancelarCurrentPedido()" style="color:white">cancelar</a></div>
+                        <div> <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a></div>
                     </div>
                 </div>
 

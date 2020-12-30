@@ -146,13 +146,7 @@ namespace Pedidos.Controllers
                     currentPedido.telefono = pedidoaux.telefono;
                     currentPedido.descuento = pedidoaux.descuento;
                     currentPedido.pago = pedidoaux.pago;
-
-                    if (currentPedido.idFormaPagamento.HasValue)
-                    {
-                        var formaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                        currentPedido.formaPagamento = formaPagamento.FirstOrDefault(x => x.id == Convert.ToInt32(pedidoaux.idFormaPagamento)).nombre;
-                    }
-
+                                       
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
@@ -327,16 +321,26 @@ namespace Pedidos.Controllers
             }
         }
 
-        public async Task<IActionResult> Finalizar(int id)
+        [HttpPost]
+        public async Task<IActionResult> Finalizar([FromBody] PedidoDatosAux pedidoaux)
         {
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
             }
+
             try
-            {
-                var pedido = await _context.P_Pedidos.FindAsync(id);
+            {               
+                var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
                 pedido.status = StatusPedido.Finalizado.ToString();
+                pedido.descuento = pedidoaux.descuento;
+                pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
+                pedido.pago = pedidoaux.pago;
+                pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
+                if (pedido.descuento.HasValue)
+                {
+                    pedido.total = pedido.valorProductos - pedido.descuento.Value;
+                }
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
                 return Ok(true);

@@ -27,13 +27,10 @@ namespace Pedidos.Models
         public string direccion { get; set; }
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
-        public string aplicativo { get; set; }
-        public int? idFormaPagamento { get; set; }
-        public string formaPagamento { get; set; }
+        public string aplicativo { get; set; }        
         public DateTime fecha { get; set; }
         public string status { get; set; }
-        public string descripcion { get; set; }
-        public decimal? valor { get; set; }
+        public string descripcion { get; set; }        
         public decimal? descuento { get; set; }
         public string jsonListProductos { get; set; }
         public string telefono { get; set; }
@@ -41,6 +38,7 @@ namespace Pedidos.Models
         public int idCuenta { get; set; }
         public bool activo { get; set; }
         public bool pago { get; set; } = false;      
+        public string jsonFormaPagamento { get; set; }      
 
         //AUXILIARES
 
@@ -80,6 +78,7 @@ namespace Pedidos.Models
 
     public class PedidoDatosAux
     {
+        public int? idPedido { get; set; }
         public int? idCliente { get; set; }
         public string cliente { get; set; }
         public int? idAplicativo { get; set; }
@@ -91,7 +90,7 @@ namespace Pedidos.Models
         public int? idFormaPagamento { get; set; }
         public decimal? descuento { get; set; }
         public bool pago { get; set; }
-        public List<P_FormaPagamento> formaPagamentos { get; set; }
+        public string listaFormaPagamento { get; set; }
     }
 
 }

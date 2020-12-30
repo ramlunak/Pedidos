@@ -628,7 +628,6 @@ function GuardarCurrentPedido() {
         idDireccion: parseInt($('#idDireccion').val()),
         telefono: $('#inputTelefone').val(),
         descuento: parseFloat($('#inputDescuento').val()),
-        idFormaPagamento: parseInt($('#idFormaPagamento').val()),
         pago: $('#inputPago').is(':checked')
     }
 
@@ -649,7 +648,7 @@ function GuardarCurrentPedido() {
                 _CurrentPedido = result.currentPedido;
                 MostarCurrentPedido();
                 _PedidosPendientes = result.pedidosPendientes;
-                 _ModalProducto = {
+                _ModalProducto = {
                     cliente: '',
                     idCliente: null,
                     aplicativo: '',
@@ -1113,7 +1112,7 @@ function finalizado(idPedido) {
 
     valorInputFormaPagamento = 0;
     totalPedido = 0;
-    var firstInputChecked = null;
+    firstInputChecked = null;
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
     $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
@@ -1138,6 +1137,27 @@ function finalizado(idPedido) {
     formaPagamentoContainer += '</div>';
 
     Swal.fire({
+        title: 'Enter your name',     
+        customClass: {
+            validationMessage: 'my-validation-message'
+        },
+        preConfirm: (value) => {
+            if (!value) {
+                Swal.showValidationMessage(
+                    '<i class="fa fa-info-circle"></i> Your name is required'
+                )
+            }
+        }
+    }).then((result) => {
+        Swal.showValidationMessage(
+            '<i class="fa fa-info-circle"></i> Your name is required'
+        );
+        alert();
+    });
+
+    return;
+
+    Swal.fire({
         title: 'Finalizar Pedido',
         html: '   <div class="card card-body" style="font-size: 14px;">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +
@@ -1157,57 +1177,85 @@ function finalizado(idPedido) {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sim!',
-        cancelButtonText: 'Não'
-    }).then((result) => {
-        if (result.isConfirmed) {
+        cancelButtonText: 'Não',
+        preConfirm: (value) => {
 
-            $.ajax({
-                type: "GET",
-                url: "/Pedidos/Finalizar/" + idPedido,
-                traditional: true,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Ação realizada com sucesso'
-                    })
-
-                    $('#CARD_PEDIDO_' + idPedido + '').remove();
-
-                },
-                failure: function (response) {
-
-                    Swal.fire(
-                        'Error!',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                },
-                error: function (response) {
-
-                    Swal.fire(
-                        'Error',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                }
-            });
-
+            if (false) {
+                Swal.showValidationMessage(
+                    '<i class="fa fa-info-circle"></i> Your name is required'
+                )
+            }
         }
+    }).then((result) => {
+        alert();
+        //if (result.isConfirmed) {
+
+        //    var formasPagamento = [];
+        //    var formasPagSelected = $('input[name="radioFormaPagamento"]:checked');
+        //    $.each(formasPagSelected, function (index, item) {
+        //        var idFormaPagamento = $(item).prop('id').split('_')[1];
+        //        var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
+        //        formasPagamento.push({
+        //            id: idFormaPagamento,
+        //            valor: parseFloat(valor)
+        //        });
+        //    });
+
+        //    finalizarPedido = {
+        //        idPedido: idPedido,
+        //        descuento: parseFloat($('#inputDescontoFinalizado').val()),
+        //        pago: $("#inputPagoFinalizado").prop('checked'),
+        //        listaFormaPagamento: JSON.stringify(formasPagamento)
+        //    };
+
+        //    $.ajax({
+        //        type: "POST",
+        //        url: "/Pedidos/Finalizar",
+        //        traditional: true,
+        //        data: JSON.stringify(finalizarPedido),
+        //        contentType: "application/json; charset=utf-8",
+        //        dataType: "json",
+        //        success: function (result) {
+
+        //            const Toast = Swal.mixin({
+        //                toast: true,
+        //                position: 'top-end',
+        //                showConfirmButton: false,
+        //                timer: 3000,
+        //                timerProgressBar: true,
+        //                didOpen: (toast) => {
+        //                    toast.addEventListener('mouseenter', Swal.stopTimer)
+        //                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+        //                }
+        //            })
+
+        //            Toast.fire({
+        //                icon: 'success',
+        //                title: 'Ação realizada com sucesso'
+        //            })
+
+        //            $('#CARD_PEDIDO_' + idPedido + '').remove();
+
+        //        },
+        //        failure: function (response) {
+
+        //            Swal.fire(
+        //                'Error!',
+        //                'Erro de servidor.',
+        //                'error'
+        //            )
+        //        },
+        //        error: function (response) {
+
+        //            Swal.fire(
+        //                'Error',
+        //                'Erro de servidor.',
+        //                'error'
+        //            )
+        //        }
+        //    });
+
+        //}
     })
 
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
@@ -1226,9 +1274,6 @@ function finalizado(idPedido) {
 
     $("#inputDescontoFinalizado").val(pedido.descuento);
     $("#inputPagoFinalizado").prop('checked', pedido.pago);
-    if (pedido.idFormaPagamento !== null) {
-        $('#radioFormaPagamento' + pedido.idFormaPagamento + '').prop('checked', true);
-    }
 }
 
 function radioFormaPagamentoChange(input, idPedido) {
@@ -1314,9 +1359,7 @@ function valorFormaPagamentoInput(input, idPedido) {
     }
 
     calcularTotalPagado();
-
 }
-
 
 function sumarvalorFormaPagamentoInput(input, idPedido) {
     var idFormaPagamento = $(input).prop('id').split('_')[1];
@@ -1411,7 +1454,7 @@ function CancelarCurrentPedido() {
         dataType: "json",
         success: function (data) {
             _CurrentPedido = data.currentPedido;
-             _ModalProducto = {
+            _ModalProducto = {
                 cliente: '',
                 idCliente: null,
                 aplicativo: '',

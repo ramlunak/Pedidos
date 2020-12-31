@@ -1137,27 +1137,6 @@ function finalizado(idPedido) {
     formaPagamentoContainer += '</div>';
 
     Swal.fire({
-        title: 'Enter your name',     
-        customClass: {
-            validationMessage: 'my-validation-message'
-        },
-        preConfirm: (value) => {
-            if (!value) {
-                Swal.showValidationMessage(
-                    '<i class="fa fa-info-circle"></i> Your name is required'
-                )
-            }
-        }
-    }).then((result) => {
-        Swal.showValidationMessage(
-            '<i class="fa fa-info-circle"></i> Your name is required'
-        );
-        alert();
-    });
-
-    return;
-
-    Swal.fire({
         title: 'Finalizar Pedido',
         html: '   <div class="card card-body" style="font-size: 14px;">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +
@@ -1178,84 +1157,80 @@ function finalizado(idPedido) {
         cancelButtonColor: '#d33',
         confirmButtonText: 'Sim!',
         cancelButtonText: 'Não',
-        preConfirm: (value) => {
-
-            if (false) {
-                Swal.showValidationMessage(
-                    '<i class="fa fa-info-circle"></i> Your name is required'
-                )
-            }
-        }
+        onOpen: function () {
+            $('.swal2-confirm').prop('id', 'modalBtnOk');
+            $('.swal2-confirm').prop('disabled', true);
+        },
     }).then((result) => {
-        alert();
-        //if (result.isConfirmed) {
+        return;
+        if (result.isConfirmed) {
 
-        //    var formasPagamento = [];
-        //    var formasPagSelected = $('input[name="radioFormaPagamento"]:checked');
-        //    $.each(formasPagSelected, function (index, item) {
-        //        var idFormaPagamento = $(item).prop('id').split('_')[1];
-        //        var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
-        //        formasPagamento.push({
-        //            id: idFormaPagamento,
-        //            valor: parseFloat(valor)
-        //        });
-        //    });
+            var formasPagamento = [];
+            var formasPagSelected = $('input[name="radioFormaPagamento"]:checked');
+            $.each(formasPagSelected, function (index, item) {
+                var idFormaPagamento = $(item).prop('id').split('_')[1];
+                var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
+                formasPagamento.push({
+                    id: idFormaPagamento,
+                    valor: parseFloat(valor)
+                });
+            });
 
-        //    finalizarPedido = {
-        //        idPedido: idPedido,
-        //        descuento: parseFloat($('#inputDescontoFinalizado').val()),
-        //        pago: $("#inputPagoFinalizado").prop('checked'),
-        //        listaFormaPagamento: JSON.stringify(formasPagamento)
-        //    };
+            finalizarPedido = {
+                idPedido: idPedido,
+                descuento: parseFloat($('#inputDescontoFinalizado').val()),
+                pago: $("#inputPagoFinalizado").prop('checked'),
+                listaFormaPagamento: JSON.stringify(formasPagamento)
+            };
 
-        //    $.ajax({
-        //        type: "POST",
-        //        url: "/Pedidos/Finalizar",
-        //        traditional: true,
-        //        data: JSON.stringify(finalizarPedido),
-        //        contentType: "application/json; charset=utf-8",
-        //        dataType: "json",
-        //        success: function (result) {
+            $.ajax({
+                type: "POST",
+                url: "/Pedidos/Finalizar",
+                traditional: true,
+                data: JSON.stringify(finalizarPedido),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
 
-        //            const Toast = Swal.mixin({
-        //                toast: true,
-        //                position: 'top-end',
-        //                showConfirmButton: false,
-        //                timer: 3000,
-        //                timerProgressBar: true,
-        //                didOpen: (toast) => {
-        //                    toast.addEventListener('mouseenter', Swal.stopTimer)
-        //                    toast.addEventListener('mouseleave', Swal.resumeTimer)
-        //                }
-        //            })
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: 'top-end',
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener('mouseenter', Swal.stopTimer)
+                            toast.addEventListener('mouseleave', Swal.resumeTimer)
+                        }
+                    })
 
-        //            Toast.fire({
-        //                icon: 'success',
-        //                title: 'Ação realizada com sucesso'
-        //            })
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Ação realizada com sucesso'
+                    })
 
-        //            $('#CARD_PEDIDO_' + idPedido + '').remove();
+                    $('#CARD_PEDIDO_' + idPedido + '').remove();
 
-        //        },
-        //        failure: function (response) {
+                },
+                failure: function (response) {
 
-        //            Swal.fire(
-        //                'Error!',
-        //                'Erro de servidor.',
-        //                'error'
-        //            )
-        //        },
-        //        error: function (response) {
+                    Swal.fire(
+                        'Error!',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                },
+                error: function (response) {
 
-        //            Swal.fire(
-        //                'Error',
-        //                'Erro de servidor.',
-        //                'error'
-        //            )
-        //        }
-        //    });
+                    Swal.fire(
+                        'Error',
+                        'Erro de servidor.',
+                        'error'
+                    )
+                }
+            });
 
-        //}
+        }
     })
 
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
@@ -1411,6 +1386,12 @@ function calcularTotalPagado() {
 
     $('#divResultadoCalculoFormaPagamento').html('R$ ' + valorInputFormaPagamento.toFixed(2));
     $('#divDiferençaCalculoFormaPagamento').html('R$ ' + (totalPedido - valorInputFormaPagamento).toFixed(2));
+
+    if (parseFloat(totalPedido - valorInputFormaPagamento) === 0) {
+        $('#modalBtnOk').prop('disabled', false);
+    } else {
+        $('#modalBtnOk').prop('disabled', true);
+    }
 }
 
 function editar(idPedido) {

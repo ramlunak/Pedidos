@@ -137,7 +137,17 @@ function FiltrarProductos(productos) {
         var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.id + ')">');
 
         TD1.append('<div><b>' + item.nombre + '</b></div>');
-        TD1.append('<div style="font-size:13px;color:green;font-weight: 700;">R$ ' + item.valor.toFixed(2) + '</div>');
+        var divTamanhos = $('<div style="display: flex">');
+
+        if (item.valor !== 0)
+            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
+        if (item.valor === 0 && item.tamanho1 !== null)
+            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
+        if (item.valor === 0 && item.tamanho2 !== null)
+            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
+        if (item.valor === 0 && item.tamanho3 !== null)
+            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
+        TD1.append(divTamanhos);
 
         TD2.append('<div class="d-flex align-items-center unselectable" style="font-size:22px;color:green;font-weight: 600;cursor:pointer">+</div>');
 

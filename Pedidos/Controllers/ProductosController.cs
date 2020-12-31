@@ -155,6 +155,12 @@ namespace Pedidos.Controllers
                 //}
 
                 // p_Productos.valor = p_Productos.strValor.ToDecimal();
+
+                if (!p_Productos.tamanho1.IsNullOrEmtpy() || p_Productos.tamanho1.IsNullOrEmtpy() || p_Productos.tamanho1.IsNullOrEmtpy())
+                {
+                    p_Productos.valor = 0;
+                }
+
                 p_Productos.idCuenta = Cuenta.id;
                 p_Productos.ImageBase64 = GetSession("base64String");
                 if (!string.IsNullOrEmpty(p_Productos.ImageBase64))

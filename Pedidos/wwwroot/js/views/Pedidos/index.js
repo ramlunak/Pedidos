@@ -759,11 +759,9 @@ function TABLE_PedidosPendientes() {
             var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
                 '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
                 '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '" ';
-            var tr_background_color = "background-color: powderblue";
-
+          
             if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
-                Desplegar = "";
-                tr_background_color = "";
+                Desplegar = "";              
             }
 
             // CONTADOR
@@ -781,12 +779,12 @@ function TABLE_PedidosPendientes() {
             // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
             //FIN
 
-            var TR1_PRD = $('<tr style="' + tr_background_color + '">');
+            var TR1_PRD = $('<tr>');
             var TD1_PRD = $('<td style="width:100%">');
             var TD2_PRD = $('<td>');
 
 
-            TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div><div style="text-align: start;color: cadetblue;">' + producto.observacion + '</div></div>');
+            TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + ' <button type="button" class="btn btn-sm btn-outline-primary" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">' + producto.observacion + '</div></div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 

@@ -759,9 +759,12 @@ function TABLE_PedidosPendientes() {
             var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
                 '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
                 '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '" ';
-          
+
+            var btnInfo = ' <button type="button" class="btn btn-sm btn-outline-primary" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">';
+
             if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
-                Desplegar = "";              
+                Desplegar = "";
+                btnInfo = "";
             }
 
             // CONTADOR
@@ -784,7 +787,7 @@ function TABLE_PedidosPendientes() {
             var TD2_PRD = $('<td>');
 
 
-            TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + ' <button type="button" class="btn btn-sm btn-outline-primary" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">' + producto.observacion + '</div></div>');
+            TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + producto.observacion + '</div></div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 
@@ -918,13 +921,13 @@ function addPedidoToEnd(pedido) {
         var sec = pedido.tiempo_pedido;
         function pad(val) { return val > 9 ? val : "0" + val; }
 
-        setInterval(function () {
-            $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
-            $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
-        }, 1000);
+        //setInterval(function () {
+        //    $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
+        //    $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
+        //}, 1000);
 
         var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
-        TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+        // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
         //FIN
 
         var TR1_PRD = $('<tr style="' + tr_background_color + '">');

@@ -46,7 +46,7 @@ $(function () {
     });
 
     $('#inputAplicativo').on('input propertychange', function (e) {
-        $('#spanNombre').html($('#inputAplicativo').val());
+        $('#spanAplicativo').html($('#inputAplicativo').val());
 
         var opt = $('option[value="' + $(this).val() + '"]');
         var id = opt.length ? opt.attr('id') : '';
@@ -61,6 +61,16 @@ $(function () {
 
         _CurrentPedido.aplicativo = $('#inputAplicativo').val();
         _ModalProducto.aplicativo = $('#inputAplicativo').val();
+
+    });
+
+    $('#idMesa').on('input propertychange', function (e) {
+        if ($('#idMesa').val() !== null && $('#idMesa').val() !== undefined && $('#idMesa').val() !== "") {
+            $('#spanMesa').html('MESA ' + $('#idMesa').val());
+            $('#spanMesa').show();
+        } else {
+            $('#spanMesa').hide();
+        }
 
     });
 
@@ -84,9 +94,7 @@ $(function () {
     });
 
     $('#inputTelefone').on('input propertychange', function (e) {
-
         _ModalProducto.telefono = $('#inputTelefone').val();
-
     });
 
     $('#inputProducto').on('input propertychange', function (e) {
@@ -573,6 +581,13 @@ function MostarCurrentPedido() {
 
     $('#spanCodigo').html(_CurrentPedido.codigo);
     $('#spanNombre').html(_CurrentPedido.cliente);
+    $('#spanAplicativo').html(_CurrentPedido.aplicativo);
+    if (_CurrentPedido.idMesa !== null && _CurrentPedido.idMesa !== undefined && _CurrentPedido.idMesa) {
+        $('#spanMesa').html('MESA ' + $('#idMesa').val());
+        $('#spanMesa').show();
+    } else {
+        $('#spanMesa').hide();
+    }
     $('#spanEndereco').html(_CurrentPedido.direccion);
 
     $('#idCliente').val(_CurrentPedido.idCliente);
@@ -633,7 +648,7 @@ function GuardarCurrentPedido() {
         cliente: $('#inputNome').val(),
         idCliente: parseInt($('#idCliente').val()),
         idAplicativo: parseInt($('#idAplicativo').val()),
-        aplicativo: $('#InputAplicativo').val(),
+        aplicativo: $('#inputAplicativo').val(),
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
         idDireccion: parseInt($('#idDireccion').val()),
@@ -712,11 +727,19 @@ function TABLE_PedidosPendientes() {
         var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2">');
         var CARD_BODY = $('<div class="card-body  p-1">');
 
+        var mesa = '';
+        var aplicativo = '';
+        if (pedido.idMesa !== null && pedido.idMesa !== undefined && pedido.idMesa !== "" && pedido.idMesa > 0) {
+            mesa = '<div style="font-size:11px">MESA ' + pedido.idMesa + '</div>';
+        } if (pedido.aplicativo !== null && pedido.aplicativo !== undefined && pedido.aplicativo !== "") {
+            aplicativo = '<div style="font-size:11px">' + pedido.aplicativo + '</div>';
+        }
+
         //INFO DEL PEDIDO 
         var div_infopedido = '<div class="d-flex justify-content-between">  ' +
             '               <div class="d-block" style="text-align:left">  ' +
             '                   <div style="font-size:11px">' + pedido.cliente + '</div>  ' +
-            '                   <div style="font-size:11px">' + pedido.direccion + '</div>  ' +
+            '                   <div style="font-size:11px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
             '               </div>  ' +
             '               <div class="d-block" style="text-align:right">  ' +
             '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
@@ -763,7 +786,7 @@ function TABLE_PedidosPendientes() {
             var TD2_PRD = $('<td>');
 
 
-            TD1_PRD.append('<div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
+            TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div><div style="text-align: start;color: cadetblue;">' + producto.observacion + '</div></div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 

@@ -92,8 +92,7 @@ namespace Pedidos.Controllers
             currentPedido.aplicativo = producto.aplicativo;
             currentPedido.idAplicativo = producto.idAplicativo;
             currentPedido.idMesa = producto.idMesa;
-            currentPedido.idDireccion = producto.idDireccion;
-            currentPedido.direccion = producto.direccion;
+            currentPedido.idDireccion = producto.idDireccion;            
             currentPedido.telefono = producto.telefono;
 
             currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");

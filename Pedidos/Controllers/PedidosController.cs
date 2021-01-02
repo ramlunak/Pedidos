@@ -133,7 +133,6 @@ namespace Pedidos.Controllers
             {
                 try
                 {
-
                     currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
@@ -145,8 +144,7 @@ namespace Pedidos.Controllers
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
                     currentPedido.descuento = pedidoaux.descuento;
-                    currentPedido.pago = pedidoaux.pago;
-                                       
+                    currentPedido.pago = pedidoaux.pago;                                       
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))

@@ -1171,8 +1171,7 @@ function finalizado(idPedido) {
             $('.swal2-confirm').prop('id', 'modalBtnOk');
             $('.swal2-confirm').prop('disabled', true);
         },
-    }).then((result) => {
-        return;
+    }).then((result) => {        
         if (result.isConfirmed) {
 
             var formasPagamento = [];

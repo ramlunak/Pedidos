@@ -368,16 +368,6 @@ namespace Pedidos.Controllers
             }
         }
 
-        public async Task<IActionResult> Print(int id)
-        {
-            if (!ValidarCuenta())
-            {
-                return RedirectToAction("Salir", "Login");
-            }
-            var pedido = await _context.P_Pedidos.FindAsync(id);
-            return View(pedido);
-        }
-
         public async Task<IActionResult> GetDireccion(int id)
         {
             if (GetSession<List<P_Direcciones>>("Direcciones") != null)
@@ -413,6 +403,16 @@ namespace Pedidos.Controllers
             }
         }
 
+        public async Task<IActionResult> Print(int id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            var pedido = await _context.P_Pedidos.FindAsync(id);
+            pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();            
+            return View(pedido);
+        }
 
     }
 }

@@ -18,7 +18,6 @@ namespace Pedidos.Models
             this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);
             this.date_teste = DateTime.Now.ToSouthAmericaStandard().ToString();
         }
-
         public int id { get; set; }
         public string codigo { get; set; }
         public int? idCliente { get; set; }
@@ -27,18 +26,18 @@ namespace Pedidos.Models
         public string direccion { get; set; }
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
-        public string aplicativo { get; set; }        
+        public string aplicativo { get; set; }
         public DateTime fecha { get; set; }
         public string status { get; set; }
-        public string descripcion { get; set; }        
+        public string descripcion { get; set; }
         public decimal? descuento { get; set; }
         public string jsonListProductos { get; set; }
         public string telefono { get; set; }
         public decimal total { get; set; } = 0;
         public int idCuenta { get; set; }
         public bool activo { get; set; }
-        public bool pago { get; set; } = false;      
-        public string jsonFormaPagamento { get; set; }      
+        public bool pago { get; set; } = false;
+        public string jsonFormaPagamento { get; set; }
 
         //AUXILIARES
 

@@ -19,6 +19,7 @@ $(function () {
 
     $("#inputDescuento").mask("###0.00", { reverse: true });
 
+    GetNumeroPedidosFinalizados();
     CargarCurrentPedido();
     CargarPedidosPendientes();
     CargarProductos();
@@ -1171,7 +1172,7 @@ function finalizado(idPedido) {
             $('.swal2-confirm').prop('id', 'modalBtnOk');
             $('.swal2-confirm').prop('disabled', true);
         },
-    }).then((result) => {        
+    }).then((result) => {
         if (result.isConfirmed) {
 
             var formasPagamento = [];
@@ -1219,7 +1220,7 @@ function finalizado(idPedido) {
                     })
 
                     $('#CARD_PEDIDO_' + idPedido + '').remove();
-
+                    GetNumeroPedidosFinalizados();
                 },
                 failure: function (response) {
 
@@ -1455,6 +1456,26 @@ function CancelarCurrentPedido() {
                 observacion: ''
             };
             MostarCurrentPedido();
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+function GetNumeroPedidosFinalizados() {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetNumeroPedidosFinalizados/",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#spanCountPedidosFinalizados').html(data);
         },
         failure: function (response) {
             console.log('failure', response);

@@ -30,6 +30,12 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
+            if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
+            {
+                var countPedidosFinalizados = GetSession<List<P_Pedido>>("PedidosFinalizados").Count;
+                ViewBag.CountPedidosFinalizados = countPedidosFinalizados;
+            }
+
             var clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             ViewBag.Clientes = clientes;
 
@@ -144,7 +150,7 @@ namespace Pedidos.Controllers
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
                     currentPedido.descuento = pedidoaux.descuento;
-                    currentPedido.pago = pedidoaux.pago;                                       
+                    currentPedido.pago = pedidoaux.pago;
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
@@ -328,7 +334,7 @@ namespace Pedidos.Controllers
             }
 
             try
-            {               
+            {
                 var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
                 pedido.status = StatusPedido.Finalizado.ToString();
                 pedido.descuento = pedidoaux.descuento;
@@ -341,6 +347,20 @@ namespace Pedidos.Controllers
                 }
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
+
+                if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
+                {
+                    var lista = GetSession<List<P_Pedido>>("PedidosFinalizados");
+                    lista.Add(pedido);
+                    SetSession("PedidosFinalizados", lista);
+                }
+                else
+                {
+                    var lista = new List<P_Pedido>();
+                    lista.Add(pedido);
+                    SetSession("PedidosFinalizados", lista);
+                }
+
                 return Ok(true);
             }
             catch (Exception ex)
@@ -381,5 +401,19 @@ namespace Pedidos.Controllers
             SetSession("currentPedido", currentPedido);
             return Ok(new { ok = true, reload = false, currentPedido });
         }
+
+        public async Task<IActionResult> GetNumeroPedidosFinalizados()
+        {
+            if (GetSession<List<P_Direcciones>>("PedidosFinalizados") != null)
+            {
+                return Ok(GetSession<List<P_Direcciones>>("PedidosFinalizados").Count);
+            }
+            else
+            {
+                return Ok(0);
+            }
+        }
+
+
     }
 }

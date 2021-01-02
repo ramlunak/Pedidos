@@ -73,7 +73,7 @@
                                 }
                             }
                         </datalist>
-                        <input id="idCliente" asp-for="idCliente" hidden class="form-control"  />
+                        <input id="idCliente" asp-for="idCliente" hidden class="form-control" />
                     </div>
 
                     <input id="inputTelefone" class="form-control form-control-sm col-12 col-md-4" placeholder="Telefone" />
@@ -206,16 +206,22 @@
                     </div>
                 </div>
 
-
             </div>
         </div>
 
         @*LISTA PEDIDOS*@
         <div class="col-12 col-sm-6">
             <div class="card text-center">
-                <div class="card-header p-1" style="background-color: #0380D2; color: white;">
-                    @*<img src="~/img/red-loading-circle.gif" width="30"/>*@
-                    LISTA DE PEDIDOS ATIVOS
+                <div class="card-header bg-primary p-1" style="color: white;">
+                    <div class="d-flex justify-content-between">
+                        <div>PEDIDOS</div>
+                        <div>
+                            <button type="button" class="btn btn-outline-light">
+                                <i class="fas fa-check-double"></i> <span id="spanCountPedidosFinalizados" class="badge badge-primary">0</span>
+                            </button>
+                        </div>
+                    </div>
+
                 </div>
                 <div class="card-body p-1">
 

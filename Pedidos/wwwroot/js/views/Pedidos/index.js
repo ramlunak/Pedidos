@@ -1190,6 +1190,7 @@ function finalizado(idPedido) {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
+        width: '600px',
         confirmButtonText: 'Sim!',
         cancelButtonText: 'Não',
         onOpen: function () {

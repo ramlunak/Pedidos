@@ -43,8 +43,8 @@ namespace Pedidos.Controllers
             ViewBag.Aplicativos = aplicativos;
 
             var formaPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-            ViewBag.FormaPagamento = formaPagamento;
-            SetSession("FormaPagamento", formaPagamento);
+            ViewBag.FormaPagamento = formaPagamento.OrderBy(x=>x.nombre);
+            SetSession("FormaPagamento", formaPagamento.OrderBy(x => x.nombre));
 
             var direcciones = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             SetSession("Direcciones", direcciones);
@@ -125,7 +125,7 @@ namespace Pedidos.Controllers
                 return Ok(new { currentPedido });
             }
         }
-
+        
         [HttpPost]
         public async Task<IActionResult> GuardarCurrentPedido([FromBody] PedidoDatosAux pedidoaux)
         {

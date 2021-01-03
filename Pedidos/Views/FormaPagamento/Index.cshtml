@@ -34,8 +34,11 @@
 
                         <td style="width:100%">
                             @Html.DisplayFor(modelItem => item.nombre)
+                            @if (item.tasa.HasValue)
+                            {
+                                <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
+                            }
                         </td>
-
 
                         <td style="width:auto">
                             <div style="width:100px">

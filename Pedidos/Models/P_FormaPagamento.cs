@@ -25,6 +25,8 @@ namespace Pedidos.Models
         //Para Guardar Por Pedido
         [NotMapped]
         public decimal valor { get; set; }
+        [NotMapped]
+        public decimal? valorTasa { get; set; }
 
     }
 }

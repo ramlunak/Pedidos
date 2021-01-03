@@ -43,7 +43,7 @@ namespace Pedidos.Controllers
             ViewBag.Aplicativos = aplicativos;
 
             var formaPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-            ViewBag.FormaPagamento = formaPagamento.OrderBy(x=>x.nombre);
+            ViewBag.FormaPagamento = formaPagamento.OrderBy(x => x.nombre);
             SetSession("FormaPagamento", formaPagamento.OrderBy(x => x.nombre));
 
             var direcciones = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
@@ -92,7 +92,7 @@ namespace Pedidos.Controllers
             currentPedido.aplicativo = producto.aplicativo;
             currentPedido.idAplicativo = producto.idAplicativo;
             currentPedido.idMesa = producto.idMesa;
-            currentPedido.idDireccion = producto.idDireccion;            
+            currentPedido.idDireccion = producto.idDireccion;
             currentPedido.telefono = producto.telefono;
 
             currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
@@ -125,7 +125,7 @@ namespace Pedidos.Controllers
                 return Ok(new { currentPedido });
             }
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> GuardarCurrentPedido([FromBody] PedidoDatosAux pedidoaux)
         {
@@ -333,7 +333,7 @@ namespace Pedidos.Controllers
             }
 
             try
-            {
+            {               
                 var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
                 pedido.status = StatusPedido.Finalizado.ToString();
                 pedido.descuento = pedidoaux.descuento;
@@ -410,7 +410,7 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
             var pedido = await _context.P_Pedidos.FindAsync(id);
-            pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();            
+            pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
             return View(pedido);
         }
 

@@ -1,5 +1,10 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Pedidos.Data;
+using Pedidos.Extensions;
+using Pedidos.Models;
+using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,11 +12,25 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Controllers
 {
-    public class CajaController : Controller
+    public class CajaController : BaseController
     {
-        // GET: CajaController
-        public ActionResult Index()
+        private readonly AppDbContext _context;
+
+        public CajaController(AppDbContext context)
         {
+            _context = context;
+        }
+
+        // GET: CajaController
+        public async Task<ActionResult> Index()
+        {
+            var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString()).ToListAsync();
+            foreach (var pedido in pedidos)
+            {
+                pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
+                pedido.listaFormaPagamento = pedido.jsonListProductos.ConvertTo<List<P_FormaPagamento>>();
+            }
+
             return View();
         }
 

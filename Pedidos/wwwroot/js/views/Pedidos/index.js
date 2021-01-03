@@ -1160,6 +1160,7 @@ function finalizado(idPedido) {
             '                           <div class="d-flex justify-content-between"> ' +
             '                           <div><input name="valorFormaPagamento" id="valorFormaPagamento_' + formaPagamento.id + '" onchange="valorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " /></div>  ' +
             '                           <div><input name="sumarvalorFormaPagamento" id="sumarvalorFormaPagamento_' + formaPagamento.id + '" onchange="sumarvalorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " style="width:70px" placeholder="+" /></div>  ' +
+            '                           <div><input id="tasaFormaPagamento_' + formaPagamento.id + '" class="form-control form-control-sm  float-right " style="width:70px" value="' + formaPagamento.tasa + '" /></div>  ' +
             '                       </div>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
@@ -1205,9 +1206,19 @@ function finalizado(idPedido) {
             $.each(formasPagSelected, function (index, item) {
                 var idFormaPagamento = $(item).prop('id').split('_')[1];
                 var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
+                var tasa = $('#tasaFormaPagamento_' + idFormaPagamento + '').val();
+                var valorTasa = null;
+                if (tasa !== null && tasa !== undefined && tasa !== "null") {
+                    valorTasa = (tasa / 100) * valor;
+                } else {
+                    tasa = null;
+                }
+
                 formasPagamento.push({
                     id: idFormaPagamento,
-                    valor: parseFloat(valor)
+                    valor: parseFloat(valor),
+                    tasa: tasa,
+                    valorTasa: valorTasa
                 });
             });
 

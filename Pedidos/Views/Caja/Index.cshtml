@@ -4,19 +4,60 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="container text-center col-12 col-md-6">
-    <table class="table">
-        <tr>
-            <td><strong>Total</strong></td>
-            <td><strong>R$ 275.00</strong></td>
-        </tr>
-        <tr>
-            <td>Cartão</td>
-            <td>R$ 25.00</td>
-        </tr>
-        <tr>
-            <td>Dinheiro</td>
-            <td>R$ 100.00</td>
-        </tr>
-    </table>
+<div class="container text-center d-block col-12 col-md-6 col-lg-4" style="font-size: 13px;font-family: cursive;">
+
+    <div class="m-3 text-center" style="color: darkgray">CAIXA</div>
+
+    @*PERIODO*@
+
+    <hr />
+
+    <div class="d-flex justify-content-between">
+        <div>Data Inicio</div>
+        <div>01/01/2021</div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div>Data Fin</div>
+        <div>03/01/2021</div>
+    </div>
+
+    <hr />
+
+    @*TOTAL*@
+
+    <div class="d-flex justify-content-between">
+        <div>Total de Vendas</div>
+        <div>R$ 275.00</div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div>Total de Taxas</div>
+        <div style="color:orangered">R$ 25.00</div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div>Diferença</div>
+        <div style="color:green">R$ 10.00</div>
+    </div>
+
+    <hr />
+
+    @*DETALLES*@
+
+    <div class="d-flex justify-content-between">
+        <div>Total de Vendas</div>
+        <div>R$ 275.00</div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div>Total de Taxas</div>
+        <div>R$ 25.00</div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+        <div>Diferença</div>
+        <div>R$ 10.00</div>
+    </div>
+
 </div>

@@ -20,6 +20,8 @@ namespace Pedidos.Models
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 
+        public bool app { get; set; } = false;
+
         public decimal? tasa { get; set; }
 
         //Para Guardar Por Pedido

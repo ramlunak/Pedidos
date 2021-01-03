@@ -26,8 +26,8 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
-            var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
-            var model = formasPagamento.OrderBy(x=>x.nombre); 
+            var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+            var model = formasPagamento.OrderBy(x => x.nombre);
             return View(model);
         }
 
@@ -111,7 +111,7 @@ namespace Pedidos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id,P_FormaPagamento p_FormaPagamento)
+        public async Task<IActionResult> Edit(int id, P_FormaPagamento p_FormaPagamento)
         {
             if (!ValidarCuenta())
             {
@@ -186,5 +186,72 @@ namespace Pedidos.Controllers
         {
             return _context.P_FormaPagamento.Any(e => e.id == id);
         }
+
+
+
+        public async Task<IActionResult> ChangeStatus(int? id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var p_FormaPagamento = await _context.P_FormaPagamento.FirstOrDefaultAsync(m => m.id == id);
+            if (p_FormaPagamento == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                p_FormaPagamento.activo = !p_FormaPagamento.activo;
+                _context.Update(p_FormaPagamento);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
+
+
+        public async Task<IActionResult> HideApp(int? id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var p_FormaPagamento = await _context.P_FormaPagamento.FirstOrDefaultAsync(m => m.id == id);
+            if (p_FormaPagamento == null)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                p_FormaPagamento.app = !p_FormaPagamento.app;
+                _context.Update(p_FormaPagamento);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
+
+
     }
 }

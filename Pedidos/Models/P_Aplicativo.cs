@@ -18,5 +18,6 @@ namespace Pedidos.Models
 
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
+
     }
 }

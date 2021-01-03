@@ -24,6 +24,8 @@
                     <th>
                         @Html.DisplayNameFor(model => model.nombre)
                     </th>
+                    <th>Mostrar em aplicativos</th>
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -31,15 +33,23 @@
                 @foreach (var item in Model)
                 {
                     <tr>
+                        <td style="width:auto">
+                            <div class="text-nowrap">
 
-                        <td style="width:100%">
-                            @Html.DisplayFor(modelItem => item.nombre)
-                            @if (item.tasa.HasValue)
-                            {
-                                <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
-                            }
+                                @Html.DisplayFor(modelItem => item.nombre)
+                                @if (item.tasa.HasValue)
+                                {
+                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
+                                }
+
+                            </div>
                         </td>
-
+                        <td style="width:100%">
+                            <input name="switchbuttonHideApp" type="checkbox" asp-for="@item.app" id="@item.id" data-onlabel="Mostrar" data-offlabel="Ocultar" data-toggle="switchbutton" data-offstyle="danger" data-width="100" data-size="xs">
+                        </td>
+                        <td>
+                            <input name="switchbuttonActivo" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
+                        </td>
                         <td style="width:auto">
                             <div style="width:100px">
                                 <a asp-action="Edit" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a> |
@@ -54,3 +64,6 @@
 
     </div>
 </div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/views/formaPagamento/index.js"></script>

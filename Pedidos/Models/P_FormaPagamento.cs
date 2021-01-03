@@ -26,7 +26,7 @@ namespace Pedidos.Models
         [NotMapped]
         public decimal valor { get; set; }
         [NotMapped]
-        public decimal? valorTasa { get; set; }
+        public decimal valorTasa { get; set; }
 
     }
 }

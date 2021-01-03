@@ -25,13 +25,30 @@ namespace Pedidos.Controllers
         public async Task<ActionResult> Index()
         {
             var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString()).ToListAsync();
+            var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             foreach (var pedido in pedidos)
             {
-                pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
-                pedido.listaFormaPagamento = pedido.jsonListProductos.ConvertTo<List<P_FormaPagamento>>();
+                pedido.listaFormaPagamento = pedido.jsonFormaPagamento.ConvertTo<List<P_FormaPagamento>>().OrderBy(x => x.nombre).ToList();
+                foreach (var item in pedido.listaFormaPagamento)
+                {
+                    formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valor += item.valor);
+                    if (item.tasa.HasValue)
+                    {
+                        formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valorTasa += item.valorTasa);
+                    }
+                }
             }
 
-            return View();
+            var caja = new P_Caja();
+            caja.idCuenta = Cuenta.id;
+            caja.fecha = DateTime.Now;
+            caja.dataInicio = DateTime.Now;
+            caja.dataFin = DateTime.Now;
+            caja.totalVentas = pedidos.Sum(x => x.total);
+            caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
+            caja.formaPagamentos = formasPagamento;
+            
+            return View(caja);
         }
 
         // GET: CajaController/Details/5

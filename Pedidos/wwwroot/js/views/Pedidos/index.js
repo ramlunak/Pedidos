@@ -1207,7 +1207,7 @@ function finalizado(idPedido) {
                 var idFormaPagamento = $(item).prop('id').split('_')[1];
                 var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
                 var tasa = $('#tasaFormaPagamento_' + idFormaPagamento + '').val();
-                var valorTasa = null;
+                var valorTasa = 0;
                 if (tasa !== null && tasa !== undefined && tasa !== "null") {
                     valorTasa = (tasa / 100) * valor;
                 } else {

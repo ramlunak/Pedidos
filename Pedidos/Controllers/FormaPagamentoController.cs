@@ -26,7 +26,9 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
-            return View(await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync());
+            var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            var model = formasPagamento.OrderBy(x=>x.nombre); 
+            return View(model);
         }
 
         // GET: FormaPagamento/Details/5
@@ -66,7 +68,7 @@ namespace Pedidos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_FormaPagamento p_FormaPagamento)
+        public async Task<IActionResult> Create(P_FormaPagamento p_FormaPagamento)
         {
             if (!ValidarCuenta())
             {
@@ -109,7 +111,7 @@ namespace Pedidos.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,nombre,idCuenta,activo")] P_FormaPagamento p_FormaPagamento)
+        public async Task<IActionResult> Edit(int id,P_FormaPagamento p_FormaPagamento)
         {
             if (!ValidarCuenta())
             {

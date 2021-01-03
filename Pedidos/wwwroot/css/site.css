@@ -170,3 +170,11 @@ input[type=checkbox] {
     min-width: 60px;
     object-fit: cover;
 }
+
+.text-nowrap {
+    white-space: nowrap;
+}
+
+.swal-wide-850 {
+    width: 850px !important;
+}

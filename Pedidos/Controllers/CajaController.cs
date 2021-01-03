@@ -46,7 +46,7 @@ namespace Pedidos.Controllers
             caja.dataFin = DateTime.Now;
             caja.totalVentas = pedidos.Sum(x => x.total);
             caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
-            caja.formaPagamentos = formasPagamento;
+            caja.formaPagamentos = formasPagamento.OrderBy(x=>x.nombre).ToList();
             
             return View(caja);
         }

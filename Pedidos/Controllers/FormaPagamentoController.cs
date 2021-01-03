@@ -26,7 +26,7 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
-            var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+            var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && !x.idAplicativo.HasValue).ToListAsync();
             var model = formasPagamento.OrderBy(x => x.nombre);
             return View(model);
         }
@@ -177,7 +177,8 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
             var p_FormaPagamento = await _context.P_FormaPagamento.FindAsync(id);
-            _context.P_FormaPagamento.Remove(p_FormaPagamento);
+            p_FormaPagamento.activo = false;
+            _context.P_FormaPagamento.Update(p_FormaPagamento);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

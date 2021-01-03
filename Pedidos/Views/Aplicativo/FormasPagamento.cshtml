@@ -1,0 +1,102 @@
+﻿@model IEnumerable<Pedidos.Models.P_FormaPagamento>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<!-- Modal -->
+<div class="modal fade" id="modalNuevoFPagamento" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="form-group small">
+                        <input id="inputNome" class="form-control form-control-sm" placeholder="Nome" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="input-group input-group-sm mb-3">
+                            <input id="inputTasa" class="form-control form-control-sm" placeholder="Taxa" />
+                            <div class="input-group-append">
+                                <span class="input-group-text">%</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-primary" onclick="addFormaPagamento(@ViewBag.IdAplicativo)">Salvar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>FORMA PAGAMENTO @ViewBag.Aplicativo</b>
+            </div>
+            <div>
+                <button type="button" class="btn btn-sm btn-outline-primary" data-toggle="modal" data-target="#modalNuevoFPagamento">Novo</button>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <table class="table" cellspacing="10">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.nombre)
+                    </th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="width:100%">
+                            <div class="text-nowrap">
+
+                                @Html.DisplayFor(modelItem => item.nombre)
+                                @if (item.tasa.HasValue)
+                                {
+                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
+                                }
+                            </div>
+                        </td>
+                        <td>
+                            <input name="switchbuttonActivo" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
+                        </td>
+                        <td style="width:auto">
+                            <div style="width:100px">
+                                @*<a asp-action="Edit" asp-controller="FormaPagamento" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a>*@
+                                @*<a onclick="deleteFormaPagamento(@item.id)"><i style="color:orangered" class="fa fa-trash"></i></a>*@
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+    <script src="~/lib/jquery/jquery.mask.js"></script>
+    <script src="~/js/views/aplicativos/formaPagamento.js"></script>
+}

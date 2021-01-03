@@ -22,7 +22,7 @@
                     <th class="col-8">
                         @Html.DisplayNameFor(model => model.Aplicativos.First().nombre)
                     </th>
-
+                    <th></th>
                     <th></th>
                 </tr>
             </thead>
@@ -32,6 +32,9 @@
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.nombre)
+                        </td>
+                        <td>
+                            <a asp-action="FormasPagamento" asp-route-id="@item.id" asp-route-aplicativo="@item.nombre" class="text-nowrap" data-toggle="tooltip" data-placement="top" title="F.Pagamento Individual">F. Pagamento</a>
                         </td>
                         <td style="width:auto">
                             <div style="width:100px">

@@ -58,6 +58,18 @@ namespace Pedidos.Controllers
             return View(modelo);
         }
 
+        public async Task<IActionResult> FormasPagamento(int id, string aplicativo)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            ViewBag.IdAplicativo = id;
+            ViewBag.Aplicativo = aplicativo is null ? string.Empty : aplicativo.ToUpper();
+            var model = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id && x.idAplicativo == id).OrderBy(x => x.nombre).ToListAsync();
+            return View(model);
+        }
+
         public IActionResult Create()
         {
             if (!ValidarCuenta())
@@ -223,5 +235,42 @@ namespace Pedidos.Controllers
             ValidarCuenta();
             return _context.P_Aplicativos.Any(e => e.id == id);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> AddFormaPagamento([FromBody] P_FormaPagamento p_FormaPagamento)
+        {
+            if (!ValidarCuenta())
+            {
+                return NotFound();
+            }
+            if (ModelState.IsValid)
+            {
+                p_FormaPagamento.idCuenta = Cuenta.id;
+                p_FormaPagamento.activo = true;
+                p_FormaPagamento.app = true;
+
+                _context.Add(p_FormaPagamento);
+                await _context.SaveChangesAsync();
+                return Ok(p_FormaPagamento);
+            }
+            return NotFound();
+        }
+
+        public async Task<IActionResult> DeleteFormaPagamento(int id)
+        {
+            try
+            {
+                var p_FormaPagamento = await _context.P_FormaPagamento.FindAsync(id);
+                p_FormaPagamento.activo = false;
+                _context.P_FormaPagamento.Update(p_FormaPagamento);
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
     }
 }

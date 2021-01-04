@@ -225,7 +225,7 @@ namespace Pedidos.Controllers
                     if (currentPedido.idAplicativo.HasValue)
                     {
                         var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                        formasPagamento.AddRange(fp.Where(x => x.idAplicativo.HasValue));
+                        formasPagamento.AddRange(fp.Where(x => x.idAplicativo.HasValue && x.idAplicativo.Value == currentPedido.idAplicativo));
                         formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue && x.app));
                     }
                     else
@@ -242,7 +242,7 @@ namespace Pedidos.Controllers
                         _context.Add(currentPedido);
                         await _context.SaveChangesAsync();
 
-                        currentPedido = new P_Pedido(Cuenta.id);                       
+                        currentPedido = new P_Pedido(Cuenta.id);
                         SetSession("currentPedido", currentPedido);
 
                         var pedidos = await _context.P_Pedidos.Where(x =>
@@ -259,9 +259,9 @@ namespace Pedidos.Controllers
                         _context.Update(currentPedido);
                         await _context.SaveChangesAsync();
 
-                        currentPedido = new P_Pedido(Cuenta.id);                       
+                        currentPedido = new P_Pedido(Cuenta.id);
                         SetSession("currentPedido", currentPedido);
-                       
+
                         var pedidos = await _context.P_Pedidos.Where(x =>
                                          x.idCuenta == Cuenta.id &&
                                         (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();

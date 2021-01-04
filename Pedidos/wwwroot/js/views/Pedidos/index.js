@@ -1286,7 +1286,7 @@ function finalizado(idPedido) {
 
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
 
-    $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
+    $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
         $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
         $('#sumarvalorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
         $('#valorFormaPagamento_' + formaPagamento.id + '').prop('disabled', true);

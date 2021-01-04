@@ -9,14 +9,21 @@ namespace Pedidos.Extensions
     public static class Extension
     {
         public static bool IsNullOrEmtpy(this string value)
-        {   
+        {
             return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
         }
 
         public static T ConvertTo<T>(this string o)
-        {         
+        {
             return JsonConvert.DeserializeObject<T>(o);
         }
+
+        public static string ToJson<T>(this T o)
+        {
+            return JsonConvert.SerializeObject(o);
+        }
+
+
 
     }
 }

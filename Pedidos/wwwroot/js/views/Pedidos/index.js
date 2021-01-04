@@ -1149,8 +1149,13 @@ function finalizado(idPedido) {
     totalPedido = 0;
     firstInputChecked = null;
 
+    var findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === idPedido);
+    });
+    var pedido = findResult[0];
+
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
-    $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
+    $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
         var formaPagamento = '                       <div class="d-flex justify-content-between mt-2"><div class="form-check">  ' +
             '                           <input class="form-check-input" type="checkbox" onchange="radioFormaPagamentoChange(this,' + idPedido + ')" name="radioFormaPagamento" id="radioFormaPagamento_' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
@@ -1159,7 +1164,7 @@ function finalizado(idPedido) {
             '                           </div> ' +
             '                           <div class="d-flex justify-content-between"> ' +
             '                           <div><input name="valorFormaPagamento" id="valorFormaPagamento_' + formaPagamento.id + '" onchange="valorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " /></div>  ' +
-            '                           <div><input name="sumarvalorFormaPagamento" id="sumarvalorFormaPagamento_' + formaPagamento.id + '" onchange="sumarvalorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " style="width:70px" placeholder="+" /></div>  ' +
+            '                           <div><input name="sumarvalorFormaPagamento" id="sumarvalorFormaPagamento_' + formaPagamento.id + '" onchange="sumarvalorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right ml-1" style="width:70px" placeholder="+" /></div>  ' +
             '                           <div><input hidden id="tasaFormaPagamento_' + formaPagamento.id + '" class="form-control form-control-sm  float-right " style="width:70px" value="' + formaPagamento.tasa + '" /></div>  ' +
             '                       </div>  ' +
             '                       </div>  ';

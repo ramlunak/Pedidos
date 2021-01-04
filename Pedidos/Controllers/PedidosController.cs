@@ -221,13 +221,28 @@ namespace Pedidos.Controllers
                     }
                     currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
 
+                    var formasPagamento = new List<P_FormaPagamento>();
+                    if (currentPedido.idAplicativo.HasValue)
+                    {
+                        var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                        formasPagamento.AddRange(fp.Where(x => x.idAplicativo.HasValue));
+                        formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue && x.app));
+                    }
+                    else
+                    {
+                        var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                        formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue));
+                    }
+
+                    currentPedido.listaFormaPagamento = formasPagamento.OrderBy(x => x.nombre).ToList();
+                    currentPedido.jsonFormaPagamento = JsonConvert.SerializeObject(currentPedido.listaFormaPagamento);
+
                     if (currentPedido.isNew)
                     {
                         _context.Add(currentPedido);
                         await _context.SaveChangesAsync();
 
-                        currentPedido = new P_Pedido(Cuenta.id);
-                        currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                        currentPedido = new P_Pedido(Cuenta.id);                       
                         SetSession("currentPedido", currentPedido);
 
                         var pedidos = await _context.P_Pedidos.Where(x =>
@@ -244,10 +259,9 @@ namespace Pedidos.Controllers
                         _context.Update(currentPedido);
                         await _context.SaveChangesAsync();
 
-                        currentPedido = new P_Pedido(Cuenta.id);
-                        currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                        currentPedido = new P_Pedido(Cuenta.id);                       
                         SetSession("currentPedido", currentPedido);
-
+                       
                         var pedidos = await _context.P_Pedidos.Where(x =>
                                          x.idCuenta == Cuenta.id &&
                                         (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
@@ -333,7 +347,7 @@ namespace Pedidos.Controllers
             }
 
             try
-            {               
+            {
                 var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
                 pedido.status = StatusPedido.Finalizado.ToString();
                 pedido.descuento = pedidoaux.descuento;

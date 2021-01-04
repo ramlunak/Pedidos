@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Pedidos.Models.P_FormaPagamento>
+@using Pedidos.Extensions
 
 @{
     ViewData["Title"] = "Index";
@@ -82,7 +83,7 @@
                         </td>
                         <td style="width:auto">
                             <div style="width:100px">
-                                @*<a asp-action="Edit" asp-controller="FormaPagamento" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a>*@
+                                <a onclick="edit(@item.ToJson())" class="cursor-pointer"><i style="color:forestgreen" class="fa fa-edit"></i></a>
                                 @*<a onclick="deleteFormaPagamento(@item.id)"><i style="color:orangered" class="fa fa-trash"></i></a>*@
                             </div>
                         </td>

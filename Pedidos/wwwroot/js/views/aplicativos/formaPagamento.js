@@ -78,35 +78,39 @@ function addFormaPagamento(idAplicativo) {
     });
 }
 
-function deleteFormaPagamento(id) {
-    Swal.fire({
-        title: 'Do you want to save the changes?',        
-        showCancelButton: true,
-        confirmButtonText: `Apagar`,
-        denyButtonText: `Cancelar`,
-    }).then((result) => {
-        /* Read more about isConfirmed, isDenied below */
-        if (result.isConfirmed) {
-
-            $.ajax({
-                type: "GET",
-                url: "/Aplicativo/DeleteFormaPagamento/" + id,
-                traditional: true,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-                    console.log(data);
-                    location.reload();
-                },
-                failure: function (response) {
-                    console.log('failure', response);
-                    Swal.fire('Erro do servidor', '', 'erro')
-                },
-                error: function (response) {
-                    console.log('error', response);
-                    Swal.fire('Erro do servidor', '', 'erro')
-                }
-            });
-        }
-    })
+function edit(item) {
+    console.log(item);
 }
+
+//function deleteFormaPagamento(id) {
+//    Swal.fire({
+//        title: 'Do you want to save the changes?',        
+//        showCancelButton: true,
+//        confirmButtonText: `Apagar`,
+//        denyButtonText: `Cancelar`,
+//    }).then((result) => {
+//        /* Read more about isConfirmed, isDenied below */
+//        if (result.isConfirmed) {
+
+//            $.ajax({
+//                type: "GET",
+//                url: "/Aplicativo/DeleteFormaPagamento/" + id,
+//                traditional: true,
+//                contentType: "application/json; charset=utf-8",
+//                dataType: "json",
+//                success: function (data) {
+//                    console.log(data);
+//                    location.reload();
+//                },
+//                failure: function (response) {
+//                    console.log('failure', response);
+//                    Swal.fire('Erro do servidor', '', 'erro')
+//                },
+//                error: function (response) {
+//                    console.log('error', response);
+//                    Swal.fire('Erro do servidor', '', 'erro')
+//                }
+//            });
+//        }
+//    })
+//}

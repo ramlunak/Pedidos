@@ -53,5 +53,7 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_Aux> P_Aux { get; set; }
 
         public DbSet<Pedidos.Models.P_FormaPagamento> P_FormaPagamento { get; set; }
+
+        public DbSet<Pedidos.Models.P_Caja> P_Caja { get; set; }
     }
 }

@@ -8,71 +8,71 @@
 
     <div class="m-3 text-center" style="color: darkgray">CAIXA</div>
 
-    @*PERIODO*@
+    @if (ViewBag.HayVentas)
+    {
 
-    <hr />
+        @*PERIODO*@
 
-    <div class="d-flex justify-content-between">
-        <div>Data Inicio</div>
-        <div>@Model.dataInicio.ToString("dd/MM/yyyy")</div>
-    </div>
+        <hr />
+        <a asp-action="Fechar" class="btn btn-sm btn-outline-success cursor-pointer">Fechar Caixa</a>
+        <hr />
 
-    <div class="d-flex justify-content-between">
-        <div>Data Fin</div>
-        <div>@Model.dataFin.ToString("dd/MM/yyyy")</div>
-    </div>
+        @*TOTAL*@
 
-    <hr />
+        <div class="d-flex justify-content-between">
+            <div>Total de Vendas</div>
+            <div>R$ @Model.totalVentas.ToString("F2")</div>
+        </div>
 
-    @*TOTAL*@
+        <div class="d-flex justify-content-between">
+            <div>Total de Taxas</div>
+            <div style="color:orangered">R$ @Model.totalTasas.ToString("F2")</div>
+        </div>
 
-    <div class="d-flex justify-content-between">
-        <div>Total de Vendas</div>
-        <div>R$ @Model.totalVentas.ToString("F2")</div>
-    </div>
+        <div class="d-flex justify-content-between">
+            <div>Diferença</div>
+            <div style="color:green">R$ @((Model.totalVentas - Model.totalTasas).ToString("F2"))</div>
+        </div>
 
-    <div class="d-flex justify-content-between">
-        <div>Total de Taxas</div>
-        <div style="color:orangered">R$ @Model.totalTasas.ToString("F2")</div>
-    </div>
-
-    <div class="d-flex justify-content-between">
-        <div>Diferença</div>
-        <div style="color:green">R$ @((Model.totalVentas - Model.totalTasas).ToString("F2"))</div>
-    </div>
-
-    @*DETALLES*@
-    <table class="table mt-2" style="width:100%">
-        <thead>
-            <tr>
-                <th class="text-left">Forma Pagamento</th>
-                <th>Total</th>
-                <th>Taxa</th>
-                <th>Diferença</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.formaPagamentos)
-            {
+        @*DETALLES*@
+        <table class="table mt-2" style="width:100%">
+            <thead>
                 <tr>
-                    <td style="text-align:start">
-                        @item.nombre
-                        @if (item.tasa.HasValue)
-                        {
-                            <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
-                        }
-                    </td>
-                    <td>R$ @item.valor.ToString("F2")</td>
-                    <td>
-                        @if (item.tasa.HasValue)
-                        {
-                            <div style="color:orangered">R$ @item.valorTasa.ToString("F2")</div>
-                        }
-                    </td>
-                    <td class="text-right" style="color:green">R$ @((item.valor - item.valorTasa).ToString("F2"))</td>
+                    <th class="text-left">Forma Pagamento</th>
+                    <th>Total</th>
+                    <th>Taxa</th>
+                    <th>Diferença</th>
                 </tr>
-            }
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+                @foreach (var item in Model.formaPagamentos)
+                {
+                    <tr>
+                        <td style="text-align:start">
+                            @item.nombre
+                            @if (item.tasa.HasValue)
+                            {
+                                <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
+                            }
+                        </td>
+                        <td>R$ @item.valor.ToString("F2")</td>
+                        <td>
+                            @if (item.tasa.HasValue)
+                            {
+                                <div style="color:orangered">R$ @item.valorTasa.ToString("F2")</div>
+                            }
+                        </td>
+                        <td class="text-right" style="color:green">R$ @((item.valor - item.valorTasa).ToString("F2"))</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <div class="d-block text-center">
+            <img src="~/img/shopping-cart.png" width="100" />
+            <div style="font-size:20px;color:orangered">Nenhuma venda registrada</div>
+        </div>
+    }
 </div>

@@ -1151,7 +1151,7 @@ function finalizado(idPedido) {
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
     $.each(_CurrentPedido.listaFormaPagamento, function (index, formaPagamento) {
-        var formaPagamento = '                     <hr/>  <div class="d-flex justify-content-between"><div class="form-check">  ' +
+        var formaPagamento = '                       <div class="d-flex justify-content-between mt-2"><div class="form-check">  ' +
             '                           <input class="form-check-input" type="checkbox" onchange="radioFormaPagamentoChange(this,' + idPedido + ')" name="radioFormaPagamento" id="radioFormaPagamento_' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
             '                                ' + formaPagamento.nombre + '  ' +
@@ -1160,7 +1160,7 @@ function finalizado(idPedido) {
             '                           <div class="d-flex justify-content-between"> ' +
             '                           <div><input name="valorFormaPagamento" id="valorFormaPagamento_' + formaPagamento.id + '" onchange="valorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " /></div>  ' +
             '                           <div><input name="sumarvalorFormaPagamento" id="sumarvalorFormaPagamento_' + formaPagamento.id + '" onchange="sumarvalorFormaPagamentoInput(this,' + idPedido + ')" class="form-control form-control-sm  float-right " style="width:70px" placeholder="+" /></div>  ' +
-            '                           <div><input id="tasaFormaPagamento_' + formaPagamento.id + '" class="form-control form-control-sm  float-right " style="width:70px" value="' + formaPagamento.tasa + '" /></div>  ' +
+            '                           <div><input hidden id="tasaFormaPagamento_' + formaPagamento.id + '" class="form-control form-control-sm  float-right " style="width:70px" value="' + formaPagamento.tasa + '" /></div>  ' +
             '                       </div>  ' +
             '                       </div>  ';
         formaPagamentoContainer += formaPagamento;
@@ -1181,12 +1181,12 @@ function finalizado(idPedido) {
             '                               <input id="inputDescontoFinalizado" name="inputDescontoFinalizado" placeholder="Desconto" class="form-control form-control-sm " />  ' +
             '                           </div>  ' +
             '     ' +
-            '    <div class="form-check d-flex mb-2">  ' +
+            '     ' + formaPagamentoContainer +
+            '   <hr/> <div class="form-check d-flex mb-2">  ' +
             '                                   <input class="form-check-input" type="checkbox" id="inputPagoFinalizado" name="inputPagoFinalizado">  ' +
-            '                                   <label class="form-check-label">Pago</label>  ' +
+            '                                   <label class="form-check-label">Marcar como pago </label>  ' +
             '                              </div>  ' +
             '                       </div>  ' +
-            '     ' + formaPagamentoContainer +
             '                  </div>  ',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',

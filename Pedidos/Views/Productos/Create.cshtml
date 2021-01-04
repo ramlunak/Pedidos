@@ -28,6 +28,9 @@
     </div>
 </div>
 
+
+<div class="row m-3"></div>
+
 <div class="row d-flex justify-content-center">
     <div class="col-12 col-md-4">
         <form id="form_create" asp-action="Create" enctype="multipart/form-data">
@@ -75,7 +78,7 @@
 
             <div>
                 <div id="form_group_valor" class="form-group">
-                    <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" onclick="this.select()"/>
+                    <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" onclick="this.select()" />
                     <span asp-validation-for="valor" class="text-danger"></span>
                 </div>
             </div>

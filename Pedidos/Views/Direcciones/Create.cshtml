@@ -3,7 +3,10 @@
 @{
     ViewData["Title"] = "Criar";
 }
-<div class="m-4"></div>
+
+
+<div class="row m-3"></div>
+
 <div class="row d-flex justify-content-center">
     <div class="col-12 col-md-4">
         <form asp-action="Create">
@@ -12,7 +15,7 @@
             <input asp-for="idCliente" hidden value="@Model.idCliente" class="form-control" />
 
             <div class="form-group">
-                
+
                 <div class="input-group">
                     <input id="code" type="number" class="form-control form-control-sm" asp-for="code" placeholder="CEP">
                     <div class="input-group-append">
@@ -31,28 +34,28 @@
                 <span asp-validation-for="address" class="text-danger"></span>
             </div>
 
-            <div class="form-group">              
+            <div class="form-group">
                 <input id="numero" type="number" asp-for="numero" class="form-control form-control-sm" placeholder="Número" />
                 <span asp-validation-for="numero" class="text-danger"></span>
             </div>
 
-            <div class="form-group">               
+            <div class="form-group">
                 <input id="complemento" asp-for="complemento" class="form-control form-control-sm" placeholder="Complemento" />
                 <span asp-validation-for="complemento" class="text-danger"></span>
             </div>
 
 
-            <div class="form-group">              
+            <div class="form-group">
                 <input id="district" asp-for="district" class="form-control form-control-sm" placeholder="Barrio" />
                 <span asp-validation-for="district" class="text-danger"></span>
             </div>
 
-            <div class="form-group">              
+            <div class="form-group">
                 <input id="city" asp-for="city" class="form-control form-control-sm" placeholder="Municipio" />
                 <span asp-validation-for="city" class="text-danger"></span>
             </div>
 
-            <div class="form-group">             
+            <div class="form-group">
                 <input id="state" asp-for="state" class="form-control form-control-sm" placeholder="Estado" />
                 <span asp-validation-for="state" class="text-danger"></span>
             </div>

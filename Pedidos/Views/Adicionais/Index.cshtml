@@ -22,7 +22,7 @@
                 <tr>
                     @*<th style="width:auto">
 
-                    </th>*@
+                        </th>*@
                     <th>
                         @Html.DisplayNameFor(model => model.nombre)
                     </th>
@@ -41,8 +41,8 @@
                 {
                     <tr>
                         @*<td style="width:auto">
-                            <input name="switchbuttonParaTodos" type="checkbox" asp-for="@item.paraTodos" id="@item.id" data-width="100" data-onlabel="Para Todos" data-offlabel="Individual" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
-                        </td>*@
+                                <input name="switchbuttonParaTodos" type="checkbox" asp-for="@item.paraTodos" id="@item.id" data-width="100" data-onlabel="Para Todos" data-offlabel="Individual" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
+                            </td>*@
 
                         <td style="width:100%">
                             @Html.DisplayFor(modelItem => item.nombre)
@@ -55,17 +55,16 @@
                         <td>
                             <a asp-action="Categorias" asp-route-id="@item.id">Categorias</a>
                         </td>
-                       
+
                         <td>
                             <input name="switchbuttonActivo" type="checkbox" asp-for="@item.activo" id="@item.id" data-onlabel="Ativo" data-offlabel="Inativo" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
                         </td>
 
-                        <td style="width:auto">
-                            <div style="width:100px">
+                        <td>
+                            <div class="text-nowrap">
                                 <a asp-action="Edit" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a> |
                                 <a asp-action="Delete" asp-route-id="@item.id"><i style="color:orangered" class="fa fa-trash"></i></a>
                             </div>
-                          
                         </td>
                     </tr>
                 }

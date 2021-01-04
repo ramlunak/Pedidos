@@ -243,13 +243,25 @@ namespace Pedidos.Controllers
             {
                 return NotFound();
             }
+
             if (ModelState.IsValid)
             {
                 p_FormaPagamento.idCuenta = Cuenta.id;
                 p_FormaPagamento.activo = true;
                 p_FormaPagamento.app = true;
 
-                _context.Add(p_FormaPagamento);
+                if (p_FormaPagamento.id > 0)
+                {
+                    var update_formaPagamento = await _context.P_FormaPagamento.FindAsync(p_FormaPagamento.id);
+                    update_formaPagamento.nombre = p_FormaPagamento.nombre;
+                    update_formaPagamento.tasa = p_FormaPagamento.tasa;
+                }
+                else
+                {
+                    _context.Add(p_FormaPagamento);
+                }
+
+
                 await _context.SaveChangesAsync();
                 return Ok(p_FormaPagamento);
             }
@@ -261,10 +273,9 @@ namespace Pedidos.Controllers
             try
             {
                 var p_FormaPagamento = await _context.P_FormaPagamento.FindAsync(id);
-                p_FormaPagamento.activo = false;
-                _context.P_FormaPagamento.Update(p_FormaPagamento);
+                _context.P_FormaPagamento.Remove(p_FormaPagamento);
                 await _context.SaveChangesAsync();
-                return Ok();
+                return Ok(true);
             }
             catch (Exception ex)
             {

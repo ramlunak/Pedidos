@@ -34,6 +34,7 @@ function addFormaPagamento(idAplicativo) {
 
     var formaPagamento = {
         idAplicativo: idAplicativo,
+        id: parseInt($('#inputId').val()),
         nombre: $('#inputNome').val(),
         tasa: parseFloat($('#inputTasa').val())
     };
@@ -60,11 +61,6 @@ function addFormaPagamento(idAplicativo) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
-
-            console.log(result);
-            //$('#ModalDetalleProducto').modal('hide');
-            //_CurrentPedido = result.currentPedido;
-            //MostarCurrentPedido();
             location.reload();
         },
         failure: function (response) {
@@ -79,38 +75,43 @@ function addFormaPagamento(idAplicativo) {
 }
 
 function edit(item) {
-    console.log(item);
+    $('#inputId').val(item.id);
+    $('#inputNome').val(item.nombre);
+    $('#inputTasa').val(item.tasa);
 }
 
-//function deleteFormaPagamento(id) {
-//    Swal.fire({
-//        title: 'Do you want to save the changes?',        
-//        showCancelButton: true,
-//        confirmButtonText: `Apagar`,
-//        denyButtonText: `Cancelar`,
-//    }).then((result) => {
-//        /* Read more about isConfirmed, isDenied below */
-//        if (result.isConfirmed) {
+function formReset() {
+    $('#formNuevaFP')[0].reset();
+}
 
-//            $.ajax({
-//                type: "GET",
-//                url: "/Aplicativo/DeleteFormaPagamento/" + id,
-//                traditional: true,
-//                contentType: "application/json; charset=utf-8",
-//                dataType: "json",
-//                success: function (data) {
-//                    console.log(data);
-//                    location.reload();
-//                },
-//                failure: function (response) {
-//                    console.log('failure', response);
-//                    Swal.fire('Erro do servidor', '', 'erro')
-//                },
-//                error: function (response) {
-//                    console.log('error', response);
-//                    Swal.fire('Erro do servidor', '', 'erro')
-//                }
-//            });
-//        }
-//    })
-//}
+function deleteFormaPagamento(id) {
+    Swal.fire({
+        title: 'Do you want to save the changes?',
+        showCancelButton: true,
+        confirmButtonText: `Apagar`,
+        denyButtonText: `Cancelar`,
+    }).then((result) => {
+        /* Read more about isConfirmed, isDenied below */
+        if (result.isConfirmed) {
+
+            $.ajax({
+                type: "GET",
+                url: "/Aplicativo/DeleteFormaPagamento/" + id,
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    location.reload();
+                },
+                failure: function (response) {
+                    console.log('failure', response);
+                    Swal.fire('Erro do servidor', 'd', 'erro')
+                },
+                error: function (response) {
+                    console.log('error', response);
+                    Swal.fire('Erro do servidor', 'd', 'erro')
+                }
+            });
+        }
+    })
+}

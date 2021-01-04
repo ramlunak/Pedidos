@@ -176,9 +176,8 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
-            var p_FormaPagamento = await _context.P_FormaPagamento.FindAsync(id);
-            p_FormaPagamento.activo = false;
-            _context.P_FormaPagamento.Update(p_FormaPagamento);
+            var p_FormaPagamento = await _context.P_FormaPagamento.FindAsync(id);            
+            _context.P_FormaPagamento.Remove(p_FormaPagamento);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

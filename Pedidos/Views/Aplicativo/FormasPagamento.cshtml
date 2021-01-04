@@ -16,7 +16,9 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form>
+                <form id="formNuevaFP">
+
+                    <input id="inputId" hidden class="form-control form-control-sm" value="0" placeholder="Id" />
 
                     <div class="form-group small">
                         <input id="inputNome" class="form-control form-control-sm" placeholder="Nome" />
@@ -33,7 +35,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Fechar</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="formReset()">Fechar</button>
                 <button type="button" class="btn btn-primary" onclick="addFormaPagamento(@ViewBag.IdAplicativo)">Salvar</button>
             </div>
         </div>
@@ -83,8 +85,10 @@
                         </td>
                         <td style="width:auto">
                             <div style="width:100px">
-                                <a onclick="edit(@item.ToJson())" class="cursor-pointer"><i style="color:forestgreen" class="fa fa-edit"></i></a>
-                                @*<a onclick="deleteFormaPagamento(@item.id)"><i style="color:orangered" class="fa fa-trash"></i></a>*@
+                                <a onclick="edit(@item.ToJson())" class="cursor-pointer" data-toggle="modal" data-target="#modalNuevoFPagamento">
+                                    <i style="color:forestgreen" class="fa fa-edit"></i>
+                                </a> |
+                                <a onclick="deleteFormaPagamento(@item.id)"><i style="color:orangered" class="fa fa-trash"></i></a>
                             </div>
                         </td>
                     </tr>

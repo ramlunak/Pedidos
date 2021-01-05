@@ -178,3 +178,7 @@ input[type=checkbox] {
 .swal-wide-850 {
     width: 850px !important;
 }
+
+input.text-white::-webkit-input-placeholder {
+    color: white
+}

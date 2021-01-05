@@ -24,6 +24,53 @@ $(function () {
     CargarPedidosPendientes();
     CargarProductos();
 
+    $('#searchCliente').on('input propertychange', function (e) {
+        var filtroCliente = $('#searchCliente').val();
+        if (filtroCliente === null) return;
+
+        $('#searchMesa').val(null);
+
+        _PedidosPendientes.filter(function (item) {
+            if (!item.cliente.toLowerCase().includes(filtroCliente.toLowerCase()) && !item.aplicativo.toLowerCase().includes(filtroCliente.toLowerCase())) {
+                $('#CARD_PEDIDO_' + item.id).hide();
+            }
+            else {
+                $('#CARD_PEDIDO_' + item.id).show();
+            }
+
+            if (filtroCliente === null || filtroCliente === "") {
+                $('#CARD_PEDIDO_' + item.id).show();
+            }
+
+        });
+
+
+    });
+
+
+    $('#searchMesa').on('input propertychange', function (e) {
+        var filtroMesa = $('#searchMesa').val();
+        if (filtroMesa === null) return;
+
+        $('#searchCliente').val(null);
+
+        _PedidosPendientes.filter(function (item) {
+
+            if (JSON.stringify(item.idMesa) !== filtroMesa) {
+                $('#CARD_PEDIDO_' + item.id).hide();
+            }
+            else {
+                $('#CARD_PEDIDO_' + item.id).show();
+            }
+
+            if (filtroMesa === null || filtroMesa === "") {
+                $('#CARD_PEDIDO_' + item.id).show();
+            }
+
+        });
+    });
+
+
     $('#inputNome').on('input propertychange', function (e) {
         $('#spanNombre').html($('#inputNome').val());
 

@@ -19,7 +19,7 @@
         }
 
         * {
-            font-size: 11px;
+            font-size: 12px;
             font-family: Calibri;
         }
 
@@ -58,13 +58,13 @@
 
         @foreach (var producto in Model.productos)
         {
-            <div class="col" style="font-size:11px">
+            <div class="col" >
                 <table style="width:100%">
                     <tr>
-                        <td style="text-align:start;vertical-align:top;font-weight:700">@producto.cantidad</td>
-                        <td style="text-align:start;width:100%;font-weight:700">@producto.nombre.ToUpper()</td>
+                        <td style="text-align:start;vertical-align:top;">@producto.cantidad</td>
+                        <td style="text-align:start;width:100%">@producto.nombre.ToUpper()</td>
                         <td style="text-align: end;width: auto;vertical-align: top">
-                            <div style="white-space: nowrap;vertical-align: top;font-weight:700"> R$ @producto.ValorMasAdicionales.ToString("F2")</div>
+                            <div class="ml-3" style="white-space: nowrap;vertical-align: top;font-weight:700"> R$ @producto.ValorMasAdicionales.ToString("F2")</div>
                         </td>
                     </tr>
                     @if (producto.Adicionales != null && producto.Adicionales.Count > 0)
@@ -81,7 +81,7 @@
                                                 @adicional.nombre.ToUpper()
                                             </td>
                                             <td style="text-align: end;width: auto;vertical-align: top">
-                                                <div style="white-space: nowrap;vertical-align: top"> R$ @adicional.Valor.ToString("F2")</div>
+                                                <div class="ml-3" style="white-space: nowrap;vertical-align: top"> R$ @adicional.Valor.ToString("F2")</div>
                                             </td>
                                         </tr>
                                     }

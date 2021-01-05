@@ -894,19 +894,16 @@ function TABLE_PedidosPendientes() {
         var futter_botones = $('<div class="d-flex">');
 
         if (pedido.status == "Pendiente") {
-            futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer mr-2"  style="color:white">cancelar</a>');
+            futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer"  style="color:white" ><i class="fas fa-ban"></i></a>');
+            futter_botones.append('<a onclick="editar(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer ml-1" style="color:white"><i class="fas fa-edit"></i></a> <span class="m-1"> | <span>  ');
             futter_botones.append('<a onclick="preparado(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
         }
 
-        futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">finalizado</a>');
-
-        if (pedido.status == "Pendiente") {
-            futter_botones.append('<a onclick="editar(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer ml-2" style="color:white"><i class="fas fa-edit"></i></a>');
-        }
+        futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">finalizar</a>');
 
         CARD_FUTTER.append(futter_botones);
 
-        CARD_FUTTER.append('<a href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
+        CARD_FUTTER.append('<a class="btn btn-outline-secondary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
 
         CARD.append(CARD_BODY);
         CARD.append(CARD_FUTTER);
@@ -1043,7 +1040,7 @@ function addPedidoToEnd(pedido) {
     futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
     CARD_FUTTER.append(futter_botones);
 
-    CARD_FUTTER.append('<a href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
+    CARD_FUTTER.append('<a class="btn btn-outline-primary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
 
     CARD.append(CARD_BODY);
     CARD.append(CARD_FUTTER);
@@ -1122,67 +1119,69 @@ function cancelar(idPedido) {
 
 function preparado(idPedido) {
 
-    Swal.fire({
-        title: 'Marcar como preparado?',
-        text: "",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Sim!',
-        cancelButtonText: 'Não'
-    }).then((result) => {
-        if (result.isConfirmed) {
+    $('#ModalPreparado').modal('show');
 
-            $.ajax({
-                type: "GET",
-                url: "/Pedidos/Preparado/" + idPedido,
-                traditional: true,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
+    //Swal.fire({
+    //    title: 'Marcar como preparado?',
+    //    text: "",
+    //    icon: 'warning',
+    //    showCancelButton: true,
+    //    confirmButtonColor: '#3085d6',
+    //    cancelButtonColor: '#d33',
+    //    confirmButtonText: 'Sim!',
+    //    cancelButtonText: 'Não'
+    //}).then((result) => {
+    //    if (result.isConfirmed) {
 
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
+    //        $.ajax({
+    //            type: "GET",
+    //            url: "/Pedidos/Preparado/" + idPedido,
+    //            traditional: true,
+    //            contentType: "application/json; charset=utf-8",
+    //            dataType: "json",
+    //            success: function (data) {
 
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Ação realizada com sucesso'
-                    })
+    //                const Toast = Swal.mixin({
+    //                    toast: true,
+    //                    position: 'top-end',
+    //                    showConfirmButton: false,
+    //                    timer: 3000,
+    //                    timerProgressBar: true,
+    //                    didOpen: (toast) => {
+    //                        toast.addEventListener('mouseenter', Swal.stopTimer)
+    //                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+    //                    }
+    //                })
+
+    //                Toast.fire({
+    //                    icon: 'success',
+    //                    title: 'Ação realizada com sucesso'
+    //                })
 
 
-                    addPedidoToEnd(data);
+    //                addPedidoToEnd(data);
 
-                },
-                failure: function (response) {
+    //            },
+    //            failure: function (response) {
 
-                    Swal.fire(
-                        'Error!',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                },
-                error: function (response) {
+    //                Swal.fire(
+    //                    'Error!',
+    //                    'Erro de servidor.',
+    //                    'error'
+    //                )
+    //            },
+    //            error: function (response) {
 
-                    Swal.fire(
-                        'Error',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                }
-            });
+    //                Swal.fire(
+    //                    'Error',
+    //                    'Erro de servidor.',
+    //                    'error'
+    //                )
+    //            }
+    //        });
 
-        }
-    })
+    //    }
+    //})
 
 }
 

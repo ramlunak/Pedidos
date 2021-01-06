@@ -69,9 +69,9 @@
                         <datalist id="ClienteList" class="w-100">
                             @if (ViewBag.Clientes != null)
                             {
-                                @foreach (var cliente in ViewBag.Clientes)
+                            @foreach (var cliente in ViewBag.Clientes)
                                 {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                            <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -85,9 +85,9 @@
                         <datalist id="AplicativoList" class="w-100">
                             @if (ViewBag.Aplicativos != null)
                             {
-                                @foreach (var aplicativo in ViewBag.Aplicativos)
+                            @foreach (var aplicativo in ViewBag.Aplicativos)
                                 {
-                                    <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                            <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -266,6 +266,14 @@
                 <div id="infoDelivery">
 
                     <div class="form-group mt-2">
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">R$</span>
+                            </div>
+                            <input type="text" class="form-control form-control-sm" placeholder="Taxa de entrega ">
+                        </div>
+
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">R$</span>
@@ -275,16 +283,20 @@
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">R$</span>
+                                <span class="input-group-text" id="">
+                                    <input class="mr-2" type="checkbox" aria-label="Checkbox for following text input">
+                                    Dinheiro | R$
+                                </span>
                             </div>
-                            <input type="text" class="form-control form-control-sm" placeholder="Troco">
+                            <input type="text" disabled class="form-control form-control-sm" placeholder="Valor">
+                            <input type="text" disabled class="form-control form-control-sm" placeholder="Troco">
                         </div>
 
-                        <div class="input-group input-group-sm mb-3">
-                            <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">R$</span>
-                            </div>
-                            <input type="text" class="form-control form-control-sm" placeholder="Taxa de entrega ">
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                            <label class="form-check-label" for="defaultCheck1">
+                                Cartão
+                            </label>
                         </div>
 
                         <div class="form-check">
@@ -293,6 +305,7 @@
                                 Pago
                             </label>
                         </div>
+
                     </div>
                 </div>
             </div>

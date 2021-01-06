@@ -142,6 +142,7 @@ namespace Pedidos.Controllers
                     currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
+                    currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
                     currentPedido.idCliente = pedidoaux.idCliente;
                     currentPedido.cliente = pedidoaux.cliente;
                     currentPedido.idAplicativo = pedidoaux.idAplicativo;
@@ -149,7 +150,7 @@ namespace Pedidos.Controllers
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
-                    currentPedido.descuento = pedidoaux.descuento;
+                    currentPedido.descuento = pedidoaux.descuento ?? 0;
                     currentPedido.pago = pedidoaux.pago;
                     var actualizarPagina = false;
 
@@ -220,8 +221,7 @@ namespace Pedidos.Controllers
                         currentPedido.idAplicativo = aplicativo.id;
                         actualizarPagina = true;
                     }
-                    currentPedido.total = currentPedido.valorProductos - (currentPedido.descuento.HasValue ? currentPedido.descuento.Value : 0);
-
+                  
                     var formasPagamento = new List<P_FormaPagamento>();
                     if (currentPedido.idAplicativo.HasValue)
                     {
@@ -351,14 +351,11 @@ namespace Pedidos.Controllers
             {
                 var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
                 pedido.status = StatusPedido.Finalizado.ToString();
-                pedido.descuento = pedidoaux.descuento;
+                pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
                 pedido.pago = pedidoaux.pago;
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
-                if (pedido.descuento.HasValue)
-                {
-                    pedido.total = pedido.valorProductos - pedido.descuento.Value;
-                }
+                pedido.valorProductos = pedido.productos.Sum(x => x.ValorMasAdicionales);
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
 

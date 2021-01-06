@@ -790,7 +790,7 @@ function TABLE_PedidosPendientes() {
             '               </div>  ' +
             '               <div class="d-block" style="text-align:right">  ' +
             '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
-            '                   <div style="font-size:11px"><b>R$ ' + pedido.total.toFixed(2) + '</b></div>  ' +
+            '                   <div style="font-size:11px"><b>R$ ' + pedido.valorProductos.toFixed(2) + '</b></div>  ' +
             '               </div>  ' +
             '           </div>  ' +
             '          <hr class="m-2" />  ';
@@ -936,7 +936,7 @@ function addPedidoToEnd(pedido) {
         '               </div>  ' +
         '               <div class="d-block" style="text-align:right">  ' +
         '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
-        '                   <div style="font-size:11px"><b>R$ ' + pedido.total.toFixed(2) + '</b></div>  ' +
+        '                   <div style="font-size:11px"><b>R$ ' + pedido.valorProductos.toFixed(2) + '</b></div>  ' +
         '               </div>  ' +
         '           </div>  ' +
         '          <hr class="m-2" />  ';
@@ -1363,7 +1363,7 @@ function radioFormaPagamentoChange(input, idPedido) {
     });
     var pedido = findResult[0];
 
-    totalPedido = pedido.total;
+    totalPedido = pedido.valorProductos;
 
     var desconto = $('#inputDescontoFinalizado').val();
     if (!isNaN(parseFloat(desconto))) {

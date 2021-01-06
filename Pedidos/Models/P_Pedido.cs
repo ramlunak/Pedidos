@@ -30,15 +30,15 @@ namespace Pedidos.Models
         public DateTime fecha { get; set; }
         public string status { get; set; }
         public string descripcion { get; set; }
-        public decimal? descuento { get; set; }
+        public decimal descuento { get; set; } = 0;
         public string jsonListProductos { get; set; }
         public string telefono { get; set; }
-        public decimal total { get; set; } = 0;
+        //public decimal total { get; set; } = 0;
         public int idCuenta { get; set; }
         public bool activo { get; set; }
         public bool pago { get; set; } = false;
         public string jsonFormaPagamento { get; set; }
-
+        public decimal valorProductos { get; set; } = 0;
         //AUXILIARES
 
         [NotMapped]
@@ -61,15 +61,6 @@ namespace Pedidos.Models
 
         [NotMapped]
         public List<P_Productos> productos { get; set; } = new List<P_Productos>();
-        [NotMapped]
-        public decimal valorProductos
-        {
-            get
-            {
-                var valorProductos = productos.Sum(x => x.ValorMasAdicionales);
-                return valorProductos;
-            }
-        }
         [NotMapped]
         public List<P_FormaPagamento> listaFormaPagamento { get; set; } = new List<P_FormaPagamento>();
 

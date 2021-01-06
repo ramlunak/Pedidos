@@ -64,7 +64,7 @@ namespace Pedidos.Controllers
                 caja.idCuenta = Cuenta.id;
                 caja.idUltimoPedido = pedidos.OrderBy(x => x.id).LastOrDefault().id;
                 caja.fecha = DateTime.Now;
-                caja.totalVentas = pedidos.Sum(x => x.total);
+                //caja.totalVentas = pedidos.Sum(x => x.total);
                 caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
                 caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x=>x.valor > 0).ToList();
                 caja.jsonFormaPagamento = caja.formaPagamentos.ToJson();

@@ -322,7 +322,6 @@ namespace Pedidos.Controllers
         [HttpPost]
         public async Task<IActionResult> Preparado([FromBody] InfoAuxDelivery infoAuxDelivery)
         {
-            return Ok(infoAuxDelivery);
 
             if (!ValidarCuenta())
             {
@@ -331,7 +330,9 @@ namespace Pedidos.Controllers
             try
             {
                 var pedido = await _context.P_Pedidos.FindAsync(infoAuxDelivery.idPedido);
+
                 pedido.status = StatusPedido.Preparado.ToString();
+
                 pedido.descuento = infoAuxDelivery.descuento ?? 0;
                 pedido.tasaEntrega = infoAuxDelivery.tasaEntrega ?? 0;
                 pedido.DeliveryEmdinheiro = infoAuxDelivery.DeliveryEmdinheiro;

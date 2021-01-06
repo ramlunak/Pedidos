@@ -1,4 +1,6 @@
 ﻿
+var totalCalculadoPreparado = 0;
+
 $(function () {
 
     $("#inputTasaEntregaPreparado").mask("###0.00", { reverse: true });
@@ -14,6 +16,7 @@ $(function () {
         if (selected === "SelectedDinheiroPreparado") {
 
             $('#inputTotalDinheiroPreparado').prop('disabled', false);
+            $('#inputTotalDinheiroPreparado').val(totalCalculadoPreparado);
 
         } else {
 
@@ -54,6 +57,7 @@ function calcularTotalPagarPreparado() {
         total = total - descontoPreparado;
     }
 
+    totalCalculadoPreparado = total;
     $('#inputTotalPagarPreparado').val(total.toFixed(2));
 
     calcularTroco();
@@ -92,14 +96,31 @@ function preparado() {
 
     infoAuxDelivery = {
         idPedido: idPedidoPreparado,
-        descuento: parseFloat($('#inputDescontoFinalizado').val()),
-        tasaEntrega: 0,
-        DeliveryEmdinheiro: null,
-        DeliveryDinheiroTotal: null,
-        DeliveryTroco: null,
-        DeliveryEmCartao: null,
-        DeliveryPago: null,
+        descuento: $('#inputDescuentoPreparado').val() == "" ? null : parseFloat($('#inputDescuentoPreparado').val()),
+        tasaEntrega: $('#inputTasaEntregaPreparado').val() == "" ? null : parseFloat($('#inputTasaEntregaPreparado').val()),
+        DeliveryDinheiroTotal: $('#inputTotalDinheiroPreparado').val() == "" ? null : parseFloat($('#inputTotalDinheiroPreparado').val()),
+        DeliveryTroco: $('#inputTrocoPreparado').val() == "" ? null : parseFloat($('#inputTrocoPreparado').val()),
+        DeliveryEmdinheiro: $('#SelectedDinheiroPreparado').is(':checked'),
+        DeliveryEmCartao: $('#SelectedCartaoPreparado').is(':checked'),
+        DeliveryPago: $('#SelectedPagoPreparado').is(':checked'),
     };
+
+    if (totalCalculadoPreparado < 0) {
+        Swal.fire('Erro', 'O desconto não pode ser maior que o total a pagar.', 'error');
+        return;
+    };
+
+    if (infoAuxDelivery.DeliveryEmdinheiro && isNaN(parseFloat($('#inputTotalDinheiroPreparado').val()))) {
+        Swal.fire('Erro', 'Informe a quantidade de dinheiro.', 'error');
+        return;
+    };
+
+    if (infoAuxDelivery.DeliveryEmdinheiro && parseFloat($('#inputTrocoPreparado').val()) < 0) {
+        Swal.fire('Erro', 'A quantidade de dinheiro não pode ser menor que o total a pagar.', 'error');
+        return;
+    };
+
+    showLoading();
 
     $.ajax({
         type: "POST",
@@ -108,28 +129,33 @@ function preparado() {
         data: JSON.stringify(infoAuxDelivery),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function (result) {
-            console.log(result);
+        success: function (pedido) {
 
-            //const Toast = Swal.mixin({
-            //    toast: true,
-            //    position: 'top-end',
-            //    showConfirmButton: false,
-            //    timer: 3000,
-            //    timerProgressBar: true,
-            //    didOpen: (toast) => {
-            //        toast.addEventListener('mouseenter', Swal.stopTimer)
-            //        toast.addEventListener('mouseleave', Swal.resumeTimer)
-            //    }
-            //})
 
-            //Toast.fire({
-            //    icon: 'success',
-            //    title: 'Ação realizada com sucesso'
-            //})
+            hideLoading();
 
-            //$('#CARD_PEDIDO_' + idPedido + '').remove();
-            //GetNumeroPedidosFinalizados();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Ação realizada com sucesso'
+            })
+
+
+            addPedidoToEnd(pedido);
+            idPedidoPreparado = 0;
+            $('#ModalPreparado').modal('hide');
+
         },
         failure: function (response) {
 

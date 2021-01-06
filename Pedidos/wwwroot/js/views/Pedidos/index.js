@@ -952,11 +952,12 @@ function addPedidoToEnd(pedido) {
         var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
             '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
             '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '" ';
-        var tr_background_color = "background-color: powderblue";
+
+        var btnInfo = ' <button type="button" class="btn btn-sm btn-outline-primary" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">';
 
         if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
             Desplegar = "";
-            tr_background_color = "";
+            btnInfo = "";
         }
 
         // CONTADOR
@@ -974,14 +975,15 @@ function addPedidoToEnd(pedido) {
         // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
         //FIN
 
-        var TR1_PRD = $('<tr style="' + tr_background_color + '">');
+        var TR1_PRD = $('<tr>');
         var TD1_PRD = $('<td style="width:100%">');
         var TD2_PRD = $('<td>');
 
 
-        TD1_PRD.append('<div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + '</div>');
+        TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + producto.observacion + '</div></div>');
         TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
         TR1_PRD.append(TD1_PRD, TD2_PRD);
+
 
         //ADICIONALES E INGREDIENTES DEL PRODUCTO
         var TR2_PRD = $('<tr>');
@@ -1037,10 +1039,10 @@ function addPedidoToEnd(pedido) {
     var CARD_FUTTER = $(' <div class="card-footer text-muted p-2 d-flex justify-content-between ">');
 
     var futter_botones = $('<div class="d-flex">');
-    futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer" style="color:white">finalizado</a>');
+    futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-info cursor-pointer" style="color:white">finalizar</a>');
     CARD_FUTTER.append(futter_botones);
 
-    CARD_FUTTER.append('<a class="btn btn-outline-primary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" style="color: green"></i></a>');
+    CARD_FUTTER.append('<a class="btn btn-outline-secondary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
 
     CARD.append(CARD_BODY);
     CARD.append(CARD_FUTTER);

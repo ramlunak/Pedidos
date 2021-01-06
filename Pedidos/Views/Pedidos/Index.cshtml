@@ -69,9 +69,9 @@
                         <datalist id="ClienteList" class="w-100">
                             @if (ViewBag.Clientes != null)
                             {
-                            @foreach (var cliente in ViewBag.Clientes)
+                                @foreach (var cliente in ViewBag.Clientes)
                                 {
-                            <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -85,9 +85,9 @@
                         <datalist id="AplicativoList" class="w-100">
                             @if (ViewBag.Aplicativos != null)
                             {
-                            @foreach (var aplicativo in ViewBag.Aplicativos)
+                                @foreach (var aplicativo in ViewBag.Aplicativos)
                                 {
-                            <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                                    <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -269,39 +269,48 @@
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
-                                <span class="input-group-text" id="basic-addon1">R$</span>
+                                <span class="input-group-text" id="">
+                                    <strong>Total Pagar</strong> | R$
+                                </span>
                             </div>
-                            <input type="text" class="form-control form-control-sm" placeholder="Taxa de entrega ">
+                            <input id="inputTotalPagarPreparado" type="text" disabled class="form-control form-control-sm">
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">R$</span>
                             </div>
-                            <input type="text" class="form-control form-control-sm" placeholder="Desconto">
+                            <input id="inputTasaEntregaPreparado" type="text" class="form-control form-control-sm" placeholder="Taxa de entrega ">
+                        </div>
+
+                        <div class="input-group input-group-sm mb-3">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">R$</span>
+                            </div>
+                            <input id="inputDescuentoPreparado" type="text" class="form-control form-control-sm" placeholder="Desconto">
                         </div>
 
                         <div class="input-group input-group-sm mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="">
-                                    <input class="mr-2" type="checkbox" aria-label="Checkbox for following text input">
+                                    <input class="mr-2" type="radio" id="SelectedDinheiroPreparado" name="radioFormaPagamentoPreparado" aria-label="Checkbox for following text input">
                                     Dinheiro | R$
                                 </span>
                             </div>
-                            <input type="text" disabled class="form-control form-control-sm" placeholder="Valor">
-                            <input type="text" disabled class="form-control form-control-sm" placeholder="Troco">
+                            <input id="inputTotalDinheiroPreparado" type="text" disabled class="form-control form-control-sm" placeholder="Total dinheiro">
+                            <input id="inputTrocoPreparado" type="text" disabled class="form-control form-control-sm" placeholder="Troco">
                         </div>
 
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                        <div class="form-check mb-3 ml-2">
+                            <input class="form-check-input" type="radio" id="SelectedCartaoPreparado" name="radioFormaPagamentoPreparado">
+                            <label class="form-check-label">
                                 Cartão
                             </label>
                         </div>
 
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            <label class="form-check-label" for="defaultCheck1">
+                        <div class="form-check mb-3 ml-2">
+                            <input class="form-check-input" type="radio" id="SelectedPagoPreparado" name="radioFormaPagamentoPreparado">
+                            <label class="form-check-label">
                                 Pago
                             </label>
                         </div>
@@ -315,7 +324,7 @@
                     <button class="btn btn-sm btn-danger cursor-pointer" data-dismiss="modal">Cancelar</button>
                 </div>
                 <div>
-                    <button class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()">Salvar</button>
+                    <button class="btn btn-sm btn-outline-success cursor-pointer" onclick="preparado()">Salvar</button>
                 </div>
             </div>
         </div>
@@ -329,4 +338,5 @@
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/lib/jquery/jquery.mask.js"></script>
 <script src="~/js/views/Pedidos/index.js"></script>
+<script src="~/js/views/Pedidos/preparado.js"></script>
 <script src="~/js/views/Pedidos/keyup.js"></script>

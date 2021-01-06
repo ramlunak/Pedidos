@@ -647,7 +647,7 @@ function MostarCurrentPedido() {
     $('#idMesa').val(_CurrentPedido.idMesa);
     $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#inputDescuento').val(_CurrentPedido.descuento);
-    $('#inputPago').prop("checked", _CurrentPedido.pago);
+    $('#inputPago').prop("checked", _CurrentPedido.DeliveryPago);
 
     $('#spanTotal').html(_CurrentPedido.valorProductos.toFixed(2));
 
@@ -896,7 +896,7 @@ function TABLE_PedidosPendientes() {
         if (pedido.status == "Pendiente") {
             futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer"  style="color:white" ><i class="fas fa-ban"></i></a>');
             futter_botones.append('<a onclick="editar(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer ml-1" style="color:white"><i class="fas fa-edit"></i></a> <span class="m-1"> | <span>  ');
-            futter_botones.append('<a onclick="preparado(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
+            futter_botones.append('<a onclick="showModalPreparado(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
         }
 
         futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">finalizar</a>');
@@ -1117,74 +1117,6 @@ function cancelar(idPedido) {
 
 }
 
-function preparado(idPedido) {
-
-    $('#ModalPreparado').modal('show');
-
-    //Swal.fire({
-    //    title: 'Marcar como preparado?',
-    //    text: "",
-    //    icon: 'warning',
-    //    showCancelButton: true,
-    //    confirmButtonColor: '#3085d6',
-    //    cancelButtonColor: '#d33',
-    //    confirmButtonText: 'Sim!',
-    //    cancelButtonText: 'Não'
-    //}).then((result) => {
-    //    if (result.isConfirmed) {
-
-    //        $.ajax({
-    //            type: "GET",
-    //            url: "/Pedidos/Preparado/" + idPedido,
-    //            traditional: true,
-    //            contentType: "application/json; charset=utf-8",
-    //            dataType: "json",
-    //            success: function (data) {
-
-    //                const Toast = Swal.mixin({
-    //                    toast: true,
-    //                    position: 'top-end',
-    //                    showConfirmButton: false,
-    //                    timer: 3000,
-    //                    timerProgressBar: true,
-    //                    didOpen: (toast) => {
-    //                        toast.addEventListener('mouseenter', Swal.stopTimer)
-    //                        toast.addEventListener('mouseleave', Swal.resumeTimer)
-    //                    }
-    //                })
-
-    //                Toast.fire({
-    //                    icon: 'success',
-    //                    title: 'Ação realizada com sucesso'
-    //                })
-
-
-    //                addPedidoToEnd(data);
-
-    //            },
-    //            failure: function (response) {
-
-    //                Swal.fire(
-    //                    'Error!',
-    //                    'Erro de servidor.',
-    //                    'error'
-    //                )
-    //            },
-    //            error: function (response) {
-
-    //                Swal.fire(
-    //                    'Error',
-    //                    'Erro de servidor.',
-    //                    'error'
-    //                )
-    //            }
-    //        });
-
-    //    }
-    //})
-
-}
-
 var valorInputFormaPagamento = 0;
 var totalPedido = 0;
 var firstInputChecked = null;
@@ -1345,7 +1277,7 @@ function finalizado(idPedido) {
     var pedido = findResult[0];
 
     $("#inputDescontoFinalizado").val(pedido.descuento);
-    $("#inputPagoFinalizado").prop('checked', pedido.pago);
+    $("#inputPagoFinalizado").prop('checked', pedido.DeliveryPago);
 }
 
 function radioFormaPagamentoChange(input, idPedido) {

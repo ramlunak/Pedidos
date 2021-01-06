@@ -151,7 +151,7 @@ namespace Pedidos.Controllers
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
                     currentPedido.descuento = pedidoaux.descuento ?? 0;
-                    currentPedido.pago = pedidoaux.pago;
+                    currentPedido.DeliveryPago = pedidoaux.pago;
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
@@ -221,7 +221,7 @@ namespace Pedidos.Controllers
                         currentPedido.idAplicativo = aplicativo.id;
                         actualizarPagina = true;
                     }
-                  
+
                     var formasPagamento = new List<P_FormaPagamento>();
                     if (currentPedido.idAplicativo.HasValue)
                     {
@@ -319,16 +319,27 @@ namespace Pedidos.Controllers
             }
         }
 
-        public async Task<IActionResult> Preparado(int id)
+        [HttpPost]
+        public async Task<IActionResult> Preparado([FromBody] InfoAuxDelivery infoAuxDelivery)
         {
+            return Ok(infoAuxDelivery);
+
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
             }
             try
             {
-                var pedido = await _context.P_Pedidos.FindAsync(id);
+                var pedido = await _context.P_Pedidos.FindAsync(infoAuxDelivery.idPedido);
                 pedido.status = StatusPedido.Preparado.ToString();
+                pedido.descuento = infoAuxDelivery.descuento ?? 0;
+                pedido.tasaEntrega = infoAuxDelivery.tasaEntrega ?? 0;
+                pedido.DeliveryEmdinheiro = infoAuxDelivery.DeliveryEmdinheiro;
+                pedido.DeliveryDinheiroTotal = infoAuxDelivery.DeliveryDinheiroTotal;
+                pedido.DeliveryTroco = infoAuxDelivery.DeliveryTroco;
+                pedido.DeliveryEmCartao = infoAuxDelivery.DeliveryEmCartao;
+                pedido.DeliveryPago = infoAuxDelivery.DeliveryPago;
+
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
                 return Ok(pedido);
@@ -353,7 +364,7 @@ namespace Pedidos.Controllers
                 pedido.status = StatusPedido.Finalizado.ToString();
                 pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
-                pedido.pago = pedidoaux.pago;
+                pedido.DeliveryPago = pedidoaux.pago;
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
                 pedido.valorProductos = pedido.productos.Sum(x => x.ValorMasAdicionales);
                 _context.Update(pedido);

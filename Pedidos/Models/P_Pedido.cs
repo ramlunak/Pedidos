@@ -31,14 +31,21 @@ namespace Pedidos.Models
         public string status { get; set; }
         public string descripcion { get; set; }
         public decimal descuento { get; set; } = 0;
+        public decimal tasaEntrega { get; set; } = 0;
         public string jsonListProductos { get; set; }
         public string telefono { get; set; }
         //public decimal total { get; set; } = 0;
         public int idCuenta { get; set; }
         public bool activo { get; set; }
-        public bool pago { get; set; } = false;
         public string jsonFormaPagamento { get; set; }
         public decimal valorProductos { get; set; } = 0;
+
+        public bool? DeliveryEmdinheiro { get; set; }
+        public decimal? DeliveryDinheiroTotal { get; set; }
+        public decimal? DeliveryTroco { get; set; }
+        public bool? DeliveryEmCartao { get; set; }
+        public bool? DeliveryPago { get; set; }
+
         //AUXILIARES
 
         [NotMapped]
@@ -61,8 +68,11 @@ namespace Pedidos.Models
 
         [NotMapped]
         public List<P_Productos> productos { get; set; } = new List<P_Productos>();
+
         [NotMapped]
         public List<P_FormaPagamento> listaFormaPagamento { get; set; } = new List<P_FormaPagamento>();
+
+
 
     }
 
@@ -81,6 +91,19 @@ namespace Pedidos.Models
         public decimal? descuento { get; set; }
         public bool pago { get; set; }
         public string listaFormaPagamento { get; set; }
+    }
+
+
+    public class InfoAuxDelivery
+    {
+        public int idPedido { get; set; }
+        public decimal? descuento { get; set; } = 0;
+        public decimal? tasaEntrega { get; set; } = 0;
+        public bool? DeliveryEmdinheiro { get; set; }
+        public decimal? DeliveryDinheiroTotal { get; set; }
+        public decimal? DeliveryTroco { get; set; }
+        public bool? DeliveryEmCartao { get; set; }
+        public bool? DeliveryPago { get; set; }
     }
 
 }

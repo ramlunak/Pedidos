@@ -108,29 +108,36 @@ namespace Pedidos.Models
         {
             get
             {
-                var valor_producto = this.valor;
-
-                if (this.valor == 0)
+                try
                 {
-                    valor_producto = this.valorTamanhoSeleccionado;
-                    if (valorTamanhoSeleccionado == 0)
+                    var valor_producto = this.valor;
+
+                    if (this.valor == 0)
                     {
-                        valor_producto = valorTamanho1.Value;
+                        valor_producto = this.valorTamanhoSeleccionado;
+                        if (valorTamanhoSeleccionado == 0)
+                        {
+                            valor_producto = valorTamanho1.Value;
+                        }
+
                     }
 
-                }
+                    decimal valor_adicionales = 0;
 
-                decimal valor_adicionales = 0;
-
-                foreach (var item in this.Adicionales)
-                {
-                    if (item.cantidad > 0)
+                    foreach (var item in this.Adicionales)
                     {
-                        valor_adicionales += (item.Valor * item.cantidad);
+                        if (item.cantidad > 0)
+                        {
+                            valor_adicionales += (item.Valor * item.cantidad);
+                        }
                     }
-                }
 
-                return this.cantidad * (valor_producto + valor_adicionales);
+                    return this.cantidad * (valor_producto + valor_adicionales);
+                }
+                catch (Exception ex)
+                {
+                    return -1;
+                }
             }
         }
         [NotMapped]

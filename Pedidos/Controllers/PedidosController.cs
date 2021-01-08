@@ -446,6 +446,27 @@ namespace Pedidos.Controllers
             }
         }
 
+        public async Task<IActionResult> DeletePruducto(int id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            try
+            {
+                var currentPedido = GetSession<P_Pedido>("currentPedido");
+                var producto = currentPedido.productos.First(x => x.id == id);
+                currentPedido.productos.Remove(producto);
+                SetSession("currentPedido", currentPedido);
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+
         public async Task<IActionResult> Print(int id)
         {
             if (!ValidarCuenta())

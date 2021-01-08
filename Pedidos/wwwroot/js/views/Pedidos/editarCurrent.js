@@ -1,6 +1,6 @@
 ﻿
 $(function () {
-      
+
 
 });
 
@@ -21,8 +21,28 @@ function deleteCurrentProducto(id) {
     }).then((result) => {
         if (result.isConfirmed) {
 
-            _CurrentPedido.productos.splice(_CurrentPedido.productos.findIndex(x => x.id === id), 1);
-            TABLE_PedidoProductos();
+            $.ajax({
+                type: "GET",
+                url: "/Pedidos/DeletePruducto/" + parseInt(id),
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+
+                    _CurrentPedido.productos.splice(_CurrentPedido.productos.findIndex(x => x.id === id), 1);
+                    TABLE_PedidoProductos();
+
+                },
+                failure: function (response) {
+                    console.log('failure', response);
+                },
+                error: function (response) {
+                    console.log('error', response);
+
+                }
+            });
+
+
         }
     })
 }

@@ -109,6 +109,17 @@ namespace Pedidos.Models
             get
             {
                 var valor_producto = this.valor;
+
+                if (this.valor == 0)
+                {
+                    valor_producto = this.valorTamanhoSeleccionado;
+                    if (valorTamanhoSeleccionado == 0)
+                    {
+                        valor_producto = valorTamanho1.Value;
+                    }
+
+                }
+
                 decimal valor_adicionales = 0;
 
                 foreach (var item in this.Adicionales)
@@ -139,11 +150,11 @@ namespace Pedidos.Models
         public int? idMesa { get; set; }
         [NotMapped]
         public string direccion { get; set; }
-        [NotMapped]       
+        [NotMapped]
         public int? idDireccion { get; set; }
         [NotMapped]
         public string telefono { get; set; }
-       
+
 
     }
 

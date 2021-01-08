@@ -104,6 +104,7 @@ namespace Pedidos.Models
         public decimal? DeliveryTroco { get; set; }
         public bool? DeliveryEmCartao { get; set; }
         public bool? DeliveryPago { get; set; }
+        public bool? pedidoIsPreparado { get; set; } = true;
     }
 
 }

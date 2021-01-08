@@ -82,21 +82,43 @@ var pedidoIsPreparado = false;
 
 function showModalInfoDelivery(idPedido) {
 
+    var pedido = null;
+
     if (idPedido !== null && idPedido !== undefined && idPedido !== "") {
 
         var findResult = _PedidosPendientes.filter(function (item) {
             return (item.id === idPedido);
         });
-        var pedido = findResult[0];
+        pedido = findResult[0];
         pedidoValorProdutosPreparado = pedido.valorProductos;
         idPedidoPreparado = idPedido;
         pedidoIsPreparado = true;
 
     } else {
 
+        pedido = _CurrentPedido;
         pedidoValorProdutosPreparado = _CurrentPedido.valorProductos;
         pedidoIsPreparado = false;
+    }
+    if (pedido.descuento !== null && pedido.descuento !== undefined && pedido.descuento > 0) {
+        $('#inputDescuentoPreparado').val(pedido.descuento);
+    }
+    if (pedido.tasaEntrega !== null && pedido.tasaEntrega !== undefined && pedido.tasaEntrega > 0) {
+        $('#inputTasaEntregaPreparado').val(pedido.tasaEntrega);
+    }
+    if (pedido.deliveryDinheiroTotal !== null && pedido.deliveryDinheiroTotal !== undefined && pedido.deliveryDinheiroTotal > 0) {
+        $('#inputTotalDinheiroPreparado').val(pedido.deliveryDinheiroTotal);
+        $('#inputTotalDinheiroPreparado').prop('disabled', false);
+        $('#inputTrocoPreparado').val(pedido.deliveryTroco);
+        $('#SelectedDinheiroPreparado').attr('checked', 'checked');
+    }
 
+    if (pedido.deliveryEmCartao !== null && pedido.deliveryEmCartao !== undefined && pedido.deliveryEmCartao) {
+        $('#SelectedCartaoPreparado').attr('checked', 'checked');
+    }
+
+    if (pedido.deliveryPago !== null && pedido.deliveryPago !== undefined && pedido.deliveryPago) {
+        $('#SelectedPagoPreparado').attr('checked', 'checked');
     }
 
     $('#ModalPreparado').modal('show');
@@ -116,6 +138,7 @@ function preparado() {
         DeliveryEmdinheiro: $('#SelectedDinheiroPreparado').is(':checked'),
         DeliveryEmCartao: $('#SelectedCartaoPreparado').is(':checked'),
         DeliveryPago: $('#SelectedPagoPreparado').is(':checked'),
+        pedidoIsPreparado: pedidoIsPreparado
     };
 
     if (totalCalculadoPreparado < 0) {
@@ -163,9 +186,15 @@ function preparado() {
                 title: 'Ação realizada com sucesso'
             })
 
+            if (pedidoIsPreparado) {
+                addPedidoToEnd(pedido);
+            } else {
+                _CurrentPedido = pedido;
+                $('#spanTotal').html(_CurrentPedido.valorProductos + _CurrentPedido.tasaEntrega - _CurrentPedido.descuento);
+            }
 
-            addPedidoToEnd(pedido);
             idPedidoPreparado = 0;
+            $('#formInfoDelivery')[0].reset();
             $('#ModalPreparado').modal('hide');
 
         },

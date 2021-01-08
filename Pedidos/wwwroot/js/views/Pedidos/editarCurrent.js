@@ -9,12 +9,12 @@ $(function () {
 });
 
 function editarCurrentProducto(id) {
-    alert();
+    ShowDetallesProducto(id);
 }
 
 function deleteCurrentProducto(id) {
     Swal.fire({
-        title: 'Tem certeza que deseja cancelar o pedido?',
+        title: 'Tem certeza que deseja deletar o produto?',
         text: "",
         icon: 'warning',
         showCancelButton: true,

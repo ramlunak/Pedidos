@@ -649,7 +649,7 @@ function MostarCurrentPedido() {
     $('#inputDescuento').val(_CurrentPedido.descuento);
     $('#inputPago').prop("checked", _CurrentPedido.DeliveryPago);
 
-    $('#spanTotal').html(_CurrentPedido.valorProductos.toFixed(2));
+    $('#spanTotal').html(_CurrentPedido.valorProductos + _CurrentPedido.tasaEntrega - _CurrentPedido.descuento);
 
     TABLE_PedidoProductos();
 }
@@ -666,11 +666,11 @@ function TABLE_PedidoProductos() {
         var TD2 = $('<td>');
         var TR = $('<tr>');
 
-        var btnEdit = '<div class="btn btn-sm btn-outline-success ml-2" onclick="editarCurrentProducto(' + item.id + ')"><i class="fas fa-edit"></i></div>';
+        // var btnEdit = '<div class="btn btn-sm btn-outline-success ml-2" onclick="editarCurrentProducto(' + item.id + ')"><i class="fas fa-edit"></i></div>';
         var btnDelete = '<div class="btn btn-sm btn-outline-danger ml-1"  onclick="deleteCurrentProducto(' + item.id + ')"><i class="fas fa-ban"></i></div>';
 
         TD1.append('<div>(<b>' + item.cantidad + '</b>) ' + item.nombre.toUpperCase() + '</div>');
-        TD2.append('<div style="font-size:12px;text-align:center;font-weight:700" class="cursor-pointer d-flex text-nowrap"> <span> R$ ' + item.valorMasAdicionales.toFixed(2) + '</span><div> ' + btnEdit + btnDelete + '</div></div>');
+        TD2.append('<div style="font-size:12px;text-align:center;font-weight:700" class="cursor-pointer d-flex text-nowrap"> <span> R$ ' + item.valorMasAdicionales.toFixed(2) + '</span><div> ' + btnDelete + '</div></div>');
 
         TR.append(TD1, TD2);
         TABLE.append(TR);

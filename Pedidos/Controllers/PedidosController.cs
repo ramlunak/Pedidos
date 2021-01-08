@@ -86,7 +86,7 @@ namespace Pedidos.Controllers
             producto.imagen = null;
 
             currentPedido.productos.Add(producto);
-            currentPedido.valorProductos = currentPedido.productos.Sum(x=>x.ValorMasAdicionales);
+            currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
             currentPedido.cliente = producto.cliente;
             currentPedido.idCliente = producto.idCliente;
             currentPedido.aplicativo = producto.aplicativo;
@@ -329,10 +329,19 @@ namespace Pedidos.Controllers
             }
             try
             {
-                var pedido = await _context.P_Pedidos.FindAsync(infoAuxDelivery.idPedido);
+                var pedido = new P_Pedido(0);
+                var currentPedido = GetSession<P_Pedido>("currentPedido");
+
+                if (infoAuxDelivery.pedidoIsPreparado.Value)
+                {
+                    pedido = await _context.P_Pedidos.FindAsync(infoAuxDelivery.idPedido);
+                }
+                else
+                {
+                    pedido = currentPedido;
+                }
 
                 pedido.status = StatusPedido.Preparado.ToString();
-
                 pedido.descuento = infoAuxDelivery.descuento ?? 0;
                 pedido.tasaEntrega = infoAuxDelivery.tasaEntrega ?? 0;
                 pedido.DeliveryEmdinheiro = infoAuxDelivery.DeliveryEmdinheiro;
@@ -341,9 +350,18 @@ namespace Pedidos.Controllers
                 pedido.DeliveryEmCartao = infoAuxDelivery.DeliveryEmCartao;
                 pedido.DeliveryPago = infoAuxDelivery.DeliveryPago;
 
-                _context.Update(pedido);
-                await _context.SaveChangesAsync();
-                return Ok(pedido);
+                if (infoAuxDelivery.pedidoIsPreparado.Value)
+                {
+                    _context.Update(pedido);
+                    await _context.SaveChangesAsync();
+                    return Ok(pedido);
+                }
+                else
+                {
+                    SetSession("currentPedido", pedido);
+                    return Ok(pedido);
+                }
+
             }
             catch (Exception ex)
             {

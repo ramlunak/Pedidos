@@ -150,9 +150,7 @@ namespace Pedidos.Controllers
                     currentPedido.aplicativo = pedidoaux.aplicativo;
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
-                    currentPedido.telefono = pedidoaux.telefono;
-                    currentPedido.descuento = pedidoaux.descuento ?? 0;
-                    currentPedido.DeliveryPago = pedidoaux.pago;
+                    currentPedido.telefono = pedidoaux.telefono;                   
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))

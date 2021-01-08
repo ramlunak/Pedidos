@@ -702,9 +702,7 @@ function GuardarCurrentPedido() {
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
         idDireccion: parseInt($('#idDireccion').val()),
-        telefono: $('#inputTelefone').val(),
-        descuento: parseFloat($('#inputDescuento').val()),
-        pago: $('#inputPago').is(':checked')
+        telefono: $('#inputTelefone').val()
     }
 
     showLoading();
@@ -774,7 +772,7 @@ function TABLE_PedidosPendientes() {
     $.each(_PedidosPendientes, function (index, pedido) {
 
 
-        var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2">');
+        var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  bg-gradient-info">');
         var CARD_BODY = $('<div class="card-body  p-1">');
 
         var mesa = '';
@@ -785,15 +783,30 @@ function TABLE_PedidosPendientes() {
             aplicativo = '<div style="font-size:11px">' + pedido.aplicativo + '</div>';
         }
 
+        var tasaEntrega = ' <div style="font-size:13px">Taxa de entrega: <b>R$ ' + pedido.tasaEntrega.toFixed(2) + '</b></div>  ';
+        if (pedido.tasaEntrega === 0) {
+            tasaEntrega = "";
+        }
+
+        var descuento = ' <div style="font-size:13px">Desconto: <b>R$ ' + pedido.descuento.toFixed(2) + '</b></div>  ';
+        if (pedido.descuento === 0) {
+            descuento = "";
+        }
+
+        var valorPedido = pedido.valorProductos;
+        var totalPagar = valorPedido + pedido.tasaEntrega - pedido.descuento;
+
         //INFO DEL PEDIDO 
         var div_infopedido = '<div class="d-flex justify-content-between">  ' +
             '               <div class="d-block" style="text-align:left">  ' +
-            '                   <div style="font-size:11px">' + pedido.cliente + '</div>  ' +
-            '                   <div style="font-size:11px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
+            '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
+            '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
             '               </div>  ' +
             '               <div class="d-block" style="text-align:right">  ' +
-            '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
-            '                   <div style="font-size:11px"><b>R$ ' + pedido.valorProductos.toFixed(2) + '</b></div>  ' +
+            '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
+            tasaEntrega +
+            descuento +
+            '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
             '               </div>  ' +
             '           </div>  ' +
             '          <hr class="m-2" />  ';
@@ -838,28 +851,28 @@ function TABLE_PedidosPendientes() {
 
 
             TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + producto.observacion + '</div></div>');
-            TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valor.toFixed(2) + '</div>');
+            TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.ValorMasAdicionales.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 
             //ADICIONALES E INGREDIENTES DEL PRODUCTO
             var TR2_PRD = $('<tr>');
             var TD1_PRD = $('<td style="width:100%" colspan="2">');
 
-            var TABLA_ADIC = $('<table class="w-100 unselectable">');
+            var TABLA_ADIC = $('<table class="w-100 unselectable" style="color: blue;font-weight: 500;">');
             $.each(producto.Adicionales, function (index, item) {
 
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
                 var TR = $('<tr>');
 
-                TD1.append('<div class="unselectable" style="text-align:start;"><a style="color:blue;">+' + item.cantidad + '</a> ' + item.nombre + '</div>');
+                TD1.append('<div class="unselectable" style="text-align:start;"><a>+' + item.cantidad + '</a> ' + item.nombre + '</div>');
                 TD2.append('<div class="unselectable" style="width:70px;text-align:end;font-size: 13px;">R$ ' + (item.Valor * item.cantidad).toFixed(2) + '</div>');
 
                 TR.append(TD1, TD2);
                 TABLA_ADIC.append(TR);
             });
 
-            var TABLA_INGD = $('<table class="w-100 unselectable">');
+            var TABLA_INGD = $('<table class="w-100 unselectable" style="color: orangered;font-weight: 500;">');
             $.each(producto.Ingredientes, function (index, item) {
                 console.log(item);
                 var TD1 = $('<td style="width:100%">');
@@ -932,14 +945,38 @@ function addPedidoToEnd(pedido) {
     var CARD_BODY = $('<div class="card-body  p-1">');
 
     //INFO DEL PEDIDO 
+    var mesa = '';
+    var aplicativo = '';
+    if (pedido.idMesa !== null && pedido.idMesa !== undefined && pedido.idMesa !== "" && pedido.idMesa > 0) {
+        mesa = '<div style="font-size:11px">MESA ' + pedido.idMesa + '</div>';
+    } if (pedido.aplicativo !== null && pedido.aplicativo !== undefined && pedido.aplicativo !== "") {
+        aplicativo = '<div style="font-size:11px">' + pedido.aplicativo + '</div>';
+    }
+
+    var tasaEntrega = ' <div style="font-size:13px">Taxa de entrega: <b>R$ ' + pedido.tasaEntrega.toFixed(2) + '</b></div>  ';
+    if (pedido.tasaEntrega === 0) {
+        tasaEntrega = "";
+    }
+
+    var descuento = ' <div style="font-size:13px">Desconto: <b>R$ ' + pedido.descuento.toFixed(2) + '</b></div>  ';
+    if (pedido.descuento === 0) {
+        descuento = "";
+    }
+
+    var valorPedido = pedido.valorProductos;
+    var totalPagar = valorPedido + pedido.tasaEntrega - pedido.descuento;
+
+    //INFO DEL PEDIDO 
     var div_infopedido = '<div class="d-flex justify-content-between">  ' +
         '               <div class="d-block" style="text-align:left">  ' +
-        '                   <div style="font-size:11px">' + pedido.cliente + '</div>  ' +
-        '                   <div style="font-size:11px">' + pedido.direccion + '</div>  ' +
+        '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
+        '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
         '               </div>  ' +
         '               <div class="d-block" style="text-align:right">  ' +
-        '                   <div style="font-size:11px"><b>TOTAL</b></div>  ' +
-        '                   <div style="font-size:11px"><b>R$ ' + pedido.valorProductos.toFixed(2) + '</b></div>  ' +
+        '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
+        tasaEntrega +
+        descuento +
+        '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
         '               </div>  ' +
         '           </div>  ' +
         '          <hr class="m-2" />  ';
@@ -1136,6 +1173,8 @@ function finalizado(idPedido) {
         return (item.id === idPedido);
     });
     var pedido = findResult[0];
+
+    console.log(pedido);
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
     $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {

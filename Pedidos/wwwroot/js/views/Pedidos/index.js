@@ -666,8 +666,11 @@ function TABLE_PedidoProductos() {
         var TD2 = $('<td>');
         var TR = $('<tr>');
 
+        var btnEdit = '<div class="btn btn-sm btn-outline-success ml-2" onclick="editarCurrentProducto(' + item.id + ')"><i class="fas fa-edit"></i></div>';
+        var btnDelete = '<div class="btn btn-sm btn-outline-danger ml-1"  onclick="deleteCurrentProducto(' + item.id + ')"><i class="fas fa-ban"></i></div>';
+
         TD1.append('<div>(<b>' + item.cantidad + '</b>) ' + item.nombre.toUpperCase() + '</div>');
-        TD2.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + item.valorMasAdicionales.toFixed(2) + '</div>');
+        TD2.append('<div style="font-size:12px;text-align:center;font-weight:700" class="cursor-pointer d-flex text-nowrap"> <span> R$ ' + item.valorMasAdicionales.toFixed(2) + '</span><div> ' + btnEdit + btnDelete + '</div></div>');
 
         TR.append(TD1, TD2);
         TABLE.append(TR);
@@ -896,7 +899,7 @@ function TABLE_PedidosPendientes() {
         if (pedido.status == "Pendiente") {
             futter_botones.append('<a onclick="cancelar(' + pedido.id + ')" class="btn btn-sm btn-danger cursor-pointer"  style="color:white" ><i class="fas fa-ban"></i></a>');
             futter_botones.append('<a onclick="editar(' + pedido.id + ')" class="btn btn-sm btn-success cursor-pointer ml-1" style="color:white"><i class="fas fa-edit"></i></a> <span class="m-1"> | <span>  ');
-            futter_botones.append('<a onclick="showModalPreparado(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
+            futter_botones.append('<a onclick="showModalInfoDelivery(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
         }
 
         futter_botones.append('<a onclick="finalizado(' + pedido.id + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">finalizar</a>');

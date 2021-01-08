@@ -45,6 +45,7 @@ $(function () {
 });
 
 function calcularTotalPagarPreparado() {
+
     var total = pedidoValorProdutosPreparado;
     var tasaEntraga = parseFloat($('#inputTasaEntregaPreparado').val());
     var descontoPreparado = parseFloat($('#inputDescuentoPreparado').val());
@@ -77,15 +78,27 @@ function calcularTroco() {
 
 var idPedidoPreparado = 0;
 var pedidoValorProdutosPreparado = 0;
-function showModalPreparado(idPedido) {
+var pedidoIsPreparado = false;
 
-    var findResult = _PedidosPendientes.filter(function (item) {
-        return (item.id === idPedido);
-    });
-    var pedido = findResult[0];
-    pedidoValorProdutosPreparado = pedido.valorProductos;
+function showModalInfoDelivery(idPedido) {
 
-    idPedidoPreparado = idPedido;
+    if (idPedido !== null && idPedido !== undefined && idPedido !== "") {
+
+        var findResult = _PedidosPendientes.filter(function (item) {
+            return (item.id === idPedido);
+        });
+        var pedido = findResult[0];
+        pedidoValorProdutosPreparado = pedido.valorProductos;
+        idPedidoPreparado = idPedido;
+        pedidoIsPreparado = true;
+
+    } else {
+
+        pedidoValorProdutosPreparado = _CurrentPedido.valorProductos;
+        pedidoIsPreparado = false;
+
+    }
+
     $('#ModalPreparado').modal('show');
 
     calcularTotalPagarPreparado();
@@ -130,7 +143,6 @@ function preparado() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (pedido) {
-
 
             hideLoading();
 

@@ -1,0 +1,32 @@
+﻿
+$(function () {
+
+    $('input[name="radioFormaPagamentoPreparado"]').on('change', function (e) {
+
+
+    });
+
+});
+
+function editarCurrentProducto(id) {
+    alert();
+}
+
+function deleteCurrentProducto(id) {
+    Swal.fire({
+        title: 'Tem certeza que deseja cancelar o pedido?',
+        text: "",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Sim!',
+        cancelButtonText: 'Não'
+    }).then((result) => {
+        if (result.isConfirmed) {
+
+            _CurrentPedido.productos.splice(_CurrentPedido.productos.findIndex(x => x.id === id), 1);
+            TABLE_PedidoProductos();
+        }
+    })
+}

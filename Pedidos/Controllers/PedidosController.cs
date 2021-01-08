@@ -86,7 +86,7 @@ namespace Pedidos.Controllers
             producto.imagen = null;
 
             currentPedido.productos.Add(producto);
-
+            currentPedido.valorProductos = currentPedido.productos.Sum(x=>x.ValorMasAdicionales);
             currentPedido.cliente = producto.cliente;
             currentPedido.idCliente = producto.idCliente;
             currentPedido.aplicativo = producto.aplicativo;

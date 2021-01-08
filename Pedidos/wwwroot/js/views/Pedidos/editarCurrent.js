@@ -1,10 +1,6 @@
 ﻿
 $(function () {
-
-    $('input[name="radioFormaPagamentoPreparado"]').on('change', function (e) {
-
-
-    });
+      
 
 });
 

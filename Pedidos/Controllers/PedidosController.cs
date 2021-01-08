@@ -115,6 +115,7 @@ namespace Pedidos.Controllers
                 foreach (var item in JsonConvert.DeserializeObject<P_Productos[]>(currentPedido.jsonListProductos))
                 {
                     currentPedido.productos.Add(item);
+                    currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
                 }
                 currentPedido.isNew = false;
                 SetSession("currentPedido", currentPedido);

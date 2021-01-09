@@ -772,7 +772,7 @@ function TABLE_PedidosPendientes() {
     $.each(_PedidosPendientes, function (index, pedido) {
 
 
-        var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  bg-gradient-info">');
+        var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  border border-info">');
         var CARD_BODY = $('<div class="card-body  p-1">');
 
         var mesa = '';

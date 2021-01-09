@@ -242,6 +242,9 @@ namespace Pedidos.Controllers
 
                     if (currentPedido.isNew)
                     {
+                        var count = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+                        var codigo = $"P{Cuenta.id}-{++count}";
+                        currentPedido.codigo = codigo;
                         _context.Add(currentPedido);
                         await _context.SaveChangesAsync();
 

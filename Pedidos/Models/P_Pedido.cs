@@ -14,9 +14,7 @@ namespace Pedidos.Models
     {
         public P_Pedido(int idCuenta)
         {
-            this.idCuenta = idCuenta;
-            this.codigo = Utils.Util.CreateCodigoPedido(idCuenta);
-            this.date_teste = DateTime.Now.ToSouthAmericaStandard().ToString();
+            this.idCuenta = idCuenta;           
         }
         public int id { get; set; }
         public string codigo { get; set; }
@@ -50,9 +48,6 @@ namespace Pedidos.Models
 
         [NotMapped]
         public bool isNew { get; set; } = true;
-
-        [NotMapped]
-        public string date_teste { get; set; }
 
         [NotMapped]
         public int tiempo_pedido

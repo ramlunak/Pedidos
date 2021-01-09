@@ -43,14 +43,27 @@
 <body>
     <div class="ticket">
 
-        <div class="centrado"><strong>@Model.codigo.ToUpper()</strong> </div>
+        <div style="text-align:center;margin:5px">
+            <div><b>código: P1-120</b></div>
+        </div>
 
-        <p class="col" style="margin-top:2px">
-            <div class="centrado" style="margin-bottom:5px">@Model.cliente.ToUpper()</div>
-            <div class="centrado">@Model.direccion.ToUpper()</div>
-        </p>
+        @*ESTABLECIMIENTO*@
 
-        <hr />
+        <div>
+            <div><b></b>Royber Arias Moreno<b></b></div>
+            <div>
+                Av. Fernando de Noronha, 715 - Bom Retiro, Ipatinga - MG, 35160-350
+            </div>
+        </div>
+
+        @*<div class="centrado"><strong>@Model.codigo.ToUpper()</strong> </div>
+
+            <p class="col" style="margin-top:2px">
+                <div class="centrado" style="margin-bottom:5px">@Model.cliente.ToUpper()</div>
+                <div class="centrado">@Model.direccion.ToUpper()</div>
+            </p>
+
+            <hr />*@
 
         @foreach (var producto in Model.productos)
         {
@@ -92,6 +105,19 @@
 
             <hr />
         }
+
+        <hr />
+
+        @*ESTABLECIMIENTO*@
+
+        <div>
+            <div><b></b>San-Duba<b></b></div>
+            <div>
+                Av. Fernando de Noronha, 715 - Bom Retiro, Ipatinga - MG, 35160-350
+            </div>
+        </div>
+
+        <hr />
 
         <p class="centrado">
             <b>¡obrigado por sua preferência!</b>

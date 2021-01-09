@@ -816,7 +816,7 @@ function TABLE_PedidosPendientes() {
         //LISTA DE PRODUCTOS
         var TABLA_PRD = $('<table cellspacing="0" class="table-tr-border-radius unselectable" style="font-size: 13px;">');
 
-        $.each(JSON.parse(pedido.jsonListProductos), function (index, producto) {
+        $.each(pedido.productos, function (index, producto) {
 
             //PRODUCTO
             var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
@@ -825,7 +825,7 @@ function TABLE_PedidosPendientes() {
 
             var btnInfo = ' <button type="button" class="btn btn-sm btn-outline-primary mr-1 ml-1" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">';
 
-            if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
+            if (producto.adicionales.length == 0 && producto.ingredientes.length == 0) {
                 Desplegar = "";
                 btnInfo = "";
             }
@@ -850,7 +850,7 @@ function TABLE_PedidosPendientes() {
 
 
             TD1_PRD.append('<div class="d-flex"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + '</div> ' + tiempo + ' </div><div style="color: gray;text-align: start;">' + producto.observacion + '</div>');
-            TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.ValorMasAdicionales.toFixed(2) + '</div>');
+            TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valorMasAdicionales.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 
             //ADICIONALES E INGREDIENTES DEL PRODUCTO
@@ -858,7 +858,7 @@ function TABLE_PedidosPendientes() {
             var TD1_PRD = $('<td style="width:100%" colspan="2">');
 
             var TABLA_ADIC = $('<table class="w-100 unselectable" style="color: blue;font-weight: 500;">');
-            $.each(producto.Adicionales, function (index, item) {
+            $.each(producto.adicionales, function (index, item) {
 
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
@@ -872,7 +872,7 @@ function TABLE_PedidosPendientes() {
             });
 
             var TABLA_INGD = $('<table class="w-100 unselectable" style="color: orangered;font-weight: 500;">');
-            $.each(producto.Ingredientes, function (index, item) {
+            $.each(producto.ingredientes, function (index, item) {
                 console.log(item);
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
@@ -991,7 +991,7 @@ function addPedidoToEnd(pedido) {
     //LISTA DE PRODUCTOS
     var TABLA_PRD = $('<table cellspacing="0" class="table-tr-border-radius unselectable" style="font-size: 13px;">');
 
-    $.each(JSON.parse(pedido.jsonListProductos), function (index, producto) {
+    $.each(pedido.productos, function (index, producto) {
 
         //PRODUCTO
         var Desplegar = 'class="cursor-pointer" data-toggle="collapse"   ' +
@@ -1000,7 +1000,7 @@ function addPedidoToEnd(pedido) {
 
         var btnInfo = ' <button type="button" class="btn btn-sm btn-outline-primary" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">';
 
-        if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
+        if (producto.adicionales.length == 0 && producto.ingredientes.length == 0) {
             Desplegar = "";
             btnInfo = "";
         }
@@ -1035,7 +1035,7 @@ function addPedidoToEnd(pedido) {
         var TD1_PRD = $('<td style="width:100%" colspan="2">');
 
         var TABLA_ADIC = $('<table class="w-100 unselectable">');
-        $.each(producto.Adicionales, function (index, item) {
+        $.each(producto.adicionales, function (index, item) {
 
             var TD1 = $('<td style="width:100%">');
             var TD2 = $('<td>');
@@ -1049,7 +1049,7 @@ function addPedidoToEnd(pedido) {
         });
 
         var TABLA_INGD = $('<table class="w-100 unselectable">');
-        $.each(producto.Ingredientes, function (index, item) {
+        $.each(producto.ingredientes, function (index, item) {
             console.log(item);
             var TD1 = $('<td style="width:100%">');
             var TD2 = $('<td>');

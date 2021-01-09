@@ -266,6 +266,10 @@ namespace Pedidos.Controllers
                         var pedidos = await _context.P_Pedidos.Where(x =>
                                          x.idCuenta == Cuenta.id &&
                                         (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
+                        if (pedidos.Any())
+                        {
+                            pedidos.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
+                        }
                         var pedidosPendientes = pedidos.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList();
 
                         return Ok(new { ok = true, reload = false, currentPedido, pedidosPendientes });
@@ -288,7 +292,10 @@ namespace Pedidos.Controllers
             var pedidosPendientes = await _context.P_Pedidos.Where(x =>
                                      x.idCuenta == Cuenta.id &&
                                     (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
-           
+            if (pedidosPendientes.Any())
+            {
+                pedidosPendientes.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
+            }
             return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
         }
 

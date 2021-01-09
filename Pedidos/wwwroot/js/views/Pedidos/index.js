@@ -831,7 +831,8 @@ function TABLE_PedidosPendientes() {
             }
 
             // CONTADOR
-           
+            var TR0_PRD = $('<tr>');
+
             var sec = producto.tiempo_pedido;
             function pad(val) { return val > 9 ? val : "0" + val; }
 

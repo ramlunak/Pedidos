@@ -823,7 +823,7 @@ function TABLE_PedidosPendientes() {
                 '   data-target="#collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '"   ' +
                 '   aria-expanded="false" aria-controls="collapseExample_' + pedido.id + '_' + index + '_' + producto.id + '" ';
 
-            var btnInfo = ' <button type="button" class="btn btn-sm btn-outline-primary" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">';
+            var btnInfo = ' <button type="button" class="btn btn-sm btn-outline-primary mr-1 ml-1" style="font-size:11px">+ Info</button></div><div style="text-align: start;color: cadetblue;">';
 
             if (producto.Adicionales.length == 0 && producto.Ingredientes.length == 0) {
                 Desplegar = "";
@@ -836,13 +836,12 @@ function TABLE_PedidosPendientes() {
             var sec = pedido.tiempo_pedido;
             function pad(val) { return val > 9 ? val : "0" + val; }
 
-            //setInterval(function () {
-            //    $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
-            //    $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
-            //}, 1000);
+            setInterval(function () {
+                $('#seconds_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(++sec % 60));
+                $('#minutes_' + pedido.id + '_' + index + '_' + producto.id + '').html(pad(parseInt(sec / 60, 10)));
+            }, 1000);
 
-            var div_conter_style = 'style="text-align: start;font-size: 11px !important;color: gray;color: mediumorchid;"';
-            // TR0_PRD.append('<td colspan="2"><div ' + div_conter_style + ' > <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span></div></td>');
+            var tiempo = '<div class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutes_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="seconds_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a data-toggle="tooltip" data-placement="top" title="Marcar Preparado"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
             //FIN
 
             var TR1_PRD = $('<tr>');
@@ -850,7 +849,7 @@ function TABLE_PedidosPendientes() {
             var TD2_PRD = $('<td>');
 
 
-            TD1_PRD.append('<div class="d-block"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + producto.observacion + '</div></div>');
+            TD1_PRD.append('<div class="d-flex"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + '</div> ' + tiempo + ' </div><div style="color: gray;text-align: start;">' + producto.observacion + '</div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.ValorMasAdicionales.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 
@@ -894,10 +893,13 @@ function TABLE_PedidosPendientes() {
             panelInredientesAdicionales.append(panelBody);
 
             TD1_PRD.append(panelInredientesAdicionales);
+            TD1_PRD.append('<hr class="p-0 m-1">');
+
             TR2_PRD.append(TD1_PRD);
 
             //ADD TRS A LA TABLA
             TABLA_PRD.append(TR0_PRD, TR1_PRD, TR2_PRD);
+
 
         });
 
@@ -931,6 +933,9 @@ function TABLE_PedidosPendientes() {
         TR.append(TD1);
         TABLE.append(TR);
     });
+
+    $('[data-toggle="tooltip"]').tooltip();
+
 }
 
 function addPedidoToEnd(pedido) {

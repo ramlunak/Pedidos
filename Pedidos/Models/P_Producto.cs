@@ -117,9 +117,8 @@ namespace Pedidos.Models
                         valor_producto = this.valorTamanhoSeleccionado;
                         if (valorTamanhoSeleccionado == 0)
                         {
-                            valor_producto = valorTamanho1.Value;
+                            valor_producto = this.valor;
                         }
-
                     }
 
                     decimal valor_adicionales = 0;
@@ -136,7 +135,7 @@ namespace Pedidos.Models
                 }
                 catch (Exception ex)
                 {
-                    return -1;
+                    return 0;
                 }
             }
         }

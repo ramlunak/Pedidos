@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Pedidos.Extensions;
 using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -59,6 +60,21 @@ namespace Pedidos.Models
         public decimal? valorTamanho3 { get; set; }
 
         //PROPIEDADES AUXILIARES
+
+        [NotMapped]
+        public int tiempo_pedido
+        {
+            get
+            {
+                if (fecha_pedido < new DateTime(2020, 1, 1)) return 0;
+                var tiempo = DateTime.Now.ToSouthAmericaStandard() - fecha_pedido;
+                var segusdos = tiempo.TotalSeconds;
+                return Convert.ToInt32(segusdos);
+            }
+        }
+
+        [NotMapped]
+        public DateTime fecha_pedido { get; set; }
 
         [NotMapped]
         public string tempo

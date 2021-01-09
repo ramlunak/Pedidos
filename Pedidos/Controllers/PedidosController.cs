@@ -84,6 +84,7 @@ namespace Pedidos.Controllers
 
             //Para no cargar la base con muchos datos eliminar la foto
             producto.imagen = null;
+            producto.fecha_pedido = DateTime.Now;
 
             currentPedido.productos.Add(producto);
             currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
@@ -150,7 +151,7 @@ namespace Pedidos.Controllers
                     currentPedido.aplicativo = pedidoaux.aplicativo;
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
-                    currentPedido.telefono = pedidoaux.telefono;                   
+                    currentPedido.telefono = pedidoaux.telefono;
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
@@ -287,7 +288,7 @@ namespace Pedidos.Controllers
             var pedidosPendientes = await _context.P_Pedidos.Where(x =>
                                      x.idCuenta == Cuenta.id &&
                                     (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
-
+           
             return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
         }
 

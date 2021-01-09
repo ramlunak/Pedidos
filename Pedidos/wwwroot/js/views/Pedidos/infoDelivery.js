@@ -187,7 +187,7 @@ function preparado() {
             })
 
             if (pedidoIsPreparado) {
-                addPedidoToEnd(pedido);
+               // addPedidoToEnd(pedido);
             } else {
                 _CurrentPedido = pedido;
                 $('#spanTotal').html(_CurrentPedido.valorProductos + _CurrentPedido.tasaEntrega - _CurrentPedido.descuento);

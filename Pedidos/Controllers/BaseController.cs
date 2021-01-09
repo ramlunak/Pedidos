@@ -30,7 +30,8 @@ namespace Pedidos.Controllers
                     //AllowRefresh = <bool>,
                     // Refreshing the authentication session should be allowed.
 
-                    ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1),
+                    //ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1),
+
                     // The time at which the authentication ticket expires. A 
                     // value set here overrides the ExpireTimeSpan option of 
                     // CookieAuthenticationOptions set with AddCookie.

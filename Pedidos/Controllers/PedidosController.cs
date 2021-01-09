@@ -84,7 +84,6 @@ namespace Pedidos.Controllers
 
             //Para no cargar la base con muchos datos eliminar la foto
             producto.imagen = null;
-            producto.fecha_pedido = DateTime.Now;
 
             currentPedido.productos.Add(producto);
             currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
@@ -139,6 +138,9 @@ namespace Pedidos.Controllers
             var currentPedido = GetSession<P_Pedido>("currentPedido");
             if (currentPedido.productos.Count > 0)
             {
+                currentPedido.productos.Where(x => x.isNew).Select(p => { p.fecha_pedido = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
+                currentPedido.productos.Where(x => x.isNew).Select(p => { p.isNew = false; return p; }).ToList();
+
                 try
                 {
                     currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();

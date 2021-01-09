@@ -77,6 +77,9 @@ namespace Pedidos.Models
         public DateTime fecha_pedido { get; set; }
 
         [NotMapped]
+        public bool isNew { get; set; } = true;
+
+        [NotMapped]
         public string tempo
         {
             get
@@ -106,7 +109,6 @@ namespace Pedidos.Models
         public IFormFile ImageName { get; set; }
         [NotMapped]
         public string ImageBase64 { get; set; }
-
         [NotMapped]
         public float desconto { get; set; }
 

@@ -481,6 +481,35 @@ namespace Pedidos.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<IActionResult> MarcarProductoPreparado([FromBody] MarcarProducto marcarProducto)
+        {
+            try
+            {
+                //Actualizar pedido base
+                var pedido = await _context.P_Pedidos.FindAsync(marcarProducto.idPedido);
+                pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
+                pedido.productos.Select(p => { p.fecha_preparado = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
+                pedido.jsonListProductos = pedido.productos.ToJson();
+                _context.P_Pedidos.Update(pedido);
+                await _context.SaveChangesAsync();
+                ////Listar pedidos pendientes
+                //var pedidosPendientes = await _context.P_Pedidos.Where(x =>
+                //                      x.idCuenta == Cuenta.id &&
+                //                     (x.status == StatusPedido.Pendiente.ToString() || x.status == StatusPedido.Preparado.ToString())).ToArrayAsync();
+                //if (pedidosPendientes.Any())
+                //{
+                //    pedidosPendientes.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
+                //}
+                //return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
+                return Ok(pedido);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
 
         public async Task<IActionResult> Print(int id)
         {

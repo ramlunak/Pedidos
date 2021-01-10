@@ -66,15 +66,40 @@ namespace Pedidos.Models
         {
             get
             {
-                if (fecha_pedido < new DateTime(2020, 1, 1)) return 0;
+                if (fecha_pedido == null || fecha_pedido.Value < new DateTime(2020, 1, 1)) return 0;
                 var tiempo = DateTime.Now.ToSouthAmericaStandard() - fecha_pedido;
-                var segusdos = tiempo.TotalSeconds;
+                if (fecha_preparado != null && fecha_preparado.Value > new DateTime(2020, 1, 1))
+                {
+                    tiempo = fecha_preparado.Value.ToSouthAmericaStandard() - fecha_pedido.Value;
+                }
+                var segusdos = tiempo.Value.TotalSeconds;
                 return Convert.ToInt32(segusdos);
             }
         }
 
         [NotMapped]
-        public DateTime fecha_pedido { get; set; }
+        public int tiempo_entrega
+        {
+            get
+            {
+                if (fecha_preparado == null || fecha_preparado.Value < new DateTime(2020, 1, 1)) return 0;
+                var tiempo = DateTime.Now.ToSouthAmericaStandard() - fecha_preparado;
+                if (fecha_entrega != null && fecha_entrega.Value > new DateTime(2020, 1, 1))
+                {
+                    tiempo = fecha_entrega.Value.ToSouthAmericaStandard() - fecha_preparado.Value;
+                }
+                var segusdos = tiempo.Value.TotalSeconds;
+                return Convert.ToInt32(segusdos);
+            }
+        }
+
+
+        [NotMapped]
+        public DateTime? fecha_pedido { get; set; }
+        [NotMapped]
+        public DateTime? fecha_preparado { get; set; }
+        [NotMapped]
+        public DateTime? fecha_entrega { get; set; }
 
         [NotMapped]
         public bool isNew { get; set; } = true;
@@ -205,4 +230,9 @@ namespace Pedidos.Models
         public string jsonIngredientes { get; set; }
     }
 
+    public class MarcarProducto
+    {
+        public int idPedido { get; set; }
+        public int idProducto { get; set; }
+    }
 }

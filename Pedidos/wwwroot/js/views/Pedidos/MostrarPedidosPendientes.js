@@ -128,7 +128,7 @@ function MostarPedidosPendientes() {
             var TD1_PRD = $('<td style="width:100%">');
             var TD2_PRD = $('<td>');
 
-            TD1_PRD.append('<div class="d-flex"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + '</div> ' + productoTiempoPedido + '_' + producto.fecha_pedido + '/' + producto.fecha_preparado + ' </div><div style="color: gray;text-align: start;">' + producto.observacion + '</div>');
+            TD1_PRD.append('<div class="d-flex"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + '</div> ' + productoTiempoPedido + ' </div><div style="color: gray;text-align: start;">' + producto.observacion + '</div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valorMasAdicionales.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 

@@ -406,7 +406,14 @@ namespace Pedidos.Controllers
             try
             {
                 var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
-                pedido.status = StatusPedido.Finalizado.ToString();
+                if (pedidoaux.finalizar)
+                {
+                    pedido.status = StatusPedido.Finalizado.ToString();
+                }
+                else
+                {
+                    pedido.status = StatusPedido.Pendiente.ToString();
+                }
                 pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
                 pedido.DeliveryPago = pedidoaux.pago;
@@ -414,23 +421,41 @@ namespace Pedidos.Controllers
                 pedido.tasaEntrega = pedidoaux.tasaEntrega ?? 0;
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
                 pedido.valorProductos = pedido.productos.Sum(x => x.ValorMasAdicionales);
+
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
 
-                if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
+                if (pedidoaux.finalizar)
+                    if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
+                    {
+                        var lista = GetSession<List<P_Pedido>>("PedidosFinalizados");
+                        lista.Add(pedido);
+                        SetSession("PedidosFinalizados", lista);
+                    }
+                    else
+                    {
+                        var lista = new List<P_Pedido>();
+                        lista.Add(pedido);
+                        SetSession("PedidosFinalizados", lista);
+                    }
+
+
+                var formasPagamento = new List<P_FormaPagamento>();
+                if (pedido.idAplicativo.HasValue)
                 {
-                    var lista = GetSession<List<P_Pedido>>("PedidosFinalizados");
-                    lista.Add(pedido);
-                    SetSession("PedidosFinalizados", lista);
+                    var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                    formasPagamento.AddRange(fp.Where(x => x.idAplicativo.HasValue && x.idAplicativo.Value == pedido.idAplicativo));
+                    formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue && x.app));
                 }
                 else
                 {
-                    var lista = new List<P_Pedido>();
-                    lista.Add(pedido);
-                    SetSession("PedidosFinalizados", lista);
+                    var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                    formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue));
                 }
 
-                return Ok(true);
+                pedido.jsonFormaPagamento = formasPagamento.ToJson();
+
+                return Ok(pedido);
             }
             catch (Exception ex)
             {

@@ -14,7 +14,7 @@ namespace Pedidos.Models
     {
         public P_Pedido(int idCuenta)
         {
-            this.idCuenta = idCuenta;           
+            this.idCuenta = idCuenta;
         }
         public int id { get; set; }
         public string codigo { get; set; }
@@ -87,6 +87,7 @@ namespace Pedidos.Models
         public decimal? tasaEntrega { get; set; }
         public decimal? troco { get; set; }
         public bool pago { get; set; }
+        public bool finalizar { get; set; }
         public string listaFormaPagamento { get; set; }
     }
 

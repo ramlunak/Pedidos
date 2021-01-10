@@ -53,7 +53,7 @@
                 <div class="card-footer text-muted p-2" style="color: black;">
                     <div class="d-flex justify-content-between">
                         <div> <a class="btn btn-sm btn-danger cursor-pointer" onclick="CancelarCurrentPedido()" style="color:white">cancelar</a></div>
-                        <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer d-flex align-items-center" onclick="showModalInfoDelivery()"><i class="fas fa-motorcycle mr-2" style="color:black"></i> DELIVERY</div>
+                        @*<div class="m-1 btn btn-sm btn-outline-primary cursor-pointer d-flex align-items-center" onclick="showModalInfoDelivery()"><i class="fas fa-motorcycle mr-2" style="color:black"></i> DELIVERY</div>*@
                         <div> <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a></div>
                     </div>
                 </div>
@@ -69,9 +69,9 @@
                         <datalist id="ClienteList" class="w-100">
                             @if (ViewBag.Clientes != null)
                             {
-                                @foreach (var cliente in ViewBag.Clientes)
+                            @foreach (var cliente in ViewBag.Clientes)
                                 {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                            <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -93,9 +93,9 @@
                         <datalist id="AplicativoList" class="w-100">
                             @if (ViewBag.Aplicativos != null)
                             {
-                                @foreach (var aplicativo in ViewBag.Aplicativos)
+                            @foreach (var aplicativo in ViewBag.Aplicativos)
                                 {
-                                    <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                            <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
                                 }
                             }
                         </datalist>

@@ -831,7 +831,7 @@ var valorInputFormaPagamento = 0;
 var totalPedido = 0;
 var firstInputChecked = null;
 
-function finalizado(idPedido) {
+function finalizado(idPedido, finalizar) {
 
     valorInputFormaPagamento = 0;
     totalPedido = 0;
@@ -898,7 +898,7 @@ function finalizado(idPedido) {
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
         width: '600px',
-        confirmButtonText: 'Sim!',
+        confirmButtonText: 'Salvar!',
         cancelButtonText: 'Não',
         onOpen: function () {
             $('.swal2-confirm').prop('id', 'modalBtnOk');
@@ -933,9 +933,12 @@ function finalizado(idPedido) {
                 descuento: parseFloat($('#inputDescontoFinalizado').val()),
                 pago: $("#inputPagoFinalizado").prop('checked'),
                 listaFormaPagamento: JSON.stringify(formasPagamento),
-                tasaEntrega: $('#inputTasaFormaPagamento').val(),
-                troco: $('#inputTrocoFormaPagamento').val()
+                tasaEntrega: $('#inputTasaFormaPagamento').val() === undefined ? 0 : $('#inputTasaFormaPagamento').val(),
+                troco: $('#inputTrocoFormaPagamento').val() === "" ? 0 : $('#inputTrocoFormaPagamento').val(),
+                finalizar: finalizar
             };
+
+            console.log(finalizarPedido);
 
             $.ajax({
                 type: "POST",
@@ -944,7 +947,12 @@ function finalizado(idPedido) {
                 data: JSON.stringify(finalizarPedido),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (result) {
+                success: function (pedido) {
+
+                    console.log(pedido);
+
+                    var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
+                    _PedidosPendientes[objIndex] = pedido;
 
                     const Toast = Swal.mixin({
                         toast: true,
@@ -962,9 +970,12 @@ function finalizado(idPedido) {
                         icon: 'success',
                         title: 'Ação realizada com sucesso'
                     })
+                    if (finalizar) {
+                        $('#CARD_PEDIDO_' + idPedido + '').remove();
+                        GetNumeroPedidosFinalizados();
+                    } else {
 
-                    $('#CARD_PEDIDO_' + idPedido + '').remove();
-                    GetNumeroPedidosFinalizados();
+                    }
                 },
                 failure: function (response) {
 

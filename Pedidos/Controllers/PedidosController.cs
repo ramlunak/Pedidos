@@ -509,7 +509,7 @@ namespace Pedidos.Controllers
                 //Actualizar pedido base
                 var pedido = await _context.P_Pedidos.FindAsync(marcarProducto.idPedido);
                 pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
-                pedido.productos.Select(p => { p.fecha_entrega = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
+                pedido.productos.Where(x => x.id == marcarProducto.idProducto).Select(p => { p.fecha_entrega = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
                 pedido.jsonListProductos = pedido.productos.ToJson();
                 _context.P_Pedidos.Update(pedido);
                 await _context.SaveChangesAsync();

@@ -5,7 +5,7 @@ function MostarPedidosPendientes() {
     var TABLE = $('#ListaPedidosPendientes');
     TABLE.empty();
 
-    $.each(_PedidosPendientes, function (index, pedido) {
+    $.each(_PedidosPendientes, function (indexPedido, pedido) {
 
         var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  border border-info">');
         var CARD_BODY = $('<div class="card-body  p-1">');
@@ -70,9 +70,9 @@ function MostarPedidosPendientes() {
 
             //TIEMPO DE PEDIDO
             var tiempopedido = producto.tiempo_pedido;
-
+            var timerPedido = null;
             if (producto.fecha_preparado === null) {
-                setInterval(function () {
+                timerPedido = setInterval(function () {
 
                     let minutesPedido_ = (tiempopedido / 60).toFixed(0);
                     let secondsPedido_ = tiempopedido % 60;
@@ -84,7 +84,7 @@ function MostarPedidosPendientes() {
             }
 
             $('#divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '').remove();
-            var productoTiempoPedido = '<div id="divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutesPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a data-toggle="tooltip" data-placement="top" title="Marcar Preparado" onclick="marcarProductoPreparado(' + pedido.id + ',' + producto.id + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
+            var productoTiempoPedido = '<div id="divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutesPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a  onclick="marcarProductoPreparado(' + pedido.id + ',' + producto.id + ',' + timerPedido + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
 
             if (producto.fecha_preparado !== null) {
                 let minutesPedido_ = (tiempopedido / 60).toFixed(0);
@@ -92,32 +92,40 @@ function MostarPedidosPendientes() {
                 productoTiempoPedido = '<div id="divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-success rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: black;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutesPedido_' + pedido.id + '_' + index + '_' + producto.id + '">' + minutesPedido_ + '</span>: <span id="secondsPedido_' + pedido.id + '_' + index + '_' + producto.id + '">' + secondsPedido_ + '</span>  </div>';
             }
 
-            //TIEMPO DE ENTRAGA
-            var tiempoentrega = producto.tiempo_entrega;
+            ////TIEMPO DE ENTRAGA
+            //var tiempoentrega = producto.tiempo_entrega;
+            //var timerEntregado = null;
+            //if (producto.fecha_preparado !== null && producto.fecha_entrega === null) {
+            //    timerEntregado = setInterval(function () {
 
-            if (producto.fecha_preparado !== null) {
-                setInterval(function () {
+            //        let minutesEntraga_ = (tiempoentrega / 60).toFixed(0);
+            //        let secondsEntraga_ = tiempoentrega % 60;
 
-                    let minutesEntraga_ = (tiempoentrega / 60).toFixed(0);
-                    let secondsEntraga_ = tiempoentrega % 60;
+            //        $('#minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '').html(minutesEntraga_);
+            //        $('#secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '').html(secondsEntraga_);
+            //        tiempoentrega++;
+            //    }, 1000);
+            //}
 
-                    $('#minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '').html(minutesEntraga_);
-                    $('#secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '').html(secondsEntraga_);
-                    tiempoentrega++;
-                }, 1000);
-            }
+            //$('#divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '').remove();
+            //var productoTiempoEntrega = '<div id="divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="fa fa-motorcycle  mr-1"></i> <span id="minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a  onclick="marcarProductoEntregado(' + pedido.id + ',' + producto.id +  ',' + timerEntregado + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
 
-            $('#divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '').remove();
-            var productoTiempoEntrega = '<div id="divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a data-toggle="tooltip" data-placement="top" title="Marcar Preparado" onclick="marcarProductoEntregado(' + producto.id + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
-            if (producto.fecha_preparado === null) {
-                productoTiempoEntrega = "";
-            }
+            //if (producto.fecha_preparado === null) {
+            //    productoTiempoEntrega = "";
+            //} else if (producto.fecha_preparado !== null && producto.fecha_entrega !== null) {
+
+            //    let minutesEntraga_ = (tiempoentrega / 60).toFixed(0);
+            //    let secondsEntraga_ = tiempoentrega % 60;
+            //    productoTiempoEntrega = '<div id="divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="fa fa-motorcycle  mr-1"></i> <span id="minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '">' + minutesEntraga_ + '</span>: <span id="secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '">' + secondsEntraga_ + '</span>  </div>';
+
+            //}
+            ////FIN 
 
             var TR1_PRD = $('<tr>');
             var TD1_PRD = $('<td style="width:100%">');
             var TD2_PRD = $('<td>');
 
-            TD1_PRD.append('<div class="d-flex"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + '</div> ' + productoTiempoPedido + productoTiempoEntrega + ' </div><div style="color: gray;text-align: start;">' + producto.observacion + '</div>');
+            TD1_PRD.append('<div class="d-flex"><div style="text-align: start;" ' + Desplegar + '>  (<b>' + producto.cantidad + '</b>) ' + producto.nombre.toUpperCase() + btnInfo + '</div> ' + productoTiempoPedido + ' </div><div style="color: gray;text-align: start;">' + producto.observacion + '</div>');
             TD2_PRD.append('<div style="font-size:12px;width:70px;text-align:end;" class="cursor-pointer"> R$ ' + producto.valorMasAdicionales.toFixed(2) + '</div>');
             TR1_PRD.append(TD1_PRD, TD2_PRD);
 
@@ -206,7 +214,9 @@ function MostarPedidosPendientes() {
 
 }
 
-function marcarProductoPreparado(idPedido, idProducto) {
+function marcarProductoPreparado(idPedido, idProducto, timer) {
+
+    clearInterval(timer);
 
     var marcarProducto = {
         idPedido: idPedido,
@@ -221,9 +231,44 @@ function marcarProductoPreparado(idPedido, idProducto) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (pedido) {
-            console.log(pedido);
-            //  _PedidosPendientes = data;
-            //MostarCurrentPedido();
+
+            var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
+            _PedidosPendientes[objIndex] = pedido;
+            MostarPedidosPendientes();
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
+function marcarProductoEntregado(idPedido, idProducto, timer) {
+
+    clearInterval(timer);
+    var marcarProducto = {
+        idPedido: idPedido,
+        idProducto: idProducto
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/MarcarProductoEntregado",
+        traditional: true,
+        data: JSON.stringify(marcarProducto),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (pedido) {
+
+            var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
+            _PedidosPendientes[objIndex] = pedido;
+            MostarPedidosPendientes();
 
         },
         failure: function (response) {

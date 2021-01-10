@@ -70,6 +70,9 @@ function MostarPedidosPendientes() {
 
             //TIEMPO DE PEDIDO
             var tiempopedido = producto.tiempo_pedido;
+
+            console.log(producto);
+
             var timerPedido = null;
             if (producto.fecha_preparado === null) {
                 timerPedido = setInterval(function () {

@@ -70,7 +70,7 @@ namespace Pedidos.Models
                 var tiempo = DateTime.Now.ToSouthAmericaStandard() - fecha_pedido;
                 if (fecha_preparado != null && fecha_preparado.Value > new DateTime(2020, 1, 1))
                 {
-                    tiempo = fecha_preparado.Value.ToSouthAmericaStandard() - fecha_pedido.Value;
+                    tiempo = fecha_preparado.Value - fecha_pedido.Value;
                 }
                 var segusdos = tiempo.Value.TotalSeconds;
                 return Convert.ToInt32(segusdos);
@@ -86,7 +86,7 @@ namespace Pedidos.Models
                 var tiempo = DateTime.Now.ToSouthAmericaStandard() - fecha_preparado;
                 if (fecha_entrega != null && fecha_entrega.Value > new DateTime(2020, 1, 1))
                 {
-                    tiempo = fecha_entrega.Value.ToSouthAmericaStandard() - fecha_preparado.Value;
+                    tiempo = fecha_entrega.Value - fecha_preparado.Value;
                 }
                 var segusdos = tiempo.Value.TotalSeconds;
                 return Convert.ToInt32(segusdos);

@@ -845,8 +845,9 @@ function finalizado(idPedido) {
     console.log(pedido);
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
+
     $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
-        var formaPagamento = '                       <div class="d-flex justify-content-between mt-2"><div class="form-check">  ' +
+        var formaPagamento = '          <div class="d-flex justify-content-between mt-2"><div class="form-check">  ' +
             '                           <input class="form-check-input" type="checkbox" onchange="radioFormaPagamentoChange(this,' + idPedido + ')" name="radioFormaPagamento" id="radioFormaPagamento_' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
             '                                ' + formaPagamento.nombre + '  ' +
@@ -861,21 +862,31 @@ function finalizado(idPedido) {
         formaPagamentoContainer += formaPagamento;
     });
 
+    formaPagamentoContainer += '        <hr/> <div class="d-flex mb-2">  ' +
+        '                               <label class="mr-2 col-5">Troco:</label>  ' +
+        '                               <input id="inputTrocoFormaPagamento" placeholder="Troco" class="form-control form-control-sm " />  ' +
+        '                           </div>';
+
+
     formaPagamentoContainer += '<hr/><div style="font-size: 13px;font-weight:700"><div class="d-flex mb-2 justify-content-between"><div><b>Total</b></div><div id="divTotalPagar"></div></div>';
     formaPagamentoContainer += '<div class="d-flex mb-2 justify-content-between"><div><b>Pago</b></div><div id="divResultadoCalculoFormaPagamento"></div></div>';
     formaPagamentoContainer += '<div class="d-flex mb-2 justify-content-between"><div><b>Diferença</b></div><div id="divDiferençaCalculoFormaPagamento"></div></div></div>';
 
     formaPagamentoContainer += '</div>';
 
+
     Swal.fire({
         title: 'Finalizar Pedido',
         html: '   <div class="card card-body" style="font-size: 14px;">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +
             '                           <div class="d-flex mb-2">  ' +
-            '                               <label class="mr-2">Desconto:</label>  ' +
+            '                               <label class="mr-2 col-5">Desconto:</label>  ' +
             '                               <input id="inputDescontoFinalizado" name="inputDescontoFinalizado" placeholder="Desconto" class="form-control form-control-sm " />  ' +
-            '                           </div>  ' +
-            '     ' +
+            '                           </div>' +
+            '                           <div class="d-flex mb-2">  ' +
+            '                               <label class="mr-2 col-5">Taxa entrega:</label>  ' +
+            '                               <input id="inputTasFormaPagamentoaEntrega" placeholder="Taxa de entrega" class="form-control form-control-sm " />  ' +
+            '                           </div><hr/>' +
             '     ' + formaPagamentoContainer +
             '   <hr/> <div class="form-check d-flex mb-2">  ' +
             '                                   <input class="form-check-input" type="checkbox" id="inputPagoFinalizado" name="inputPagoFinalizado">  ' +
@@ -921,7 +932,9 @@ function finalizado(idPedido) {
                 idPedido: idPedido,
                 descuento: parseFloat($('#inputDescontoFinalizado').val()),
                 pago: $("#inputPagoFinalizado").prop('checked'),
-                listaFormaPagamento: JSON.stringify(formasPagamento)
+                listaFormaPagamento: JSON.stringify(formasPagamento),
+                tasaEntrega: $('#inputTasaFormaPagamento').val(),
+                troco: $('#inputTrocoFormaPagamento').val()
             };
 
             $.ajax({
@@ -975,6 +988,8 @@ function finalizado(idPedido) {
     })
 
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
+    $("#inputTasaFormaPagamento").mask("###0.00", { reverse: true });
+    $("#inputTrocoFormaPagamento").mask("###0.00", { reverse: true });
 
     $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
         $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
@@ -990,6 +1005,16 @@ function finalizado(idPedido) {
 
     $("#inputDescontoFinalizado").val(pedido.descuento);
     $("#inputPagoFinalizado").prop('checked', pedido.DeliveryPago);
+
+
+    $('#inputTasaFormaPagamento').on('input propertychange', function (e) {
+        calcularTotalPagado();
+    });
+
+    $('#inputTrocoFormaPagamento').on('input propertychange', function (e) {
+        calcularTotalPagado();
+    });
+
 }
 
 function radioFormaPagamentoChange(input, idPedido) {
@@ -1124,6 +1149,12 @@ function calcularTotalPagado() {
             valorInputFormaPagamento += parseFloat($(input).val());
         }
     });
+
+    var tasa = isNaN(parseFloat($('#inputTasaFormaPagamento').val())) ? 0 : parseFloat($('#inputTasaFormaPagamento').val());
+    var troco = isNaN(parseFloat($('#inputTrocoFormaPagamento').val())) ? 0 : parseFloat($('#inputTrocoFormaPagamento').val());
+
+    valorInputFormaPagamento = valorInputFormaPagamento + tasa;
+    valorInputFormaPagamento = valorInputFormaPagamento - troco;
 
     $('#divResultadoCalculoFormaPagamento').html('R$ ' + valorInputFormaPagamento.toFixed(2));
     $('#divDiferençaCalculoFormaPagamento').html('R$ ' + (totalPedido - valorInputFormaPagamento).toFixed(2));

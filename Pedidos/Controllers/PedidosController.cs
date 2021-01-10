@@ -410,6 +410,8 @@ namespace Pedidos.Controllers
                 pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
                 pedido.DeliveryPago = pedidoaux.pago;
+                pedido.DeliveryTroco = pedidoaux.troco;
+                pedido.tasaEntrega = pedidoaux.tasaEntrega ?? 0;
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
                 pedido.valorProductos = pedido.productos.Sum(x => x.ValorMasAdicionales);
                 _context.Update(pedido);

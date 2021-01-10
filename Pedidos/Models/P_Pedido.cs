@@ -84,6 +84,8 @@ namespace Pedidos.Models
         public string telefono { get; set; }
         public int? idFormaPagamento { get; set; }
         public decimal? descuento { get; set; }
+        public decimal? tasaEntrega { get; set; }
+        public decimal? troco { get; set; }
         public bool pago { get; set; }
         public string listaFormaPagamento { get; set; }
     }

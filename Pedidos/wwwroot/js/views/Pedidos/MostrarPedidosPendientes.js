@@ -216,8 +216,6 @@ function MostarPedidosPendientes() {
 
 function marcarProductoPreparado(idPedido, idProducto, timer) {
 
-    clearInterval(timer);
-
     var marcarProducto = {
         idPedido: idPedido,
         idProducto: idProducto
@@ -232,6 +230,7 @@ function marcarProductoPreparado(idPedido, idProducto, timer) {
         dataType: "json",
         success: function (pedido) {
 
+            clearInterval(timer);
             var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
             _PedidosPendientes[objIndex] = pedido;
             MostarPedidosPendientes();
@@ -251,7 +250,7 @@ function marcarProductoPreparado(idPedido, idProducto, timer) {
 
 function marcarProductoEntregado(idPedido, idProducto, timer) {
 
-    clearInterval(timer);
+
     var marcarProducto = {
         idPedido: idPedido,
         idProducto: idProducto
@@ -266,6 +265,7 @@ function marcarProductoEntregado(idPedido, idProducto, timer) {
         dataType: "json",
         success: function (pedido) {
 
+            clearInterval(timer);
             var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
             _PedidosPendientes[objIndex] = pedido;
             MostarPedidosPendientes();

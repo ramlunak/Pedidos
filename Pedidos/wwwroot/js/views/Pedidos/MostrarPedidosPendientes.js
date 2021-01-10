@@ -1,6 +1,12 @@
-﻿
+﻿var intervals = [];
+
 //crear tabla de productos del pedido en edicion
 function MostarPedidosPendientes() {
+
+    $.each(intervals, function (index, item) {
+        clearInterval(item);
+    });
+    intervals = [];
 
     var TABLE = $('#ListaPedidosPendientes');
     TABLE.empty();
@@ -71,8 +77,6 @@ function MostarPedidosPendientes() {
             //TIEMPO DE PEDIDO
             var tiempopedido = producto.tiempo_pedido;
 
-            console.log(producto)
-
             var timerPedido = null;
             if (producto.fecha_preparado === null) {
                 timerPedido = setInterval(function () {
@@ -84,10 +88,12 @@ function MostarPedidosPendientes() {
                     $('#secondsPedido_' + pedido.id + '_' + index + '_' + producto.id + '').html(secondsPedido_);
                     tiempopedido++;
                 }, 1000);
-            }
 
-            $('#divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '').remove();
-            var productoTiempoPedido = '<div id="divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutesPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a  onclick="marcarProductoPreparado(' + pedido.id + ',' + producto.id + ',' + timerPedido + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
+                intervals.push(timerPedido);
+            }
+            //   console.log($('#divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id));
+            //  $('#divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '').remove();
+            var productoTiempoPedido = '<div id="divTiempoPedido_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="far fa-clock mr-1"></i> <span id="minutesPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsPedido_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a  onclick="marcarProductoPreparado(' + pedido.id + ',' + producto.id + ',' + producto.posicion + ',' + timerPedido + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
 
             if (producto.fecha_preparado !== null) {
                 let minutesPedido_ = (tiempopedido / 60).toFixed(0);
@@ -111,7 +117,7 @@ function MostarPedidosPendientes() {
             //}
 
             //$('#divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '').remove();
-            //var productoTiempoEntrega = '<div id="divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="fa fa-motorcycle  mr-1"></i> <span id="minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a  onclick="marcarProductoEntregado(' + pedido.id + ',' + producto.id +  ',' + timerEntregado + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
+            //var productoTiempoEntrega = '<div id="divTiempoEntrega_' + pedido.id + '_' + index + '_' + producto.id + '" class="border border-warning rounded p-1 d-flex align-items-center mr-1 ml-1" style="font-size: 10px;color: darkcyan;font-weight: 700;"> <i class="fa fa-motorcycle  mr-1"></i> <span id="minutesEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span>: <span id="secondsEntraga_' + pedido.id + '_' + index + '_' + producto.id + '"></span> <a  onclick="marcarProductoEntregado(' + pedido.id + ',' + producto.id + ',' + producto.posicion +  ',' + timerEntregado + ')"><i class="fas fa-check mr-2 ml-2 cursor-pointer"></i></a> </div>';
 
             //if (producto.fecha_preparado === null) {
             //    productoTiempoEntrega = "";
@@ -217,12 +223,17 @@ function MostarPedidosPendientes() {
 
 }
 
-function marcarProductoPreparado(idPedido, idProducto, timer) {
+function marcarProductoPreparado(idPedido, idProducto, posicion, timer) {
 
     var marcarProducto = {
         idPedido: idPedido,
-        idProducto: idProducto
+        idProducto: idProducto,
+        posicion: posicion
     };
+
+    $.each(intervals, function (index, item) {
+        clearInterval(item);
+    });
 
     $.ajax({
         type: "POST",
@@ -233,7 +244,6 @@ function marcarProductoPreparado(idPedido, idProducto, timer) {
         dataType: "json",
         success: function (pedido) {
 
-            clearInterval(timer);
             var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
             _PedidosPendientes[objIndex] = pedido;
             MostarPedidosPendientes();
@@ -251,39 +261,39 @@ function marcarProductoPreparado(idPedido, idProducto, timer) {
 }
 
 
-function marcarProductoEntregado(idPedido, idProducto, timer) {
+//function marcarProductoEntregado(idPedido, idProducto, timer) {
 
 
-    var marcarProducto = {
-        idPedido: idPedido,
-        idProducto: idProducto
-    };
+//    var marcarProducto = {
+//        idPedido: idPedido,
+//        idProducto: idProducto
+//    };
 
-    $.ajax({
-        type: "POST",
-        url: "/Pedidos/MarcarProductoEntregado",
-        traditional: true,
-        data: JSON.stringify(marcarProducto),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (pedido) {
+//    $.ajax({
+//        type: "POST",
+//        url: "/Pedidos/MarcarProductoEntregado",
+//        traditional: true,
+//        data: JSON.stringify(marcarProducto),
+//        contentType: "application/json; charset=utf-8",
+//        dataType: "json",
+//        success: function (pedido) {
 
-            clearInterval(timer);
-            var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
-            _PedidosPendientes[objIndex] = pedido;
-            MostarPedidosPendientes();
+//            clearInterval(timer);
+//            var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
+//            _PedidosPendientes[objIndex] = pedido;
+//            MostarPedidosPendientes();
 
-        },
-        failure: function (response) {
-            console.log('failure', response);
+//        },
+//        failure: function (response) {
+//            console.log('failure', response);
 
-        },
-        error: function (response) {
-            console.log('error', response);
+//        },
+//        error: function (response) {
+//            console.log('error', response);
 
-        }
-    });
-}
+//        }
+//    });
+//}
 
 
 //function addPedidoToEnd(pedido, topPosition) {

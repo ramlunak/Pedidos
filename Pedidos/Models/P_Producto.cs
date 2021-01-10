@@ -93,7 +93,8 @@ namespace Pedidos.Models
             }
         }
 
-
+        [NotMapped]
+        public int posicion { get; set; }
         [NotMapped]
         public DateTime? fecha_pedido { get; set; }
         [NotMapped]
@@ -103,7 +104,6 @@ namespace Pedidos.Models
 
         [NotMapped]
         public bool isNew { get; set; } = true;
-
         [NotMapped]
         public string tempo
         {
@@ -234,5 +234,6 @@ namespace Pedidos.Models
     {
         public int idPedido { get; set; }
         public int idProducto { get; set; }
+        public int posicion { get; set; }
     }
 }

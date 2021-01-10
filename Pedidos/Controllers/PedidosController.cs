@@ -81,10 +81,20 @@ namespace Pedidos.Controllers
 
             producto.Adicionales.RemoveAll(a => a.cantidad == 0);
             producto.Ingredientes.RemoveAll(i => i.selected);
-
+            try
+            {
+                if (currentPedido.productos.Any())
+                {
+                    var p = currentPedido.productos.OrderByDescending(x => x.posicion).FirstOrDefault();
+                    producto.posicion = p.posicion + 1;
+                }
+            }
+            catch
+            {
+                producto.posicion = 1;
+            }
             //Para no cargar la base con muchos datos eliminar la foto
             producto.imagen = null;
-
             currentPedido.productos.Add(producto);
             currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
             currentPedido.cliente = producto.cliente;
@@ -489,7 +499,7 @@ namespace Pedidos.Controllers
                 //Actualizar pedido base
                 var pedido = await _context.P_Pedidos.FindAsync(marcarProducto.idPedido);
                 pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
-                pedido.productos.Where(x => x.id == marcarProducto.idProducto).Select(p => { p.fecha_preparado = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
+                pedido.productos.Where(x => x.id == marcarProducto.idProducto && x.posicion == marcarProducto.posicion).Select(p => { p.fecha_preparado = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
                 pedido.jsonListProductos = pedido.productos.ToJson();
                 _context.P_Pedidos.Update(pedido);
                 await _context.SaveChangesAsync();
@@ -501,25 +511,25 @@ namespace Pedidos.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> MarcarProductoEntregado([FromBody] MarcarProducto marcarProducto)
-        {
-            try
-            {
-                //Actualizar pedido base
-                var pedido = await _context.P_Pedidos.FindAsync(marcarProducto.idPedido);
-                pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
-                pedido.productos.Where(x => x.id == marcarProducto.idProducto).Select(p => { p.fecha_entrega = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
-                pedido.jsonListProductos = pedido.productos.ToJson();
-                _context.P_Pedidos.Update(pedido);
-                await _context.SaveChangesAsync();
-                return Ok(pedido);
-            }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
-        }
+        //[HttpPost]
+        //public async Task<IActionResult> MarcarProductoEntregado([FromBody] MarcarProducto marcarProducto)
+        //{
+        //    try
+        //    {
+        //        //Actualizar pedido base
+        //        var pedido = await _context.P_Pedidos.FindAsync(marcarProducto.idPedido);
+        //        pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
+        //        pedido.productos.Where(x => x.id == marcarProducto.idProducto && x.posicion == marcarProducto.posicion).Select(p => { p.fecha_entrega = DateTime.Now.ToSouthAmericaStandard(); return p; }).ToList();
+        //        pedido.jsonListProductos = pedido.productos.ToJson();
+        //        _context.P_Pedidos.Update(pedido);
+        //        await _context.SaveChangesAsync();
+        //        return Ok(pedido);
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return NotFound();
+        //    }
+        //}
 
 
         public async Task<IActionResult> Print(int id)

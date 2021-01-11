@@ -52,9 +52,44 @@
 
                 <div class="card-footer text-muted p-2" style="color: black;">
                     <div class="d-flex justify-content-between">
-                        <div> <a class="btn btn-sm btn-danger cursor-pointer" onclick="CancelarCurrentPedido()" style="color:white">cancelar</a></div>
+                        <div> <a class="btn btn-sm btn-danger cursor-pointer" onclick="CancelarCurrentPedido()" style="color:white"><i class="fa fa-ban"></i></a></div>
                         @*<div class="m-1 btn btn-sm btn-outline-primary cursor-pointer d-flex align-items-center" onclick="showModalInfoDelivery()"><i class="fas fa-motorcycle mr-2" style="color:black"></i> DELIVERY</div>*@
-                        <div> <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a></div>
+                        <div class="d-flex">
+
+                            <div class="border-secondary rounded  mr-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamentoDelivery" checked>
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        Cartão
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="border-secondary rounded  mr-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" id="exampleRadios" name="radioFormaPagamentoDelivery">
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        Pago
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="input-group input-group-sm mb-3 text-nowrap">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">
+                                            <input class="mr-2" type="radio" id="SelectedDinheiroPreparado" name="radioFormaPagamentoDelivery">
+                                            Levar Troco para
+                                        </span>
+                                    </div>
+                                    <input id="trocoPara" style="width:70px" type="text" disabled class="form-control form-control-sm" placeholder="">
+                                </div>
+                            </div>
+
+                            <div class="ml-2">
+                                <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -69,9 +104,9 @@
                         <datalist id="ClienteList" class="w-100">
                             @if (ViewBag.Clientes != null)
                             {
-                            @foreach (var cliente in ViewBag.Clientes)
+                                @foreach (var cliente in ViewBag.Clientes)
                                 {
-                            <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
                                 }
                             }
                         </datalist>
@@ -93,9 +128,9 @@
                         <datalist id="AplicativoList" class="w-100">
                             @if (ViewBag.Aplicativos != null)
                             {
-                            @foreach (var aplicativo in ViewBag.Aplicativos)
+                                @foreach (var aplicativo in ViewBag.Aplicativos)
                                 {
-                            <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                                    <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
                                 }
                             }
                         </datalist>

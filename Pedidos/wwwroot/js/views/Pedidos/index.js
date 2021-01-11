@@ -974,7 +974,7 @@ function finalizado(idPedido, finalizar) {
                         $('#CARD_PEDIDO_' + idPedido + '').remove();
                         GetNumeroPedidosFinalizados();
                     } else {
-
+                        MostarPedidosPendientes();
                     }
                 },
                 failure: function (response) {

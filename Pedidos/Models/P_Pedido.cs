@@ -38,11 +38,12 @@ namespace Pedidos.Models
         public string jsonFormaPagamento { get; set; }
         public decimal valorProductos { get; set; } = 0;
 
-        public bool? DeliveryEmdinheiro { get; set; }
         public decimal? DeliveryDinheiroTotal { get; set; }
         public decimal? DeliveryTroco { get; set; }
-        public bool? DeliveryEmCartao { get; set; }
-        public bool? DeliveryPago { get; set; }
+
+        public bool? DeliveryEmCartao { get; set; } = true;
+        public bool? DeliveryPago { get; set; } = false;
+        public bool? DeliveryEmdinheiro { get; set; } = false;        
 
         //AUXILIARES
 

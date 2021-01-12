@@ -3,43 +3,43 @@ var totalCalculadoPreparado = 0;
 
 $(function () {
 
-    $("#inputTasaEntregaPreparado").mask("###0.00", { reverse: true });
-    $("#inputDescuentoPreparado").mask("###0.00", { reverse: true });
-    $("#inputTotalDinheiroPreparado").mask("###0.00", { reverse: true });
-    $("#inputTrocoPreparado").mask("###0.00", { reverse: true });
-    $("#inputTotalPagarPreparado").mask("###0.00", { reverse: true });
+    $("#inputDeliveryDinheiroTotal").mask("###0.00", { reverse: true });
 
-    $('input[name="radioFormaPagamentoPreparado"]').on('change', function (e) {
+    $('button[name="buttonDeliveryCheck"]').on('click', function (e) {
+        e.preventDefault();
 
-        var selected = e.currentTarget.id;
+        var id = $(e.target)[0].id;
 
-        if (selected === "SelectedDinheiroPreparado") {
+        if (id === "_deliveryEmCartaoCheck") {
+            $('#deliveryEmCartaoCheck').show();
+            $('#deliveryEmdinheiroCheck').hide();
+            $('#deliveryPagoCheck').hide();
 
-            $('#inputTotalDinheiroPreparado').prop('disabled', false);
-            $('#inputTotalDinheiroPreparado').val(totalCalculadoPreparado);
+            $('#divDeliveryDinheiroTotal').hide();
+            $('#inputDeliveryDinheiroTotal').val(null);
+        }
 
-        } else {
+        if (id === "_deliveryPagoCheck") {
+            $('#deliveryPagoCheck').show();
+            $('#deliveryEmdinheiroCheck').hide();
+            $('#deliveryEmCartaoCheck').hide();
 
-            $('#inputTotalDinheiroPreparado').val(null);
-            $('#inputTotalDinheiroPreparado').prop('disabled', true);
+            $('#divDeliveryDinheiroTotal').hide();
+            $('#inputDeliveryDinheiroTotal').val(null);
 
         }
 
-        calcularTotalPagarPreparado();
+        if (id === "_deliveryEmdinheiroCheck") {
+            $('#deliveryEmdinheiroCheck').show();
+            $('#deliveryPagoCheck').hide();
+            $('#deliveryEmCartaoCheck').hide();
+
+            $('#divDeliveryDinheiroTotal').show();
+
+        }
 
     });
 
-    $('#inputTasaEntregaPreparado').on('input propertychange', function (e) {
-        calcularTotalPagarPreparado();
-    });
-
-    $('#inputDescuentoPreparado').on('input propertychange', function (e) {
-        calcularTotalPagarPreparado();
-    });
-
-    $('#inputTotalDinheiroPreparado').on('input propertychange', function (e) {
-        calcularTroco();
-    });
 
 
     //$("#inputTasaEntregaPreparado").mask("###0.00", { reverse: true });

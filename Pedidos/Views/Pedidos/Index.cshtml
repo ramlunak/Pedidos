@@ -55,37 +55,6 @@
                         <div> <a class="btn btn-sm btn-danger cursor-pointer" onclick="CancelarCurrentPedido()" style="color:white"><i class="fa fa-ban"></i></a></div>
                         @*<div class="m-1 btn btn-sm btn-outline-primary cursor-pointer d-flex align-items-center" onclick="showModalInfoDelivery()"><i class="fas fa-motorcycle mr-2" style="color:black"></i> DELIVERY</div>*@
                         <div class="d-flex">
-
-                            <div class="border-secondary rounded  mr-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="exampleRadios" id="radioFormaPagamentoDelivery" checked>
-                                    <label class="form-check-label" for="exampleRadios1">
-                                        Cartão
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div class="border-secondary rounded  mr-2">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" id="exampleRadios" name="radioFormaPagamentoDelivery">
-                                    <label class="form-check-label" for="exampleRadios1">
-                                        Pago
-                                    </label>
-                                </div>
-                            </div>
-
-                            <div>
-                                <div class="input-group input-group-sm mb-3 text-nowrap">
-                                    <div class="input-group-prepend">
-                                        <span class="input-group-text">
-                                            <input class="mr-2" type="radio" id="SelectedDinheiroPreparado" name="radioFormaPagamentoDelivery">
-                                            Levar Troco para
-                                        </span>
-                                    </div>
-                                    <input id="trocoPara" style="width:70px" type="text" disabled class="form-control form-control-sm" placeholder="">
-                                </div>
-                            </div>
-
                             <div class="ml-2">
                                 <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
                             </div>
@@ -141,11 +110,29 @@
 
                 </div>
 
-                <div class="row m-1">
+                <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button id="_deliveryEmCartaoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
+                            Cartão
+                            <i id="deliveryEmCartaoCheck" style=" @(Model.DeliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
+                        </button>
+                        <button id="_deliveryPagoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
+                            Pago
+                            <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.DeliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                        </button>
+                        <button id="_deliveryEmdinheiroCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
+                            Dineiro
+                            <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.DeliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                        </button>
+                    </div>
 
+                    <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.DeliveryEmdinheiro.Value ? "display:flex" : "display:none")">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon">R$</div>
+                        </div>
+                        <input type="text" id="inputDeliveryDinheiroTotal" style="width:100px" class="form-control" placeholder="Dinheiro">
+                    </div>
                 </div>
-
-
 
                 <hr />
 

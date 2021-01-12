@@ -314,6 +314,10 @@ function ShowDetallesProducto(id) {
             _ModalProducto.idDireccion = datosClienteFormulario.idDireccion;
             _ModalProducto.telefono = datosClienteFormulario.telefono;
 
+            _ModalProducto.deliveryEmCartao = datosClienteFormulario.deliveryEmCartao;
+            _ModalProducto.deliveryPago = datosClienteFormulario.deliveryPago;
+            _ModalProducto.deliveryEmdinheiro = datosClienteFormulario.deliveryEmdinheiro;
+
             _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
 
@@ -577,6 +581,8 @@ function AddProducto() {
     _ModalProducto.idMesa = parseInt($('#idMesa').val());
     _ModalProducto.idDireccion = parseInt($('#idDireccion').val());
 
+    _ModalProducto.deliveryDinheiroTotal = parseFloat($('#inputDeliveryDinheiroTotal').val());
+
     $.ajax({
         type: "POST",
         url: "/Pedidos/AddProducto",
@@ -707,7 +713,11 @@ function GuardarCurrentPedido() {
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
         idDireccion: parseInt($('#idDireccion').val()),
-        telefono: $('#inputTelefone').val()
+        telefono: $('#inputTelefone').val(),
+        deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal').val()),
+        deliveryEmCartao: _ModalProducto.deliveryEmCartao,
+        deliveryPago: _ModalProducto.deliveryPago,
+        deliveryEmdinheiro: _ModalProducto.deliveryEmdinheiro
     }
 
     showLoading();
@@ -738,7 +748,10 @@ function GuardarCurrentPedido() {
                     observacion: ''
                 };
 
+                metodoPagoDelivery("_deliveryEmCartaoCheck");
+
                 MostarPedidosPendientes();
+
                 if (result.reload) {
                     location.href = '/Pedidos/Index';
                 }

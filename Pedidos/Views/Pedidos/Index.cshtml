@@ -114,19 +114,19 @@
                     <div class="btn-group mr-2" role="group" aria-label="First group">
                         <button id="_deliveryEmCartaoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
                             Cartão
-                            <i id="deliveryEmCartaoCheck" style=" @(Model.DeliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
+                            <i id="deliveryEmCartaoCheck" style=" @(Model.deliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
                         </button>
                         <button id="_deliveryPagoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
                             Pago
-                            <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.DeliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                            <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.deliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
                         </button>
                         <button id="_deliveryEmdinheiroCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
                             Dineiro
-                            <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.DeliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                            <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.deliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
                         </button>
                     </div>
 
-                    <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.DeliveryEmdinheiro.Value ? "display:flex" : "display:none")">
+                    <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.deliveryEmdinheiro.Value ? "display:flex" : "display:none")">
                         <div class="input-group-prepend">
                             <div class="input-group-text" id="btnGroupAddon">R$</div>
                         </div>

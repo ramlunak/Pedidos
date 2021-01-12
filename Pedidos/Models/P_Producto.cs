@@ -204,6 +204,16 @@ namespace Pedidos.Models
         [NotMapped]
         public string telefono { get; set; }
 
+        [NotMapped]
+        public decimal? deliveryDinheiroTotal { get; set; }
+        [NotMapped]
+        public decimal? deliveryTroco { get; set; }
+        [NotMapped]
+        public bool? deliveryEmCartao { get; set; }
+        [NotMapped]
+        public bool? deliveryPago { get; set; }
+        [NotMapped]
+        public bool? deliveryEmdinheiro { get; set; }
 
     }
 

@@ -38,12 +38,11 @@ namespace Pedidos.Models
         public string jsonFormaPagamento { get; set; }
         public decimal valorProductos { get; set; } = 0;
 
-        public decimal? DeliveryDinheiroTotal { get; set; }
-        public decimal? DeliveryTroco { get; set; }
-
-        public bool? DeliveryEmCartao { get; set; } = true;
-        public bool? DeliveryPago { get; set; } = false;
-        public bool? DeliveryEmdinheiro { get; set; } = false;        
+        public decimal? deliveryTroco { get; set; }
+        public decimal? deliveryDinheiroTotal { get; set; }
+        public bool? deliveryEmCartao { get; set; } = true;
+        public bool? deliveryPago { get; set; } = false;
+        public bool? deliveryEmdinheiro { get; set; } = false;
 
         //AUXILIARES
 
@@ -90,6 +89,13 @@ namespace Pedidos.Models
         public bool pago { get; set; }
         public bool finalizar { get; set; }
         public string listaFormaPagamento { get; set; }
+
+        public decimal? deliveryDinheiroTotal { get; set; }
+        public decimal? deliveryTroco { get; set; }
+        public bool? deliveryEmCartao { get; set; } = true;
+        public bool? deliveryPago { get; set; } = false;
+        public bool? deliveryEmdinheiro { get; set; } = false;
+
     }
 
 

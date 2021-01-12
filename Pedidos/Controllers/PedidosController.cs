@@ -106,6 +106,11 @@ namespace Pedidos.Controllers
             currentPedido.direccion = producto.direccion;
             currentPedido.telefono = producto.telefono;
 
+            currentPedido.deliveryDinheiroTotal = producto.deliveryDinheiroTotal;
+            currentPedido.deliveryEmCartao = producto.deliveryEmCartao;
+            currentPedido.deliveryPago = producto.deliveryPago;
+            currentPedido.deliveryEmdinheiro = producto.deliveryEmdinheiro;
+
             currentPedido.listaFormaPagamento = GetSession<List<P_FormaPagamento>>("FormaPagamento");
 
             if (!string.IsNullOrEmpty(producto.tamanhoSeleccionado))
@@ -164,6 +169,12 @@ namespace Pedidos.Controllers
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
+
+                    currentPedido.deliveryDinheiroTotal = pedidoaux.deliveryDinheiroTotal;
+                    currentPedido.deliveryEmCartao = pedidoaux.deliveryEmCartao;
+                    currentPedido.deliveryPago = pedidoaux.deliveryPago;
+                    currentPedido.deliveryEmdinheiro = pedidoaux.deliveryEmdinheiro;
+
                     var actualizarPagina = false;
 
                     if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
@@ -370,11 +381,11 @@ namespace Pedidos.Controllers
                 pedido.status = StatusPedido.Preparado.ToString();
                 pedido.descuento = infoAuxDelivery.descuento ?? 0;
                 pedido.tasaEntrega = infoAuxDelivery.tasaEntrega ?? 0;
-                pedido.DeliveryEmdinheiro = infoAuxDelivery.DeliveryEmdinheiro;
-                pedido.DeliveryDinheiroTotal = infoAuxDelivery.DeliveryDinheiroTotal;
-                pedido.DeliveryTroco = infoAuxDelivery.DeliveryTroco;
-                pedido.DeliveryEmCartao = infoAuxDelivery.DeliveryEmCartao;
-                pedido.DeliveryPago = infoAuxDelivery.DeliveryPago;
+                pedido.deliveryEmdinheiro = infoAuxDelivery.DeliveryEmdinheiro;
+                pedido.deliveryDinheiroTotal = infoAuxDelivery.DeliveryDinheiroTotal;
+                pedido.deliveryTroco = infoAuxDelivery.DeliveryTroco;
+                pedido.deliveryEmCartao = infoAuxDelivery.DeliveryEmCartao;
+                pedido.deliveryPago = infoAuxDelivery.DeliveryPago;
 
                 if (infoAuxDelivery.pedidoIsPreparado.Value)
                 {
@@ -416,8 +427,8 @@ namespace Pedidos.Controllers
                 }
                 pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
-                pedido.DeliveryPago = pedidoaux.pago;
-                pedido.DeliveryTroco = pedidoaux.troco;
+                pedido.deliveryPago = pedidoaux.pago;
+                pedido.deliveryTroco = pedidoaux.troco;
                 pedido.tasaEntrega = pedidoaux.tasaEntrega ?? 0;
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
                 pedido.valorProductos = pedido.productos.Sum(x => x.ValorMasAdicionales);

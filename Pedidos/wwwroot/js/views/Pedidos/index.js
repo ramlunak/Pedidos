@@ -144,7 +144,7 @@ $(function () {
         _ModalProducto.telefono = $('#inputTelefone').val();
     });
 
-    $('#inputProducto2').on('input propertychange', function (e) {
+    $('#inputProducto').on('input propertychange', function (e) {
         var productosFiltrados = filterItems($('#inputProducto').val());
         FiltrarProductos(productosFiltrados);
     });
@@ -235,6 +235,8 @@ function CargarProductos() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
+            console.log('productos', data);
+
             _Productos = data;
         },
         failure: function (response) {

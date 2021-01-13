@@ -214,12 +214,16 @@ function MostarPedidosPendientes() {
         //    '     <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">  ' +
         //    '  </div>  ';
 
+        var trocoPara = '';
+        if (pedido.deliveryDinheiroTotal !== undefined && pedido.deliveryDinheiroTotal !== null) {
+            trocoPara = 'R$ ' + pedido.deliveryDinheiroTotal.toFixed(2);
+        }
 
         var deliveryCartao = '<i style="color:blue;font-size:20px" class="far fa-2x fa-credit-card"></i> ';
 
         var deliveryDinheiro = '   <div class="card">  ' +
             '     <div class="card-body bg-outline-info p-1 d-flex align-items-center unselectable" style="font-size:11px">  ' +
-            '       <i style="color:orange" class="fas fa-2x fa-money-bill-wave mr-1"></i> <b>R$ 20.00</b> ' +
+            '       <i style="color:orange" class="fas fa-2x fa-money-bill-wave mr-1"></i> <b>' + trocoPara + '</b> ' +
             '     </div>  ' +
             '  </div>  ';
 

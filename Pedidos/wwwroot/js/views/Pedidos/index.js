@@ -144,10 +144,11 @@ $(function () {
         _ModalProducto.telefono = $('#inputTelefone').val();
     });
 
-    $('#inputProducto').on('input propertychange', function (e) {
+    $('#inputProducto2').on('input propertychange', function (e) {
         var productosFiltrados = filterItems($('#inputProducto').val());
         FiltrarProductos(productosFiltrados);
     });
+
 
 });
 
@@ -875,10 +876,47 @@ function finalizado(idPedido, finalizar) {
         formaPagamentoContainer += formaPagamento;
     });
 
-    formaPagamentoContainer += '        <hr/> <div class="d-flex mb-2">  ' +
-        '                               <label class="mr-2 col-5">Troco:</label>  ' +
-        '                               <input id="inputTrocoFormaPagamento" placeholder="Troco" class="form-control form-control-sm " />  ' +
-        '                           </div>';
+    deliveryCartaoHidden = "display:inline-block";
+    deliveryDinheiroHidden = "display:inline-block";
+    deliveryPagoHidden = "display:inline-block";
+
+    if (!pedido.deliveryEmCartao) {
+        deliveryCartaoHidden = 'display:none';
+    }
+
+    if (!pedido.deliveryEmdinheiro) {
+        deliveryDinheiroHidden = 'display:none';
+    }
+
+    if (!pedido.deliveryPago) {
+        deliveryPagoHidden = 'display:none';
+    }
+
+    var deliveryPagamento = '  <hr/>  <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">  ' +
+        '                       <div class="btn-group mr-2" role="group" aria-label="First group">  ' +
+        '                           <button id="_deliveryEmCartaoCheck2" type="button" class="btn btn-secondary" name="buttonDeliveryCheck2">  ' +
+        '                               Cartão  ' +
+        '                               <i id="deliveryEmCartaoCheck2"  style="' + deliveryCartaoHidden + ';color:white;font-size: 12px;" class="fa fa-check"></i>  ' +
+        '                           </button>  ' +
+        '                           <button id="_deliveryPagoCheck2" type="button" class="btn btn-secondary" name="buttonDeliveryCheck2">  ' +
+        '                               Pago  ' +
+        '                               <i id="deliveryPagoCheck2"  class="fa fa-check" style=" ' + deliveryDinheiroHidden + ';color: white;font-size: 12px;"></i>  ' +
+        '                           </button>  ' +
+        '                           <button id="_deliveryEmdinheiroCheck2" type="button" class="btn btn-secondary" name="buttonDeliveryCheck2">  ' +
+        '                               Dineiro  ' +
+        '                               <i id="deliveryEmdinheiroCheck2"  class="fa fa-check" style="' + deliveryPagoHidden + ';color: white;font-size: 12px;"></i>  ' +
+        '                           </button>  ' +
+        '                       </div>  ' +
+        '     ' +
+        '                       <div  class="input-group" id="divDeliveryDinheiroTotal2" style="' + deliveryPagoHidden + '">  ' +
+        '                           <div class="input-group-prepend">  ' +
+        '                               <div class="input-group-text" id="btnGroupAddon2">R$</div>  ' +
+        '                           </div>  ' +
+        '                           <input type="text" id="inputDeliveryDinheiroTotal2" style="width:100px" class="form-control" placeholder="Dinheiro">  ' +
+        '                       </div>  ' +
+        '                  </div>  ';
+
+    formaPagamentoContainer += deliveryPagamento;
 
 
     formaPagamentoContainer += '<hr/><div style="font-size: 13px;font-weight:700"><div class="d-flex mb-2 justify-content-between"><div><b>Total</b></div><div id="divTotalPagar"></div></div>';
@@ -940,7 +978,7 @@ function finalizado(idPedido, finalizar) {
                     valorTasa: valorTasa
                 });
             });
-                     
+
 
             finalizarPedido = {
                 idPedido: idPedido,
@@ -1038,6 +1076,54 @@ function finalizado(idPedido, finalizar) {
 
     $('#inputTrocoFormaPagamento').on('input propertychange', function (e) {
         calcularTotalPagado();
+    });
+
+    $("#inputDeliveryDinheiroTotal2").mask("###0.00", { reverse: true });
+
+    $('button[name="buttonDeliveryCheck2"]').on('click', function (e) {
+        e.preventDefault();
+
+        var id = $(e.target)[0].id;
+
+        if (id === "_deliveryEmCartaoCheck2") {
+            $('#deliveryEmCartaoCheck2').show();
+            $('#deliveryEmdinheiroCheck2').hide();
+            $('#deliveryPagoCheck2').hide();
+
+            _ModalProducto.deliveryEmCartao = true;
+            _ModalProducto.deliveryPago = false;
+            _ModalProducto.deliveryEmdinheiro = false;
+
+            $('#divDeliveryDinheiroTotal2').hide();
+            $('#inputDeliveryDinheiroTotal2').val(null);
+        }
+
+        if (id === "_deliveryPagoCheck2") {
+            $('#deliveryPagoCheck2').show();
+            $('#deliveryEmdinheiroCheck2').hide();
+            $('#deliveryEmCartaoCheck2').hide();
+
+            _ModalProducto.deliveryEmCartao = false;
+            _ModalProducto.deliveryPago = true;
+            _ModalProducto.deliveryEmdinheiro = false;
+
+            $('#divDeliveryDinheiroTotal2').hide();
+            $('#inputDeliveryDinheiroTotal2').val(null);
+
+        }
+
+        if (id === "_deliveryEmdinheiroCheck2") {
+            $('#deliveryEmdinheiroCheck2').show();
+            $('#deliveryPagoCheck2').hide();
+            $('#deliveryEmCartaoCheck2').hide();
+
+            _ModalProducto.deliveryEmCartao = false;
+            _ModalProducto.deliveryPago = false;
+            _ModalProducto.deliveryEmdinheiro = true;
+
+            $('#divDeliveryDinheiroTotal2').show();
+        }
+
     });
 
 }

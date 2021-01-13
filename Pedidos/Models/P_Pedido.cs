@@ -36,6 +36,7 @@ namespace Pedidos.Models
         public int idCuenta { get; set; }
         public bool activo { get; set; }
         public string jsonFormaPagamento { get; set; }
+        public string jsonFormaPagamentoAux { get; set; }
         public decimal valorProductos { get; set; } = 0;
 
         public decimal? deliveryTroco { get; set; }

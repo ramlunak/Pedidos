@@ -259,7 +259,7 @@ namespace Pedidos.Controllers
                     }
 
                     currentPedido.listaFormaPagamento = formasPagamento.OrderBy(x => x.nombre).ToList();
-                    currentPedido.jsonFormaPagamento = JsonConvert.SerializeObject(currentPedido.listaFormaPagamento);
+                    currentPedido.jsonFormaPagamentoAux = JsonConvert.SerializeObject(currentPedido.listaFormaPagamento);
 
                     if (currentPedido.isNew)
                     {
@@ -325,7 +325,12 @@ namespace Pedidos.Controllers
             if (pedidosPendientes.Any())
             {
                 pedidosPendientes.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
+           
+            
+            
             }
+
+
             return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
         }
 
@@ -433,6 +438,21 @@ namespace Pedidos.Controllers
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);
                 pedido.valorProductos = pedido.productos.Sum(x => x.ValorMasAdicionales);
 
+                var formasPagamento = new List<P_FormaPagamento>();
+                if (pedido.idAplicativo.HasValue)
+                {
+                    var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                    formasPagamento.AddRange(fp.Where(x => x.idAplicativo.HasValue && x.idAplicativo.Value == pedido.idAplicativo));
+                    formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue && x.app));
+                }
+                else
+                {
+                    var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
+                    formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue));
+                }
+
+                pedido.jsonFormaPagamentoAux = formasPagamento.ToJson();
+
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
 
@@ -449,22 +469,6 @@ namespace Pedidos.Controllers
                         lista.Add(pedido);
                         SetSession("PedidosFinalizados", lista);
                     }
-
-
-                var formasPagamento = new List<P_FormaPagamento>();
-                if (pedido.idAplicativo.HasValue)
-                {
-                    var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                    formasPagamento.AddRange(fp.Where(x => x.idAplicativo.HasValue && x.idAplicativo.Value == pedido.idAplicativo));
-                    formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue && x.app));
-                }
-                else
-                {
-                    var fp = GetSession<List<P_FormaPagamento>>("FormaPagamento");
-                    formasPagamento.AddRange(fp.Where(x => !x.idAplicativo.HasValue));
-                }
-
-                pedido.jsonFormaPagamento = formasPagamento.ToJson();
 
                 return Ok(pedido);
             }

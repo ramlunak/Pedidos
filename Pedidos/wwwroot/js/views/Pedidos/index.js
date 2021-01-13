@@ -859,7 +859,7 @@ function finalizado(idPedido, finalizar) {
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
 
-    $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
+    $.each(JSON.parse(pedido.jsonFormaPagamentoAux), function (index, formaPagamento) {
         var formaPagamento = '          <div class="d-flex justify-content-between mt-2"><div class="form-check">  ' +
             '                           <input class="form-check-input" type="checkbox" onchange="radioFormaPagamentoChange(this,' + idPedido + ')" name="radioFormaPagamento" id="radioFormaPagamento_' + formaPagamento.id + '" >  ' +
             '                           <label class="form-check-label unselectable">  ' +
@@ -1015,7 +1015,7 @@ function finalizado(idPedido, finalizar) {
     $("#inputTasaFormaPagamento").mask("###0.00", { reverse: true });
     $("#inputTrocoFormaPagamento").mask("###0.00", { reverse: true });
 
-    $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
+    $.each(JSON.parse(pedido.jsonFormaPagamentoAux), function (index, formaPagamento) {
         $('#valorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
         $('#sumarvalorFormaPagamento_' + formaPagamento.id + '').mask("###0.00", { reverse: true });
         $('#valorFormaPagamento_' + formaPagamento.id + '').prop('disabled', true);

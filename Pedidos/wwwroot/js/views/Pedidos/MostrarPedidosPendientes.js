@@ -206,6 +206,42 @@ function MostarPedidosPendientes() {
 
         CARD_FUTTER.append(futter_botones);
 
+        //var pagpDinheiro = '   <div class="input-group mb-3">  ' +
+        //    '     <div class="input-group-prepend">  ' +
+        //    '       <span class="input-group-text" id="basic-addon1">' +
+        //    '<i style="color:orange" class="fas fa-2x fa-money-bill-wave"></i> | R$</span > ' +
+        //    '     </div>  ' +
+        //    '     <input type="text" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="basic-addon1">  ' +
+        //    '  </div>  ';
+
+
+        var deliveryCartao = '<i style="color:blue;font-size:20px" class="far fa-2x fa-credit-card"></i> ';
+
+        var deliveryDinheiro = '   <div class="card">  ' +
+            '     <div class="card-body bg-outline-info p-1 d-flex align-items-center unselectable" style="font-size:11px">  ' +
+            '       <i style="color:orange" class="fas fa-2x fa-money-bill-wave mr-1"></i> <b>R$ 20.00</b> ' +
+            '     </div>  ' +
+            '  </div>  ';
+
+        var deliveryPago = '   <div class="card">  ' +
+            '     <div class="card-body bg-outline-info p-1 d-flex align-items-center unselectable" style="font-size:14px">  ' +
+            '       <i class="fas fa-check-double mr-1" style="color:green"></i> <b>Pago</b> ' +
+            '     </div>  ' +
+            '  </div>  ';
+
+        if (!pedido.deliveryEmCartao) {
+            deliveryCartao = "";
+        }
+
+        if (!pedido.deliveryEmdinheiro) {
+            deliveryDinheiro = "";
+        }
+
+        if (!pedido.deliveryPago) {
+            deliveryPago = "";
+        }
+
+        CARD_FUTTER.append('<div >' + deliveryCartao + deliveryDinheiro + deliveryPago + '  </div>');
         CARD_FUTTER.append('<a class="btn btn-outline-secondary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
 
         CARD.append(CARD_BODY);

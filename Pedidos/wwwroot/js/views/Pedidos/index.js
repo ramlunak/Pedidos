@@ -898,7 +898,7 @@ function finalizado(idPedido, finalizar) {
             '                           </div>' +
             '                           <div class="d-flex mb-2">  ' +
             '                               <label class="mr-2 col-5">Taxa entrega:</label>  ' +
-            '                               <input id="inputTasFormaPagamentoaEntrega" placeholder="Taxa de entrega" class="form-control form-control-sm " />  ' +
+            '                               <input id="inputTasaFormaPagamentoDelivery" placeholder="Taxa de entrega" class="form-control form-control-sm " />  ' +
             '                           </div><hr/>' +
             '     ' + formaPagamentoContainer +
             '   <hr/> <div class="form-check d-flex mb-2">  ' +
@@ -940,13 +940,14 @@ function finalizado(idPedido, finalizar) {
                     valorTasa: valorTasa
                 });
             });
+                     
 
             finalizarPedido = {
                 idPedido: idPedido,
                 descuento: parseFloat($('#inputDescontoFinalizado').val()),
                 pago: $("#inputPagoFinalizado").prop('checked'),
                 listaFormaPagamento: JSON.stringify(formasPagamento),
-                tasaEntrega: $('#inputTasaFormaPagamento').val() === undefined ? 0 : $('#inputTasaFormaPagamento').val(),
+                tasaEntrega: $('#inputTasaFormaPagamentoDelivery').val() === undefined ? 0 : parseFloat($('#inputTasaFormaPagamentoDelivery').val()),
                 troco: $('#inputTrocoFormaPagamento').val() === "" ? 0 : $('#inputTrocoFormaPagamento').val(),
                 finalizar: finalizar
             };

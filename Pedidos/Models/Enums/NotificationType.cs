@@ -9,6 +9,7 @@ namespace Pedidos.Models.Enums
     {
         error,
         success,
-        warning
+        warning,
+        info,
     }
 }

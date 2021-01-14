@@ -75,7 +75,7 @@ namespace Pedidos.Controllers
         {
             if (Cuenta is null || !Cuenta.activo)
             {
-                Logof();                
+                Logof();
                 return false;
             }
             TempData["Email"] = Cuenta.usuario;
@@ -250,6 +250,32 @@ namespace Pedidos.Controllers
                 icon = NotificationType.warning.ToString(),
                 type = NotificationType.warning.ToString(),
                 provider = "sweetAlert"
+            };
+
+            TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
+        public void PrompErro(string message)
+        {
+            var msg = new
+            {
+                message = message,
+                icon = NotificationType.error.ToString(),
+                type = NotificationType.error.ToString(),
+                provider = "sweetAlertPromp"
+            };
+
+            TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
+        public void PrompInfo(string message)
+        {
+            var msg = new
+            {
+                message = message,
+                icon = NotificationType.info.ToString(),
+                type = NotificationType.info.ToString(),
+                provider = "sweetAlertPromp"
             };
 
             TempData["Message"] = JsonConvert.SerializeObject(msg);

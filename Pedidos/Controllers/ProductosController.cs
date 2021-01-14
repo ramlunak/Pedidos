@@ -155,6 +155,24 @@ namespace Pedidos.Controllers
                 //}
 
                 // p_Productos.valor = p_Productos.strValor.ToDecimal();
+                if (!string.IsNullOrEmpty(p_Productos.tamanho1) && !p_Productos.valorTamanho1.HasValue)
+                {
+                    PrompErro($"Informe o valor do tamanho {p_Productos.tamanho1}");
+                    return View(p_Productos);
+                }
+
+                if (!string.IsNullOrEmpty(p_Productos.tamanho2) && !p_Productos.valorTamanho2.HasValue)
+                {
+                    PrompErro($"Informe o valor do tamanho {p_Productos.tamanho2}");
+                    return View(p_Productos);
+                }
+
+                if (!string.IsNullOrEmpty(p_Productos.tamanho3) && !p_Productos.valorTamanho3.HasValue)
+                {
+                    PrompErro($"Informe o valor do tamanho {p_Productos.tamanho3}");
+                    return View(p_Productos);
+                }
+
 
                 if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue)
                 {
@@ -237,6 +255,25 @@ namespace Pedidos.Controllers
             {
                 return NotFound();
             }
+
+            if (!string.IsNullOrEmpty(p_Productos.tamanho1) && !p_Productos.valorTamanho1.HasValue)
+            {
+                PrompErro($"Informe o valor do tamanho {p_Productos.tamanho1}");
+                return View(p_Productos);
+            }
+
+            if (!string.IsNullOrEmpty(p_Productos.tamanho2) && !p_Productos.valorTamanho2.HasValue)
+            {
+                PrompErro($"Informe o valor do tamanho {p_Productos.tamanho2}");
+                return View(p_Productos);
+            }
+
+            if (!string.IsNullOrEmpty(p_Productos.tamanho3) && !p_Productos.valorTamanho3.HasValue)
+            {
+                PrompErro($"Informe o valor do tamanho {p_Productos.tamanho3}");
+                return View(p_Productos);
+            }
+
 
             if (ModelState.ErrorCount == 1)
                 ModelState.Clear();

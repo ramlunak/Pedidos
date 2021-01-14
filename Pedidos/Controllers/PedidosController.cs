@@ -167,6 +167,7 @@ namespace Pedidos.Controllers
                     currentPedido.idAplicativo = pedidoaux.idAplicativo;
                     currentPedido.aplicativo = pedidoaux.aplicativo;
                     currentPedido.idMesa = pedidoaux.idMesa;
+                    currentPedido.idDireccion = pedidoaux.idDireccion;
                     currentPedido.direccion = pedidoaux.direccion;
                     currentPedido.telefono = pedidoaux.telefono;
 

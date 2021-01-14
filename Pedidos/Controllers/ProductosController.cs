@@ -156,7 +156,7 @@ namespace Pedidos.Controllers
 
                 // p_Productos.valor = p_Productos.strValor.ToDecimal();
 
-                if (!p_Productos.tamanho1.IsNullOrEmtpy() || p_Productos.tamanho1.IsNullOrEmtpy() || p_Productos.tamanho1.IsNullOrEmtpy())
+                if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue)
                 {
                     p_Productos.valor = 0;
                 }
@@ -270,7 +270,10 @@ namespace Pedidos.Controllers
                         }
                     }
 
-                    // p_Productos.valor = p_Productos.strValor.ToDecimal();
+                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue)
+                    {
+                        p_Productos.valor = 0;
+                    }
                     _context.Update(p_Productos);
                     await _context.SaveChangesAsync();
 

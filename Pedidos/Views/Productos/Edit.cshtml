@@ -11,8 +11,8 @@
         imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
     }
 
-    bool tieneTemanhos = string.IsNullOrEmpty(Model.tamanho1) && string.IsNullOrEmpty(Model.tamanho2) && string.IsNullOrEmpty(Model.tamanho3) ? false : true;
-    
+    bool tieneTemanhos = Model.valorTamanho1.HasValue || Model.valorTamanho2.HasValue || Model.valorTamanho3.HasValue ? true : false;
+
 }
 
 <!-- Modal -->

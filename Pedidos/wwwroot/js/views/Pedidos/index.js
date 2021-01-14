@@ -224,11 +224,11 @@ function FiltrarProductos(productos) {
 
         if (item.valor !== 0)
             divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
-        if (item.valor === 0 && item.tamanho1 !== null)
+        if (item.valor === 0 && item.valorTamanho1 !== null)
             divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
-        if (item.valor === 0 && item.tamanho2 !== null)
+        if (item.valor === 0 && item.valorTamanho2 !== null)
             divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
-        if (item.valor === 0 && item.tamanho3 !== null)
+        if (item.valor === 0 && item.valorTamanho3 !== null)
             divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
         TD1.append(divTamanhos);
 

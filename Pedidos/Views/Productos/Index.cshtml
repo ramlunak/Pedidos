@@ -52,8 +52,7 @@
                     imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                 }
 
-                bool tieneTemanhos = string.IsNullOrEmpty(item.tamanho1) && string.IsNullOrEmpty(item.tamanho2) && string.IsNullOrEmpty(item.tamanho3) ? false : true;
-
+                bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue ? true : false;
 
                 <div class="col-12 col-md-6 col-xl-4 mb-2">
                     <div class="card">
@@ -94,13 +93,13 @@
                                         <tr>
                                             <td colspan="2">
                                                 <div class="d-flex justify-content-between">
-                                                    @if (!string.IsNullOrEmpty(item.tamanho1))
+                                                    @if (item.valorTamanho1.HasValue)
                                                     {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
 
-                                                    @if (!string.IsNullOrEmpty(item.tamanho2))
+                                                    @if (item.valorTamanho2.HasValue)
                                                     {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
 
-                                                    @if (!string.IsNullOrEmpty(item.tamanho3))
+                                                    @if (item.valorTamanho3.HasValue)
                                                     {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
 
                                                 </div>

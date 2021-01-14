@@ -12,6 +12,10 @@ var _ModalProducto = {
     observacion: ''
 };
 
+var _ModalDeliveryFormaPagamento = {
+    cliente: '',
+};
+
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
@@ -115,8 +119,25 @@ $(function () {
         if ($('#idMesa').val() !== null && $('#idMesa').val() !== undefined && $('#idMesa').val() !== "") {
             $('#spanMesa').html('MESA ' + $('#idMesa').val());
             $('#spanMesa').show();
+
+            $('#divInfoPagamentoDelivery').hide();
+
+            $('#inputAplicativo').val(null);
+            $('#idAplicativo').val('');
+            $('#inputAplicativo').trigger("input");
+            $('#inputAplicativo').hide()
+
+
+            $('#inputEndereco').val(null);
+            $('#idDireccion').val('');
+            $('#inputEndereco').trigger("input");
+            $('#inputEndereco').hide()
+
         } else {
             $('#spanMesa').hide();
+            $('#divInfoPagamentoDelivery').show();
+            $('#inputEndereco').show();
+            $('#inputAplicativo').show();
         }
 
     });
@@ -645,12 +666,13 @@ function MostarCurrentPedido() {
     $('#spanAplicativo').html(_CurrentPedido.aplicativo);
     if (_CurrentPedido.idMesa !== null && _CurrentPedido.idMesa !== undefined && _CurrentPedido.idMesa) {
         $('#spanMesa').html('MESA ' + $('#idMesa').val());
-        $('#spanMesa').show();
+        $('#spanMesa').show();      
     } else {
         $('#spanMesa').hide();
     }
+    $('#idMesa').val(_CurrentPedido.idMesa);
+    $('#idMesa').trigger('input');
     $('#spanEndereco').html(_CurrentPedido.direccion);
-
     $('#idCliente').val(_CurrentPedido.idCliente);
     $('#inputNome').val(_CurrentPedido.cliente);
     $('#inputTelefono').val(_CurrentPedido.telefono);
@@ -658,7 +680,7 @@ function MostarCurrentPedido() {
     $('#idAplicativo').val(_CurrentPedido.idAplicativo);
     $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#idDireccion').val(_CurrentPedido.idDireccion);
-    $('#idMesa').val(_CurrentPedido.idMesa);
+
     $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#inputDescuento').val(_CurrentPedido.descuento);
     $('#inputPago').prop("checked", _CurrentPedido.DeliveryPago);
@@ -767,6 +789,10 @@ function GuardarCurrentPedido() {
                 })
             }
 
+            $('#divInfoPagamentoDelivery').show();
+            $('#inputEndereco').show();
+            $('#inputAplicativo').show();
+
         },
         failure: function (response) {
             console.log('failure', response);
@@ -847,7 +873,7 @@ var valorInputFormaPagamento = 0;
 var totalPedido = 0;
 var firstInputChecked = null;
 
-function finalizado(idPedido, finalizar) {
+function actualizarFormaPagamento(idPedido, finalizar) {
 
     valorInputFormaPagamento = 0;
     totalPedido = 0;
@@ -881,6 +907,7 @@ function finalizado(idPedido, finalizar) {
     deliveryCartaoHidden = "display:inline-block";
     deliveryDinheiroHidden = "display:inline-block";
     deliveryPagoHidden = "display:inline-block";
+    deliveryInputDinheiro = "display:flex";
 
     if (!pedido.deliveryEmCartao) {
         deliveryCartaoHidden = 'display:none';
@@ -892,6 +919,7 @@ function finalizado(idPedido, finalizar) {
 
     if (!pedido.deliveryPago) {
         deliveryPagoHidden = 'display:none';
+        deliveryInputDinheiro = 'display:none';
     }
 
     var deliveryPagamento = '  <hr/>  <div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">  ' +
@@ -910,7 +938,7 @@ function finalizado(idPedido, finalizar) {
         '                           </button>  ' +
         '                       </div>  ' +
         '     ' +
-        '                       <div  class="input-group" id="divDeliveryDinheiroTotal2" style="' + deliveryPagoHidden + '">  ' +
+        '                       <div  class="input-group" id="divDeliveryDinheiroTotal2" style="' + deliveryInputDinheiro + '">  ' +
         '                           <div class="input-group-prepend">  ' +
         '                               <div class="input-group-text" id="btnGroupAddon2">R$</div>  ' +
         '                           </div>  ' +
@@ -918,7 +946,7 @@ function finalizado(idPedido, finalizar) {
         '                       </div>  ' +
         '                  </div>  ';
 
-    formaPagamentoContainer += deliveryPagamento;
+    // formaPagamentoContainer += deliveryPagamento;
 
 
     formaPagamentoContainer += '<hr/><div style="font-size: 13px;font-weight:700"><div class="d-flex mb-2 justify-content-between"><div><b>Total</b></div><div id="divTotalPagar"></div></div>';
@@ -941,11 +969,11 @@ function finalizado(idPedido, finalizar) {
             '                               <input id="inputTasaFormaPagamentoDelivery" placeholder="Taxa de entrega" class="form-control form-control-sm " />  ' +
             '                           </div><hr/>' +
             '     ' + formaPagamentoContainer +
-            '   <hr/> <div class="form-check d-flex mb-2">  ' +
-            '                                   <input class="form-check-input" type="checkbox" id="inputPagoFinalizado" name="inputPagoFinalizado">  ' +
-            '                                   <label class="form-check-label">Marcar como pago </label>  ' +
-            '                              </div>  ' +
-            '                       </div>  ' +
+            //'   <hr/> <div class="form-check d-flex mb-2">  ' +
+            //'                                   <input class="form-check-input" type="checkbox" id="inputPagoFinalizado" name="inputPagoFinalizado">  ' +
+            //'                                   <label class="form-check-label">Marcar como pago </label>  ' +
+            //'                              </div>  ' +
+            //'                       </div>  ' +
             '                  </div>  ',
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
@@ -981,7 +1009,6 @@ function finalizado(idPedido, finalizar) {
                 });
             });
 
-
             finalizarPedido = {
                 idPedido: idPedido,
                 descuento: parseFloat($('#inputDescontoFinalizado').val()),
@@ -989,14 +1016,18 @@ function finalizado(idPedido, finalizar) {
                 listaFormaPagamento: JSON.stringify(formasPagamento),
                 tasaEntrega: $('#inputTasaFormaPagamentoDelivery').val() === undefined ? 0 : parseFloat($('#inputTasaFormaPagamentoDelivery').val()),
                 troco: $('#inputTrocoFormaPagamento').val() === "" ? 0 : $('#inputTrocoFormaPagamento').val(),
-                finalizar: finalizar
+                finalizar: finalizar,
+                deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal2').val()),
+                deliveryEmCartao: _ModalDeliveryFormaPagamento.deliveryEmCartao,
+                deliveryPago: _ModalDeliveryFormaPagamento.deliveryPago,
+                deliveryEmdinheiro: _ModalDeliveryFormaPagamento.deliveryEmdinheiro
             };
 
             console.log(finalizarPedido);
 
             $.ajax({
                 type: "POST",
-                url: "/Pedidos/Finalizar",
+                url: "/Pedidos/ActualizarFormaPagamento",
                 traditional: true,
                 data: JSON.stringify(finalizarPedido),
                 contentType: "application/json; charset=utf-8",
@@ -1092,9 +1123,9 @@ function finalizado(idPedido, finalizar) {
             $('#deliveryEmdinheiroCheck2').hide();
             $('#deliveryPagoCheck2').hide();
 
-            _ModalProducto.deliveryEmCartao = true;
-            _ModalProducto.deliveryPago = false;
-            _ModalProducto.deliveryEmdinheiro = false;
+            _ModalDeliveryFormaPagamento.deliveryEmCartao = true;
+            _ModalDeliveryFormaPagamento.deliveryPago = false;
+            _ModalDeliveryFormaPagamento.deliveryEmdinheiro = false;
 
             $('#divDeliveryDinheiroTotal2').hide();
             $('#inputDeliveryDinheiroTotal2').val(null);
@@ -1105,9 +1136,9 @@ function finalizado(idPedido, finalizar) {
             $('#deliveryEmdinheiroCheck2').hide();
             $('#deliveryEmCartaoCheck2').hide();
 
-            _ModalProducto.deliveryEmCartao = false;
-            _ModalProducto.deliveryPago = true;
-            _ModalProducto.deliveryEmdinheiro = false;
+            _ModalDeliveryFormaPagamento.deliveryEmCartao = false;
+            _ModalDeliveryFormaPagamento.deliveryPago = true;
+            _ModalDeliveryFormaPagamento.deliveryEmdinheiro = false;
 
             $('#divDeliveryDinheiroTotal2').hide();
             $('#inputDeliveryDinheiroTotal2').val(null);
@@ -1119,9 +1150,9 @@ function finalizado(idPedido, finalizar) {
             $('#deliveryPagoCheck2').hide();
             $('#deliveryEmCartaoCheck2').hide();
 
-            _ModalProducto.deliveryEmCartao = false;
-            _ModalProducto.deliveryPago = false;
-            _ModalProducto.deliveryEmdinheiro = true;
+            _ModalDeliveryFormaPagamento.deliveryEmCartao = false;
+            _ModalDeliveryFormaPagamento.deliveryPago = false;
+            _ModalDeliveryFormaPagamento.deliveryEmdinheiro = true;
 
             $('#divDeliveryDinheiroTotal2').show();
         }

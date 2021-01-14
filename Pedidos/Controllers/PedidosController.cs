@@ -412,7 +412,7 @@ namespace Pedidos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Finalizar([FromBody] PedidoDatosAux pedidoaux)
+        public async Task<IActionResult> ActualizarFormaPagamento([FromBody] PedidoDatosAux pedidoaux)
         {
             if (!ValidarCuenta())
             {

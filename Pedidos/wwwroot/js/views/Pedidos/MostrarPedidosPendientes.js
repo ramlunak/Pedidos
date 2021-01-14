@@ -202,7 +202,7 @@ function MostarPedidosPendientes() {
             //futter_botones.append('<a onclick="showModalInfoDelivery(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer mr-2" style="color:white">preparado</a>');
         }
 
-        futter_botones.append('<a onclick="finalizado(' + pedido.id + ',' + false + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">Forma Pagamento</a>');
+        futter_botones.append('<a onclick="actualizarFormaPagamento(' + pedido.id + ',' + false + ')" class="btn btn-sm btn-info  cursor-pointer" style="color:white">Forma Pagamento</a>');
 
         CARD_FUTTER.append(futter_botones);
 
@@ -242,6 +242,12 @@ function MostarPedidosPendientes() {
         }
 
         if (!pedido.deliveryPago) {
+            deliveryPago = "";
+        }
+
+        if (pedido.idMesa !== null && pedido.idMesa !== undefined && pedido.idMesa) {
+            deliveryCartao = "";
+            deliveryDinheiro = "";
             deliveryPago = "";
         }
 

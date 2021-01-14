@@ -679,6 +679,8 @@ function MostarCurrentPedido() {
     $('#inputAplicativo').val(_CurrentPedido.aplicativo);
     $('#idAplicativo').val(_CurrentPedido.idAplicativo);
     $('#inputEndereco').val(_CurrentPedido.direccion);
+
+    CargarDirecciones(_CurrentPedido.idCliente);
     $('#idDireccion').val(_CurrentPedido.idDireccion);
 
     $('#inputEndereco').val(_CurrentPedido.direccion);

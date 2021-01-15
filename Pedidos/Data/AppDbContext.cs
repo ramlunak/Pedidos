@@ -57,5 +57,7 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_Caja> P_Caja { get; set; }
 
         public DbSet<Pedidos.Models.P_Mejorias> P_Mejorias { get; set; }
+
+        public DbSet<Pedidos.Models.P_MotivoSalidaCaja> P_MotivoSalidaCaja { get; set; }
     }
 }

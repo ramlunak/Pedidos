@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Pedidos.Models.P_Mejorias>
+
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>Erros e mejoras do site</b>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-primary" asp-action="Create">Informar</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <table class="table" cellspacing="10">
+            <thead>
+                <tr>
+                    <th>
+                        Código
+                    </th>
+                    <th>
+                        Mensagem
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.codigo)
+                        </td>
+                        <td style="width:100%">
+                            @Html.DisplayFor(modelItem => item.texto)
+                        </td>
+
+
+                        <td style="width:auto">
+                            <div style="width:100px">
+                                <a asp-action="Edit" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a> |
+                                <a asp-action="Delete" asp-route-id="@item.id"><i style="color:orangered" class="fa fa-trash"></i></a>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

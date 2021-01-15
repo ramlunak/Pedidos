@@ -31,12 +31,13 @@ namespace Pedidos.Controllers
             {
                 var ultimoCierre = await _context.P_Caja.OrderByDescending(x => x.id).Where(x => x.idCuenta == Cuenta.id).Take(1).ToListAsync();
                 var ultimoIdPedido = ultimoCierre.First().idUltimoPedido;
-                pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString() && x.id > ultimoIdPedido).ToListAsync();
+                pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.id > ultimoIdPedido).ToListAsync();
             }
             else
             {
                 pedidos = await _context.P_Pedidos.Where(x =>
                x.idCuenta == Cuenta.id &&
+               x.jsonFormaPagamento != null &&
                x.status == StatusPedido.Finalizado.ToString()).ToListAsync();
             }
 
@@ -66,7 +67,7 @@ namespace Pedidos.Controllers
                 caja.fecha = DateTime.Now;
                 //caja.totalVentas = pedidos.Sum(x => x.total);
                 caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
-                caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x=>x.valor > 0).ToList();
+                caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x => x.valor > 0).ToList();
                 caja.jsonFormaPagamento = caja.formaPagamentos.ToJson();
                 SetSession("Caja", caja);
             }

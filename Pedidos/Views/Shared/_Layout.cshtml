@@ -25,8 +25,11 @@
                     <ul class="nav navbar-nav navbar-right">
                         @*<li class="nav-item"><a class="nav-link text-dark"> @ViewData["Nombre"]</a></li>*@
                         <li class="nav-item d-flex">
-                            <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Perfil">
-                                <i class="fas fa-user-circle fa-2x"></i>
+                            @*<a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Perfil">
+                                    <i class="fas fa-user-circle fa-2x"></i>
+                                </a>*@
+                            <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug" asp-controller="Mejorias" asp-action="Index">
+                                <i class="fas fa-bug fa-2x"></i>
                             </a>
                             <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Sair" asp-controller="Login" asp-action="Salir">
                                 <i class="fas fa-sign-out-alt fa-2x"></i>
@@ -101,10 +104,32 @@
                             </a>
                         </li>
 
-                        <li class="nav-item">
-                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Caixa" asp-area="" asp-controller="Caja" asp-action="Index">
+                        @*<li class="nav-item">
+                                <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Caixa" asp-area="" asp-controller="Caja" asp-action="Index">
+                                    <i class="fas fa-cash-register fa-2x"></i>
+                                </a>
+                            </li>*@
+
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="Caixa">
+                            <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cash-register fa-2x"></i>
                             </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Categorias" asp-action="Index">
+                                    <i class="fas fa-project-diagram fa-1x mr-2"></i>Categorias
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Adicionais" asp-action="Index">
+                                    <i class="fab fa-buffer fa-1x mr-2"></i>Adicionais
+                                </a>
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Ingredientes" asp-action="Index">
+                                    <i class="fas fa-carrot fa-1x mr-2"></i>Ingredientes
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Caja" asp-action="Index">
+                                    <i class="fas fa-hamburger fa-1x mr-2"></i>Fechar caixa
+                                </a>
+                            </div>
                         </li>
 
                         <li class="nav-item">

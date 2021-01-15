@@ -1,0 +1,23 @@
+﻿@model Pedidos.Models.P_Mejorias
+
+<div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-6">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" />
+            <input type="hidden" asp-for="status" />
+            <input type="hidden" asp-for="codigo" />
+            <input type="hidden" asp-for="idCuenta" class="form-control" />
+            <div class="form-group small">
+
+                <textarea asp-for="texto" class="form-control form-control-sm" rows="10" placeholder="Mensagem"></textarea>
+                <span asp-validation-for="texto" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+

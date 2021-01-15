@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Pedidos.Models.P_SalidaCaja>
+
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>SAIDAS DA CAIXA</b>
+            </div>
+            <div>
+                <a class="btn btn-sm btn-primary" asp-action="Create">Nova</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <table class="table" cellspacing="10">
+            <thead>
+                <tr>
+                    <th>
+                        Motivo
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.valor)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td >
+                            @Html.DisplayFor(modelItem => item.motivo)
+                        </td>
+                        <td width="90%">
+                            @Html.DisplayFor(modelItem => item.valor)
+                        </td>
+
+
+                        <td style="width:auto">
+                            <div style="width:100px">
+                                @*<a asp-action="Edit" asp-route-id="@item.id"><i style="color:forestgreen" class="fa fa-edit"></i></a> |*@
+                                <a asp-action="Delete" asp-route-id="@item.id"><i style="color:orangered" class="fa fa-trash"></i></a>
+                            </div>
+
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

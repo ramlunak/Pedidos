@@ -1,0 +1,32 @@
+﻿@model Pedidos.Models.P_SalidaCaja
+
+<div class="card">
+    <div class="card-header  text-white bg-danger">
+        <div class="row d-flex p-2">
+            <div>
+                <b>Está seguro que deseja apagar este registro?</b>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <div>
+            <dl class="row col-12">
+                <dt class="mr-1">
+                    @Html.DisplayNameFor(model => model.valor):
+                </dt>
+                <dd>
+                    @Html.DisplayFor(model => model.valor)
+                </dd>
+            </dl>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="id" />
+                <input type="submit" value="Apagar" class="btn btn-danger" /> |
+                <a asp-action="Index">Voltar</a>
+            </form>
+        </div>
+
+    </div>
+</div>

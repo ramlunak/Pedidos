@@ -326,9 +326,7 @@ namespace Pedidos.Controllers
             if (pedidosPendientes.Any())
             {
                 pedidosPendientes.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
-           
-            
-            
+
             }
 
 
@@ -405,6 +403,30 @@ namespace Pedidos.Controllers
                     return Ok(pedido);
                 }
 
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+        public async Task<IActionResult> Finalizar(int id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            try
+            {
+                var pedido = await _context.P_Pedidos.FindAsync(id);
+                pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
+                pedido.productos.Where(x => !x.fecha_preparado.HasValue).Select(c => { c.fecha_preparado = DateTime.Now.ToSouthAmericaStandard(); return c; }).ToList();
+                pedido.jsonListProductos = pedido.productos.ToJson();
+
+                pedido.status = StatusPedido.Finalizado.ToString();
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+                return Ok(pedido);
             }
             catch (Exception ex)
             {

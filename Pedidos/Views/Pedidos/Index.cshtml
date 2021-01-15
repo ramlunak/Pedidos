@@ -242,8 +242,8 @@
                             <input id="searchMesa" type="tel" class="form-control form-control-sm bg-primary text-white ml-3" placeholder="&#9906; Mesa" style="width:80px" />
                         </div>
                         <div>
-                            <button type="button" class="btn btn-outline-light btn-sm">
-                                <i class="fas fa-check-double"></i> <span id="spanCountPedidosFinalizados" class="badge badge-primary">0</span>
+                            <button type="button" class="btn btn-outline-light btn-sm" onclick="CargarPedidosFinalizados()" data-toggle="modal" data-target="#ModalPdidosFinalizados">
+                                <i class="fas fa-check-double"></i> @*<span id="spanCountPedidosFinalizados" class="badge badge-primary">0</span>*@
                             </button>
                         </div>
                     </div>
@@ -265,8 +265,39 @@
     </div>
 </div>
 
+@*MODAL PEDIDOS FINALIZADOS*@
+<div class="modal fade" id="ModalPdidosFinalizados" tabindex="-1" role="dialog" aria-labelledby="exampleModalPdidosFinalizados" aria-hidden="true">
+    <div style="z-index:99999" class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="font-size:13px;">
+
+            <div class="modal-header">
+                <div class="d-flex justify-content-center w-100">
+                    <h4> PEDIDOS FINALIZADOS</h4>
+                </div>
+            </div>
+            <div class="modal-body  modal-lg">
+                <div class="d-block mb-2">
+                    <div>Valor Total: R$ <b id="dinalizadosValorTotal"></b></div>
+                    <div>Total Desconto  : R$ <b id="dinalizadosTotalDescuento"></b></div>
+                    <div>Total Taxa Entrega : R$ <b id="dinalizadosTotalTasa"></b></div>
+                    <div>(Valor - Desconto + Taxa): R$ <b id="dinalizadosTotalDiferencia"></b></div>
+                </div>
+
+                <table id="ListaPedidosFinalizados" style="width:100%">
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <div>
+                    <button class="btn btn-sm btn-danger cursor-pointer" data-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @*MODAL MARCAR PREPARADO*@
-<div class="modal fade" id="ModalPreparado" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreparado" aria-hidden="true">
+<!--<div class="modal fade" id="ModalPreparado" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreparado" aria-hidden="true">
     <div style="z-index:99999" class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content" style="font-size:13px;">
 
@@ -351,7 +382,8 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
@@ -361,6 +393,7 @@
 <script src="~/lib/jquery/jquery.mask.js"></script>
 <script src="~/js/views/Pedidos/index.js"></script>
 <script src="~/js/views/Pedidos/MostrarPedidosPendientes.js"></script>
+<script src="~/js/views/Pedidos/MostrarPedidosFinalizados.js"></script>
 <script src="~/js/views/Pedidos/formaPagamento.js"></script>
 <script src="~/js/views/Pedidos/editarCurrent.js"></script>
 <script src="~/js/views/Pedidos/keyup.js"></script>

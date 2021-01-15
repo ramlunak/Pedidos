@@ -333,6 +333,39 @@ namespace Pedidos.Controllers
             return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
         }
 
+        public async Task<IActionResult> CargarPedidosFinalizados()
+        {
+            var idUltimoPedidoCaixa = 0;
+            var ultimaCaixaFechada = await _context.P_Caja.OrderBy(x => x.id).LastOrDefaultAsync();
+            if (ultimaCaixaFechada != null)
+            {
+                idUltimoPedidoCaixa = ultimaCaixaFechada.idUltimoPedido;
+            }
+
+            var pedidosFinalizados = await _context.P_Pedidos.Where(x =>
+                                     x.idCuenta == Cuenta.id &&
+                                     x.id > idUltimoPedidoCaixa &&
+                                     x.status == StatusPedido.Finalizado.ToString()).ToArrayAsync();
+            if (pedidosFinalizados.Any())
+            {
+                pedidosFinalizados.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
+            }
+
+            var valorTotalPedidos = pedidosFinalizados.Sum(x => x.productos.Sum(p => p.ValorMasAdicionales));
+            var totalDescuentos = pedidosFinalizados.Sum(x => x.descuento);
+            var totalTasaEntraga = pedidosFinalizados.Sum(x => x.tasaEntrega);
+            var diferencia = valorTotalPedidos - totalDescuentos + totalTasaEntraga;
+
+            return Ok(new
+            {
+                pedidosFinalizados = pedidosFinalizados.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList(),
+                valorTotalPedidos = valorTotalPedidos,
+                totalDescuentos = totalDescuentos,
+                totalTasaEntraga = totalTasaEntraga,
+                diferencia = diferencia
+            });
+        }
+
         private bool P_PedidoExists(int id)
         {
             ValidarCuenta();

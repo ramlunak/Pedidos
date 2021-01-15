@@ -63,6 +63,7 @@ function MostarPedidosFinalizados(pedidosFinalizados) {
         //INFO DEL PEDIDO 
         var div_infopedido = '<div class="d-flex justify-content-between">  ' +
             '               <div class="d-block" style="text-align:left">  ' +
+            '                   <div style="font-size:13px"><b>Codigo: ' + pedido.codigo + '<b/></div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
             '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
             '               </div>  ' +

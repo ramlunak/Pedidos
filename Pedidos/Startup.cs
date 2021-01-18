@@ -70,13 +70,21 @@ namespace Pedidos
                 options.RespectBrowserAcceptHeader = true; // false by default
             });
 
-            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(Configuration.GetConnectionString("ConnectionString")));
+            string connection = "";
+
+#if DEBUG
+            connection = Configuration.GetConnectionString("ConnectionStringDev");
+#else
+       connection = Configuration.GetConnectionString("ConnectionStringProduction");
+#endif
+
+            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(connection));
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
 
             JsonSerializerOptions options = new JsonSerializerOptions()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            };                        
+            };
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -88,7 +96,7 @@ namespace Pedidos
 
             CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
             CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
-                        
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

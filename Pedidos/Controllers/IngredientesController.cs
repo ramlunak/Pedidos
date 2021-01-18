@@ -26,7 +26,10 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
-            return View(await _context.P_Ingredientes.Where(x=>x.idCuenta == Cuenta.id).ToListAsync());
+
+            var ingredientes = await _context.P_Ingredientes.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+            var model = ingredientes.OrderBy(x => x.nombre);
+            return View(model);
         }
 
         // GET: Ingredientes/Details/5
@@ -74,6 +77,12 @@ namespace Pedidos.Controllers
             }
             if (ModelState.IsValid)
             {
+                if (await GetIdByName(p_Ingredientes.id, p_Ingredientes.nombre) != null)
+                {
+                    PrompInfo("O ingrediente já existe");
+                    return View(p_Ingredientes);
+                }
+
                 p_Ingredientes.idCuenta = Cuenta.id;
                 p_Ingredientes.activo = true;
                 _context.Add(p_Ingredientes);
@@ -121,6 +130,12 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
+                var idIngrediente = await GetIdByName(p_Ingredientes.id, p_Ingredientes.nombre);
+                if (idIngrediente != null && idIngrediente != p_Ingredientes.id)
+                {
+                    PrompInfo("O ingrediente já existe");
+                    return View(p_Ingredientes);
+                }
                 try
                 {
                     _context.Update(p_Ingredientes);
@@ -177,6 +192,23 @@ namespace Pedidos.Controllers
             _context.P_Ingredientes.Remove(p_Ingredientes);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<int?> GetIdByName(int id, string nombre)
+        {
+            try
+            {
+                var ingrediente = await _context.P_Ingredientes.FirstOrDefaultAsync(e => e.nombre.ToLower() == nombre.ToLower() && e.idCuenta == Cuenta.id);
+                if (ingrediente == null)
+                {
+                    return null;
+                }
+                return ingrediente.id;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
         private bool P_IngredientesExists(int id)

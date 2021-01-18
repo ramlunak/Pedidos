@@ -84,7 +84,8 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Adicionais p_Adicionais)
         {
-            if(!ValidarCuenta()){
+            if (!ValidarCuenta())
+            {
                 Response.Redirect("/Login");
             }
 
@@ -165,6 +166,13 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
+                var idAdicional = await GetIdByName(p_Adicionais.nombre);
+                if (idAdicional != null && idAdicional != p_Adicionais.id)
+                {
+                    PrompInfo("O adicional já existe");
+                    return View(p_Adicionais);
+                }
+
                 try
                 {
                     _context.Update(p_Adicionais);
@@ -250,7 +258,7 @@ namespace Pedidos.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> UpdateCategoriaInAdicionalCategorias([FromBody]ListarCategoriasPorAdicional listarCategoriasPorAdicional)
+        public async Task<IActionResult> UpdateCategoriaInAdicionalCategorias([FromBody] ListarCategoriasPorAdicional listarCategoriasPorAdicional)
         {
             if (!ValidarCuenta())
             {
@@ -261,7 +269,7 @@ namespace Pedidos.Controllers
             result = await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},@idCuenta = {Cuenta.id}");
 
             if (listarCategoriasPorAdicional.selected)
-            {               
+            {
                 result = await _context.Database.ExecuteSqlRawAsync($"EXEC AddCategoriaInAdicionalCategorias @idAdicional = {listarCategoriasPorAdicional.idAdicional},  @idCategoria = {listarCategoriasPorAdicional.idCategoria},@idCuenta = {Cuenta.id}");
             }
             else
@@ -320,6 +328,23 @@ namespace Pedidos.Controllers
             return _context.P_Adicionais.Any(e => e.id == id && e.idCuenta == Cuenta.id);
         }
 
+
+        private async Task<int?> GetIdByName(string nombre)
+        {
+            try
+            {
+                var adiacional = await _context.P_Adicionais.FirstOrDefaultAsync(e => e.nombre.ToLower() == nombre.ToLower() && e.idCuenta == Cuenta.id);
+                if (adiacional == null)
+                {
+                    return null;
+                }
+                return adiacional.id;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
 
         private bool ExistsByName(string nombre)
         {

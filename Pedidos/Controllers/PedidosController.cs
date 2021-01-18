@@ -39,6 +39,8 @@ namespace Pedidos.Controllers
             var clientes = await _context.P_Clientes.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             ViewBag.Clientes = clientes;
 
+            SetSession("Clientes", clientes);
+
             var aplicativos = await _context.P_Aplicativos.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             ViewBag.Aplicativos = aplicativos;
 
@@ -232,6 +234,20 @@ namespace Pedidos.Controllers
                             currentPedido.idDireccion = direccion.id;
                             actualizarPagina = true;
                         }
+
+                        if (!string.IsNullOrEmpty(currentPedido.telefono))
+                        {
+                            var cliente = await _context.P_Clientes.FindAsync(currentPedido.idCliente);
+                            if (string.IsNullOrEmpty(cliente.telefono) || cliente.telefono != currentPedido.telefono)
+                            {
+                                cliente.telefono = currentPedido.telefono;
+                                cliente.activo = true;
+                                _context.P_Clientes.Update(cliente);
+                                await _context.SaveChangesAsync();
+                                actualizarPagina = true;
+                            }
+                        }
+
                     }
 
                     if (currentPedido.idAplicativo is null && !string.IsNullOrEmpty(currentPedido.aplicativo))
@@ -547,6 +563,25 @@ namespace Pedidos.Controllers
                 var direciones = await _context.P_Direcciones.Where(x => x.idCliente == id).ToArrayAsync();
                 return Ok(direciones);
             }
+        }
+
+        public async Task<IActionResult> CargarTelefono(int id)
+        {
+            if (GetSession<List<P_Cliente>>("Clientes") != null)
+            {
+                try
+                {
+                    var clientes = GetSession<List<P_Cliente>>("Clientes");
+                    var cli = clientes.FirstOrDefault(x => x.id == id);
+                    var telefono = cli != null ? cli.telefono : null;
+                    return Ok(telefono);
+                }
+                catch (Exception)
+                {
+                    return Ok(null);
+                }
+            }
+            return Ok(null);
         }
 
         public async Task<IActionResult> CancelarCurrentPedido()

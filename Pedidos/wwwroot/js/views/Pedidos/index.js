@@ -21,8 +21,8 @@ var _ModalIngredientes = [];
 
 $(function () {
 
-    $('html').css('overflowY', 'scroll'); 
-    $('html').css('overflowX', 'hidden'); 
+    $('html').css('overflowY', 'scroll');
+    $('html').css('overflowX', 'hidden');
 
     $("#inputDescuento").mask("###0.00", { reverse: true });
 
@@ -93,6 +93,7 @@ $(function () {
         }
 
         CargarDirecciones(id);
+        CargarTelefono(id);
 
         _CurrentPedido.cliente = $('#inputNome').val();
         _ModalProducto.cliente = $('#inputNome').val();
@@ -192,12 +193,47 @@ function CargarDirecciones(id) {
 
                 if (index === 0) {
                     $("#EnderecoList").append($('<option selected id="' + item.id + '">').attr('value', item.text));
+                    $("#inputEndereco").val(item.text);
+                    $("#idDireccion").val(item.id);
+
                 } else {
                     $("#EnderecoList").append($('<option id="' + item.id + '">').attr('value', item.text));
                 }
 
 
             });
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+} function CargarTelefono(id) {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CargarTelefono/" + parseInt(id),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);
+            $("#inputTelefone").val(data);
+            ////Llanar lista direcciones
+            //
+            //$.each(data, (index, item) => {
+
+            //    if (index === 0) {
+            //        $("#EnderecoList").append($('<option selected id="' + item.id + '">').attr('value', item.text));
+            //    } else {
+            //        $("#EnderecoList").append($('<option id="' + item.id + '">').attr('value', item.text));
+            //    }
+
+
+            //});
 
         },
         failure: function (response) {
@@ -607,6 +643,7 @@ function AddProducto() {
     _ModalProducto.idAplicativo = parseInt($('#idAplicativo').val());
     _ModalProducto.idMesa = parseInt($('#idMesa').val());
     _ModalProducto.idDireccion = parseInt($('#idDireccion').val());
+    _ModalProducto.telefono = $('#inputTelefone').val();
 
     _ModalProducto.deliveryDinheiroTotal = parseFloat($('#inputDeliveryDinheiroTotal').val());
 
@@ -669,24 +706,30 @@ function MostarCurrentPedido() {
     $('#spanAplicativo').html(_CurrentPedido.aplicativo);
     if (_CurrentPedido.idMesa !== null && _CurrentPedido.idMesa !== undefined && _CurrentPedido.idMesa) {
         $('#spanMesa').html('MESA ' + $('#idMesa').val());
-        $('#spanMesa').show();      
+        $('#spanMesa').show();
     } else {
         $('#spanMesa').hide();
     }
     $('#idMesa').val(_CurrentPedido.idMesa);
     $('#idMesa').trigger('input');
     $('#spanEndereco').html(_CurrentPedido.direccion);
+
     $('#idCliente').val(_CurrentPedido.idCliente);
+
+    //if (_CurrentPedido.idCliente != null && _CurrentPedido.idCliente != undefined && _CurrentPedido.idCliente != "") {
+
+    //}
+
     $('#inputNome').val(_CurrentPedido.cliente);
-    $('#inputTelefono').val(_CurrentPedido.telefono);
+
+    $('#inputTelefone').val(_CurrentPedido.telefono);
+
     $('#inputAplicativo').val(_CurrentPedido.aplicativo);
     $('#idAplicativo').val(_CurrentPedido.idAplicativo);
-    $('#inputEndereco').val(_CurrentPedido.direccion);
 
-    CargarDirecciones(_CurrentPedido.idCliente);
+    $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#idDireccion').val(_CurrentPedido.idDireccion);
 
-    $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#inputDescuento').val(_CurrentPedido.descuento);
     $('#inputPago').prop("checked", _CurrentPedido.DeliveryPago);
 
@@ -780,6 +823,7 @@ function GuardarCurrentPedido() {
 
                 metodoPagoDelivery("_deliveryEmCartaoCheck");
 
+                $("#EnderecoList").empty();
                 MostarPedidosPendientes();
 
                 if (result.reload) {

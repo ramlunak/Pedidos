@@ -65,68 +65,70 @@
 
             @*FORMULARIO*@
             <div class="form-group position-relative">
+                <form autocomplete="off">
+                    <div class="row m-1">
 
-                <div class="row m-1">
 
-                    <div class="col-12 col-md-8  m-0 p-0 mb-2">
-                        <input type="search" id="inputNome" list="ClienteList" placeholder="Cliente" asp-for="cliente" class="form-control form-control-sm w-100" />
-                        <datalist id="ClienteList" class="w-100">
-                            @if (ViewBag.Clientes != null)
-                            {
-                                @foreach (var cliente in ViewBag.Clientes)
+                        <div class="col-12 col-md-8  m-0 p-0 mb-2">
+                            <input type="search" id="inputNome" list="ClienteList" placeholder="Cliente" asp-for="cliente" class="form-control form-control-sm w-100" />
+                            <datalist id="ClienteList" class="w-100">
+                                @if (ViewBag.Clientes != null)
                                 {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                    @foreach (var cliente in ViewBag.Clientes)
+                                    {
+                                        <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                    }
                                 }
-                            }
-                        </datalist>
-                        <input id="idCliente" asp-for="idCliente" hidden class="form-control" />
-                    </div>
+                            </datalist>
+                            <input id="idCliente" asp-for="idCliente" hidden class="form-control" />
+                        </div>
 
-                    <input id="inputTelefone" class="form-control form-control-sm col-12 col-md-4" placeholder="Telefone" />
+                        <input id="inputTelefone" autocomplete="off" class="form-control form-control-sm col-12 col-md-4" placeholder="Telefone" />
 
 
-                    <div class="col-12 m-0 p-0 mb-2">
-                        <input type="search" id="inputEndereco" list="EnderecoList" placeholder="Endereço" class="form-control form-control-sm w-100" />
-                        <datalist id="EnderecoList" class="w-100">
-                        </datalist>
-                        <input id="idDireccion" asp-for="idDireccion" hidden class="form-control" />
-                    </div>
+                        <div class="col-12 m-0 p-0 mb-2">
+                            <input type="search" id="inputEndereco" list="EnderecoList" placeholder="Endereço" class="form-control form-control-sm w-100" />
+                            <datalist id="EnderecoList" class="w-100">
+                            </datalist>
+                            <input id="idDireccion" asp-for="idDireccion" hidden class="form-control" />
+                        </div>
 
-                    <div class="col-12 col-md-8 m-0 p-0 mb-2">
-                        <input type="search" id="inputAplicativo" list="AplicativoList" placeholder="Aplicativo" asp-for="aplicativo" class="form-control form-control-sm w-100" />
-                        <datalist id="AplicativoList" class="w-100">
-                            @if (ViewBag.Aplicativos != null)
-                            {
-                                @foreach (var aplicativo in ViewBag.Aplicativos)
+                        <div class="col-12 col-md-8 m-0 p-0 mb-2">
+                            <input type="search" id="inputAplicativo" list="AplicativoList" placeholder="Aplicativo" asp-for="aplicativo" class="form-control form-control-sm w-100" />
+                            <datalist id="AplicativoList" class="w-100">
+                                @if (ViewBag.Aplicativos != null)
                                 {
-                                    <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                                    @foreach (var aplicativo in ViewBag.Aplicativos)
+                                    {
+                                        <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                                    }
                                 }
-                            }
-                        </datalist>
-                        <input id="idAplicativo" asp-for="idAplicativo" hidden class="form-control" />
+                            </datalist>
+                            <input id="idAplicativo" asp-for="idAplicativo" hidden class="form-control" />
+                        </div>
+
+                        <input id="idMesa" class="form-control form-control-sm col-12 col-md-4" placeholder="Mesa" />
+
                     </div>
-
-                    <input id="idMesa" class="form-control form-control-sm col-12 col-md-4" placeholder="Mesa" />
-
-                </div>
+                </form>
 
                 <div id="divInfoPagamentoDelivery" class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
                     <div class="btn-group mr-2" role="group" aria-label="First group">
                         <button id="_deliveryEmCartaoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
                             Cartão
-                            <i id="deliveryEmCartaoCheck" style=" @(Model.deliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
+                            <i id="deliveryEmCartaoCheck" style=" @(Model.deliveryEmCartao.HasValue && Model.deliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
                         </button>
                         <button id="_deliveryPagoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
                             Pago
-                            <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.deliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                            <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.deliveryPago.HasValue && Model.deliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
                         </button>
                         <button id="_deliveryEmdinheiroCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
                             Dineiro
-                            <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.deliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                            <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
                         </button>
                     </div>
 
-                    <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.deliveryEmdinheiro.Value ? "display:flex" : "display:none")">
+                    <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value ? "display:flex" : "display:none")">
                         <div class="input-group-prepend">
                             <div class="input-group-text" id="btnGroupAddon">R$</div>
                         </div>
@@ -298,7 +300,7 @@
                     <table id="ListaPedidosFinalizados" style="width:100%">
                         <tr>
                             <td>
-                                <div class="d-flex justify-content-center align-items-center">                                   
+                                <div class="d-flex justify-content-center align-items-center">
                                     Não ha pedidos finalizados
                                 </div>
                             </td>

@@ -24,6 +24,10 @@ namespace Pedidos.Controllers
         // GET: CajaController
         public async Task<ActionResult> Index()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             //var countCierres = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id).CountAsync();
 
             //var pedidos = new List<P_Pedido>();
@@ -53,48 +57,59 @@ namespace Pedidos.Controllers
                 return View();
             }
 
-           
+            var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.id > caja.idUltimoPedido).ToListAsync();
 
-            //if (pedidos.Count > 0)
-            //{
-            //    ViewBag.HayVentas = true;
-            //    var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            //    foreach (var pedido in pedidos)
-            //    {
-            //        pedido.listaFormaPagamento = pedido.jsonFormaPagamento.ConvertTo<List<P_FormaPagamento>>().OrderBy(x => x.nombre).ToList();
-            //        foreach (var item in pedido.listaFormaPagamento)
-            //        {
-            //            formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valor += item.valor);
-            //            if (item.tasa.HasValue)
-            //            {
-            //                formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valorTasa += item.valorTasa);
-            //            }
-            //        }
-            //    }
+            if (pedidos.Count > 0)
+            {
+                ViewBag.HayVentas = true;
+                var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+                foreach (var pedido in pedidos)
+                {
+                    pedido.listaFormaPagamento = pedido.jsonFormaPagamento.ConvertTo<List<P_FormaPagamento>>().OrderBy(x => x.nombre).ToList();
+                    foreach (var item in pedido.listaFormaPagamento)
+                    {
+                        formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valor += item.valor);
+                        if (item.tasa.HasValue)
+                        {
+                            formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valorTasa += item.valorTasa);
+                        }
+                    }
+                }
 
-            //    caja.idCuenta = Cuenta.id;
-            //    caja.idUltimoPedido = pedidos.OrderBy(x => x.id).LastOrDefault().id;
-            //    caja.fecha = DateTime.Now;
-            //    //caja.totalVentas = pedidos.Sum(x => x.total);
-            //    caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
-            //    caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x => x.valor > 0).ToList();
-            //    caja.jsonFormaPagamento = caja.formaPagamentos.ToJson();
-            //    SetSession("Caja", caja);
-            //}
+                caja.idCuenta = Cuenta.id;
+                caja.idUltimoPedido = pedidos.OrderBy(x => x.id).LastOrDefault().id;
+                caja.fecha = DateTime.Now;
+                caja.totalVentas = pedidos.Sum(x => x.valorProductos);
+                caja.totalDescuentos = pedidos.Sum(x => x.descuento);
+                caja.totalTasasEntrega = pedidos.Sum(x => x.tasaEntrega);
+                caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
+                caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x => x.valor > 0).ToList();
+                caja.jsonFormaPagamento = caja.formaPagamentos.ToJson();
+                SetSession("Caja", caja);
+            }
 
             return View(caja);
         }
 
         public async Task<ActionResult> Fechar()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             var caja = GetSession<P_Caja>("Caja");
-            _context.Add(caja);
+            caja.isOpen = false;
+            _context.P_Caja.Update(caja);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<ActionResult> Abrir()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             //var caja = GetSession<P_Caja>("Caja");
             //_context.Add(caja);
             //await _context.SaveChangesAsync();
@@ -105,6 +120,10 @@ namespace Pedidos.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Abrir(P_Caja p_Caja)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
 
             var cajaAbierta = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && x.isOpen).CountAsync();
             if (cajaAbierta > 0)
@@ -117,7 +136,7 @@ namespace Pedidos.Controllers
             var ultimoIdPedido = 0;
             if (countCierres > 0)
             {
-                var ultimoCierre = await _context.P_Caja.OrderByDescending(x => x.id).Where(x => x.idCuenta == Cuenta.id).Take(1).ToListAsync();
+                var ultimoCierre = await _context.P_Caja.OrderByDescending(x => x.id).Where(x => x.idCuenta == Cuenta.id && !x.isOpen).Take(1).ToListAsync();
                 ultimoIdPedido = ultimoCierre.First().idUltimoPedido;
             }
 
@@ -126,7 +145,7 @@ namespace Pedidos.Controllers
             caja.idUltimoPedido = ultimoIdPedido;
             caja.fecha = DateTime.Now.ToSouthAmericaStandard();
             caja.isOpen = true;
-            caja.isOpen = true;
+
             _context.Add(caja);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));

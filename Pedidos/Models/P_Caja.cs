@@ -19,6 +19,8 @@ namespace Pedidos.Models
         public decimal inicio { get; set; }
         public decimal? totalVentas { get; set; }
         public decimal? totalTasas { get; set; }
+        public decimal? totalDescuentos { get; set; }
+        public decimal? totalTasasEntrega { get; set; }
         public string jsonFormaPagamento { get; set; }
         public int idCuenta { get; set; }
         public bool isOpen { get; set; }

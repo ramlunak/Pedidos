@@ -190,6 +190,7 @@ function CargarDirecciones(id) {
             //Llanar lista direcciones
             $("#EnderecoList").empty();
             $("#inputEndereco").val(null);
+            $("#spanEndereco").html(null);
             $.each(data, (index, item) => {
 
                 if (index === 0) {

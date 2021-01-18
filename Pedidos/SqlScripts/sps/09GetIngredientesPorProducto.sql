@@ -1,4 +1,4 @@
-﻿ ALTER PROCEDURE GetIngredientesPorProducto
+﻿ CREATE PROCEDURE GetIngredientesPorProducto
     @idProducto int,
     @idCuenta int
  AS
@@ -13,5 +13,3 @@
  from (SELECT value  FROM STRING_SPLIT(@tags, ',') WHERE RTRIM(value) <> '') as AC
  right join [dbo].[P_Ingredientes] as ING on AC.value = ING.id
  where ING.activo = 1 and ING.idCuenta = @idCuenta
-
-GO;

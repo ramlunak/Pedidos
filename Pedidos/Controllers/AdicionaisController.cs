@@ -91,7 +91,7 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
-                if (ExistsByName(p_Adicionais.nombre))
+                if (await ExistsByName(p_Adicionais.nombre))
                 {
                     NotifyError("Já existe um adicional com esse nome.");
                     return View(p_Adicionais);
@@ -346,9 +346,9 @@ namespace Pedidos.Controllers
             }
         }
 
-        private bool ExistsByName(string nombre)
+        private async Task<bool> ExistsByName(string nombre)
         {
-            return _context.P_Adicionais.Any(e => e.nombre == nombre && e.idCuenta == Cuenta.id);
+            return await _context.P_Adicionais.AnyAsync(e => e.nombre == nombre && e.idCuenta == Cuenta.id);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE DeleteCategoriaInAdicionalCategorias
+﻿CREATE PROCEDURE DeleteCategoriaInAdicionalCategorias
     @idAdicional int,   
     @idCategoria int,
     @idCuenta int
@@ -8,4 +8,3 @@
   (SELECT STRING_AGG (value, ',')  from (SELECT value  FROM STRING_SPLIT(@tags, ',') WHERE RTRIM(value) <> '') as AC  where  AC.value <> @idCategoria)
    where idAdicional = @idAdicional and idCuenta = @idCuenta 
    EXEC DeleteCategoriaAdicional   @idAdicional = @id1 , @idCategoria = @id2, @idCuenta = @id3
-   GO;  

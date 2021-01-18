@@ -7,4 +7,4 @@
   UPDATE [dbo].[P_IngredientesProducto] SET idsIngrediente =  
   (SELECT STRING_AGG (value, ',')  from (SELECT value  FROM STRING_SPLIT(@tags, ',') WHERE RTRIM(value) <> '') as AC  where  AC.value <> @idIngrediente)
    where idProducto = @idProducto and idCuenta = @idCuenta   
-   GO;
+ 

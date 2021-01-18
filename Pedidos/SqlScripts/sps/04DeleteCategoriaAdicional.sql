@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE DeleteCategoriaAdicional
+﻿CREATE PROCEDURE DeleteCategoriaAdicional
     @idAdicional int,   
     @idCategoria int,
     @idCuenta int
@@ -7,4 +7,3 @@
   UPDATE [dbo].[P_CategoriaAdicional] SET idsAdicionales =  
   (SELECT STRING_AGG (value, ',')  from (SELECT value  FROM STRING_SPLIT(@tags, ',') WHERE RTRIM(value) <> '') as AC  where  AC.value <> @idAdicional)
    where idCategoria = @idCategoria and idCuenta = @idCuenta   
-   GO;

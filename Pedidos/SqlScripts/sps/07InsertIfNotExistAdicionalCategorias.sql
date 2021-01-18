@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE InsertIfNotExistAdicionalCategorias
+﻿CREATE PROCEDURE InsertIfNotExistAdicionalCategorias
     @idAdicional int,
     @idCuenta int   
  AS

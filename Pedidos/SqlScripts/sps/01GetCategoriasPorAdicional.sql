@@ -14,4 +14,3 @@
  right join [dbo].[P_Categorias] as CT on AC.value = CT.id
  where CT.activo = 1 and CT.idCuenta = @idCuenta
 
-GO;

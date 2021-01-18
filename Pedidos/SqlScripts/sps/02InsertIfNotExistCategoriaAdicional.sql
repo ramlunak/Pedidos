@@ -1,4 +1,4 @@
-﻿ ALTER PROCEDURE InsertIfNotExistCategoriaAdicional    
+﻿ CREATE PROCEDURE InsertIfNotExistCategoriaAdicional    
     @idCategoria int,
     @idCuenta int 
  AS  
@@ -8,4 +8,3 @@
    BEGIN
       INSERT INTO [dbo].[P_CategoriaAdicional] (idCategoria,idCuenta)  VALUES(@idCategoria,@idCuenta)
    END
-GO;

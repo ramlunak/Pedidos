@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE AddCategoriaInAdicionalCategorias
+﻿CREATE PROCEDURE AddCategoriaInAdicionalCategorias
     @idAdicional int,    
     @idCategoria int,
     @idCuenta int
@@ -8,4 +8,3 @@
   (SELECT CONCAT(STRING_AGG(value, ','),',',@idCategoria) from (SELECT value  FROM STRING_SPLIT(@tags, ',') WHERE RTRIM(value) <> '') as AC )
   where idAdicional = @idAdicional and idCuenta = @idCuenta
   EXEC AddCategoriaAdicional @idAdicional = @id1 , @idCategoria = @id2, @idCuenta = @id3
-  GO;

@@ -1,4 +1,4 @@
-﻿ ALTER PROCEDURE InsertIfNotExistIngredientesProducto    
+﻿ CREATE PROCEDURE InsertIfNotExistIngredientesProducto    
     @idProducto int,
     @idCuenta int 
  AS  
@@ -8,4 +8,3 @@
    BEGIN
       INSERT INTO [dbo].[P_IngredientesProducto] (idProducto,idCuenta)  VALUES(@idProducto,@idCuenta)
    END
-GO;

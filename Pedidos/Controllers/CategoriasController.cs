@@ -67,7 +67,7 @@ namespace Pedidos.Controllers
         }
 
         public async Task<IEnumerable<SelectListItem>> GetSubCategarias(int idCategoria)
-        {           
+        {
             var subCategorias = await _context.P_SubCategorias.Where(x => x.idCategoria == idCategoria).Select(x => new SelectListItem
             {
                 Text = x.nombre,
@@ -88,6 +88,12 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
+                if (await GetIdByName(p_Categoria.nombre) != null)
+                {
+                    PrompInfo("A categoria já existe");
+                    return View(p_Categoria);
+                }
+
                 p_Categoria.idCuenta = Cuenta.id;
 
                 _context.Add(p_Categoria);
@@ -137,9 +143,16 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
+                var entityId = await GetIdByName(p_Categoria.nombre);
+                if (entityId != null && entityId != p_Categoria.id)
+                {
+                    PrompInfo("A categoria já existe");
+                    return View(p_Categoria);
+                }
+
                 try
                 {
-                    _context.Update(p_Categoria);                  
+                    _context.Update(p_Categoria);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -194,6 +207,25 @@ namespace Pedidos.Controllers
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+
+        private async Task<int?> GetIdByName(string nombre)
+        {
+            try
+            {
+                var entity = await _context.P_Categorias.FirstOrDefaultAsync(e => e.nombre.ToLower() == nombre.ToLower() && e.idCuenta == Cuenta.id);
+                if (entity == null)
+                {
+                    return null;
+                }
+                return entity.id;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
 
         private bool P_CategoriaExists(int id)
         {

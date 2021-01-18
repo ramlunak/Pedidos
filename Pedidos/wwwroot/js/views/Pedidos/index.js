@@ -189,13 +189,14 @@ function CargarDirecciones(id) {
 
             //Llanar lista direcciones
             $("#EnderecoList").empty();
+            $("#inputEndereco").val(null);
             $.each(data, (index, item) => {
 
                 if (index === 0) {
                     $("#EnderecoList").append($('<option selected id="' + item.id + '">').attr('value', item.text));
                     $("#inputEndereco").val(item.text);
                     $("#idDireccion").val(item.id);
-                    $("#spanEndereco").html(item.text);                   
+                    $("#spanEndereco").html(item.text);
 
                 } else {
                     $("#EnderecoList").append($('<option id="' + item.id + '">').attr('value', item.text));

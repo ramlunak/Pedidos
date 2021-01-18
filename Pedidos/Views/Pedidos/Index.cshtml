@@ -276,15 +276,28 @@
                 </div>
             </div>
             <div class="modal-body  modal-lg">
-                <div class="d-block mb-2">
-                    <div>Valor Total: R$ <b id="dinalizadosValorTotal"></b></div>
-                    <div>Total Desconto  : R$ <b id="dinalizadosTotalDescuento"></b></div>
-                    <div>Total Taxa Entrega : R$ <b id="dinalizadosTotalTasa"></b></div>
-                    <div>(Valor - Desconto + Taxa): R$ <b id="dinalizadosTotalDiferencia"></b></div>
+
+                <div id="divLoadinFinalizados">
+
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                        Carregando
+                    </div>
                 </div>
 
-                <table id="ListaPedidosFinalizados" style="width:100%">
-                </table>
+                <div id="divPedidosFinalizados">
+                    <div class="d-block mb-2">
+                        <div>Valor Total: R$ <b id="dinalizadosValorTotal"></b></div>
+                        <div>Total Desconto  : R$ <b id="dinalizadosTotalDescuento"></b></div>
+                        <div>Total Taxa Entrega : R$ <b id="dinalizadosTotalTasa"></b></div>
+                        <div>(Valor - Desconto + Taxa): R$ <b id="dinalizadosTotalDiferencia"></b></div>
+                    </div>
+
+                    <table id="ListaPedidosFinalizados" style="width:100%">
+                    </table>
+                </div>
 
             </div>
             <div class="modal-footer">

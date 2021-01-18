@@ -21,6 +21,9 @@ var _ModalIngredientes = [];
 
 $(function () {
 
+    $('html').css('overflowY', 'scroll'); 
+    $('html').css('overflowX', 'hidden'); 
+
     $("#inputDescuento").mask("###0.00", { reverse: true });
 
     GetNumeroPedidosFinalizados();

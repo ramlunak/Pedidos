@@ -336,7 +336,7 @@ namespace Pedidos.Controllers
         public async Task<IActionResult> CargarPedidosFinalizados()
         {
             var idUltimoPedidoCaixa = 0;
-            var ultimaCaixaFechada = await _context.P_Caja.OrderBy(x => x.id).LastOrDefaultAsync();
+            var ultimaCaixaFechada = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && !x.isOpen).OrderBy(x => x.id).LastOrDefaultAsync();
             if (ultimaCaixaFechada != null)
             {
                 idUltimoPedidoCaixa = ultimaCaixaFechada.idUltimoPedido;

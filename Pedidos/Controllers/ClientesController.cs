@@ -48,8 +48,9 @@ namespace Pedidos.Controllers
 
             ViewBag.FlrNombre = nombre;
 
+
             var modelo = new ViewModels.VMClientes();
-            modelo.Clientes = lista;
+            modelo.Clientes = lista.OrderBy(x => x.nombre).ToList();
             modelo.PaginaActual = pagina;
             modelo.TotalDeRegistros = totalDeRegistros;
             modelo.RegistrosPorPagina = cantidadRegistrosPorPagina;

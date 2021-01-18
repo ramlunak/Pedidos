@@ -2,6 +2,9 @@
 //cargar lista de pedidos pendientes
 function CargarPedidosFinalizados() {
 
+    $('#divLoadinFinalizados').show();
+    $('#divPedidosFinalizados').hide();
+
     $.ajax({
         type: "GET",
         url: "/Pedidos/CargarPedidosFinalizados/",
@@ -11,7 +14,8 @@ function CargarPedidosFinalizados() {
         success: function (data) {
             MostarPedidosFinalizados(data.pedidosFinalizados);
 
-            console.log(data);
+            $('#divLoadinFinalizados').hide();
+            $('#divPedidosFinalizados').show();
 
             $('#dinalizadosValorTotal').html(data.valorTotalPedidos);
             $('#dinalizadosTotalDescuento').html(data.totalDescuentos);
@@ -21,9 +25,15 @@ function CargarPedidosFinalizados() {
         },
         failure: function (response) {
             console.log('failure', response);
+
+            $('#divLoadinFinalizados').hide();
+            $('#divPedidosFinalizados').show();
         },
         error: function (response) {
             console.log('error', response);
+
+            $('#divLoadinFinalizados').hide();
+            $('#divPedidosFinalizados').show();
 
         }
     });
@@ -182,7 +192,7 @@ function MostarPedidosFinalizados(pedidosFinalizados) {
 
             var TABLA_INGD = $('<table class="w-100 unselectable" style="color: orangered;font-weight: 500;">');
             $.each(producto.ingredientes, function (index, item) {
-                console.log(item);
+                
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
                 var TR = $('<tr>');

@@ -25,11 +25,14 @@
                     <ul class="nav navbar-nav navbar-right">
                         @*<li class="nav-item"><a class="nav-link text-dark"> @ViewData["Nombre"]</a></li>*@
                         <li class="nav-item d-flex">
-                            @*<a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Perfil">
-                                    <i class="fas fa-user-circle fa-2x"></i>
-                                </a>*@
+
                             <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug" asp-controller="Mejorias" asp-action="Index">
                                 <i class="fas fa-bug fa-2x"></i>
+                            </a>
+                            <a class="nav-link text-dark cursor-pointer text-primary" style="display:contents">
+                                <div class="rounded-circle bg-primary avatar">
+                                    <span style="font-size:20px;color:white">@TempData["Inicial"]</span>
+                                </div>
                             </a>
                             <a class="nav-link text-dark" data-toggle="tooltip" data-placement="top" title="Sair" asp-controller="Login" asp-action="Salir">
                                 <i class="fas fa-sign-out-alt fa-2x"></i>
@@ -120,9 +123,12 @@
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="SalidaCaja" asp-action="Index">
-                                    <i class="fas fa-donate  fa-1x mr-2"></i>Saidas
+                                    <i class="fas fa-donate fa-1x mr-2"></i>Saidas
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Caja" asp-action="Abrir">
+                                    <i class="fas fa-lock-open fa-1x mr-2"></i>Abrir
+                                </a>
                                 <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Caja" asp-action="Index">
                                     <i class="far fa-stop-circle fa-1x mr-2"></i>Fechar caixa
                                 </a>

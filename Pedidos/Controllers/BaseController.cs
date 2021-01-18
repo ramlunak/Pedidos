@@ -78,7 +78,8 @@ namespace Pedidos.Controllers
                 Logof();
                 return false;
             }
-            TempData["Email"] = Cuenta.usuario;
+            TempData["Usuario"] = Cuenta.usuario;
+            TempData["Inicial"] = Cuenta.usuario.Substring(0, 1).ToUpper();
             return true;
         }
 

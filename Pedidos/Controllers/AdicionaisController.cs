@@ -82,15 +82,6 @@ namespace Pedidos.Controllers
             return View();
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                _context.Dispose();
-            }
-            base.Dispose(disposing);
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Adicionais p_Adicionais)
@@ -126,37 +117,25 @@ namespace Pedidos.Controllers
 
                         _context.Add(p_AdicionalCategorias);
                         await _context.SaveChangesAsync();
-
-                        //var caja = new P_Caja();
-                        //caja.idCuenta = Cuenta.id;
-                        //caja.isOpen = true;
-                        //_context.Add(caja);
-                        //await _context.SaveChangesAsync();
-
+                                               
                         await transaction.CommitAsync();
+                        return RedirectToAction(nameof(Index));
                     }
                     catch (Exception ex)
                     {
                         await transaction.RollbackAsync();
+
+                        await InsertLog(_context, Cuenta.id, ex.ToString());
                         PrompErro(ex.Message);
                         return View(p_Adicionais);
                     }
                 }
 
-                //var log = new P_Log();
-                ////  var sadfsad = _context;
-                ////  await _context.DisposeAsync();
+                return View(p_Adicionais);
 
-                //log.idCuenta = Cuenta.id;
-                //log.ex = "asasd";
-                //log.fecha = DateTime.Now.ToSouthAmericaStandard();
-
-                //_context.Add(log);
-                //await _context.SaveChangesAsync();               
-
-                return RedirectToAction(nameof(Index));
             }
-            return View(p_Adicionais);
+            return RedirectToAction(nameof(Index));
+
         }
 
         public async Task<IActionResult> Edit(int? id)

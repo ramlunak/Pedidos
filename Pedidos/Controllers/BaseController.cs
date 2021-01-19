@@ -2,7 +2,10 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 using Pedidos.Models.Enums;
 using System;
@@ -280,6 +283,12 @@ namespace Pedidos.Controllers
             };
 
             TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
+        public async Task InsertLog(AppDbContext appDbContext, int idCuenta, string ex)
+        {
+            var r = await appDbContext.Database.ExecuteSqlInterpolatedAsync($"EXEC InsertLog  @idCuenta = {idCuenta},@fecha = {DateTime.Now.ToSouthAmericaStandard()},@ex = {ex}");
+            ;
         }
 
     }

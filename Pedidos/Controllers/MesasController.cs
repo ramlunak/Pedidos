@@ -26,6 +26,7 @@ namespace Pedidos.Controllers
                 QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
                 QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode("https://www.mastereat.com.br/cardapio", QRCodeGenerator.ECCLevel.Q);
                 QRCode qRCode = new QRCode(qRCodeData);
+                Bitmap qrCodeImage = qRCode.GetGraphic(20, Color.Black, Color.White, (Bitmap)Bitmap.FromFile("C:\\myimage.png"));
                 using (Bitmap oBitmat =  qRCode.GetGraphic(20))
                 {
                     oBitmat.Save(ms, ImageFormat.Png);

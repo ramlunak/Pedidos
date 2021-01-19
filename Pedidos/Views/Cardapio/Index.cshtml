@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = null;
 }
 
 <div>
     @foreach (var item in Model)
     {
         <div class="accordion" id="accordionCategorias">
-            
+
             <div class="card">
                 <div class="card-header cursor-pointer d-flex justify-content-center" id="heading_@item.id" data-toggle="collapse" data-target="#collapse_@item.id" aria-expanded="true" aria-controls="collapse_@item.id">
                     <h5 class="mb-0">
@@ -20,10 +21,9 @@
                     <div class="card-body">
 
                         @*MODAL DETALLES PRODUCTO*@
-                                             
+
                         @*LISTA PRODUCTOS*@
                         <table class="table" id="tableProductosCategoria_@item.id" width="100%" cellspacing="0" cellpadding="0">
-                            
                         </table>
                     </div>
                 </div>

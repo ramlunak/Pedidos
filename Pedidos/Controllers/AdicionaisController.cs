@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 using Pedidos.Models.DTO;
 
@@ -26,6 +27,7 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
+
             var model = await _context.P_Adicionais.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
             return View(model.OrderByDescending(x => x.paraTodos).ToList());
         }
@@ -80,6 +82,15 @@ namespace Pedidos.Controllers
             return View();
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(P_Adicionais p_Adicionais)
@@ -103,6 +114,7 @@ namespace Pedidos.Controllers
                     {
                         p_Adicionais.idCuenta = Cuenta.id;
                         p_Adicionais.activo = true;
+
                         _context.Add(p_Adicionais);
                         await _context.SaveChangesAsync();
 
@@ -115,15 +127,32 @@ namespace Pedidos.Controllers
                         _context.Add(p_AdicionalCategorias);
                         await _context.SaveChangesAsync();
 
+                        //var caja = new P_Caja();
+                        //caja.idCuenta = Cuenta.id;
+                        //caja.isOpen = true;
+                        //_context.Add(caja);
+                        //await _context.SaveChangesAsync();
+
                         await transaction.CommitAsync();
                     }
                     catch (Exception ex)
                     {
                         await transaction.RollbackAsync();
-                        NotifyError(ex.Message);
+                        PrompErro(ex.Message);
+                        return View(p_Adicionais);
                     }
                 }
 
+                //var log = new P_Log();
+                ////  var sadfsad = _context;
+                ////  await _context.DisposeAsync();
+
+                //log.idCuenta = Cuenta.id;
+                //log.ex = "asasd";
+                //log.fecha = DateTime.Now.ToSouthAmericaStandard();
+
+                //_context.Add(log);
+                //await _context.SaveChangesAsync();               
 
                 return RedirectToAction(nameof(Index));
             }

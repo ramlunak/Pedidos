@@ -10,7 +10,7 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int idCuenta { get; set; }
-        public DateTime data { get; set; } = DateTime.Now.ToSouthAmericaStandard();
-        public string ex { get; set; }      
+        public DateTime fecha { get; set; }
+        public string ex { get; set; }
     }
 }

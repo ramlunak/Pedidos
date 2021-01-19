@@ -56,7 +56,7 @@
                         @*<div class="m-1 btn btn-sm btn-outline-primary cursor-pointer d-flex align-items-center" onclick="showModalInfoDelivery()"><i class="fas fa-motorcycle mr-2" style="color:black"></i> DELIVERY</div>*@
                         <div class="d-flex">
                             <div class="ml-2">
-                                <a class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
+                                <a id="btnSalvarPedido" class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
                             </div>
                         </div>
                     </div>
@@ -419,3 +419,5 @@
 <script src="~/js/views/Pedidos/formaPagamento.js" asp-append-version="true"></script>
 <script src="~/js/views/Pedidos/editarCurrent.js" asp-append-version="true"></script>
 <script src="~/js/views/Pedidos/keyup.js" asp-append-version="true"></script>
+<script src="~/aspnet/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+<script src="~/js/views/Pedidos/cardapio.js" asp-append-version="true"></script>

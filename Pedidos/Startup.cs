@@ -19,6 +19,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pedidos.Data;
+using Pedidos.Hubs;
 using Pedidos.Models.Enums;
 
 namespace Pedidos
@@ -39,6 +40,8 @@ namespace Pedidos
                    .AddSessionStateTempDataProvider();
             services.AddRazorPages()
                     .AddSessionStateTempDataProvider();
+
+            services.AddSignalR();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                    .AddCookie(o =>
@@ -75,7 +78,7 @@ namespace Pedidos
 #if DEBUG
             connection = Configuration.GetConnectionString("ConnectionStringDev");
 #else
-       connection = Configuration.GetConnectionString("ConnectionStringProduction");
+            connection = Configuration.GetConnectionString("ConnectionStringProduction");
 #endif
 
             services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(connection));
@@ -137,6 +140,7 @@ namespace Pedidos
                     pattern: "{controller=Login}/{action=Index}/{id?}");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
+                endpoints.MapHub<CardapioHub>("/cardapiohub");
             });
         }
 

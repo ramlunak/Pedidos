@@ -13,6 +13,11 @@
     {
       "library": "limonte-sweetalert2@10.9.1",
       "destination": "wwwroot/lib/limonte-sweetalert2/"
+    },
+    {
+      "provider": "unpkg",
+      "library": "@aspnet/signalr@1.1.4",
+      "destination": "wwwroot/aspnet/signalr/"
     }
   ]
 }

@@ -47,48 +47,65 @@ namespace Pedidos.Controllers
 
             //  var caja = new P_Caja();
 
-            var caja = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && x.isOpen).FirstOrDefaultAsync();
+            var pedo = new P_Pedido(0);
 
-            ViewBag.HayVentas = false;
-
-            if (caja == null)
+            try
             {
-                PrompInfo("Deve abrir a caixa para poder continuar");
-                return View();
-            }
+                var caja = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && x.isOpen).FirstOrDefaultAsync();
 
-            var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.id > caja.idUltimoPedido).ToListAsync();
+                ViewBag.HayVentas = false;
 
-            if (pedidos.Count > 0)
-            {
-                ViewBag.HayVentas = true;
-                var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-                foreach (var pedido in pedidos)
+                if (caja == null)
                 {
-                    pedido.listaFormaPagamento = pedido.jsonFormaPagamento.ConvertTo<List<P_FormaPagamento>>().OrderBy(x => x.nombre).ToList();
-                    foreach (var item in pedido.listaFormaPagamento)
-                    {
-                        formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valor += item.valor);
-                        if (item.tasa.HasValue)
-                        {
-                            formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valorTasa += item.valorTasa);
-                        }
-                    }
+                    PrompInfo("Deve abrir a caixa para poder continuar");
+                    return View();
                 }
 
-                caja.idCuenta = Cuenta.id;
-                caja.idUltimoPedido = pedidos.OrderBy(x => x.id).LastOrDefault().id;
-                caja.fecha = DateTime.Now;
-                caja.totalVentas = pedidos.Sum(x => x.valorProductos);
-                caja.totalDescuentos = pedidos.Sum(x => x.descuento);
-                caja.totalTasasEntrega = pedidos.Sum(x => x.tasaEntrega);
-                caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
-                caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x => x.valor > 0).ToList();
-                caja.jsonFormaPagamento = caja.formaPagamentos.ToJson();
-                SetSession("Caja", caja);
-            }
+                var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.id > caja.idUltimoPedido).ToListAsync();
 
-            return View(caja);
+                if (pedidos.Count > 0)
+                {
+                    ViewBag.HayVentas = true;
+                    var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
+
+                    foreach (var pedido in pedidos)
+                    {
+                        pedo = pedido;
+
+                        pedido.listaFormaPagamento = pedido.jsonFormaPagamento.ConvertTo<List<P_FormaPagamento>>().Where(x => x.valor.HasValue).OrderBy(x => x.nombre).ToList();
+
+                        foreach (var item in pedido.listaFormaPagamento)
+                        {
+                            formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valor += item.valor.Value);
+                            if (item.tasa.HasValue)
+                            {
+                                formasPagamento.Where(x => x.id == item.id).ToList().ForEach(x => x.valorTasa += item.valorTasa);
+                            }
+                        }
+                    }
+
+                    caja.idCuenta = Cuenta.id;
+                    caja.idUltimoPedido = pedidos.OrderBy(x => x.id).LastOrDefault().id;
+                    caja.fecha = DateTime.Now;
+                    caja.totalVentas = pedidos.Sum(x => x.valorProductos);
+                    caja.totalDescuentos = pedidos.Sum(x => x.descuento);
+                    caja.totalTasasEntrega = pedidos.Sum(x => x.tasaEntrega);
+                    caja.totalTasas = pedidos.Sum(x => x.listaFormaPagamento.Sum(f => f.valorTasa));
+                    caja.formaPagamentos = formasPagamento.OrderBy(x => x.nombre).Where(x => x.valor > 0).ToList();
+                    caja.jsonFormaPagamento = caja.formaPagamentos.ToJson();
+                    SetSession("Caja", caja);
+                }
+
+                return View(caja);
+            }
+            catch (Exception ex)
+            {
+                var sdsd = pedo;
+                ViewBag.Erro = true;
+                await InsertLog(_context, Cuenta.id, ex.ToString());
+                PrompErro(ex.Message);
+                return View();
+            }
         }
 
         public async Task<ActionResult> Fechar()

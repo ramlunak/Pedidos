@@ -8,7 +8,15 @@
 
     <div class="m-3 text-center" style="color: darkgray">CAIXA</div>
 
-    @if (ViewBag.HayVentas)
+
+    @if (ViewBag.Erro != null)
+    {
+        <div class="d-block text-center">
+            <img src="~/img/shopping-cart.png" width="100" />
+            <div style="font-size:20px;color:orangered">Ocurreu um erro, contate com suporte.</div>
+        </div>
+    }
+    else@if (ViewBag.HayVentas)
     {
 
         @*PERIODO*@
@@ -65,14 +73,14 @@
                                 <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
                             }
                         </td>
-                        <td class="text-nowrap">R$ @item.valor.ToString("F2")</td>
+                        <td class="text-nowrap">R$ @item.valor.Value.ToString("F2")</td>
                         <td class="text-nowrap">
                             @if (item.tasa.HasValue)
                             {
                                 <div style="color:orangered">R$ @item.valorTasa.ToString("F2")</div>
                             }
                         </td>
-                        <td class="text-right text-nowrap" style="color:green">R$ @((item.valor - item.valorTasa).ToString("F2"))</td>
+                        <td class="text-right text-nowrap" style="color:green">R$ @((item.valor.Value - item.valorTasa).ToString("F2"))</td>
                     </tr>
                 }
             </tbody>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<Pedidos.Models.P_Caja>
+@using Pedidos.Extensions
+@using System.Globalization
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-2">
+            <div>
+                <b>LISTA CAIXAS FECHADAS</b>
+            </div>
+        </div>
+
+    </div>
+    <div class="card-body">
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Data
+                    </th>
+                    <th>
+                        Dinheiro inicial
+                    </th>
+                    <th>
+                        Vendas
+                    </th>
+                    <th>
+                        Taxas dos cartões
+                    </th>
+                    <th>
+                        Descontos
+                    </th>
+                    <th>
+                        Taxas de entraga
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td>
+                            <div class="d-block">
+                                <div>  @item.fecha.ToSouthAmericaStandard().ToString("dd/MM/yyyy HH:mm:ss", new CultureInfo("pt-BR"))</div>
+                                <div style="font-size: 12px; color: gray">  @item.fecha.ToSouthAmericaStandard().ToString("dddd, dd MMMM yyyy", new CultureInfo("pt-BR"))</div>
+                            </div>
+                        </td>
+                        <td>
+                            R$ @item.inicio.ToString("F2")
+                        </td>
+                        <td style="color:green">
+                            R$ @((item.totalVentas ?? 0).ToString("F2"))
+                        </td>
+                        <td style="color:green">
+                            R$ @((item.totalTasasEntrega ?? 0).ToString("F2"))
+                        </td>
+                        <td style="color:orangered">
+                            R$ @((item.totalTasas ?? 0).ToString("F2"))
+                        </td>
+                        <td style="color:orangered">
+                            R$ @((item.totalDescuentos ?? 0).ToString("F2"))
+                        </td>
+
+                        <td>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+    </div>
+</div>

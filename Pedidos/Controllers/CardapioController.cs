@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
@@ -19,10 +20,11 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        // GET: Cardapio
+        [Route("Cardapio/{id}")]
         public async Task<IActionResult> Index(string id)
         {
-            ;
+
+            if (id == null) return View();
             //if (!ValidarCuenta())
             //{
             //    return RedirectToAction("Salir", "Login");
@@ -43,17 +45,35 @@ namespace Pedidos.Controllers
 
             //var item = from d in data
             //           group d by d.Categoria into g select g.ToList();
-
+                      
+            ViewBag.LocalIpAddress = Request.HttpContext.Connection.LocalIpAddress;
+            ViewBag.RemoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
+            ViewBag.HttpContextConnectionId = HttpContext.Connection.Id;
             //var result = await query.ToListAsync();
-            TempData["IsQRCode"] = true;
+            try
+            {
+                TempData["IsQRCode"] = true;
 
-            var model = await _context.P_Categorias.Where(x => x.idCuenta == 5 && x.activo).ToListAsync();
+                var cuenta = id.Split("_")[0];
+                var table = id.Split("_")[1];
+                var idCuenta = Convert.ToInt32(cuenta.Split("acc")[1]);
+                var mesa = Convert.ToInt32(table.Split("table")[1]);
+                ViewBag.IdCuenta = idCuenta;
+                ViewBag.Mesa = mesa;
+                //var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
 
-            return View(model);
+                return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erro = ex.Message;
+                return View();
+            }
         }
 
 
-        public async Task<IActionResult> GetProductos(int id)
+        [HttpPost]
+        public async Task<IActionResult> GetProductos([FromBody] P_Categoria categoria)
         {
             //if (!ValidarCuenta())
             //{
@@ -75,7 +95,7 @@ namespace Pedidos.Controllers
             //var item = from d in data
             //           group d by d.Categoria into g
             //           select g.ToList();
-            var items = await _context.P_Productos.Where(x => x.idCategoria == id && x.idCuenta == 5 && x.activo).ToListAsync();
+            var items = await _context.P_Productos.Where(x => x.idCategoria == categoria.id && x.idCuenta == categoria.idCuenta && x.activo).ToListAsync();
             return Ok(items);
         }
 

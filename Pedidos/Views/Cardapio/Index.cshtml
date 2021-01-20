@@ -5,32 +5,53 @@
     Layout = "~/Views/Shared/_LayoutQR.cshtml";
 }
 
+@if (ViewBag.Erro != null)
+{
+    <div class="container m-1">
+        <div class="alert alert-danger">@ViewBag.Erro</div>
+    </div>
+}
+
 <div>
-    @foreach (var item in Model)
-    {
-        <div class="accordion" id="accordionCategorias">
+    @ViewBag.HttpContextConnectionId
+</div>
 
-            <div class="card">
-                <div class="card-header cursor-pointer d-flex justify-content-center" id="heading_@item.id" data-toggle="collapse" data-target="#collapse_@item.id" aria-expanded="true" aria-controls="collapse_@item.id">
-                    <h5 class="mb-0">
-                        @item.nombre
-                    </h5>
-                </div>
+<div>
+    @ViewBag.RemoteIpAddress / @ViewBag.LocalIpAddress
+</div>
 
-                <div id="collapse_@item.id" class="collapse hide collapseCategoria" aria-labelledby="heading_@item.id" data-parent="#accordionCategorias">
-                    <div class="card-body">
+<div>
+    <input type="hidden" id="inputIdCuenta" value="@ViewBag.IdCuenta" />
+    <input type="hidden" id="inputMesa" value="@ViewBag.Mesa" />
+</div>
 
-                        @*MODAL DETALLES PRODUCTO*@
+<div>
+    @if (Model != null)
+        @foreach (var item in Model)
+        {
+            <div class="accordion" id="accordionCategorias">
 
-                        @*LISTA PRODUCTOS*@
-                        <table class="table" id="tableProductosCategoria_@item.id" width="100%" cellspacing="0" cellpadding="0">
-                        </table>
+                <div class="card">
+                    <div class="card-header cursor-pointer d-flex justify-content-center" id="heading_@($"{item.id}_{item.idCuenta}")" data-toggle="collapse" data-target="#collapse_@($"{item.id}_{item.idCuenta}")" aria-expanded="true" aria-controls="collapse_@($"{item.id}_{item.idCuenta}")">
+                        <h5 class="mb-0">
+                            @item.nombre
+                        </h5>
+                    </div>
+
+                    <div id="collapse_@($"{item.id}_{item.idCuenta}")" class="collapse hide collapseCategoria" aria-labelledby="heading_@($"{item.id}_{item.idCuenta}")" data-parent="#accordionCategorias">
+                        <div class="card-body">
+
+                            @*MODAL DETALLES PRODUCTO*@
+
+                            @*LISTA PRODUCTOS*@
+                            <table class="table" id="tableProductosCategoria_@($"{item.id}_{item.idCuenta}")" width="100%" cellspacing="0" cellpadding="0">
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
-    }
+            </div>
+        }
 </div>
 
 @*<h1>Index</h1>

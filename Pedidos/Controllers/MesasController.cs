@@ -13,18 +13,19 @@ namespace Pedidos.Controllers
 {
     public class MesasController : BaseController
     {
-        // GET: MesasController
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
             }
 
+            var info = $"acc{Cuenta.id}_table{id}";
+
             using (MemoryStream ms = new MemoryStream())
             {
                 QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
-                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode("https://www.mastereat.com.br/cardapio", QRCodeGenerator.ECCLevel.Q);
+                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode("https://devmastereat.azurewebsites.net/cardapio/" + info, QRCodeGenerator.ECCLevel.Q);
                 QRCode qRCode = new QRCode(qRCodeData);
                 using (Bitmap oBitmat = qRCode.GetGraphic(20))
                 {
@@ -37,73 +38,14 @@ namespace Pedidos.Controllers
             return View();
         }
 
-        // GET: MesasController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Lista()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 
-        // GET: MesasController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: MesasController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MesasController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: MesasController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MesasController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MesasController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

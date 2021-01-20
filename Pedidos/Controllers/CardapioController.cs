@@ -65,7 +65,8 @@ namespace Pedidos.Controllers
         }
 
 
-        public async Task<IActionResult> GetProductos(int id)
+        [HttpPost]
+        public async Task<IActionResult> GetProductos([FromBody] P_Categoria categoria)
         {
             //if (!ValidarCuenta())
             //{
@@ -87,7 +88,7 @@ namespace Pedidos.Controllers
             //var item = from d in data
             //           group d by d.Categoria into g
             //           select g.ToList();
-            var items = await _context.P_Productos.Where(x => x.idCategoria == id && x.idCuenta == 5 && x.activo).ToListAsync();
+            var items = await _context.P_Productos.Where(x => x.idCategoria == categoria.id && x.idCuenta == categoria.idCuenta && x.activo).ToListAsync();
             return Ok(items);
         }
 

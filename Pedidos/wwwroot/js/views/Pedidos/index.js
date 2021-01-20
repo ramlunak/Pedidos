@@ -1271,10 +1271,10 @@ function radioFormaPagamentoChange(input, idPedido) {
         valorInputFormaPagamento = 0;
     }
 
-    if (numberOfChecked > 3) {
-        $(input).prop("checked", false);
-        return;
-    }
+    //if (numberOfChecked > 3) {
+    //    $(input).prop("checked", false);
+    //    return;
+    //}
 
     //HABILITAR CAMPOS DE TEXTO
 

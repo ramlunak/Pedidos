@@ -19,10 +19,11 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        // GET: Cardapio
+        [Route("Cardapio/{id}")]
         public async Task<IActionResult> Index(string id)
         {
-            ;
+
+            if (id == null) return View();
             //if (!ValidarCuenta())
             //{
             //    return RedirectToAction("Salir", "Login");
@@ -45,11 +46,22 @@ namespace Pedidos.Controllers
             //           group d by d.Categoria into g select g.ToList();
 
             //var result = await query.ToListAsync();
-            TempData["IsQRCode"] = true;
+            try
+            {
+                TempData["IsQRCode"] = true;
 
-            var model = await _context.P_Categorias.Where(x => x.idCuenta == 5 && x.activo).ToListAsync();
+                var cuenta = id.Split("_")[0];
+                var idCuenta = Convert.ToInt32(cuenta.Split("acc")[1]);
 
-            return View(model);
+                var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Erro = ex.Message;
+                return View();
+            }
         }
 
 

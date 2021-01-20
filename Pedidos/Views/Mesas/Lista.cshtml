@@ -22,11 +22,11 @@
 
             @for (int i = 1; i < length; i++)
             {
-                <div class="col-12 col-sm-6 col-md-6 col-lg-3  mb-2">
+                <a style="text-decoration: none !important" class="col-12 col-sm-6 col-md-6 col-lg-3  mb-2" asp-controller="Mesas" asp-action="Index" asp-route-id="@i">
                     <div class="card card-body d-flex justify-content-center align-items-center mesa-selected cursor-pointer">
-                        <i class="fas fa-box fa-6x m-3" aria-hidden="true" style="color: cadetblue"></i> <strong style="font-size:20px">Mesa @i</strong>
+                        <i class="fas fa-box fa-6x m-3" aria-hidden="true" style="color: cadetblue"></i> <strong style="font-size: 20px;text-decoration: none !important">Mesa @i</strong>
                     </div>
-                </div>
+                </a>
             }
 
         </div>

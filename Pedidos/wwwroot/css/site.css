@@ -194,6 +194,7 @@ input.text-white::-webkit-input-placeholder {
     margin: 5px;
 }
 
+
 .mesa-selected:hover {
     background-color: lightgray;
 }

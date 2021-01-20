@@ -13,17 +13,19 @@ namespace Pedidos.Controllers
 {
     public class MesasController : BaseController
     {
-        public ActionResult Index()
+        public ActionResult Index(int id)
         {
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
             }
 
+            var info = $"acc{Cuenta.id}_table{id}";
+
             using (MemoryStream ms = new MemoryStream())
             {
                 QRCodeGenerator qRCodeGenerator = new QRCodeGenerator();
-                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode("https://www.mastereat.com.br/cardapio", QRCodeGenerator.ECCLevel.Q);
+                QRCodeData qRCodeData = qRCodeGenerator.CreateQrCode("https://devmastereat.azurewebsites.net/cardapio/" + info, QRCodeGenerator.ECCLevel.Q);
                 QRCode qRCode = new QRCode(qRCodeData);
                 using (Bitmap oBitmat = qRCode.GetGraphic(20))
                 {
@@ -38,6 +40,10 @@ namespace Pedidos.Controllers
 
         public async Task<ActionResult> Lista()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
             return View();
         }
 

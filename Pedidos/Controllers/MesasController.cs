@@ -13,7 +13,6 @@ namespace Pedidos.Controllers
 {
     public class MesasController : BaseController
     {
-        // GET: MesasController
         public ActionResult Index()
         {
             if (!ValidarCuenta())
@@ -37,73 +36,10 @@ namespace Pedidos.Controllers
             return View();
         }
 
-        // GET: MesasController/Details/5
-        public ActionResult Details(int id)
+        public async Task<ActionResult> Lista()
         {
             return View();
         }
 
-        // GET: MesasController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: MesasController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MesasController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: MesasController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: MesasController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: MesasController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
     }
 }

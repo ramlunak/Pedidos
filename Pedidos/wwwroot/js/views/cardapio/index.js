@@ -1,5 +1,11 @@
-﻿
+﻿var cardapioIdCuenta;
+var cardapioMesa;
+
 $(function () {
+
+    cardapioIdCuenta = $('#inputIdCuenta').val();
+    cardapioMesa = $('#inputMesa').val();
+    console.log(cardapioIdCuenta, cardapioMesa);
 
     $('.collapseCategoria').on('show.bs.collapse', function () {
 

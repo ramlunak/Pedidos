@@ -13,6 +13,19 @@
 }
 
 <div>
+    @ViewBag.HttpContextConnectionId
+</div>
+
+<div>
+    @ViewBag.RemoteIpAddress / @ViewBag.LocalIpAddress
+</div>
+
+<div>
+    <input type="hidden" id="inputIdCuenta" value="@ViewBag.IdCuenta" />
+    <input type="hidden" id="inputMesa" value="@ViewBag.Mesa" />
+</div>
+
+<div>
     @if (Model != null)
         @foreach (var item in Model)
         {

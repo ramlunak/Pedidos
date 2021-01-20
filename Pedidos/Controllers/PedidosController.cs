@@ -504,7 +504,9 @@ namespace Pedidos.Controllers
                 }
                 pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
-                pedido.deliveryPago = pedidoaux.pago;
+                pedido.deliveryPago = true;
+                pedido.deliveryEmCartao = false;
+                pedido.deliveryEmdinheiro = false;
                 pedido.deliveryTroco = pedidoaux.troco;
                 pedido.tasaEntrega = pedidoaux.tasaEntrega ?? 0;
                 pedido.productos = JsonConvert.DeserializeObject<List<P_Productos>>(pedido.jsonListProductos);

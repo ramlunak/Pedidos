@@ -473,6 +473,7 @@ namespace Pedidos.Controllers
                 pedido.jsonListProductos = pedido.productos.ToJson();
 
                 pedido.status = StatusPedido.Finalizado.ToString();
+                pedido.fechaFinalizado = DateTime.Now.ToSouthAmericaStandard();
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
                 return Ok(pedido);

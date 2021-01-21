@@ -19,6 +19,7 @@ namespace Pedidos.Models
         [Column(TypeName = "money")]
         [DataType(DataType.Currency)]
         public decimal Valor { get; set; }
+        public int orden { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; } = true;
         public bool paraTodos { get; set; } = false;

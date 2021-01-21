@@ -896,7 +896,12 @@ function cancelar(idPedido) {
                         icon: 'success',
                         title: 'Ação realizada com sucesso'
                     })
+
                     $('#CARD_PEDIDO_' + idPedido + '').remove();
+                    _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                        return pedido.id != idPedido;
+                    });
+
                 },
                 failure: function (response) {
 

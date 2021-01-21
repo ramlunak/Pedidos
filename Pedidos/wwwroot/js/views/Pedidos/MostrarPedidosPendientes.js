@@ -48,7 +48,7 @@ function MostarPedidosPendientes() {
                 let Pedidominutes_ = (pedidotiempo / 60).toFixed(0);
                 let Pedidoseconds_ = pedidotiempo % 60;
 
-                $('#Pedidominutes_' + pedido.id).html(Pedidominutes_);
+                $('#Pedidominutes_' + pedido.id).html(Pedidominutes_);  
                 $('#Pedidoseconds_' + pedido.id).html(Pedidoseconds_);
                 pedidotiempo++;
             }, 1000);

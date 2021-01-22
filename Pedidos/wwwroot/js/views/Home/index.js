@@ -8,17 +8,30 @@ $(function () {
 
         // The data for our dataset
         data: {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-            datasets: [{
-                label: 'My First dataset',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
-                data: [0, 10, 5, 2, 20, 30, 45]
-            }]
-        },
+            labels: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
+            datasets: [
+                {
+                    label: 'Saidas',
+                    backgroundColor: ' rgb(255, 255, 255, 0.5)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [-100, 10, 5, 2, 20, 30, 45, 0, 10, 5, 2, 300]
+                },
+                {
+                    label: 'Vendas',
+                    // backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'blue',
+                    data: [50, 30, 5, 2, 20, 30, 45, 120, 10, 5, 2, 150]
+                }
+            ],
 
+        },
         // Configuration options go here
-        options: {}
+        options: {
+            title: {
+                display: true,
+                text: 'RELATORIO DE VENDAS E SAIDAS ANUAL'
+            }
+        }
     });
 
 
@@ -41,7 +54,7 @@ $(function () {
             base: false,                    // preserve the BASE tag, or accept a string for the URL
             formValues: true,               // preserve input/form values
             canvas: true,                  // copy canvas elements
-           // doctypeString: '<!DOCTYPE html>',           // enter a different doctype for older markup
+            // doctypeString: '<!DOCTYPE html>',           // enter a different doctype for older markup
             removeScripts: false,           // remove script tags from print content
             copyTagClasses: true,           // copy classes from the html & body tag
             beforePrintEvent: null,         // callback function for printEvent in iframe

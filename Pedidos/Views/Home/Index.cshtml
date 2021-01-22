@@ -36,198 +36,202 @@
     }
 </style>
 
-
-<canvas id="myChart"></canvas>
-
-
-<div id="demo" class="ticket">
-
-    <div style="text-align:end;margin:5px">
-        <div><b>código: @Model.codigo</b></div>
+<div class="container">
+    <div class="row col-12 d-flex justify-content-center">
+        <canvas id="myChart"></canvas>
     </div>
+</div>
 
-    @if (Model.idDireccion.HasValue)
+<div hidden>
+
+    <div id="demo" class="ticket">
+
+        <div style="text-align:end;margin:5px">
+            <div><b>código: @Model.codigo</b></div>
+        </div>
+
+        @if (Model.idDireccion.HasValue)
     {
-    <div style="text-align:start;margin-bottom:5px">
-        <div><b>VIAGEM</b></div>
-    </div>
+        <div style="text-align:start;margin-bottom:5px">
+            <div><b>VIAGEM</b></div>
+        </div>
     }
 
 
-    @*ESTABLECIMIENTO*@
+        @*ESTABLECIMIENTO*@
 
-    <div>
-        <div><b>@Model.cliente</b></div>
         <div>
-            @Model.direccion
-        </div>
-        @if (@Model.idMesa.HasValue)
+            <div><b>@Model.cliente</b></div>
+            <div>
+                @Model.direccion
+            </div>
+            @if (@Model.idMesa.HasValue)
         {
-        <div>
-            Mesa @Model.idMesa
-        </div>
+            <div>
+                Mesa @Model.idMesa
+            </div>
         }
-    </div>
+        </div>
 
-    <hr />
+        <hr />
 
-    @*<div class="centrado"><strong>@Model.codigo.ToUpper()</strong> </div>
+        @*<div class="centrado"><strong>@Model.codigo.ToUpper()</strong> </div>
 
-        <p class="col" style="margin-top:2px">
-            <div class="centrado" style="margin-bottom:5px">@Model.cliente.ToUpper()</div>
-            <div class="centrado">@Model.direccion.ToUpper()</div>
-        </p>
+            <p class="col" style="margin-top:2px">
+                <div class="centrado" style="margin-bottom:5px">@Model.cliente.ToUpper()</div>
+                <div class="centrado">@Model.direccion.ToUpper()</div>
+            </p>
 
-        <hr />*@
+            <hr />*@
 
-    @foreach (var producto in Model.productos)
+        @foreach (var producto in Model.productos)
     {
-    <div class="col">
-        <table style="width:100%">
-            <tr>
-                <td style="text-align:start;vertical-align:top;"> <b>(@producto.cantidad)</b></td>
-                <td style="text-align:start;width:100%">
-                    <div style="display:block">
-                        <div> @producto.nombre.ToUpper()</div>
-                        @if (!string.IsNullOrEmpty(producto.tamanhoSeleccionado))
+        <div class="col">
+            <table style="width:100%">
+                <tr>
+                    <td style="text-align:start;vertical-align:top;"> <b>(@producto.cantidad)</b></td>
+                    <td style="text-align:start;width:100%">
+                        <div style="display:block">
+                            <div> @producto.nombre.ToUpper()</div>
+                            @if (!string.IsNullOrEmpty(producto.tamanhoSeleccionado))
                             {
-                        <div> Tamanho @producto.tamanhoSeleccionado : R$ @producto.valorTamanhoSeleccionado.ToString("F2")</div>
+                            <div> Tamanho @producto.tamanhoSeleccionado : R$ @producto.valorTamanhoSeleccionado.ToString("F2")</div>
                             }
-                    </div>
-                </td>
-                <td style="text-align: end;width: auto;vertical-align: top">
-                    <div class="ml-3" style="white-space: nowrap;vertical-align: top;font-weight:700"> R$ @producto.ValorMasAdicionales.ToString("F2")</div>
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <p style=" text-align: justify">
-                        @producto.observacion
-                    </p>
-                </td>
-            </tr>
-            @if (producto.Adicionales != null && producto.Adicionales.Count > 0)
+                        </div>
+                    </td>
+                    <td style="text-align: end;width: auto;vertical-align: top">
+                        <div class="ml-3" style="white-space: nowrap;vertical-align: top;font-weight:700"> R$ @producto.ValorMasAdicionales.ToString("F2")</div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <p style=" text-align: justify">
+                            @producto.observacion
+                        </p>
+                    </td>
+                </tr>
+                @if (producto.Adicionales != null && producto.Adicionales.Count > 0)
                 {
-            <tr>
-                <td colspan="3"><div style="display:flex;justify-content:start"><b>Adicionais</b></div></td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <table style="width:100%">
+                <tr>
+                    <td colspan="3"><div style="display:flex;justify-content:start"><b>Adicionais</b></div></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <table style="width:100%">
 
-                        @foreach (var adicional in producto.Adicionales)
+                            @foreach (var adicional in producto.Adicionales)
                                 {
-                        <tr>
-                            <td style="text-align: start;vertical-align: top;white-space:nowrap;padding-left:10px"><strong>+</strong> @adicional.cantidad</td>
-                            <td style="text-align: start;width: 100%">
-                                @adicional.nombre.ToUpper()
-                            </td>
-                            <td style="text-align: end;width: auto;vertical-align: top">
-                                <div class="ml-3" style="white-space: nowrap;vertical-align: top"> R$ @adicional.Valor.ToString("F2")</div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td style="text-align: start;vertical-align: top;white-space:nowrap;padding-left:10px"><strong>+</strong> @adicional.cantidad</td>
+                                <td style="text-align: start;width: 100%">
+                                    @adicional.nombre.ToUpper()
+                                </td>
+                                <td style="text-align: end;width: auto;vertical-align: top">
+                                    <div class="ml-3" style="white-space: nowrap;vertical-align: top"> R$ @adicional.Valor.ToString("F2")</div>
+                                </td>
+                            </tr>
                                 }
 
-                    </table>
-                </td>
-            </tr>
+                        </table>
+                    </td>
+                </tr>
                 }
-            @if (producto.Ingredientes != null && producto.Ingredientes.Count > 0)
+                @if (producto.Ingredientes != null && producto.Ingredientes.Count > 0)
                 {
-            <tr>
-                <td colspan="3"><div style="display:flex;justify-content:start"><b>Preparar sem</b></div></td>
-            </tr>
-            <tr>
-                <td colspan="3">
-                    <table style="width:100%">
+                <tr>
+                    <td colspan="3"><div style="display:flex;justify-content:start"><b>Preparar sem</b></div></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <table style="width:100%">
 
-                        @foreach (var ingrediente in producto.Ingredientes)
+                            @foreach (var ingrediente in producto.Ingredientes)
                                 {
-                        <tr>
-                            <td style="text-align: start;vertical-align: top;white-space:nowrap;padding-left:10px"><strong>-</strong> @ingrediente.nombre</td>
+                            <tr>
+                                <td style="text-align: start;vertical-align: top;white-space:nowrap;padding-left:10px"><strong>-</strong> @ingrediente.nombre</td>
 
-                        </tr>
+                            </tr>
                                 }
 
-                    </table>
-                </td>
-            </tr>
+                        </table>
+                    </td>
+                </tr>
                 }
-        </table>
+            </table>
 
-    </div>
+        </div>
 
-    <hr />
+        <hr />
     }
 
-    @*ESTABLECIMIENTO*@
+        @*ESTABLECIMIENTO*@
 
-    <div class="centrado">
-        <table style="width:100%">
-            <tr>
-                <td style="width:50%;text-align:right"><b>Total a Pagar:</b></td>
-                <td style="width: 50%;text-align: left">R$ @((Model.valorProductos - Model.descuento + Model.tasaEntrega).ToString("F2"))</td>
-            </tr>
-            <tr>
-                <td style="width:50%;text-align:right">Descuento:</td>
-                <td style="width: 50%;text-align: left">R$ @Model.descuento.ToString("F2")</td>
-            </tr>
-            <tr>
-                <td style="width:50%;text-align:right">Tasa de Entrega:</td>
-                <td style="width: 50%;text-align: left">R$ @Model.tasaEntrega.ToString("F2")</td>
-            </tr>
-        </table>
+        <div class="centrado">
+            <table style="width:100%">
+                <tr>
+                    <td style="width:50%;text-align:right"><b>Total a Pagar:</b></td>
+                    <td style="width: 50%;text-align: left">R$ @((Model.valorProductos - Model.descuento + Model.tasaEntrega).ToString("F2"))</td>
+                </tr>
+                <tr>
+                    <td style="width:50%;text-align:right">Descuento:</td>
+                    <td style="width: 50%;text-align: left">R$ @Model.descuento.ToString("F2")</td>
+                </tr>
+                <tr>
+                    <td style="width:50%;text-align:right">Tasa de Entrega:</td>
+                    <td style="width: 50%;text-align: left">R$ @Model.tasaEntrega.ToString("F2")</td>
+                </tr>
+            </table>
 
-    </div>
+        </div>
 
-    <div class="centrado" style="margin-top:10px">
-        @if (Model.deliveryEmCartao.HasValue && Model.deliveryEmCartao.Value)
+        <div class="centrado" style="margin-top:10px">
+            @if (Model.deliveryEmCartao.HasValue && Model.deliveryEmCartao.Value)
         {
-        <strong>PAGAMENTO EM CARTÂO</strong>
+            <strong>PAGAMENTO EM CARTÂO</strong>
         }
 
-        @if (Model.deliveryPago.HasValue && Model.deliveryPago.Value)
+            @if (Model.deliveryPago.HasValue && Model.deliveryPago.Value)
         {
-        <strong>PAGO</strong>
+            <strong>PAGO</strong>
         }
 
-        @if (Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value)
+            @if (Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value)
         {
             if (Model.deliveryDinheiroTotal.HasValue)
             {
-        <strong>TROCO PARA R$ @Model.deliveryDinheiroTotal.Value.ToString("F2")</strong>
+            <strong>TROCO PARA R$ @Model.deliveryDinheiroTotal.Value.ToString("F2")</strong>
             }
             else
             {
-        <strong>PAGAMENTO EM DINHEIRO (S/T)</strong>
+            <strong>PAGAMENTO EM DINHEIRO (S/T)</strong>
             }
 
         }
 
-    </div>
-
-    <hr />
-
-    <div>
-        <div><b></b>San-Duba<b></b></div>
-        <div>
-            Av. Fernando de Noronha, 715 - Bom Retiro, Ipatinga - MG, 35160-350
         </div>
+
+        <hr />
+
+        <div>
+            <div><b></b>San-Duba<b></b></div>
+            <div>
+                Av. Fernando de Noronha, 715 - Bom Retiro, Ipatinga - MG, 35160-350
+            </div>
+        </div>
+
+        <hr />
+
+
+        <p class="centrado">
+            <b>¡obrigado por sua preferência!</b>
+        </p>
+
+        <hr />
     </div>
 
-    <hr />
 
-
-    <p class="centrado">
-        <b>¡obrigado por sua preferência!</b>
-    </p>
-
-    <hr />
+    <div id="btnPrint" class="btn btn-info">Print</div>
 </div>
-
-
-<div id="btnPrint" class="btn btn-info">Print</div>
-
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/views/Home/index.js"></script>

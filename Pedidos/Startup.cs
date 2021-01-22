@@ -8,6 +8,8 @@ using System.Security.Claims;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Hangfire;
+using Hangfire.Dashboard;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -19,6 +21,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pedidos.Data;
+using Pedidos.Hangfire;
 using Pedidos.Hubs;
 using Pedidos.Models.Enums;
 
@@ -81,6 +84,9 @@ namespace Pedidos
             connection = Configuration.GetConnectionString("ConnectionStringProduction");
 #endif
 
+            services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            services.AddHangfireServer();
+
             services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(connection));
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
 
@@ -110,6 +116,22 @@ namespace Pedidos
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseHangfireDashboard("/jobs", new DashboardOptions
+            {
+                // Authorization = new[] { new IDashboardAuthorizationFilter() }
+            });
+
+            GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
+
+            RecurringJob.RemoveIfExists("RelatorioVendasSaidasAnual");
+
+            RecurringJob.AddOrUpdate(
+            recurringJobId: "RelatorioVendasSaidasAnual",
+            methodCall: () => new Hangfire.Jobs().RelatorioVendasSaidasAnual(),
+            cronExpression: Cron.Hourly(),
+            timeZone: TimeZoneInfo.Local
+         );
 
             //app.UseStatusCodePages(async context =>
             //{

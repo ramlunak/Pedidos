@@ -39,6 +39,7 @@ namespace Pedidos.Controllers
 
             var config = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
             ViewBag.PrintSize = config.printSize;
+            ViewBag.FontSize = config.fontSize;
 
             return View(pedido);
         }

@@ -28,6 +28,7 @@ namespace Pedidos.Controllers
                 var newconfig = new P_Config();
                 newconfig.idCuenta = Cuenta.id;
                 newconfig.printSize = 200;
+                newconfig.fontSize = 18;
 
                 _context.Add(newconfig);
                 await _context.SaveChangesAsync();

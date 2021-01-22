@@ -2,6 +2,7 @@
 @{
     ViewData["Title"] = "Inicio";
     var maxwidth = $"{ViewBag.PrintSize}px";
+    var fontsize = $"{ViewBag.FontSize}px";
 }
 
 <style type="text/css">
@@ -22,7 +23,7 @@
         margin-top: 0px;
         padding-top: 0px;
         font-family: Calibri;
-        font-size: 18px;
+        font-size: @fontsize;
     }
 
     img {

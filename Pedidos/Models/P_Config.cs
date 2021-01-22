@@ -15,10 +15,11 @@ namespace Pedidos.Models
         public int id { get; set; }
         public int idCuenta { get; set; }
 
-        [Required(ErrorMessage = "O tamanho é obrigatorio")]
-        [Range(100, 1000)]
         [DisplayName("Tamanho")]
         public int printSize { get; set; }
+
+        [DisplayName("Tamanho letra")]
+        public int fontSize { get; set; }
 
     }
 }

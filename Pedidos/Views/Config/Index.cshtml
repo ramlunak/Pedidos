@@ -17,6 +17,11 @@
                 <span asp-validation-for="printSize" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="fontSize" class="control-label"></label>
+                <input asp-for="fontSize" class="form-control" />
+                <span asp-validation-for="fontSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
                 <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
             </div>

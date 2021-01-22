@@ -19,8 +19,8 @@ $(function () {
             footer: null,                   // postfix to html
             base: false,                    // preserve the BASE tag, or accept a string for the URL
             formValues: true,               // preserve input/form values
-            canvas: false,                  // copy canvas elements
-            doctypeString: '<!DOCTYPE html>',           // enter a different doctype for older markup
+            canvas: true,                  // copy canvas elements
+           // doctypeString: '<!DOCTYPE html>',           // enter a different doctype for older markup
             removeScripts: false,           // remove script tags from print content
             copyTagClasses: true,           // copy classes from the html & body tag
             beforePrintEvent: null,         // callback function for printEvent in iframe

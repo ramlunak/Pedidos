@@ -31,7 +31,7 @@
                             <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug" asp-controller="Mejorias" asp-action="Index">
                                 <i class="fas fa-bug fa-2x"></i>
                             </a>
-                            <a class="nav-link text-dark cursor-pointer text-primary" style="display:contents">
+                            <a class="nav-link text-dark cursor-pointer text-primary" style="display:contents" asp-controller="Config" asp-action="Index">
                                 <div class="rounded-circle bg-primary avatar">
                                     <span style="font-size:20px;color:white">@TempData["Inicial"]</span>
                                 </div>
@@ -47,11 +47,11 @@
                                 <i class="fa fa-home fa-2x" aria-hidden="true"></i>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Mesas" asp-area="" asp-controller="Mesas" asp-action="Lista">
-                                <i class="fas fa-box fa-2x" aria-hidden="true"></i>
-                            </a>
-                        </li>
+                        @*<li class="nav-item">
+                                <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Mesas" asp-area="" asp-controller="Mesas" asp-action="Lista">
+                                    <i class="fas fa-box fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </li>*@
                         <li class="nav-item">
                             <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Clientes" asp-area="" asp-controller="Clientes" asp-action="Index">
                                 <i class="fas fa-users fa-2x"></i>

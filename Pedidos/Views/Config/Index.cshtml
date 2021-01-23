@@ -4,45 +4,29 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row container">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="id" class="form-control" />
+            <input type="hidden" asp-for="idCuenta" class="form-control" />
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.idCuenta)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.printSize)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.id)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idCuenta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.printSize)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                    @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+            <div class="form-group">
+                <label asp-for="printSize" class="control-label"></label>
+                <input asp-for="printSize" class="form-control" />
+                <span asp-validation-for="printSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="fontSize" class="control-label"></label>
+                <input asp-for="fontSize" class="form-control" />
+                <span asp-validation-for="fontSize" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+

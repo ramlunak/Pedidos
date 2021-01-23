@@ -8,29 +8,40 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 
 namespace Pedidos.Controllers
 {
     public class HomeController : BaseController
     {
-        private readonly ILogger<HomeController> _logger;
-        private readonly IWebHostEnvironment _webHostEnvironment;
+        private readonly AppDbContext _context;
 
-        public HomeController(IWebHostEnvironment webHostEnvironment)
+        public HomeController(AppDbContext context)
         {
-            this._webHostEnvironment = webHostEnvironment;
-            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            _context = context;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
             }
-            return View();
+
+
+            var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-140").ToListAsync();
+            var pedido = model.FirstOrDefault();
+            pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
+
+            var config = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
+            ViewBag.PrintSize = config.printSize;
+            ViewBag.FontSize = config.fontSize;
+
+            return View(pedido);
         }
 
         public IActionResult Print()

@@ -86,10 +86,10 @@ namespace Pedidos
 
             var local = Configuration.GetConnectionString("ConnectionStringLocal");
 
-            services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            services.AddHangfire(x => x.UseSqlServerStorage(local));
             services.AddHangfireServer();
 
-            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(connection));
+            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(local));
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
 
             JsonSerializerOptions options = new JsonSerializerOptions()

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
+using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,19 +14,21 @@ namespace Pedidos.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CuentasApiController : ControllerBase
+    public class PedidosApiController : ControllerBase
     {
         private readonly AppDbContext _context;
 
-        public CuentasApiController(AppDbContext context)
+        public PedidosApiController(AppDbContext context)
         {
             _context = context;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<P_Cuenta>> Get()
+        public async Task<IEnumerable<P_Pedido>> Get(int idCuenta, int mes, int year)
         {
-            return await _context.P_Cuentas.ToListAsync();
+            var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == idCuenta && x.status == StatusPedido.Finalizado.ToString() && x.fecha.Month == mes && x.fecha.Year == year).ToListAsync();
+            if (pedidos == null) return default(List<P_Pedido>);
+            return pedidos;
         }
 
     }

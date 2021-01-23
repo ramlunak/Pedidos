@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace Pedidos.Extensions
@@ -23,7 +25,9 @@ namespace Pedidos.Extensions
             return JsonConvert.SerializeObject(o);
         }
 
-
-
+        public static StringContent ToStringContent<T>(this T o)
+        {
+            return new StringContent(JsonConvert.SerializeObject(o), UnicodeEncoding.UTF8, "application/json"); // use MediaTypeNames.Application.Json in Core 3.0+ and Standard 2.1+
+        }
     }
 }

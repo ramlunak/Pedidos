@@ -63,5 +63,6 @@ namespace Pedidos.Data
         public DbSet<Pedidos.Models.P_SalidaCaja> P_SalidaCaja { get; set; }
 
         public DbSet<Pedidos.Models.P_Config> P_Config { get; set; }
+        public DbSet<Pedidos.Models.P_RelatorioVendasAnual> P_RelatorioVendasAnual { get; set; }
     }
 }

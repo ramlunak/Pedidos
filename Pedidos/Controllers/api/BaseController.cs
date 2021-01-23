@@ -1,9 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Pedidos.Data;
-using Pedidos.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,44 +6,39 @@ using System.Threading.Tasks;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace Pedidos.api
+namespace Pedidos.Controllers.api
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class BaseController : ControllerBase
     {
-
-        private readonly AppDbContext _context;
-
-        public AccountController(AppDbContext context)
-        {
-            _context = context;
-        }
-
+        // GET: api/<BaseController>
         [HttpGet]
-        public async Task<IEnumerable<P_Pedido>> Get()
+        public IEnumerable<string> Get()
         {
-            return await _context.P_Pedidos.ToListAsync();
+            return new string[] { "value1", "value2" };
         }
 
+        // GET api/<BaseController>/5
+        [HttpGet("{id}")]
         public string Get(int id)
         {
             return "value";
         }
 
-        // POST api/<AccountController>
+        // POST api/<BaseController>
         [HttpPost]
         public void Post([FromBody] string value)
         {
         }
 
-        // PUT api/<AccountController>/5
+        // PUT api/<BaseController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/<AccountController>/5
+        // DELETE api/<BaseController>/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

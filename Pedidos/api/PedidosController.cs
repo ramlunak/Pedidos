@@ -26,7 +26,7 @@ namespace Pedidos.api
         }
 
         [HttpGet]
-        public async Task<IEnumerable<P_Pedido>> Get()
+        public async Task<IEnumerable<P_Pedido>> Get(int idCuenta, string data)
         {
             return await _context.P_Pedidos.ToListAsync();
         }

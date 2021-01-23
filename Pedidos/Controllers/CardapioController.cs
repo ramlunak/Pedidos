@@ -60,9 +60,9 @@ namespace Pedidos.Controllers
                 var mesa = Convert.ToInt32(table.Split("table")[1]);
                 ViewBag.IdCuenta = idCuenta;
                 ViewBag.Mesa = mesa;
-                //var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
+                var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
 
-                return View();
+                return View(model);
             }
             catch (Exception ex)
             {

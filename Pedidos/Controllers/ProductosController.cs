@@ -451,7 +451,7 @@ namespace Pedidos.Controllers
 
                 var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
                 var listaIngredientes = ingredientes.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
-                return Ok(new { producto = productos[0], adicionales, listaIngredientes });
+                return Ok(new { producto = productos[0], adicionales = listaAdicionales, ingredientes = listaIngredientes });
             }
             catch (Exception ex)
             {

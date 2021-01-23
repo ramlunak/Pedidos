@@ -522,7 +522,7 @@ function TABLE_Adicional(adicionales, idProducto) {
         var codigo = "ADC_" + item.id + "_" + idProducto;
         var minusId = "Minus_" + item.id + "_" + idProducto;
 
-        TD1.append('<div class="unselectable">' + item.id +' <a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
+        TD1.append('<div class="unselectable">' + item.id + ' <a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
         TD2.append('<div class="unselectable" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
         TD3.append('<div style="width:60px;text-align: end"> <button id=' + minusId + ' disabled="disabled" onclick="adicionalMinus(' + item.id + ',' + idProducto + ')" class="btn-plano mr-2 unselectable"><i  class="fa fa-minus cursor-pointer"></i></button><button onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="btn-plano unselectable"><i  class="fa fa-plus cursor-pointer"></i></button></div>');
 
@@ -896,7 +896,12 @@ function cancelar(idPedido) {
                         icon: 'success',
                         title: 'Ação realizada com sucesso'
                     })
+
                     $('#CARD_PEDIDO_' + idPedido + '').remove();
+                    _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                        return pedido.id != idPedido;
+                    });
+
                 },
                 failure: function (response) {
 
@@ -1135,6 +1140,7 @@ function actualizarFormaPagamento(idPedido, finalizar) {
         }
     })
 
+    $("#inputTasaFormaPagamentoDelivery").mask("###0.00", { reverse: true });
     $("#inputDescontoFinalizado").mask("###0.00", { reverse: true });
     $("#inputTasaFormaPagamento").mask("###0.00", { reverse: true });
     $("#inputTrocoFormaPagamento").mask("###0.00", { reverse: true });
@@ -1211,6 +1217,24 @@ function actualizarFormaPagamento(idPedido, finalizar) {
 
     });
 
+    //CARGAR FORMA PAGAMENTO
+
+    $('#inputDescontoFinalizado').val(pedido.descuento);
+    $('#inputTasaFormaPagamentoDelivery').val(pedido.tasaEntrega);
+
+    $.each(JSON.parse(pedido.jsonFormaPagamento), function (index, formaPagamento) {
+
+        $("#radioFormaPagamento_" + formaPagamento.id).prop('checked', true);
+        $("#radioFormaPagamento_" + formaPagamento.id).trigger('onchange');
+
+        $("#valorFormaPagamento_" + formaPagamento.id).val(formaPagamento.valor);
+        $("#valorFormaPagamento_" + formaPagamento.id).trigger('input');
+
+        calcularTotalPagado();
+
+    });
+
+
 }
 
 function radioFormaPagamentoChange(input, idPedido) {
@@ -1232,24 +1256,30 @@ function radioFormaPagamentoChange(input, idPedido) {
 
     var desconto = $('#inputDescontoFinalizado').val();
     if (!isNaN(parseFloat(desconto))) {
-        totalPedido = totalPedido - desconto;
+        totalPedido = totalPedido - parseFloat(desconto);
     }
 
+    var tasaEntraga = $('#inputTasaFormaPagamentoDelivery').val();
+    if (!isNaN(parseFloat(tasaEntraga))) {
+        totalPedido = totalPedido + parseFloat(tasaEntraga);
+    }
 
     //HABILITAR DESCUENTO
 
     if (numberOfChecked > 0) {
         $('#inputDescontoFinalizado').prop('disabled', true);
+        $('#inputTasaFormaPagamentoDelivery').prop('disabled', true);
     } else {
         $('#inputDescontoFinalizado').prop('disabled', false);
+        $('#inputTasaFormaPagamentoDelivery').prop('disabled', false);
         firstInputChecked = null;
         valorInputFormaPagamento = 0;
     }
 
-    if (numberOfChecked > 3) {
-        $(input).prop("checked", false);
-        return;
-    }
+    //if (numberOfChecked > 3) {
+    //    $(input).prop("checked", false);
+    //    return;
+    //}
 
     //HABILITAR CAMPOS DE TEXTO
 

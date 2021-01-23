@@ -14,7 +14,7 @@ function MostarPedidosPendientes() {
     $.each(_PedidosPendientes, function (indexPedido, pedido) {
 
         var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  border border-info">');
-        var CARD_BODY = $('<div class="card-body  p-1">');
+        var CARD_BODY = $('<div class="card-body p-1">');
 
         var mesa = '';
         var aplicativo = '';
@@ -37,13 +37,34 @@ function MostarPedidosPendientes() {
         var valorPedido = pedido.valorProductos;
         var totalPagar = valorPedido + pedido.tasaEntrega - pedido.descuento;
 
+        //TEMPORIZADOR DEL PEDIDO
+        var pedidotiempo = pedido.tiempo_pedido;
+
+        var Pedidotimer = null;
+
+        if (pedido.status === "Pendiente") {
+            Pedidotimer = setInterval(function () {
+
+                let Pedidominutes_ = (pedidotiempo / 60).toFixed(0);
+                let Pedidoseconds_ = pedidotiempo % 60;
+
+                $('#Pedidominutes_' + pedido.id).html(Pedidominutes_);  
+                $('#Pedidoseconds_' + pedido.id).html(Pedidoseconds_);
+                pedidotiempo++;
+            }, 1000);
+
+            intervals.push(Pedidotimer);
+        }
+        var PedidoTiempo = '<div id="divPedidoTiempo_' + pedido.id + '" class=" d-flex text-nowrap align-items-start " style="font-size: 10px;color: darkcyan;font-weight: 700;"><div style="color: slategray"> <i class="far fa-clock mr-1"></i> <span id="Pedidominutes_' + pedido.id + '"></span>: <span id="Pedidoseconds_' + pedido.id + '"></span> </div></div>';
+
+
         //INFO DEL PEDIDO 
         var div_infopedido = '<div class="d-flex justify-content-between">  ' +
             '               <div class="d-block" style="text-align:left">  ' +
-            '                   <div style="font-size:13px"><b>Codigo: ' + pedido.codigo + '<b/></div>  ' +
+            '                   <div style="font-size:13px" class="d-flex"><b>Codigo: ' + pedido.codigo + '</b>  </div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
             '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
-            '               </div>  ' +
+            '               </div>  ' + PedidoTiempo +
             '               <div class="d-block" style="text-align:right">  ' +
             '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
             tasaEntrega +

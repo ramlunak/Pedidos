@@ -84,7 +84,9 @@ namespace Pedidos
             connection = Configuration.GetConnectionString("ConnectionStringProduction");
 #endif
 
-            services.AddHangfire(x => x.UseSqlServerStorage(connection));
+            var local = Configuration.GetConnectionString("ConnectionStringLocal");
+
+            services.AddHangfire(x => x.UseSqlServerStorage(local));
             services.AddHangfireServer();
 
             services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(connection));

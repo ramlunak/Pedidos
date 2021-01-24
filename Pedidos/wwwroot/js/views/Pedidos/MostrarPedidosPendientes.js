@@ -180,7 +180,7 @@ function MostarPedidosPendientes() {
 
             var TABLA_INGD = $('<table class="w-100 unselectable" style="color: orangered;font-weight: 500;">');
             $.each(producto.ingredientes, function (index, item) {
-               
+
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
                 var TR = $('<tr>');
@@ -459,12 +459,22 @@ function imprimirPedido(idPedido) {
 
             var TD1 = $('<td style="vertical-align:top;">');
             var TD2 = $('<td style="width:100%">');
-            var TD3 = $('<td>');
+            var TD3 = $('<td style="vertical-align:top;">');
             var TR = $('<tr>');
 
-            TD1.append('<div style="white-space:nowrap;vertical-align:top;"><b>*(' + producto.cantidad + ')</b ></div > ');
-            TD2.append('<div>' + producto.nombre + '</div>');
-            TD3.append('<div style="white-space:nowrap;margin-left:10px;"><b>R$ ' + producto.valorMasAdicionales.toFixed(2) + '</b></div>');
+            TD1.append('<div style="white-space:nowrap;vertical-align:top;"><b>*( ' + producto.cantidad + ' )</b ></div > ');
+
+            var tamanho = "";
+
+            if (producto.tamanhoSeleccionado != null && producto.tamanhoSeleccionado != "") {
+                tamanho = '<div> Tamanho ' + producto.tamanhoSeleccionado + ' : R$ ' + producto.valorTamanhoSeleccionado.toFixed(2) + '</div>';
+
+            } else {
+                tamanho = '<div> Valor : R$ ' + producto.valor.toFixed(2) + '</div>';
+            }
+
+            TD2.append('<div style="display:block"><div>' + producto.nombre + '</div>' + tamanho + '</div>');
+            TD3.append('<div style="white-space:nowrap;margin-left:10px"><b>R$ ' + producto.valorMasAdicionales.toFixed(2) + '</b></div>');
 
             TR.append(TD1, TD2, TD3);
             TABLE.append(TR);
@@ -485,7 +495,7 @@ function imprimirPedido(idPedido) {
 
                     TD1.append('<div style="white-space:nowrap;vertical-align:top;">  <b>' + adicional.cantidad + '</b></div>');
                     TD2.append('<div>' + adicional.nombre + '</div>');
-                    TD3.append('<div style="white-space:nowrap;margin-left:10px;"><b>R$ ' + (adicional.valor + adicional.cantidad).toFixed(2) + '</b></div>');
+                    TD3.append('<div style="white-space:nowrap;margin-left:10px;">R$ ' + (adicional.valor * adicional.cantidad).toFixed(2) + '</div>');
 
                     TR.append(TD1, TD2, TD3);
                     TABLE_ADICIONALES.append(TR);
@@ -577,15 +587,36 @@ function imprimirPedido(idPedido) {
         if (pedido.deliveryEmdinheiro) {
 
             if (pedido.deliveryDinheiroTotal !== null && pedido.deliveryDinheiroTotal !== undefined) {
-                comprobantePedido.append('<div class="centrado">   <strong>TROCO PARA R$ @Model.deliveryDinheiroTotal.Value.ToString("F2")</strong> </div >');
+                comprobantePedido.append('<div class="centrado">   <strong>TROCO PARA R$ ' + pedido.deliveryDinheiroTotal.toFixed(2) + '</strong > </div > ');
             } else {
                 comprobantePedido.append('<div class="centrado">   <strong>PAGAMENTO EM DINHEIRO (S/T)</strong> </div >');
 
+            }
+        }
+
+
+        if (NombreEstablecimiento) {
+
+            comprobantePedido.append('<hr style="margin:4px"/>');
+
+            comprobantePedido.append('<div class="centrado"><b>' + NombreEstablecimiento + '</b></div>');
+
+            if (TelefonoEstablecimiento) {
+                comprobantePedido.append('<div><b>Telefone:</b>' + TelefonoEstablecimiento + '</div>');
+            }
+
+            if (DireccionEstablecimiento) {
+                comprobantePedido.append('<p style="margin:1px;text-align: justify;"><b>Endereço:</b>' + DireccionEstablecimiento + '</p>');
+            }
+
+            if (CnpjEstablecimiento) {
+                comprobantePedido.append('<div><b>CNPJ:</b>' + CnpjEstablecimiento + '</div>');
             }
 
         }
 
         comprobantePedido.append('<hr style="margin:4px"/>');
+        comprobantePedido.append(' <p class="centrado"><b>¡obrigado por sua preferência!</b></p>');
 
 
     }
@@ -598,7 +629,7 @@ function imprimirPedido(idPedido) {
             importStyle: true,             // import style tags
             printContainer: true,           // grab outer container as well as the contents of the selector
             loadCSS: "",      // path to additional css file - use an array [] for multiple
-            pageTitle: "Tiked",                  // add title to print page
+            pageTitle: "",                  // add title to print page
             removeInline: false,            // remove all inline styles from print elements
             //removeInlineSelector: "body *", // custom selectors to filter inline styles. removeInline must be true
             printDelay: 1,                // variable print delay

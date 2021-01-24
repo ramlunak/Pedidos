@@ -153,15 +153,12 @@ namespace Pedidos.Models
             {
                 try
                 {
-                    var valor_producto = this.valor;
 
-                    if (this.valor == 0)
+                    var valor_producto = this.valorTamanhoSeleccionado;
+
+                    if (this.valorTamanhoSeleccionado == 0)
                     {
-                        valor_producto = this.valorTamanhoSeleccionado;
-                        if (valorTamanhoSeleccionado == 0)
-                        {
-                            valor_producto = this.valor;
-                        }
+                        valor_producto = this.valor;
                     }
 
                     decimal valor_adicionales = 0;

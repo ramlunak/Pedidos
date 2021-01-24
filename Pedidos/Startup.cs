@@ -22,6 +22,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Pedidos.Data;
 using Pedidos.Hangfire;
+using Pedidos.Hangfire.Filters;
 using Pedidos.Hubs;
 using Pedidos.Models.Enums;
 
@@ -86,10 +87,10 @@ namespace Pedidos
 
             var local = Configuration.GetConnectionString("ConnectionStringLocal");
 
-            services.AddHangfire(x => x.UseSqlServerStorage(local));
+            services.AddHangfire(x => x.UseSqlServerStorage(connection));
             services.AddHangfireServer();
 
-            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(local));
+            services.AddDbContext<AppDbContext>(optoins => optoins.UseSqlServer(connection));
             services.AddControllers().AddJsonOptions(options => { options.JsonSerializerOptions.Converters.Add(new DateTimeConverter()); });
 
             JsonSerializerOptions options = new JsonSerializerOptions()
@@ -121,7 +122,7 @@ namespace Pedidos
 
             app.UseHangfireDashboard("/jobs", new DashboardOptions
             {
-                // Authorization = new[] { new IDashboardAuthorizationFilter() }
+                Authorization = new[] { new HangfireAuthorizationFilter() }
             });
 
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });

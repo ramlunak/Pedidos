@@ -422,7 +422,7 @@ function imprimirPedido(idPedido) {
         comprobantePedido.append('<div class="centrado"> <b>' + pedido.codigo + '</b> </div >');
 
         if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
-            comprobantePedido.append('<div class="centrado mb-3"> <b>VIAGEM</b> </div >');
+            comprobantePedido.append('<div class="centrado mb-1"> <b>VIAGEM</b> </div >');
         }
 
         if (pedido.idCliente !== null && pedido.idCliente !== "") {

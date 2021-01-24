@@ -1,10 +1,47 @@
 ﻿@model Pedidos.Models.P_Pedido
 @{
     ViewData["Title"] = "Pedidos";
+    var maxwidth = $"{ViewBag.PrintSize}px";
+    var fontsize = $"{ViewBag.FontSize}px";
 }
 
+<style type="text/css">
+
+    .ticket td, th, tr, table {
+        border-collapse: collapse;
+        margin-top: 2px;
+    }
+
+    .ticket .centrado {
+        text-align: center;
+        align-content: center;
+    }
+
+    .ticket {
+        width: 100%;
+        max-width: @maxwidth;
+        margin-top: 0px;
+        padding-top: 0px;
+        font-family: Calibri;
+        font-size: @fontsize;
+    }
+
+    img {
+        max-width: inherit;
+        width: inherit;
+    }
+
+    .ticket hr {
+        border-top: 2px dashed black;
+    }
+</style>
+
 <div class="p-2">
-    <div class="row ">
+    <div class="row position-relative " style="z-index:1">
+
+        <div id="divComprobantePedido" class="ticket position-absolute" style="z-index:-1">
+
+        </div>
 
         <div class="col-12 col-sm-6">
 

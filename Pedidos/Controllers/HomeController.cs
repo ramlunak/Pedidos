@@ -33,7 +33,7 @@ namespace Pedidos.Controllers
             }
 
 
-            var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-140").ToListAsync();
+            var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-141").ToListAsync();
             var pedido = model.FirstOrDefault();
             pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
 

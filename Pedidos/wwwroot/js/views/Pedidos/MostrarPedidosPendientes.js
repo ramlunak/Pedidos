@@ -48,7 +48,7 @@ function MostarPedidosPendientes() {
                 let Pedidominutes_ = (pedidotiempo / 60).toFixed(0);
                 let Pedidoseconds_ = pedidotiempo % 60;
 
-                $('#Pedidominutes_' + pedido.id).html(Pedidominutes_);  
+                $('#Pedidominutes_' + pedido.id).html(Pedidominutes_);
                 $('#Pedidoseconds_' + pedido.id).html(Pedidoseconds_);
                 pedidotiempo++;
             }, 1000);
@@ -275,7 +275,7 @@ function MostarPedidosPendientes() {
         }
 
         CARD_FUTTER.append('<div >' + deliveryCartao + deliveryDinheiro + deliveryPago + '  </div>');
-        CARD_FUTTER.append('<a class="btn btn-outline-secondary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
+        CARD_FUTTER.append('<a class="btn btn-outline-secondary" onclick="imprimirPedido(' + pedido.id + ')" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
 
         CARD.append(CARD_BODY);
         CARD.append(CARD_FUTTER);
@@ -403,5 +403,70 @@ function finalizar(idPedido) {
         }
 
     });
+
+}
+
+
+function imprimirPedido(idPedido) {
+
+    async function cargarAsync() {
+
+        var findResult = _PedidosPendientes.filter(function (item) {
+            return (item.id === idPedido);
+        });
+        var pedido = findResult[0];
+
+        var comprobantePedido = $("#divComprobantePedido");
+        $("#divComprobantePedido").html("");
+
+        comprobantePedido.append('<div class="centrado"> <b>' + pedido.codigo + '</b> </div >');
+
+        if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
+            comprobantePedido.append('<div class="centrado mb-3"> <b>VIAGEM</b> </div >');
+        }
+
+        if (pedido.idCliente !== null && pedido.idCliente !== "") {
+            comprobantePedido.append('<div class="centrado"> ' + pedido.cliente + ' </div >');
+        }
+
+        if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
+            comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' </div >');
+        }
+
+        if (pedido.idMesa !== null && pedido.idMesa !== "") {
+            comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
+        }
+
+        if (pedido.idAplicativo !== null && pedido.idAplicativo !== "") {
+            comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
+        }
+
+        console.log($(comprobantePedido));
+    }
+
+    cargarAsync().then(
+        $("#divComprobantePedido").printThis({
+            debug: false,                   // show the iframe for debugging
+            importCSS: true,                // import parent page css
+            importStyle: true,             // import style tags
+            printContainer: true,           // grab outer container as well as the contents of the selector
+            loadCSS: "",      // path to additional css file - use an array [] for multiple
+            pageTitle: "Tiked",                  // add title to print page
+            removeInline: false,            // remove all inline styles from print elements
+            //removeInlineSelector: "body *", // custom selectors to filter inline styles. removeInline must be true
+            printDelay: 333,                // variable print delay
+            header: null,                   // prefix to html
+            footer: null,                   // postfix to html
+            base: false,                    // preserve the BASE tag, or accept a string for the URL
+            formValues: true,               // preserve input/form values
+            canvas: true,                  // copy canvas elements
+            // doctypeString: '<!DOCTYPE html>',           // enter a different doctype for older markup
+            removeScripts: false,           // remove script tags from print content
+            copyTagClasses: true,           // copy classes from the html & body tag
+            beforePrintEvent: null,         // callback function for printEvent in iframe
+            afterPrint: null                // function called before iframe is removed
+        })
+    );
+    cargarAsync();
 
 }

@@ -35,6 +35,7 @@ $(function () {
     });
 
 
+
     //CAMBIAR ESTADO DE LOS ADICIONAIS
     $("#btnPrint").on('click', function (e) {
         e.preventDefault();
@@ -145,3 +146,56 @@ $(function () {
 
 
 });
+
+
+function imprimirPedido(pedido) {
+    console.log(pedido);
+
+    var comprobantePedido = $("#divComprobantePedido");
+    $("#divComprobantePedido").html("");
+
+    comprobantePedido.append('<div class="centrado"> <b>' + pedido.codigo + '</b> </div >');
+
+    if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
+        comprobantePedido.append('<div class="centrado mb-3"> <b>VIAGEM</b> </div >');
+    }
+
+    if (pedido.idCliente !== null && pedido.idCliente !== "") {
+        comprobantePedido.append('<div class="centrado"> ' + pedido.cliente + ' </div >');
+    }
+
+    if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
+        comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' </div >');
+    }
+
+    if (pedido.idMesa !== null && pedido.idMesa !== "") {
+        comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
+    }
+
+    if (pedido.idAplicativo !== null && pedido.idAplicativo !== "") {
+        comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
+    }
+
+
+    $("#divComprobantePedido").printThis({
+        debug: false,                   // show the iframe for debugging
+        importCSS: true,                // import parent page css
+        importStyle: true,             // import style tags
+        printContainer: true,           // grab outer container as well as the contents of the selector
+        loadCSS: "",      // path to additional css file - use an array [] for multiple
+        pageTitle: "Tiked",                  // add title to print page
+        removeInline: false,            // remove all inline styles from print elements
+        //removeInlineSelector: "body *", // custom selectors to filter inline styles. removeInline must be true
+        printDelay: 333,                // variable print delay
+        header: null,                   // prefix to html
+        footer: null,                   // postfix to html
+        base: false,                    // preserve the BASE tag, or accept a string for the URL
+        formValues: true,               // preserve input/form values
+        canvas: true,                  // copy canvas elements
+        // doctypeString: '<!DOCTYPE html>',           // enter a different doctype for older markup
+        removeScripts: false,           // remove script tags from print content
+        copyTagClasses: true,           // copy classes from the html & body tag
+        beforePrintEvent: null,         // callback function for printEvent in iframe
+        afterPrint: null                // function called before iframe is removed
+    });
+}

@@ -30,6 +30,10 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
+            var config = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
+            ViewBag.PrintSize = config.printSize;
+            ViewBag.FontSize = config.fontSize;
+
             if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
             {
                 var countPedidosFinalizados = GetSession<List<P_Pedido>>("PedidosFinalizados").Count;

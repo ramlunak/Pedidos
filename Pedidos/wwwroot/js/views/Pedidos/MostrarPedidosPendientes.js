@@ -180,7 +180,7 @@ function MostarPedidosPendientes() {
 
             var TABLA_INGD = $('<table class="w-100 unselectable" style="color: orangered;font-weight: 500;">');
             $.each(producto.ingredientes, function (index, item) {
-                console.log(item);
+               
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
                 var TR = $('<tr>');
@@ -409,6 +409,11 @@ function finalizar(idPedido) {
 
 function imprimirPedido(idPedido) {
 
+    var NombreEstablecimiento = $('#NombreEstablecimiento').val();
+    var TelefonoEstablecimiento = $('#TelefonoEstablecimiento').val();
+    var DireccionEstablecimiento = $('#DireccionEstablecimiento').val();
+    var CnpjEstablecimiento = $('#CnpjEstablecimiento').val();
+
     async function cargarAsync() {
 
         var findResult = _PedidosPendientes.filter(function (item) {
@@ -416,7 +421,7 @@ function imprimirPedido(idPedido) {
         });
         var pedido = findResult[0];
 
-        console.log(pedido);
+
 
         var comprobantePedido = $("#divComprobantePedido");
         $("#divComprobantePedido").html("");
@@ -457,7 +462,7 @@ function imprimirPedido(idPedido) {
             var TD3 = $('<td>');
             var TR = $('<tr>');
 
-            TD1.append('<div style="white-space:nowrap;vertical-align:top;"><b>( ' + producto.cantidad + ' )</b></div>');
+            TD1.append('<div style="white-space:nowrap;vertical-align:top;"><b>*(' + producto.cantidad + ')</b ></div > ');
             TD2.append('<div>' + producto.nombre + '</div>');
             TD3.append('<div style="white-space:nowrap;margin-left:10px;"><b>R$ ' + producto.valorMasAdicionales.toFixed(2) + '</b></div>');
 
@@ -540,13 +545,13 @@ function imprimirPedido(idPedido) {
         });
 
         //RESUMEN PAGAMENTO
-        comprobantePedido.append('<hr style="margin:2px"/>');
+        comprobantePedido.append('<hr style="margin:4px"/>');
 
         comprobantePedido.append('<div class="centrado">  ' +
             '               <table style="width:100%">  ' +
             '                   <tr>  ' +
             '                       <td style="width:50%;text-align:right"><b>Total a Pagar:</b></td>  ' +
-            '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.valorProductos - pedido.descuento + pedido.tasaEntrega).toFixed(2) + '</td>  ' +
+            '                       <td style="width: 50%;text-align: left"> <b>R$ ' + (pedido.valorProductos - pedido.descuento + pedido.tasaEntrega).toFixed(2) + '</b></td>  ' +
             '                   </tr>  ' +
             '                   <tr>  ' +
             '                       <td style="width:50%;text-align:right">Descuento:</td>  ' +
@@ -558,6 +563,30 @@ function imprimirPedido(idPedido) {
             '                   </tr>  ' +
             '               </table>  ' +
             '          </div> ');
+
+        comprobantePedido.append('<div style="margin:4px"></div>');
+
+        if (pedido.deliveryEmCartao) {
+            comprobantePedido.append('<div class="centrado">  <strong>PAGAMENTO EM CARTÂO</strong> </div >');
+        }
+
+        if (pedido.deliveryPago) {
+            comprobantePedido.append('<div class="centrado">  <strong>PAGO</strong> </div >');
+        }
+
+        if (pedido.deliveryEmdinheiro) {
+
+            if (pedido.deliveryDinheiroTotal !== null && pedido.deliveryDinheiroTotal !== undefined) {
+                comprobantePedido.append('<div class="centrado">   <strong>TROCO PARA R$ @Model.deliveryDinheiroTotal.Value.ToString("F2")</strong> </div >');
+            } else {
+                comprobantePedido.append('<div class="centrado">   <strong>PAGAMENTO EM DINHEIRO (S/T)</strong> </div >');
+
+            }
+
+        }
+
+        comprobantePedido.append('<hr style="margin:4px"/>');
+
 
     }
 

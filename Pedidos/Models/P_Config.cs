@@ -15,11 +15,21 @@ namespace Pedidos.Models
         public int id { get; set; }
         public int idCuenta { get; set; }
 
-        [DisplayName("Tamanho")]
+        [DisplayName("Tamanho folha:")]
         public int printSize { get; set; }
 
-        [DisplayName("Tamanho letra")]
+        [DisplayName("Tamanho letra:")]
         public int fontSize { get; set; }
+
+        //ESTABLECIMIENTO
+        [DisplayName("Nome:")]
+        public string nombreEstablecimiento { get; set; }
+        [DisplayName("Endereço:")]
+        public string direccionEstablecimiento { get; set; }
+        [DisplayName("Telefone:")]
+        public string telefonoEstablecimiento { get; set; }
+        [DisplayName("CNPJ:")]
+        public string cnpjEstablecimiento { get; set; }
 
     }
 }

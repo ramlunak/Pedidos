@@ -124,7 +124,7 @@ $(function () {
             $('#spanMesa').html('MESA ' + $('#idMesa').val());
             $('#spanMesa').show();
 
-            $('#divInfoPagamentoDelivery').hide();
+          //  $('#divInfoPagamentoDelivery').hide();
 
             $('#inputAplicativo').val(null);
             $('#idAplicativo').val('');
@@ -139,7 +139,7 @@ $(function () {
 
         } else {
             $('#spanMesa').hide();
-            $('#divInfoPagamentoDelivery').show();
+          //  $('#divInfoPagamentoDelivery').show();
             $('#inputEndereco').show();
             $('#inputAplicativo').show();
         }
@@ -223,7 +223,7 @@ function CargarDirecciones(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            console.log(data);
+           
             $("#inputTelefone").val(data);
             ////Llanar lista direcciones
             //
@@ -298,7 +298,7 @@ function CargarProductos() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            console.log('productos', data);
+         
 
             _Productos = data;
         },
@@ -686,7 +686,7 @@ function UpdataDatosCliente() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
-            console.log('ok', result);
+           
 
         },
         failure: function (response) {
@@ -941,7 +941,6 @@ function actualizarFormaPagamento(idPedido, finalizar) {
     });
     var pedido = findResult[0];
 
-    console.log(pedido);
 
     var formaPagamentoContainer = '<div style="display: block;text-align:start;font-size: 14px;">';
 
@@ -1080,7 +1079,6 @@ function actualizarFormaPagamento(idPedido, finalizar) {
                 deliveryEmdinheiro: _ModalDeliveryFormaPagamento.deliveryEmdinheiro
             };
 
-            console.log(finalizarPedido);
 
             $.ajax({
                 type: "POST",
@@ -1090,8 +1088,6 @@ function actualizarFormaPagamento(idPedido, finalizar) {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (pedido) {
-
-                    console.log(pedido);
 
                     var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
                     _PedidosPendientes[objIndex] = pedido;
@@ -1361,8 +1357,7 @@ function sumarvalorFormaPagamentoInput(input, idPedido) {
     }
 
     $(input).val(null);
-    console.log(valor, oldValue);
-
+   
     calcularTotalPagado();
 
 }

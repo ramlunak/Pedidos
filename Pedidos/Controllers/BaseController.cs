@@ -285,6 +285,19 @@ namespace Pedidos.Controllers
             TempData["Message"] = JsonConvert.SerializeObject(msg);
         }
 
+        public void PrompSuccess(string message)
+        {
+            var msg = new
+            {
+                message = message,
+                icon = NotificationType.success.ToString(),
+                type = NotificationType.success.ToString(),
+                provider = "sweetAlertPromp"
+            };
+
+            TempData["Message"] = JsonConvert.SerializeObject(msg);
+        }
+
         public async Task InsertLog(AppDbContext appDbContext, int idCuenta, string ex)
         {
             var r = await appDbContext.Database.ExecuteSqlInterpolatedAsync($"EXEC InsertLog  @idCuenta = {idCuenta},@fecha = {DateTime.Now.ToSouthAmericaStandard()},@ex = {ex}");

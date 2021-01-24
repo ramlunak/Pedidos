@@ -21,6 +21,11 @@ namespace Pedidos.Controllers
 
         public async Task<ActionResult> Index()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
             var model = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
 
             if (model == null)
@@ -55,12 +60,20 @@ namespace Pedidos.Controllers
             if (ModelState.IsValid)
             {
 
-                _context.Update(config);
-                await _context.SaveChangesAsync();
+                try
+                {
+                    _context.Update(config);
+                    await _context.SaveChangesAsync();
 
-                return RedirectToAction(nameof(Index));
+                }
+                catch (Exception ex)
+                {
+                    PrompErro(ex.ToString());
+                }
+
             }
-            return View(config);
+            PrompSuccess("Dados atualizados corretamente");
+            return RedirectToAction(nameof(Index));
         }
 
     }

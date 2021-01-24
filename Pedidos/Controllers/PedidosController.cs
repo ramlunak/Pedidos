@@ -164,7 +164,10 @@ namespace Pedidos.Controllers
 
                 try
                 {
-                    currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
+                    if (currentPedido.isNew)
+                    {
+                        currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
+                    }
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
                     currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);

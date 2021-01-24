@@ -416,6 +416,8 @@ function imprimirPedido(idPedido) {
         });
         var pedido = findResult[0];
 
+        console.log(pedido);
+
         var comprobantePedido = $("#divComprobantePedido");
         $("#divComprobantePedido").html("");
 
@@ -441,10 +443,126 @@ function imprimirPedido(idPedido) {
             comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
         }
 
-        console.log($(comprobantePedido));
+        //LISTA PRODUSTOS
+
+        $.each(pedido.productos, function (index, producto) {
+
+            comprobantePedido.append('<hr style="margin:2px"/>');
+
+            var TABLE = $('<table>');
+            TABLE.empty();
+
+            var TD1 = $('<td style="vertical-align:top;">');
+            var TD2 = $('<td style="width:100%">');
+            var TD3 = $('<td>');
+            var TR = $('<tr>');
+
+            TD1.append('<div style="white-space:nowrap;vertical-align:top;"><b>( ' + producto.cantidad + ' )</b></div>');
+            TD2.append('<div>' + producto.nombre + '</div>');
+            TD3.append('<div style="white-space:nowrap;margin-left:10px;"><b>R$ ' + producto.valorMasAdicionales.toFixed(2) + '</b></div>');
+
+            TR.append(TD1, TD2, TD3);
+            TABLE.append(TR);
+
+            if (producto.adicionales.length > 0) {
+
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Adicionais</b></td></tr>');
+
+                //ADICIONALES
+                var TABLE_ADICIONALES = $('<table style="width: 100%;">');
+                TABLE_ADICIONALES.empty();
+                $.each(producto.adicionales, function (index, adicional) {
+
+                    let TD1 = $('<td style="vertical-align:top;">');
+                    let TD2 = $('<td style="width:100%">');
+                    let TD3 = $('<td>');
+                    let TR = $('<tr>');
+
+                    TD1.append('<div style="white-space:nowrap;vertical-align:top;">  <b>' + adicional.cantidad + '</b></div>');
+                    TD2.append('<div>' + adicional.nombre + '</div>');
+                    TD3.append('<div style="white-space:nowrap;margin-left:10px;"><b>R$ ' + (adicional.valor + adicional.cantidad).toFixed(2) + '</b></div>');
+
+                    TR.append(TD1, TD2, TD3);
+                    TABLE_ADICIONALES.append(TR);
+                });
+
+                //ADD ADICIONLES TABLA PRODUCTO
+                var TD_ADICIONALES = $('<td colspan="3">');
+                TD_ADICIONALES.append(TABLE_ADICIONALES);
+
+                var TR2 = $('<tr>');
+                TR2.append(TD_ADICIONALES);
+                TABLE.append(TR2);
+            }
+
+            if (producto.ingredientes.length > 0) {
+
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Preparar sem:</b></td></tr>');
+
+                //QUITAR INGREDIENTES
+                var TABLE_INGREDIENTES = $('<table style="width: 100%;">');
+                TABLE_INGREDIENTES.empty();
+                $.each(producto.ingredientes, function (index, ingrediente) {
+
+                    let TD1 = $('<td style="vertical-align:top;">');
+                    let TR = $('<tr>');
+
+                    TD1.append('<div> - ' + ingrediente.nombre + '</div>');
+
+                    TR.append(TD1);
+                    TABLE_INGREDIENTES.append(TR);
+                });
+
+                //ADD INGREDIENTES
+                var TD_INGREDIENTES = $('<td colspan="3">');
+                TD_INGREDIENTES.append(TABLE_INGREDIENTES);
+
+                var TR3 = $('<tr>');
+                TR3.append(TD_INGREDIENTES);
+                TABLE.append(TR3);
+
+            }
+
+            if (producto.observacion.length > 0) {
+                //ADD OBSERVACION
+                var TD_OBSERBACION = $('<td colspan="3">');
+                TD_OBSERBACION.append('<p style="margin:1px"> <b>Observação: </b>' + producto.observacion + ' </p>');
+
+                var TR4 = $('<tr>');
+                TR4.append(TD_OBSERBACION);
+                TABLE.append(TR4);
+            }
+
+            comprobantePedido.append(TABLE);
+
+
+
+        });
+
+        //RESUMEN PAGAMENTO
+        comprobantePedido.append('<hr style="margin:2px"/>');
+
+        comprobantePedido.append('<div class="centrado">  ' +
+            '               <table style="width:100%">  ' +
+            '                   <tr>  ' +
+            '                       <td style="width:50%;text-align:right"><b>Total a Pagar:</b></td>  ' +
+            '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.valorProductos - pedido.descuento + pedido.tasaEntrega).toFixed(2) + '</td>  ' +
+            '                   </tr>  ' +
+            '                   <tr>  ' +
+            '                       <td style="width:50%;text-align:right">Descuento:</td>  ' +
+            '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.descuento).toFixed(2) + '</td>  ' +
+            '                   </tr>  ' +
+            '                   <tr>  ' +
+            '                       <td style="width:50%;text-align:right">Tasa de Entrega:</td>  ' +
+            '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.tasaEntrega).toFixed(2) + '</td>  ' +
+            '                   </tr>  ' +
+            '               </table>  ' +
+            '          </div> ');
+
     }
 
-    cargarAsync().then(
+    cargarAsync().then(function () {
+
         $("#divComprobantePedido").printThis({
             debug: false,                   // show the iframe for debugging
             importCSS: true,                // import parent page css
@@ -454,7 +572,7 @@ function imprimirPedido(idPedido) {
             pageTitle: "Tiked",                  // add title to print page
             removeInline: false,            // remove all inline styles from print elements
             //removeInlineSelector: "body *", // custom selectors to filter inline styles. removeInline must be true
-            printDelay: 333,                // variable print delay
+            printDelay: 1,                // variable print delay
             header: null,                   // prefix to html
             footer: null,                   // postfix to html
             base: false,                    // preserve the BASE tag, or accept a string for the URL
@@ -465,8 +583,9 @@ function imprimirPedido(idPedido) {
             copyTagClasses: true,           // copy classes from the html & body tag
             beforePrintEvent: null,         // callback function for printEvent in iframe
             afterPrint: null                // function called before iframe is removed
-        })
-    );
+        });
+
+    });
     cargarAsync();
 
 }

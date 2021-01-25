@@ -1,4 +1,5 @@
-﻿
+﻿var _PedidosFinalizados = [];
+
 //cargar lista de pedidos pendientes
 function CargarPedidosFinalizados() {
 
@@ -13,6 +14,7 @@ function CargarPedidosFinalizados() {
         dataType: "json",
         success: function (data) {
             MostarPedidosFinalizados(data.pedidosFinalizados);
+            _PedidosFinalizados = data.pedidosFinalizados;
 
             $('#divLoadinFinalizados').hide();
             $('#divPedidosFinalizados').show();
@@ -192,7 +194,7 @@ function MostarPedidosFinalizados(pedidosFinalizados) {
 
             var TABLA_INGD = $('<table class="w-100 unselectable" style="color: orangered;font-weight: 500;">');
             $.each(producto.ingredientes, function (index, item) {
-                
+
                 var TD1 = $('<td style="width:100%">');
                 var TD2 = $('<td>');
                 var TR = $('<tr>');
@@ -289,7 +291,7 @@ function MostarPedidosFinalizados(pedidosFinalizados) {
         }
 
         CARD_FUTTER.append('<div >  </div>');
-        CARD_FUTTER.append('<a class="btn btn-outline-secondary" href="/Pedidos/Print/' + pedido.id + '" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
+        CARD_FUTTER.append('<a class="btn btn-outline-secondary cursor-pointer" onclick="imprimirPedido(' + pedido.id + ',' + false + ')" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
 
         CARD.append(CARD_BODY);
         CARD.append(CARD_FUTTER);

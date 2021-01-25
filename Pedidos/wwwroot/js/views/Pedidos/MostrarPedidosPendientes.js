@@ -275,7 +275,7 @@ function MostarPedidosPendientes() {
         }
 
         CARD_FUTTER.append('<div >' + deliveryCartao + deliveryDinheiro + deliveryPago + '  </div>');
-        CARD_FUTTER.append('<a class="btn btn-outline-secondary" onclick="imprimirPedido(' + pedido.id + ')" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
+        CARD_FUTTER.append('<a class="btn btn-outline-secondary cursor-pointer" onclick="imprimirPedido(' + pedido.id + ',' + true + ')" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
 
         CARD.append(CARD_BODY);
         CARD.append(CARD_FUTTER);
@@ -410,7 +410,7 @@ function finalizarPedido(idPedido) {
 
 }
 
-function imprimirPedido(idPedido) {
+function imprimirPedido(idPedido, pendientes) {
 
     var NombreEstablecimiento = $('#NombreEstablecimiento').val();
     var TelefonoEstablecimiento = $('#TelefonoEstablecimiento').val();
@@ -422,6 +422,13 @@ function imprimirPedido(idPedido) {
         var findResult = _PedidosPendientes.filter(function (item) {
             return (item.id === idPedido);
         });
+
+        if (!pendientes) {
+            findResult = _PedidosFinalizados.filter(function (item) {
+                return (item.id === idPedido);
+            });
+        }
+
         var pedido = findResult[0];
 
 

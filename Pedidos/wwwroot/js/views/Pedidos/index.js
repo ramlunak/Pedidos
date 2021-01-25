@@ -124,7 +124,7 @@ $(function () {
             $('#spanMesa').html('MESA ' + $('#idMesa').val());
             $('#spanMesa').show();
 
-          //  $('#divInfoPagamentoDelivery').hide();
+            //  $('#divInfoPagamentoDelivery').hide();
 
             $('#inputAplicativo').val(null);
             $('#idAplicativo').val('');
@@ -139,7 +139,7 @@ $(function () {
 
         } else {
             $('#spanMesa').hide();
-          //  $('#divInfoPagamentoDelivery').show();
+            //  $('#divInfoPagamentoDelivery').show();
             $('#inputEndereco').show();
             $('#inputAplicativo').show();
         }
@@ -223,7 +223,7 @@ function CargarDirecciones(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-           
+
             $("#inputTelefone").val(data);
             ////Llanar lista direcciones
             //
@@ -298,7 +298,7 @@ function CargarProductos() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-         
+
 
             _Productos = data;
         },
@@ -686,7 +686,7 @@ function UpdataDatosCliente() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (result) {
-           
+
 
         },
         failure: function (response) {
@@ -930,7 +930,7 @@ var valorInputFormaPagamento = 0;
 var totalPedido = 0;
 var firstInputChecked = null;
 
-function actualizarFormaPagamento(idPedido, finalizar) {
+function actualizarFormaPagamento(idPedido) {
 
     valorInputFormaPagamento = 0;
     totalPedido = 0;
@@ -1013,7 +1013,7 @@ function actualizarFormaPagamento(idPedido, finalizar) {
 
 
     Swal.fire({
-        title: 'Finalizar Pedido',
+        title: 'Forma Pagamento',
         html: '   <div class="card card-body" style="font-size: 14px;">  ' +
             '                       <div class="row col-12 d-block justify-content-center">  ' +
             '                           <div class="d-flex mb-2">  ' +
@@ -1032,107 +1032,47 @@ function actualizarFormaPagamento(idPedido, finalizar) {
             //'                       </div>  ' +
             '                  </div>  ',
         showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: `Save`,
+        denyButtonText: `Finalizar`,
         confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
+        //cancelButtonColor: '#d33',
         width: '600px',
-        confirmButtonText: 'Salvar!',
-        cancelButtonText: 'Não',
+        confirmButtonText: 'Apenas salvar!',
+        cancelButtonText: 'Cancelar',
         onOpen: function () {
             $('.swal2-confirm').prop('id', 'modalBtnOk');
+            $('.swal2-deny').prop('id', 'modalBtnOkEnd');
             $('.swal2-confirm').prop('disabled', true);
+            $('.swal2-deny').prop('disabled', true);
         },
     }).then((result) => {
-        if (result.isConfirmed) {
 
-            var formasPagamento = [];
-            var formasPagSelected = $('input[name="radioFormaPagamento"]:checked');
-            $.each(formasPagSelected, function (index, item) {
-                var idFormaPagamento = $(item).prop('id').split('_')[1];
-                var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
-                var tasa = $('#tasaFormaPagamento_' + idFormaPagamento + '').val();
-                var valorTasa = 0;
-                if (tasa !== null && tasa !== undefined && tasa !== "null") {
-                    valorTasa = (tasa / 100) * valor;
-                } else {
-                    tasa = null;
-                }
+        if (result.isConfirmed || result.isDenied) {
 
-                formasPagamento.push({
-                    id: idFormaPagamento,
-                    valor: parseFloat(valor),
-                    tasa: tasa,
-                    valorTasa: valorTasa
-                });
-            });
+            if (result.isDenied) {
 
-            finalizarPedido = {
-                idPedido: idPedido,
-                descuento: parseFloat($('#inputDescontoFinalizado').val()),
-                pago: $("#inputPagoFinalizado").prop('checked'),
-                listaFormaPagamento: JSON.stringify(formasPagamento),
-                tasaEntrega: $('#inputTasaFormaPagamentoDelivery').val() === undefined ? 0 : parseFloat($('#inputTasaFormaPagamentoDelivery').val()),
-                troco: $('#inputTrocoFormaPagamento').val() === "" ? 0 : $('#inputTrocoFormaPagamento').val(),
-                finalizar: finalizar,
-                deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal2').val()),
-                deliveryEmCartao: _ModalDeliveryFormaPagamento.deliveryEmCartao,
-                deliveryPago: _ModalDeliveryFormaPagamento.deliveryPago,
-                deliveryEmdinheiro: _ModalDeliveryFormaPagamento.deliveryEmdinheiro
-            };
+                Swal.fire({
+                    title: 'Finalizar Pedido',
+                    text: "Tem certeza que deseja finalizar o pedido?",
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    width: '600px',
+                    confirmButtonText: 'Finalizar!',
+                    cancelButtonText: 'Cancelar',
+                }).then((result) => {
 
-
-            $.ajax({
-                type: "POST",
-                url: "/Pedidos/ActualizarFormaPagamento",
-                traditional: true,
-                data: JSON.stringify(finalizarPedido),
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (pedido) {
-
-                    var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
-                    _PedidosPendientes[objIndex] = pedido;
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Ação realizada com sucesso'
-                    })
-                    if (finalizar) {
-                        $('#CARD_PEDIDO_' + idPedido + '').remove();
-                        GetNumeroPedidosFinalizados();
+                    if (result.isConfirmed) {
+                        SetFormaPagamento(idPedido, true);
                     } else {
-                        MostarPedidosPendientes();
+                        SetFormaPagamento(idPedido, false);
                     }
-                },
-                failure: function (response) {
 
-                    Swal.fire(
-                        'Error!',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                },
-                error: function (response) {
-
-                    Swal.fire(
-                        'Error',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                }
-            });
-
+                })
+            } else {
+                SetFormaPagamento(idPedido, false);
+            }
         }
     })
 
@@ -1229,9 +1169,105 @@ function actualizarFormaPagamento(idPedido, finalizar) {
         calcularTotalPagado();
 
     });
+}
 
+function SetFormaPagamento(idPedido, finalizar) {
+
+    var formasPagamento = [];
+    var formasPagSelected = $('input[name="radioFormaPagamento"]:checked');
+    $.each(formasPagSelected, function (index, item) {
+        var idFormaPagamento = $(item).prop('id').split('_')[1];
+        var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
+        var tasa = $('#tasaFormaPagamento_' + idFormaPagamento + '').val();
+        var valorTasa = 0;
+        if (tasa !== null && tasa !== undefined && tasa !== "null") {
+            valorTasa = (tasa / 100) * valor;
+        } else {
+            tasa = null;
+        }
+
+        formasPagamento.push({
+            id: idFormaPagamento,
+            valor: parseFloat(valor),
+            tasa: tasa,
+            valorTasa: valorTasa
+        });
+    });
+
+    finalizarPedido = {
+        idPedido: idPedido,
+        descuento: parseFloat($('#inputDescontoFinalizado').val()),
+        pago: $("#inputPagoFinalizado").prop('checked'),
+        listaFormaPagamento: JSON.stringify(formasPagamento),
+        tasaEntrega: $('#inputTasaFormaPagamentoDelivery').val() === undefined ? 0 : parseFloat($('#inputTasaFormaPagamentoDelivery').val()),
+        troco: $('#inputTrocoFormaPagamento').val() === "" ? 0 : $('#inputTrocoFormaPagamento').val(),
+        finalizar: finalizar,
+        deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal2').val()),
+        deliveryEmCartao: _ModalDeliveryFormaPagamento.deliveryEmCartao,
+        deliveryPago: _ModalDeliveryFormaPagamento.deliveryPago,
+        deliveryEmdinheiro: _ModalDeliveryFormaPagamento.deliveryEmdinheiro
+    };
+
+    $.ajax({
+        type: "POST",
+        url: "/Pedidos/ActualizarFormaPagamento",
+        traditional: true,
+        data: JSON.stringify(finalizarPedido),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (pedido) {
+
+            var objIndex = _PedidosPendientes.findIndex((p => p.id == pedido.id));
+            _PedidosPendientes[objIndex] = pedido;
+
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: 'Ação realizada com sucesso'
+            })
+
+            if (finalizar) {
+                $('#CARD_PEDIDO_' + idPedido + '').remove();
+                _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                    return pedido.id != idPedido;
+                });
+                GetNumeroPedidosFinalizados();
+            } else {
+                MostarPedidosPendientes();
+            }
+
+        },
+        failure: function (response) {
+
+            Swal.fire(
+                'Error!',
+                'Erro de servidor.',
+                'error'
+            )
+        },
+        error: function (response) {
+
+            Swal.fire(
+                'Error',
+                'Erro de servidor.',
+                'error'
+            )
+        }
+    });
 
 }
+
 
 function radioFormaPagamentoChange(input, idPedido) {
     var idFormaPagamento = $(input).prop('id').split('_')[1];
@@ -1357,7 +1393,7 @@ function sumarvalorFormaPagamentoInput(input, idPedido) {
     }
 
     $(input).val(null);
-   
+
     calcularTotalPagado();
 
 }
@@ -1382,8 +1418,10 @@ function calcularTotalPagado() {
 
     if (parseFloat(totalPedido - valorInputFormaPagamento) === 0) {
         $('#modalBtnOk').prop('disabled', false);
+        $('#modalBtnOkEnd').prop('disabled', false);
     } else {
         $('#modalBtnOk').prop('disabled', true);
+        $('#modalBtnOkEnd').prop('disabled', true);
     }
 }
 

@@ -32,6 +32,24 @@ namespace Pedidos.Controllers
 
             var config = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
 
+            if (config is null)
+            {
+                try
+                {
+                    config = new P_Config();
+                    config.idCuenta = Cuenta.id;
+                    config.printSize = 300;
+                    config.fontSize = 13;
+                    _context.Add(config);
+                    await _context.SaveChangesAsync();
+                }
+                catch (Exception ex)
+                {
+                    PrompErro(ex.ToString());
+                }
+            }
+
+
             ViewBag.NombreEstablecimiento = config.nombreEstablecimiento;
             ViewBag.TelefonoEstablecimiento = config.telefonoEstablecimiento;
             ViewBag.DireccionEstablecimiento = config.direccionEstablecimiento;

@@ -36,11 +36,7 @@ namespace Pedidos.Controllers
             var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-141").ToListAsync();
             var pedido = model.FirstOrDefault();
             pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
-
-            var config = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
-            ViewBag.PrintSize = config.printSize;
-            ViewBag.FontSize = config.fontSize;
-
+            
             return View(pedido);
         }
 

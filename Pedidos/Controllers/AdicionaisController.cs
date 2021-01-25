@@ -29,7 +29,7 @@ namespace Pedidos.Controllers
             }
 
             var model = await _context.P_Adicionais.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            return View(model.OrderByDescending(x => x.paraTodos).ToList());
+            return View(model.OrderBy(x => x.orden).ToList());
         }
 
         public async Task<IActionResult> Categorias(int id)
@@ -106,6 +106,9 @@ namespace Pedidos.Controllers
                         p_Adicionais.idCuenta = Cuenta.id;
                         p_Adicionais.activo = true;
 
+                        var count = await _context.P_Adicionais.Where(x => x.idCuenta == Cuenta.id).CountAsync();
+                        p_Adicionais.orden = count + 1;
+
                         _context.Add(p_Adicionais);
                         await _context.SaveChangesAsync();
 
@@ -117,7 +120,7 @@ namespace Pedidos.Controllers
 
                         _context.Add(p_AdicionalCategorias);
                         await _context.SaveChangesAsync();
-                                               
+
                         await transaction.CommitAsync();
                         return RedirectToAction(nameof(Index));
                     }
@@ -336,6 +339,22 @@ namespace Pedidos.Controllers
             return _context.P_Adicionais.Any(e => e.id == id && e.idCuenta == Cuenta.id);
         }
 
+        public async Task<IActionResult> EditarOrden(int? id, string orden)
+        {
+
+            try
+            {
+                var p_Adicionais = await _context.P_Adicionais.FindAsync(id);
+                p_Adicionais.orden = Convert.ToInt32(orden);
+                _context.Update(p_Adicionais);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(ex.ToString());
+            }
+            return Ok(true);
+        }
 
         private async Task<int?> GetIdByName(string nombre)
         {

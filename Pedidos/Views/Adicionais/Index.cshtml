@@ -20,9 +20,9 @@
         <table class="table" cellspacing="10">
             <thead>
                 <tr>
-                    @*<th style="width:auto">
-
-                        </th>*@
+                    <th style="width:auto">
+                        Ordem
+                    </th>
                     <th>
                         @Html.DisplayNameFor(model => model.nombre)
                     </th>
@@ -40,9 +40,10 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        @*<td style="width:auto">
-                                <input name="switchbuttonParaTodos" type="checkbox" asp-for="@item.paraTodos" id="@item.id" data-width="100" data-onlabel="Para Todos" data-offlabel="Individual" data-toggle="switchbutton" data-offstyle="danger" data-size="sm">
-                            </td>*@
+                        <td>
+                            <label id="labelOrden_@item.id" onclick="showInputOrden(@item.id)" class="unselectable cursor-pointer">@item.orden</label>
+                            <input id="inputOrden_@item.id" type="number" asp-for="@item.orden" onblur="editarOrden(@item.id)" style="width:60px;display:none" class="form-control-sm">
+                        </td>
 
                         <td style="width:100%">
                             @Html.DisplayFor(modelItem => item.nombre)

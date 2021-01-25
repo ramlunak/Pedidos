@@ -449,7 +449,7 @@ namespace Pedidos.Controllers
                     ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(data.JsonIngredientes);
                 }
 
-                var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
+                var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).OrderBy(x => x.orden).ToList();
                 var listaIngredientes = ingredientes.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
                 return Ok(new { producto = productos[0], adicionales = listaAdicionales, ingredientes = listaIngredientes });
             }

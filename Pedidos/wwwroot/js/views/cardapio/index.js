@@ -7,6 +7,65 @@ $(function () {
     cardapioMesa = $('#inputMesa').val();
     console.log(cardapioIdCuenta, cardapioMesa);
 
+    GetCategorias(cardapioIdCuenta);
+
+});
+
+function GetCategorias(idCuenta) {
+
+    $('#cardapioLoadingCategorias').show();
+
+    $.ajax({
+        type: "GET",
+        url: "/Cardapio/CargarCategorias/" + parseInt(idCuenta),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            console.log(data);        
+
+            $('#cardapioLoadingCategorias').hide();
+            MostarCategorias(data)
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+function MostarCategorias(categorias) {
+
+    var divCategorias = $('#cardapioAcordionCategorias');
+    divCategorias.html("");
+
+    $.each(categorias, function (index, item) {
+
+        var acordion = $(' <div class="accordion" id="accordionCategorias">');
+
+        acordion.append('   <div class="card">  ' +
+            '                           <div class="card-header cursor-pointer d-flex justify-content-start" id="heading_' + item.id + '_' + item.idCuenta + '" data-toggle="collapse" data-target="#collapse_' + item.id + '_' + item.idCuenta + '" aria-expanded="true" aria-controls="collapse_' + item.id + '_' + item.idCuenta + '">  ' +
+            '                               <h5 class="mb-0 text-uppercase d-flex">  ' +
+            '                                   ' + item.nombre +
+            '                               </h5>  ' +
+            '                           </div>  ' +
+            '     ' +
+            '                           <div id="collapse_' + item.id + '_' + item.idCuenta + '" class="collapse hide collapseCategoria" aria-labelledby="heading_' + item.id + '_' + item.idCuenta + '" data-parent="#accordionCategorias">  ' +
+            '                               <div class="card-body">  ' +
+            '     ' +
+            '                                   <table class="table" id="tableProductosCategoria_' + item.id + '_' + item.idCuenta + '" width="100%" cellspacing="0" cellpadding="0">  ' +
+            '                                   </table>  ' +
+            '                               </div>  ' +
+            '                           </div>  ' +
+            '                      </div>  ');
+
+        divCategorias.append(acordion);
+    });
+
+   
+
     $('.collapseCategoria').on('show.bs.collapse', function () {
 
         var collapseId = $(this).attr("id");
@@ -40,7 +99,9 @@ $(function () {
 
     })
 
-});
+
+}
+
 
 function cargarProductosCategoria(idCategoria, idCuenta, productos) {
 

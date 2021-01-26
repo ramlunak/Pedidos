@@ -25,34 +25,67 @@
     <input type="hidden" id="inputMesa" value="@ViewBag.Mesa" />
 </div>
 
-<div>
-    @if (Model != null)
-        @foreach (var item in Model)
-        {
-            <div class="accordion" id="accordionCategorias">
+<div class="card m-2">
+    <div class="card-header">
+        <div class="row d-flex justify-content-between p-1">
+            <div>
+                <b>ADICIONAIS</b>
+            </div>
+            <div>
+                @*<a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>*@
+            </div>
+        </div>
 
-                <div class="card">
-                    <div class="card-header cursor-pointer d-flex justify-content-start" id="heading_@($"{item.id}_{item.idCuenta}")" data-toggle="collapse" data-target="#collapse_@($"{item.id}_{item.idCuenta}")" aria-expanded="true" aria-controls="collapse_@($"{item.id}_{item.idCuenta}")">
-                        <h5 class="mb-0 text-uppercase d-flex">
-                            @item.nombre
-                        </h5>
+    </div>
+    <div class="card-body">
+        <div>
+
+            <div id="cardapioLoadingCategorias" class="d-flex justify-content-center" hidden>
+                <div class="d-block">
+                    <div class="d-flex justify-content-center">
+                        <img src="~/img/cardapio.png" style="width:100px" />
                     </div>
-
-                    <div id="collapse_@($"{item.id}_{item.idCuenta}")" class="collapse hide collapseCategoria" aria-labelledby="heading_@($"{item.id}_{item.idCuenta}")" data-parent="#accordionCategorias">
-                        <div class="card-body">
-
-                            @*MODAL DETALLES PRODUCTO*@
-
-                            @*LISTA PRODUCTOS*@
-                            <table class="table" id="tableProductosCategoria_@($"{item.id}_{item.idCuenta}")" width="100%" cellspacing="0" cellpadding="0">
-                            </table>
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-success mr-2" role="status">
+                            <span class="sr-only">Loading...</span>
                         </div>
+                        <div><strong>Carregando Cardapio...</strong></div>
                     </div>
                 </div>
+            </div>
+
+            <div id="cardapioAcordionCategorias">
 
             </div>
-        }
+        </div>
+    </div>
 </div>
+
+@*<div>
+        @if (Model != null)
+            @foreach (var item in Model)
+            {
+                <div class="accordion" id="accordionCategorias">
+
+                    <div class="card">
+                        <div class="card-header cursor-pointer d-flex justify-content-start" id="heading_@($"{item.id}_{item.idCuenta}")" data-toggle="collapse" data-target="#collapse_@($"{item.id}_{item.idCuenta}")" aria-expanded="true" aria-controls="collapse_@($"{item.id}_{item.idCuenta}")">
+                            <h5 class="mb-0 text-uppercase d-flex">
+                                @item.nombre
+                            </h5>
+                        </div>
+
+                        <div id="collapse_@($"{item.id}_{item.idCuenta}")" class="collapse hide collapseCategoria" aria-labelledby="heading_@($"{item.id}_{item.idCuenta}")" data-parent="#accordionCategorias">
+                            <div class="card-body">
+
+                                <table class="table" id="tableProductosCategoria_@($"{item.id}_{item.idCuenta}")" width="100%" cellspacing="0" cellpadding="0">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            }
+    </div>*@
 
 @*<h1>Index</h1>
     <p>

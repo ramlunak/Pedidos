@@ -177,6 +177,31 @@ $(function () {
 
 });
 
+function showInputValorProducto(idAdicional) {
+    let labelValor = $('#spanValorProducto');
+
+    let inputValor = $('#inputValorProducto');
+    $("#inputValorProducto").mask("###0.00", { reverse: true });
+
+    inputValor.val(_ModalProducto.valor);
+    labelValor.hide();
+    inputValor.show();
+    inputValor.focus();
+    inputValor.select();
+}
+
+function inputValorProductoChanged() {
+    let labelValor = $('#spanValorProducto');
+    let inputValor = $('#inputValorProducto');
+    labelValor.html(parseFloat(inputValor.val()).toFixed(2));
+    _ModalProducto.valor = parseFloat(inputValor.val());
+    inputValor.hide();
+    labelValor.show();
+
+}
+
+
+
 //Cargar Direcciones del cliente
 function CargarDirecciones(id) {
     $.ajax({

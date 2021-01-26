@@ -13,12 +13,12 @@
 }
 
 @*<div>
-    @ViewBag.HttpContextConnectionId
-</div>
+        @ViewBag.HttpContextConnectionId
+    </div>
 
-<div>
-    @ViewBag.RemoteIpAddress / @ViewBag.LocalIpAddress
-</div>*@
+    <div>
+        @ViewBag.RemoteIpAddress / @ViewBag.LocalIpAddress
+    </div>*@
 
 <div>
     <input type="hidden" id="inputIdCuenta" value="@ViewBag.IdCuenta" />
@@ -32,8 +32,8 @@
             <div class="accordion" id="accordionCategorias">
 
                 <div class="card">
-                    <div class="card-header cursor-pointer d-flex justify-content-center" id="heading_@($"{item.id}_{item.idCuenta}")" data-toggle="collapse" data-target="#collapse_@($"{item.id}_{item.idCuenta}")" aria-expanded="true" aria-controls="collapse_@($"{item.id}_{item.idCuenta}")">
-                        <h5 class="mb-0">
+                    <div class="card-header cursor-pointer d-flex justify-content-start" id="heading_@($"{item.id}_{item.idCuenta}")" data-toggle="collapse" data-target="#collapse_@($"{item.id}_{item.idCuenta}")" aria-expanded="true" aria-controls="collapse_@($"{item.id}_{item.idCuenta}")">
+                        <h5 class="mb-0 text-uppercase d-flex">
                             @item.nombre
                         </h5>
                     </div>

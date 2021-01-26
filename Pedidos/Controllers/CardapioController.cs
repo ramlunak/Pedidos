@@ -45,30 +45,32 @@ namespace Pedidos.Controllers
 
             //var item = from d in data
             //           group d by d.Categoria into g select g.ToList();
-                      
-            ViewBag.LocalIpAddress = Request.HttpContext.Connection.LocalIpAddress;
-            ViewBag.RemoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
-            ViewBag.HttpContextConnectionId = HttpContext.Connection.Id;
-            //var result = await query.ToListAsync();
-            try
-            {
-                TempData["IsQRCode"] = true;
 
-                var cuenta = id.Split("_")[0];
-                var table = id.Split("_")[1];
-                var idCuenta = Convert.ToInt32(cuenta.Split("acc")[1]);
-                var mesa = Convert.ToInt32(table.Split("table")[1]);
-                ViewBag.IdCuenta = idCuenta;
-                ViewBag.Mesa = mesa;
-                var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
+            //ViewBag.LocalIpAddress = Request.HttpContext.Connection.LocalIpAddress;
+            //ViewBag.RemoteIpAddress = Request.HttpContext.Connection.RemoteIpAddress;
+            //ViewBag.HttpContextConnectionId = HttpContext.Connection.Id;
+            ////var result = await query.ToListAsync();
+            //try
+            //{
+            //    TempData["IsQRCode"] = true;
 
-                return View(model);
-            }
-            catch (Exception ex)
-            {
-                ViewBag.Erro = ex.Message;
-                return View();
-            }
+            //    var cuenta = id.Split("_")[0];
+            //    var table = id.Split("_")[1];
+            //    var idCuenta = Convert.ToInt32(cuenta.Split("acc")[1]);
+            //    var mesa = Convert.ToInt32(table.Split("table")[1]);
+            //    ViewBag.IdCuenta = idCuenta;
+            //    ViewBag.Mesa = mesa;
+            //    var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
+
+            //    return View(model);
+            //}
+            //catch (Exception ex)
+            //{
+            //    ViewBag.Erro = ex.Message;
+            //    return View();
+            //}
+
+            return View();
         }
 
 

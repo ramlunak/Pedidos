@@ -131,7 +131,7 @@ namespace Pedidos
 
             RecurringJob.AddOrUpdate(
             recurringJobId: "RelatorioVendasSaidasAnual",
-            methodCall: () => new Hangfire.Jobs().RelatorioVendasSaidasAnual(),
+            methodCall: () => new Hangfire.Jobs(Configuration).RelatorioVendasSaidasAnual(),
             cronExpression: Cron.Hourly(),
             timeZone: TimeZoneInfo.Local
          );

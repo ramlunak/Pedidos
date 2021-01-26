@@ -9,15 +9,24 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using Pedidos.Extensions;
+using Microsoft.Extensions.Configuration;
 
 namespace Pedidos.Hangfire
 {
     public class Jobs : AppDbContext
     {
+        public static string apiBaseUrl = string.Empty;
 
-        public Jobs()
+        public IConfiguration Configuration { get; }
+        public Jobs(IConfiguration configuration)
         {
+            Configuration = configuration;
 
+#if DEBUG
+            apiBaseUrl = Configuration.GetValue<string>("ApiDebugURL");
+#else
+            apiBaseUrl = Configuration.GetValue<string>("ApiReleaseURL");
+#endif
         }
 
         static async Task<List<P_Cuenta>> GetCuentas()
@@ -26,7 +35,7 @@ namespace Pedidos.Hangfire
             {
                 try
                 {
-                    HttpResponseMessage response = await client.GetAsync("https://localhost:44335/api/cuentasapi");
+                    HttpResponseMessage response = await client.GetAsync($"{apiBaseUrl}/cuentasapi");
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<List<P_Cuenta>>(responseBody);
@@ -44,8 +53,8 @@ namespace Pedidos.Hangfire
             {
                 try
                 {
-                    var uri = $"localhost:44335/api/pedidosapi?idCuenta={idCuenta}&mes={mes}&year={year}";
-                    HttpResponseMessage response = await client.GetAsync("https://" + uri);
+                    var uri = $"{apiBaseUrl}/pedidosapi?idCuenta={idCuenta}&mes={mes}&year={year}";
+                    HttpResponseMessage response = await client.GetAsync(uri);
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     return JsonConvert.DeserializeObject<List<P_Pedido>>(responseBody);
@@ -63,7 +72,7 @@ namespace Pedidos.Hangfire
             {
                 try
                 {
-                    HttpResponseMessage response = await client.PostAsync("https://localhost:44335/api/relatoriovendasanualapi", relatorioVendasAnual.ToStringContent());
+                    HttpResponseMessage response = await client.PostAsync($"{apiBaseUrl}/relatoriovendasanualapi", relatorioVendasAnual.ToStringContent());
                     response.EnsureSuccessStatusCode();
                     string responseBody = await response.Content.ReadAsStringAsync();
                     //   return conve JsonConvert.DeserializeObject<List<P_Cuenta>>(responseBody);

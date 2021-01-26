@@ -225,7 +225,7 @@ function MostarPedidosPendientes() {
         }
 
         futter_botones.append('<a onclick="actualizarFormaPagamento(' + pedido.id + ',' + false + ')" class="btn btn-sm btn-info  cursor-pointer mr-1" style="color:white">Forma Pagamento</a>');
-        futter_botones.append('<a onclick="finalizarPedido(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer" style="color:white">Finalizar</a>');
+        futter_botones.append('<a onclick="fnFinalizarPedido(' + pedido.id + ')" class="btn btn-sm btn-primary  cursor-pointer" style="color:white">Finalizar</a>');
 
         CARD_FUTTER.append(futter_botones);
 
@@ -329,86 +329,6 @@ function marcarProductoPreparado(idPedido, idProducto, posicion, timer) {
     });
 }
 
-function finalizarPedido(idPedido) {
-
-    var findResult = _PedidosPendientes.filter(function (item) {
-        return (item.id === idPedido);
-    });
-    var pedido = findResult[0];
-
-    if (pedido.jsonFormaPagamento === undefined || pedido.jsonFormaPagamento === null || pedido.jsonFormaPagamento === "") {
-        Swal.fire(
-            'Informação',
-            'Complete os dados de forma de pagamento do pedido.',
-            'info'
-        )
-        return;
-    }
-
-    Swal.fire({
-        title: 'Finalizar Pedido',
-        text: "Tem certeza que deseja finalizar o pedido?",
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        width: '600px',
-        confirmButtonText: 'Finalizar!',
-        cancelButtonText: 'Cancelar',
-    }).then((result) => {
-
-        if (result.isConfirmed) {
-
-            $.ajax({
-                type: "GET",
-                url: "/Pedidos/Finalizar/" + idPedido,
-                traditional: true,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                success: function (data) {
-
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener('mouseenter', Swal.stopTimer)
-                            toast.addEventListener('mouseleave', Swal.resumeTimer)
-                        }
-                    })
-
-                    Toast.fire({
-                        icon: 'success',
-                        title: 'Ação realizada com sucesso'
-                    })
-                    $('#CARD_PEDIDO_' + idPedido + '').remove();
-                    _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
-                        return pedido.id != idPedido;
-                    });
-                },
-                failure: function (response) {
-
-                    Swal.fire(
-                        'Error!',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                },
-                error: function (response) {
-
-                    Swal.fire(
-                        'Error',
-                        'Erro de servidor.',
-                        'error'
-                    )
-                }
-            });
-        }
-
-    });
-
-}
 
 function imprimirPedido(idPedido, pendientes) {
 

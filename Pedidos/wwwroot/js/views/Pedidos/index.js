@@ -883,6 +883,138 @@ function GuardarCurrentPedido() {
 
 }
 
+function fnFinalizarPedido(idPedido, finalizarConfirmado) {
+
+    var findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === idPedido);
+    });
+    var pedido = findResult[0];
+
+    if (pedido.jsonFormaPagamento === undefined || pedido.jsonFormaPagamento === null || pedido.jsonFormaPagamento === "") {
+        Swal.fire(
+            'Informação',
+            'Complete os dados de forma de pagamento do pedido.',
+            'info'
+        )
+        return;
+    }
+
+    if (!finalizarConfirmado) {
+        Swal.fire({
+            title: 'Finalizar Pedido',
+            text: "Tem certeza que deseja finalizar o pedido?",
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            width: '600px',
+            confirmButtonText: 'Finalizar!',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+
+            if (result.isConfirmed) {
+
+                $.ajax({
+                    type: "GET",
+                    url: "/Pedidos/Finalizar/" + idPedido,
+                    traditional: true,
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: 'top-end',
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener('mouseenter', Swal.stopTimer)
+                                toast.addEventListener('mouseleave', Swal.resumeTimer)
+                            }
+                        })
+
+                        Toast.fire({
+                            icon: 'success',
+                            title: 'Ação realizada com sucesso'
+                        })
+                        $('#CARD_PEDIDO_' + idPedido + '').remove();
+                        _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                            return pedido.id != idPedido;
+                        });
+                    },
+                    failure: function (response) {
+
+                        Swal.fire(
+                            'Error!',
+                            'Erro de servidor.',
+                            'error'
+                        )
+                    },
+                    error: function (response) {
+
+                        Swal.fire(
+                            'Error',
+                            'Erro de servidor.',
+                            'error'
+                        )
+                    }
+                });
+            }
+
+        });
+    } else {
+        $.ajax({
+            type: "GET",
+            url: "/Pedidos/Finalizar/" + idPedido,
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: 'top-end',
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener('mouseenter', Swal.stopTimer)
+                        toast.addEventListener('mouseleave', Swal.resumeTimer)
+                    }
+                })
+
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Ação realizada com sucesso'
+                })
+                $('#CARD_PEDIDO_' + idPedido + '').remove();
+                _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                    return pedido.id != idPedido;
+                });
+            },
+            failure: function (response) {
+
+                Swal.fire(
+                    'Error!',
+                    'Erro de servidor.',
+                    'error'
+                )
+            },
+            error: function (response) {
+
+                Swal.fire(
+                    'Error',
+                    'Erro de servidor.',
+                    'error'
+                )
+            }
+        });
+    }
+
+
+
+}
+
 function cancelar(idPedido) {
 
     Swal.fire({
@@ -1074,29 +1206,10 @@ function actualizarFormaPagamento(idPedido) {
     }).then((result) => {
 
         if (result.isConfirmed || result.isDenied) {
-
-            if (result.isDenied) {
-
-                Swal.fire({
-                    title: 'Finalizar Pedido',
-                    text: "Tem certeza que deseja finalizar o pedido?",
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    width: '600px',
-                    confirmButtonText: 'Finalizar!',
-                    cancelButtonText: 'Cancelar',
-                }).then((result) => {
-
-                    if (result.isConfirmed) {
-                        SetFormaPagamento(idPedido, true);
-                    } else {
-                        SetFormaPagamento(idPedido, false);
-                    }
-
-                })
-            } else {
+            if (result.isConfirmed) {
                 SetFormaPagamento(idPedido, false);
+            } else {
+                SetFormaPagamento(idPedido, true);
             }
         }
     })
@@ -1200,6 +1313,7 @@ function SetFormaPagamento(idPedido, finalizar) {
 
     var formasPagamento = [];
     var formasPagSelected = $('input[name="radioFormaPagamento"]:checked');
+
     $.each(formasPagSelected, function (index, item) {
         var idFormaPagamento = $(item).prop('id').split('_')[1];
         var valor = $('#valorFormaPagamento_' + idFormaPagamento + '').val();
@@ -1226,12 +1340,14 @@ function SetFormaPagamento(idPedido, finalizar) {
         listaFormaPagamento: JSON.stringify(formasPagamento),
         tasaEntrega: $('#inputTasaFormaPagamentoDelivery').val() === undefined ? 0 : parseFloat($('#inputTasaFormaPagamentoDelivery').val()),
         troco: $('#inputTrocoFormaPagamento').val() === "" ? 0 : $('#inputTrocoFormaPagamento').val(),
-        finalizar: finalizar,
+        finalizar: false,
         deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal2').val()),
         deliveryEmCartao: _ModalDeliveryFormaPagamento.deliveryEmCartao,
         deliveryPago: _ModalDeliveryFormaPagamento.deliveryPago,
         deliveryEmdinheiro: _ModalDeliveryFormaPagamento.deliveryEmdinheiro
     };
+
+    console.log();
 
     $.ajax({
         type: "POST",
@@ -1262,14 +1378,16 @@ function SetFormaPagamento(idPedido, finalizar) {
                 title: 'Ação realizada com sucesso'
             })
 
+            MostarPedidosPendientes();
+
             if (finalizar) {
-                $('#CARD_PEDIDO_' + idPedido + '').remove();
-                _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
-                    return pedido.id != idPedido;
-                });
-                GetNumeroPedidosFinalizados();
-            } else {
-                MostarPedidosPendientes();
+                //$('#CARD_PEDIDO_' + idPedido + '').remove();
+                //_PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                //    return pedido.id != idPedido;
+                //});
+                //GetNumeroPedidosFinalizados();
+
+                fnFinalizarPedido(idPedido);
             }
 
         },
@@ -1292,7 +1410,6 @@ function SetFormaPagamento(idPedido, finalizar) {
     });
 
 }
-
 
 function radioFormaPagamentoChange(input, idPedido) {
     var idFormaPagamento = $(input).prop('id').split('_')[1];

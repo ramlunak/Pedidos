@@ -526,14 +526,14 @@ namespace Pedidos.Controllers
             try
             {
                 var pedido = await _context.P_Pedidos.FindAsync(pedidoaux.idPedido.Value);
-                if (pedidoaux.finalizar)
-                {
-                    pedido.status = StatusPedido.Finalizado.ToString();
-                }
-                else
-                {
-                    pedido.status = StatusPedido.Pendiente.ToString();
-                }
+                //if (pedidoaux.finalizar)
+                //{
+                //    pedido.status = StatusPedido.Finalizado.ToString();
+                //}
+                //else
+                //{
+                pedido.status = StatusPedido.Pendiente.ToString();
+                // }
                 pedido.descuento = pedidoaux.descuento ?? 0;
                 pedido.jsonFormaPagamento = pedidoaux.listaFormaPagamento;
                 pedido.deliveryPago = true;
@@ -562,19 +562,19 @@ namespace Pedidos.Controllers
                 _context.Update(pedido);
                 await _context.SaveChangesAsync();
 
-                if (pedidoaux.finalizar)
-                    if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
-                    {
-                        var lista = GetSession<List<P_Pedido>>("PedidosFinalizados");
-                        lista.Add(pedido);
-                        SetSession("PedidosFinalizados", lista);
-                    }
-                    else
-                    {
-                        var lista = new List<P_Pedido>();
-                        lista.Add(pedido);
-                        SetSession("PedidosFinalizados", lista);
-                    }
+                //if (pedidoaux.finalizar)
+                //    if (GetSession<List<P_Pedido>>("PedidosFinalizados") != null)
+                //    {
+                //        var lista = GetSession<List<P_Pedido>>("PedidosFinalizados");
+                //        lista.Add(pedido);
+                //        SetSession("PedidosFinalizados", lista);
+                //    }
+                //    else
+                //    {
+                //        var lista = new List<P_Pedido>();
+                //        lista.Add(pedido);
+                //        SetSession("PedidosFinalizados", lista);
+                //    }
 
                 return Ok(pedido);
             }

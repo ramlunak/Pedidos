@@ -39,21 +39,21 @@
     </div>
     <div class="card-body">
         <div>
-
-            <div id="cardapioLoadingCategorias" class="d-flex justify-content-center" hidden>
-                <div class="d-block">
-                    <div class="d-flex justify-content-center">
-                        <img src="~/img/cardapio.png" style="width:100px" />
-                    </div>
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border text-success mr-2" role="status">
-                            <span class="sr-only">Loading...</span>
+            <div id="cardapioLoadingCategorias">
+                <div class="d-flex justify-content-center">
+                    <div class="d-block">
+                        <div class="d-flex justify-content-center">
+                            <img src="~/img/cardapio.png" style="width:100px" />
                         </div>
-                        <div><strong>Carregando Cardapio...</strong></div>
+                        <div class="d-flex justify-content-center">
+                            <div class="spinner-border text-success mr-2" role="status">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div><strong>Carregando Cardapio...</strong></div>
+                        </div>
                     </div>
                 </div>
             </div>
-
             <div id="cardapioAcordionCategorias">
 
             </div>
@@ -61,72 +61,90 @@
     </div>
 </div>
 
-@*<div>
-        @if (Model != null)
-            @foreach (var item in Model)
-            {
-                <div class="accordion" id="accordionCategorias">
+<!-- Modal -->
+<div style="z-index:99999" class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div style="z-index:99999" class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="font-size:13px;">
 
-                    <div class="card">
-                        <div class="card-header cursor-pointer d-flex justify-content-start" id="heading_@($"{item.id}_{item.idCuenta}")" data-toggle="collapse" data-target="#collapse_@($"{item.id}_{item.idCuenta}")" aria-expanded="true" aria-controls="collapse_@($"{item.id}_{item.idCuenta}")">
-                            <h5 class="mb-0 text-uppercase d-flex">
-                                @item.nombre
-                            </h5>
-                        </div>
+            <div class="modal-header">
+                <div class="d-flex justify-content-between w-100">
+                    <div><samp id="spanNomeProducto"></samp></div>
+                    <div class="d-flex">
+                        <div class="unselectable cursor-pointer mr-1">R$ <samp id="spanValorProducto" onclick="showInputValorProducto()"></samp></div>
+                        <input id="inputValorProducto" onblur="inputValorProductoChanged()" style="width:70px;display:none" type="text" class="form-control form-control-sm" />
+                    </div>
+                </div>
+            </div>
 
-                        <div id="collapse_@($"{item.id}_{item.idCuenta}")" class="collapse hide collapseCategoria" aria-labelledby="heading_@($"{item.id}_{item.idCuenta}")" data-parent="#accordionCategorias">
-                            <div class="card-body">
+            <div class="modal-body">
+                <div>
+                    <span id="spanDescripcionProducto"></span>
+                </div>
 
-                                <table class="table" id="tableProductosCategoria_@($"{item.id}_{item.idCuenta}")" width="100%" cellspacing="0" cellpadding="0">
-                                </table>
-                            </div>
-                        </div>
+                <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
+                    <hr class="w-100" />
+                    <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONALES</div>
+                    <hr class="w-100" />
+                </div>
+
+                @*ADICIONALES*@
+                <div class="ml-2" style="color:darkcyan">
+
+                    <div class="collapse" id="collapseAdicionales">
+                        <table id="modalTableAdicionales" class="w-100">
+                            @*LISTA DE ADICIONALES DINAMICA*@
+                        </table>
                     </div>
 
                 </div>
-            }
-    </div>*@
 
-@*<h1>Index</h1>
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.nombre)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.idCuenta)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.activo)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.nombre)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.idCuenta)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.activo)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.id">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@
+                <div class="d-flex align-content-center">
+                    <hr class="w-100" />
+                    <div class="m-1" style="color:gray">INGREDIENTES</div>
+                    <hr class="w-100" />
+                </div>
+
+                @*INGREDIENTES*@
+                <div class="ml-2" style="color:brown">
+
+                    <table id="modalTableIngredientes" class="w-100">
+                        @*LISTA DE INGREDIENTES DINAMICA*@
+                    </table>
+
+                </div>
+
+                <div class="mt-2">
+                    <div id="modalObservacionContent" class="form-group">
+                    </div>
+                </div>
+
+                <div class="mt-2">
+                    <div id="modalTamanhos" class="form-group">
+                        <div id="btnTamanho1" class="btn btn-sm mr-2" onclick="checkTamanho(1)">
+                            <span id="nomeTamanho1" class="mr-2"></span>R$ <span id="valorTamanho1" class="mr-2"></span> <i id="checkedTamanho1" class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <div id="btnTamanho2" class="btn btn-sm mr-2" onclick="checkTamanho(2)">
+                            <span id="nomeTamanho2" class="mr-2"></span>R$ <span id="valorTamanho2" class="mr-2"></span><i id="checkedTamanho2" class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                        <div id="btnTamanho3" class="btn btn-sm mr-2" onclick="checkTamanho(3)">
+                            <span id="nomeTamanho3" class="mr-2"></span> R$<span id="valorTamanho3" class="mr-2"></span><i id="checkedTamanho3" class="fa fa-check" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer d-flex justify-content-between">
+                <div>
+                    <button class="btn btn-sm cursor-pointer" id="MINUS_Producto" onclick="productoMinus(this)" disabled="disabled"><i class="fa fa-minus-circle"></i></button>
+                    <button class="btn btn-sm cursor-pointer" id="ADD_Producto" onclick="productoPlus(this)"><i class="fa fa-plus-circle"></i></button>
+                </div>
+                <div>
+                    <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/js/views/cardapio/index.js"></script>

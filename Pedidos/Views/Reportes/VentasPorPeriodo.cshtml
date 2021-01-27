@@ -1,4 +1,130 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Pedidos.Models.P_Caja
+
+@{
+    ViewData["Title"] = "Vendas por periódo";
+    //var filtro = new RecargaSearch();
+    //filtro.input = ViewBag.Semana;
+    //filtro.numero = ViewBag.Numero;
+}
+
+<div class="container text-center d-block col-12 col-md-6 col-lg-6" style="font-size: 13px;font-family: Arial;">
+
+    <div class="card">
+        <div class="card-header">
+            <div class="text-center">
+
+                <div class="m-2"> <b>VENDAS POR PERIÓDO</b></div>
+
+                <div></div>
+
+                <form asp-action="VentasPorPeriodo">
+                    <div class="d-flex justify-content-center">
+                        <table>
+                            <tr>
+                                <td class="text-right"> <strong>Data Inicio:</strong></td>
+                                <td> <input type="date" id="fechaInicio" name="fechaInicio" value="@ViewBag.FechaInicio" style="width:180px" class="form-control form-control-sm" /></td>
+                                <td rowspan="2">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fa fa-search"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right"> <strong>Data Fim:</strong></td>
+                                <td> <input type="date" id="fechaFin" name="fechaFin" value="@ViewBag.FechaFin" style="width:180px" class="form-control form-control-sm" /></td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div>
+
+        @if (ViewBag.Erro != null)
+        {
+            <div class="d-block text-center">
+                <img src="~/img/shopping-cart.png" width="100" />
+                <div style="font-size:20px;color:orangered">Ocurreu um erro, contate com suporte.</div>
+            </div>
+        }
+        else@if (ViewBag.HayVentas)
+        {
+
+            @*TOTAL*@
+            <div style="width:100%">
+                <div class="d-flex justify-content-between">
+                    <div>Total de Vendas</div>
+                    <div style="color:blue">R$ @Model.totalVentas.Value.ToString("F2")</div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div>Total de Taxas Entrega</div>
+                    <div style="color:blue">R$ @Model.totalTasasEntrega.Value.ToString("F2")</div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div>Total de Descontos</div>
+                    <div style="color:orangered">R$ @Model.totalDescuentos.Value.ToString("F2")</div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div>Total de Taxas Cartão</div>
+                    <div style="color:orangered">R$ @Model.totalTasas.Value.ToString("F2")</div>
+                </div>
+
+                <div class="d-flex justify-content-between">
+                    <div>Diferença</div>
+                    <div style="color:green">R$ @((Model.totalVentas - Model.totalDescuentos - Model.totalTasas + Model.totalTasasEntrega).Value.ToString("F2"))</div>
+                </div>
+
+            </div>
+
+            @*DETALLES*@
+            <table class="table mt-2" style="width:100%">
+                <thead>
+                    <tr>
+                        <th class="text-left">Forma Pagamento</th>
+                        <th>Total</th>
+                        <th>Taxa</th>
+                        <th>Diferença</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.formaPagamentos)
+                    {
+                        <tr>
+                            <td style="text-align:start" class="text-nowrap">
+                                @item.nombre
+                                @if (item.tasa.HasValue)
+                                {
+                                    <button type="button" data-toggle="tooltip" data-placement="top" title="Taxa @item.tasa.Value.ToString("F2") %" class="btn btn-sm btn-outline-success" style="font-size:11px">@item.tasa.Value.ToString("F2") %</button>
+                                }
+                            </td>
+                            <td class="text-nowrap">R$ @item.valor.Value.ToString("F2")</td>
+                            <td class="text-nowrap">
+                                @if (item.tasa.HasValue)
+                                {
+                                    <div style="color:orangered">R$ @item.valorTasa.ToString("F2")</div>
+                                }
+                            </td>
+                            <td class="text-right text-nowrap" style="color:green">R$ @((item.valor.Value - item.valorTasa).ToString("F2"))</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <div class="d-block text-center">
+                <img src="~/img/shopping-cart.png" width="100" />
+                <div style="font-size:20px;color:orangered">Nenhuma venda registrada</div>
+            </div>
+        }
+    </div>
+
+</div>

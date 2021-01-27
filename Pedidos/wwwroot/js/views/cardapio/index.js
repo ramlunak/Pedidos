@@ -28,26 +28,30 @@ $(function () {
 
 function VerificarCliente(cardapioIdCuenta) {
 
-    $.ajax({
-        type: "GET",
-        url: "/Cardapio/VerificarCliente",
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
+    var x = getCookie('ClienteCardapioPlusCookies');
+    if (x === null || x === undefined || x === "") {
+        PedirNombre(cardapioIdCuenta);
+    } 
+    //$.ajax({
+    //    type: "GET",
+    //    url: "/Cardapio/VerificarCliente",
+    //    contentType: "application/json; charset=utf-8",
+    //    dataType: "json",
+    //    success: function (data) {
 
-            if (data === null || data === undefined) {
-                PedirNombre(cardapioIdCuenta);
-            }
+    //        if (data === null || data === undefined) {
+    //            PedirNombre(cardapioIdCuenta);
+    //        }
 
-        },
-        failure: function (response) {
-            console.log('failure', response);
-        },
-        error: function (response) {
-            console.log('error', response);
+    //    },
+    //    failure: function (response) {
+    //        console.log('failure', response);
+    //    },
+    //    error: function (response) {
+    //        console.log('error', response);
 
-        }
-    });
+    //    }
+    //});
 }
 
 function PedirNombre(idCuenta) {
@@ -86,9 +90,12 @@ function PedirNombre(idCuenta) {
         }
     }).then((result) => {
         if (result.isConfirmed) {
+
+            setCookie('ClienteCardapioPlusCookies', result.value, 2000);
+
             Swal.fire({
                 icon: 'success',
-                title: `s avatar`,
+                title: `Seja bem vindo,`,
             })
         }
     })
@@ -161,8 +168,6 @@ function MostarCategorias(categorias) {
 
         divCategorias.append(acordion);
     });
-
-
 
     $('.collapseCategoria').on('show.bs.collapse', function () {
 
@@ -384,7 +389,6 @@ function checkTamanho(tamanho) {
 
 }
 
-
 //crear tabla de los adicionales en el modal
 function TABLE_Adicional(adicionales, idProducto) {
 
@@ -552,4 +556,25 @@ function AddProducto() {
 
         }
     });
+}
+
+
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
 }

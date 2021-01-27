@@ -7,11 +7,17 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Controllers
 {
-    public class ReportesController1cs : Controller
+    public class ReportesController : BaseController
     {
-     
-        public ActionResult Index()
+
+        public ActionResult VentasPorPeriodo()
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
+
             return View();
         }
 

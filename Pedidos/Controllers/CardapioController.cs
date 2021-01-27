@@ -79,12 +79,12 @@ namespace Pedidos.Controllers
         }
 
 
-        public async Task<IActionResult> GetDetalleProducto(int id)
+        public async Task<IActionResult> GetDetalleProducto(int idCuenta, int id)
         {
             try
             {
-               
-                var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(Cuenta.id, id)).ToListAsync();
+
+                var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(idCuenta, id)).ToListAsync();
                 var data = items.FirstOrDefault();
 
                 var adicionales = new List<P_Adicionais>().ToArray();
@@ -121,7 +121,7 @@ namespace Pedidos.Controllers
             try
             {
                 _context.Add(cliente);
-                await _context.SaveChangesAsync();              
+                await _context.SaveChangesAsync();
                 return Ok(cliente);
             }
             catch (Exception ex)

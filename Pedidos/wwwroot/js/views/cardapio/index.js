@@ -203,7 +203,7 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
 
         var TD1 = $('<td style="width:100%">');
         var TD2 = $('<td style="width:auto">');
-        var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.id + ')">');
+        var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.idCuenta + ',' + item.id + ')">');
 
         TD1.append('<div><b>' + item.nombre + '</b></div>');
         var divTamanhos = $('<div style="display: flex">');
@@ -266,11 +266,11 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
 }
 
 //cargar info para mostrar en el modal 
-function ShowDetallesProducto(id) {
+function ShowDetallesProducto(idCuenta, id) {
 
     $.ajax({
         type: "GET",
-        url: "/Cardapio/GetDetalleProducto/" + id,
+        url: `/Cardapio/GetDetalleProducto/?idCuenta=${parseInt(idCuenta)}&id=${parseInt(id)}`,
         traditional: true,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
@@ -305,7 +305,6 @@ function ShowDetallesProducto(id) {
     });
 
 }
-
 
 //cargar info del producto en el modal 
 function CargarDatosModalDetalles(data) {

@@ -31,27 +31,9 @@ function VerificarCliente(cardapioIdCuenta) {
     var x = getCookie('ClienteCardapioPlusCookies');
     if (x === null || x === undefined || x === "") {
         PedirNombre(cardapioIdCuenta);
-    } 
-    //$.ajax({
-    //    type: "GET",
-    //    url: "/Cardapio/VerificarCliente",
-    //    contentType: "application/json; charset=utf-8",
-    //    dataType: "json",
-    //    success: function (data) {
+    } else {
 
-    //        if (data === null || data === undefined) {
-    //            PedirNombre(cardapioIdCuenta);
-    //        }
-
-    //    },
-    //    failure: function (response) {
-    //        console.log('failure', response);
-    //    },
-    //    error: function (response) {
-    //        console.log('error', response);
-
-    //    }
-    //});
+    }
 }
 
 function PedirNombre(idCuenta) {

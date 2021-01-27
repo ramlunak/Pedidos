@@ -78,11 +78,6 @@ namespace Pedidos.Controllers
             return Ok(items);
         }
 
-        public async Task<IActionResult> VerificarCliente()
-        {
-            return Ok(Cliente);
-        }
-
         public async Task<IActionResult> CadastrarCliente(int idCuenta, string nombre)
         {
             var cliente = new P_Cliente();
@@ -93,8 +88,7 @@ namespace Pedidos.Controllers
             try
             {
                 _context.Add(cliente);
-                await _context.SaveChangesAsync();
-                await GuardarClienteCookie(cliente);
+                await _context.SaveChangesAsync();              
                 return Ok(cliente);
             }
             catch (Exception ex)
@@ -102,76 +96,6 @@ namespace Pedidos.Controllers
                 return NotFound(new { ok = false });
             }
         }
-
-        public async Task GuardarClienteCookie(P_Cliente cliente)
-        {
-            Logof();
-            try
-            {
-                List<Claim> claims = new List<Claim>();
-                claims.Add(new Claim("clienteCardapio", JsonConvert.SerializeObject(cliente)));
-                ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-                var authProperties = new AuthenticationProperties
-                {
-                    //AllowRefresh = <bool>,
-                    // Refreshing the authentication session should be allowed.
-
-                    //ExpiresUtc = DateTimeOffset.UtcNow.AddDays(1),
-
-                    // The time at which the authentication ticket expires. A 
-                    // value set here overrides the ExpireTimeSpan option of 
-                    // CookieAuthenticationOptions set with AddCookie.
-
-                    IsPersistent = true,
-                    // Whether the authentication session is persisted across 
-                    // multiple requests. When used with cookies, controls
-                    // whether the cookie's lifetime is absolute (matching the
-                    // lifetime of the authentication ticket) or session-based.
-
-                    //IssuedUtc = <DateTimeOffset>,
-                    // The time at which the authentication ticket was issued.
-
-                    //RedirectUri = <string>
-                    // The full path or absolute URI to be used as an http 
-                    // redirect response value.
-                };
-
-                await HttpContext.SignInAsync(principal, authProperties);
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        public P_Cliente Cliente
-        {
-            get
-            {
-                var cliente = new P_Cliente();
-                string json = null;
-                try
-                {
-                    json = User.Claims.First(x => x.Type == "clienteCardapio").Value;
-                }
-                catch
-                {
-
-                }
-
-                if (json != null)
-                {
-                    return JsonConvert.DeserializeObject<P_Cliente>(json);
-                }
-                else
-                {
-                    return null;
-                }
-
-            }
-        }
-
 
     }
 }

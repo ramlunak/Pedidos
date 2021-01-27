@@ -27,18 +27,23 @@
 
 <div class="card m-2">
     <div class="card-header">
-        <div class="row d-flex justify-content-between p-1">
-            <div>
-                <b>ADICIONAIS</b>
+        <div class="row d-flex justify-content-between p-0">
+            <div class="d-flex justify-content-center">
+                <b>Master Eat</b>
             </div>
             <div>
                 @*<a class="btn btn-sm btn-primary" asp-action="Create">Novo</a>*@
             </div>
         </div>
-
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
+
         <div>
+
+            <div class="card card-body bg-primary m-0">
+                <span id="cardapioNombreCliente"></span>
+            </div>
+
             <div id="cardapioLoadingCategorias">
                 <div class="d-flex justify-content-center">
                     <div class="d-block">
@@ -54,7 +59,8 @@
                     </div>
                 </div>
             </div>
-            <div id="cardapioAcordionCategorias">
+
+            <div id="cardapioAcordionCategorias" class="m-1">
 
             </div>
         </div>

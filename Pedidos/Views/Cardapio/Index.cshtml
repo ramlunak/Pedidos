@@ -27,7 +27,7 @@
 
 <div class="card m-2">
     <div class="card-header">
-        <div class="row d-flex justify-content-between p-0">
+        <div class="row d-flex justify-content-center p-0">
             <div class="d-flex justify-content-center">
                 <b>Master Eat</b>
             </div>
@@ -41,7 +41,26 @@
         <div>
 
             <div class="card card-body bg-primary m-0">
-                <span id="cardapioNombreCliente"></span>
+                <div class="d-flex justify-content-between">
+
+                    <div class="d-flex text-white align-items-center">
+                        <i class="far fa-user-circle fa-2x mr-2"></i>
+                        <span id="cardapioNombreCliente"></span>
+                    </div>
+
+                    <div>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fas fa-cart-plus fa-2x"></i>
+                            <span class="badge bg-info" style="vertical-align: top">3</span>
+                        </button>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fas fa-cart-plus fa-2x"></i>
+                            <span class="badge bg-danger" style="vertical-align: top">R$ 25.00</span>
+                        </button>
+
+                    </div>
+
+                </div>
             </div>
 
             <div id="cardapioLoadingCategorias">
@@ -63,9 +82,11 @@
             <div id="cardapioAcordionCategorias" class="m-1">
 
             </div>
+
         </div>
     </div>
 </div>
+
 
 <!-- Modal -->
 <div style="z-index:99999" class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

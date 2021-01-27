@@ -33,11 +33,11 @@ $(function () {
 
 function VerificarCliente(cardapioIdCuenta) {
 
-    var x = getCookie('ClienteCardapioPlusCookies');
-    if (x === null || x === undefined || x === "") {
+    var cliente = getCookie('ClienteCardapioPlusCookies');
+    if (cliente === null || cliente === undefined || cliente === "") {
         PedirNombre(cardapioIdCuenta);
     } else {
-
+        $('#cardapioNombreCliente').html(cliente.nombre);
     }
 }
 
@@ -79,10 +79,11 @@ function PedirNombre(idCuenta) {
         if (result.isConfirmed) {
 
             setCookie('ClienteCardapioPlusCookies', result.value, 2000);
+            $('#cardapioNombreCliente').html(result.value.nombre);
 
             Swal.fire({
                 icon: 'success',
-                title: `Seja bem vindo,`,
+                title: `Seja bem vindo`,
             })
         }
     })

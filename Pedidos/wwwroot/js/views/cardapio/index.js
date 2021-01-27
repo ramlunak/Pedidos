@@ -1,6 +1,8 @@
 ﻿var cardapioIdCuenta;
 var cardapioMesa;
 
+var cardapioProductos = [];
+
 var _CurrentPedido;
 var _ModalProducto = {
     cliente: '',
@@ -12,7 +14,10 @@ var _ModalProducto = {
     telefono: '',
     observacion: ''
 };
-var cardapioProductos = [];
+
+var _ModalAdicionales = [];
+var _ModalIngredientes = [];
+
 
 $(function () {
 
@@ -198,7 +203,7 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
 
         var TD1 = $('<td style="width:100%">');
         var TD2 = $('<td style="width:auto">');
-        var TR = $('<tr class="hover" onclick="CargarDatosModalDetalles(' + item.id + ')">');
+        var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.id + ')">');
 
         TD1.append('<div><b>' + item.nombre + '</b></div>');
         var divTamanhos = $('<div style="display: flex">');
@@ -260,27 +265,64 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
     //}
 }
 
-//cargar info del producto en el modal 
-function CargarDatosModalDetalles(idProducto) {
+//cargar info para mostrar en el modal 
+function ShowDetallesProducto(id) {
 
-    var findResult = cardapioProductos.filter(function (item) {
-        return (item.id === idProducto);
+    $.ajax({
+        type: "GET",
+        url: "/Cardapio/GetDetalleProducto/" + id,
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            var datosClienteFormulario = _ModalProducto;
+            _ModalProducto = data.producto;
+            _ModalProducto.cliente = datosClienteFormulario.cliente;
+            _ModalProducto.idCliente = parseInt(datosClienteFormulario.idCliente);
+            _ModalProducto.aplicativo = datosClienteFormulario.aplicativo;
+            _ModalProducto.idAplicativo = parseInt(datosClienteFormulario.idAplicativo);
+            _ModalProducto.idMesa = parseInt(datosClienteFormulario.idMesa);
+            _ModalProducto.direccion = datosClienteFormulario.direccion;
+            _ModalProducto.idDireccion = datosClienteFormulario.idDireccion;
+            _ModalProducto.telefono = datosClienteFormulario.telefono;
+
+            _ModalProducto.deliveryEmCartao = datosClienteFormulario.deliveryEmCartao;
+            _ModalProducto.deliveryPago = datosClienteFormulario.deliveryPago;
+            _ModalProducto.deliveryEmdinheiro = datosClienteFormulario.deliveryEmdinheiro;
+
+            _ModalAdicionales = data.adicionales;
+            _ModalIngredientes = data.ingredientes;
+
+            CargarDatosModalDetalles(data);
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+        }
     });
-    let data = findResult[0];
 
-    $('#spanNomeProducto').html(data.nombre.toUpperCase());
-    $('#spanValorProducto').html(data.valor.toFixed(2));
-    $('#spanDescripcionProducto').html(data.descripcion);
-    $('#modalCantidadProducto').html('(' + data.cantidad + ')');
+}
+
+
+//cargar info del producto en el modal 
+function CargarDatosModalDetalles(data) {
+
+    $('#spanNomeProducto').html(data.producto.nombre.toUpperCase());
+    $('#spanValorProducto').html(data.producto.valor.toFixed(2));
+    $('#spanDescripcionProducto').html(data.producto.descripcion);
+    $('#modalCantidadProducto').html('(' + data.producto.cantidad + ')');
     $("#MINUS_Producto").attr('disabled', 'disabled');
 
-    TABLE_Adicional(data.adicionales, data.id);
-    TABLE_Ingredientes(data.ingredientes, data.id)
+    TABLE_Adicional(data.adicionales, data.producto.id);
+    TABLE_Ingredientes(data.ingredientes, data.producto.id)
     $('#modalObservacionContent').html('');
     $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" class="form-control" placeholder="Observação"></textarea>');
 
     //TAMAHOS
-    mostrarTamanhos(data);
+    mostrarTamanhos(data.producto);
     $('#ModalDetalleProducto').modal('show');
 }
 

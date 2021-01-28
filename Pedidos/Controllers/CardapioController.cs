@@ -63,20 +63,20 @@ namespace Pedidos.Controllers
             }
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> GetProductos([FromBody] P_Categoria categoria)
-        //{
-        //    var productos = GetSession<List<P_Productos>>("CardapioProductos");
+        [HttpPost]
+        public async Task<IActionResult> GetProductos([FromBody] P_Categoria categoria)
+        {
+            var productos = GetSession<List<P_Productos>>("CardapioProductos");
 
-        //    if (productos == null)
-        //    {
-        //        productos = await _context.P_Productos.Where(x => x.idCuenta == categoria.idCuenta && x.activo).ToListAsync();
-        //        SetSession("CardapioProductos", productos);
-        //    }
+            if (productos == null)
+            {
+                productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(categoria.idCuenta)).ToListAsync();
+                SetSession("CardapioProductos", productos);
+            }
 
-        //    var items = productos.Where(x => x.idCategoria == categoria.id && x.idCuenta == categoria.idCuenta && x.activo).ToList();
-        //    return Ok(items);
-        //}
+            var items = productos.Where(x => x.idCategoria == categoria.id && x.idCuenta == categoria.idCuenta && x.activo).ToList();
+            return Ok(items);
+        }
 
         public async Task<IActionResult> GetDetalleProducto(int idCuenta, int id)
         {
@@ -86,7 +86,7 @@ namespace Pedidos.Controllers
 
                 if (productos == null)
                 {
-                    productos = productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(idCuenta)).ToListAsync();
+                    productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(idCuenta)).ToListAsync();
                     SetSession("CardapioProductos", productos);
                 }
 

@@ -18,6 +18,7 @@ var _ModalProducto = {
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
+
 $(function () {
 
     cardapioIdCuenta = $('#inputIdCuenta').val();
@@ -27,6 +28,10 @@ $(function () {
 
     VerificarCliente(cardapioIdCuenta);
     GetCategorias(cardapioIdCuenta);
+
+    $("#chatCardapioModal").on('shown.bs.modal', function () {
+        $('#chatCardapioModal').animate({ scrollTop: $('#chatCardapioModal .modal-dialog').height() }, 500);
+    });
 
 });
 

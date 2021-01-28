@@ -49,10 +49,12 @@
                     </div>
 
                     <div>
-                        <button type="button" class="btn btn-primary">
-                            <i class="fas fa-cart-plus fa-2x"></i>
-                            <span class="badge bg-info" style="vertical-align: top">3</span>
+
+                        <button id="btnCardapioChatCliente" type="button" class="btn btn-primary">
+                            <i class="far fa-comments fa-2x"></i>
+                            <span class="badge bg-warning" style="vertical-align: top">3</span>
                         </button>
+
                         <button type="button" class="btn btn-primary">
                             <i class="fas fa-cart-plus fa-2x"></i>
                             <span class="badge bg-danger" style="vertical-align: top">R$ 25.00</span>
@@ -174,4 +176,5 @@
 </div>
 
 <script src="~/lib/jquery/dist/jquery.js"></script>
-<script src="~/js/views/cardapio/index.js"></script>
+<script src="~/aspnet/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
+<script src="~/js/views/cardapio/index.js" asp-append-version="true"></script>

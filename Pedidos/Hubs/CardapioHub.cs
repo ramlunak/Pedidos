@@ -22,10 +22,18 @@ namespace Pedidos.Hubs
 
         public string ServerGetConnectionId() => Context.ConnectionId;
 
-        public async Task ServerAbrirMesa(string idCuenta, string valor)
+        //public override async Task OnConnectedAsync()
+        //{
+        //    var usuario = Context.User.Identity.Name;
+        //    await Groups.AddToGroupAsync(Context.ConnectionId, "SignalR Users");
+        //    await base.OnConnectedAsync();
+        //}
+
+        public async Task client_abrirMesa(string idCuenta, string valor)
         {
             var clientes = await _context.P_Clientes.Where(x => x.idCuenta.ToString() == idCuenta).ToListAsync();
-            await Clients.All.SendAsync("clientAbrirMesa", idCuenta, clientes.ToJson());
+
+            await Clients.All.SendAsync("server_aprovarMesa", idCuenta, clientes.ToJson());
         }
 
 

@@ -3,7 +3,7 @@
 
 $(function () {
 
-    var conecction = new signalR.HubConnectionBuilder().withUrl('/cardapiohub').build();
+    var conecction = new signalR.HubConnectionBuilder().withUrl('/cardapiohub',).build();
 
     conecction.start().then(function () {
 
@@ -14,12 +14,10 @@ $(function () {
             }
         );
 
-
         //INVOCAR METODOS AL SERVIDOR
         $('#btnSalvarPedido').on('click', function () {
             conecction.invoke('serverAbrirMesa', "1","sad");
         });
-
 
         //EJECUTAR FUNCION DEL CLIENTE
         conecction.on("clientAbrirMesa", function (idCuenta, valor) {

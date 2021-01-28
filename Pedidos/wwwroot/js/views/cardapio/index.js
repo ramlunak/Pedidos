@@ -18,26 +18,55 @@ var _ModalProducto = {
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
-
 $(function () {
 
     cardapioIdCuenta = $('#inputIdCuenta').val();
     cardapioMesa = $('#inputMesa').val();
-    console.log(cardapioIdCuenta, cardapioMesa);
+
+    HubConnect();
 
     VerificarCliente(cardapioIdCuenta);
-
     GetCategorias(cardapioIdCuenta);
 
 });
 
+var cardapioHubConnectionId;
+
+function HubConnect() {
+    var conecction = new signalR.HubConnectionBuilder().withUrl('/cardapiohub',).build();
+
+    conecction.start().then(function () {
+
+        //Cargar hubConnectionId
+        conecction.invoke('serverGetConnectionId').then(
+            (data) => {
+                cardapioHubConnectionId = data;
+            }
+        );
+
+        //INVOCAR METODOS AL SERVIDOR
+        $('#btnCardapioChatCliente').on('click', function () {
+            conecction.invoke('client_abrirMesa', "1", "sad");
+        });
+
+        //EJECUTAR FUNCION DEL CLIENTE
+        conecction.on("server_aprovarMesa", function (idCuenta, valor) {
+            console.log(idCuenta, valor);
+        });
+
+
+    });
+}
+
 function VerificarCliente(cardapioIdCuenta) {
 
-    var cliente = getCookie('ClienteCardapioPlusCookies');
-    if (cliente === null || cliente === undefined || cliente === "") {
+    var clienteCookie = getCookie('NombreClienteCardapioCookies');
+    console.log(clienteCookie);
+    if (clienteCookie === null || clienteCookie === undefined || clienteCookie === "") {
         PedirNombre(cardapioIdCuenta);
     } else {
-        $('#cardapioNombreCliente').html(cliente.nombre);
+        var nombreCliente = getCookie('NombreClienteCardapioCookies');
+        $('#cardapioNombreCliente').html(nombreCliente);
     }
 }
 
@@ -78,7 +107,8 @@ function PedirNombre(idCuenta) {
     }).then((result) => {
         if (result.isConfirmed) {
 
-            setCookie('ClienteCardapioPlusCookies', result.value, 2000);
+            setCookie('NombreClienteCardapioCookies', result.value.nombre, 2000);
+            setCookie('IdClienteCardapioCookies', result.value.id, 2000);
             $('#cardapioNombreCliente').html(result.value.nombre);
 
             Swal.fire({

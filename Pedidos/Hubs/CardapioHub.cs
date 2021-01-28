@@ -21,11 +21,10 @@ namespace Pedidos.Hubs
             _context = context;
         }
 
-        public string ServerGetConnectionId() => Context.ConnectionId;
+        public string GetConnectionId() => Context.ConnectionId;
 
         public override async Task OnConnectedAsync()
         {
-
             var httpContext = Context.GetHttpContext();
             var isCardapio = httpContext.Request.Query["isCardapio"];
 
@@ -45,21 +44,11 @@ namespace Pedidos.Hubs
             await base.OnConnectedAsync();
         }
 
-        public async Task client_abrirMesa(string connectionId, string idCuenta, string valor)
+        public async Task ChatSendMessage(string connectionId, string message)
         {
-
-            await Clients.Client(connectionId).SendAsync("server_aprovarMesa", idCuenta, null);
+            // await Clients.Client(connectionId).SendAsync("receivedMessage", message);
+            await Clients.All.SendAsync("receivedMessage", message);
         }
-
-        public async Task client_AddProducto(string connectionId, string idCuenta, string valor)
-        {
-
-
-            await Clients.Client(connectionId).SendAsync("server_aprovarMesa", idCuenta, null);
-        }
-
-
-
 
     }
 }

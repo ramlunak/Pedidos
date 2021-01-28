@@ -33,29 +33,29 @@ $(function () {
 var cardapioHubConnectionId;
 
 function HubConnect() {
-    var conecction = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
 
-    conecction.start().then(function () {
+    var chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
 
-        //Cargar hubConnectionId
-        conecction.invoke('serverGetConnectionId').then(
-            (data) => {
-                cardapioHubConnectionId = data;
-            }
-        );
+    chat.start().then(function () {
 
-        //INVOCAR METODOS AL SERVIDOR
-        $('#btnCardapioModalAdicionar').on('click', function () {
-            conecction.invoke('client_abrirMesa', cardapioHubConnectionId, "1", "sad");
+        chat.invoke('getConnectionId').then((data) => {
+            chatConnectionId = data;
         });
 
-        //EJECUTAR FUNCION DEL CLIENTE
-        conecction.on("server_aprovarMesa", function (idCuenta, valor) {
-            console.log(idCuenta, valor);
+        $('#btnSendMessageChat').on('click', function () {
+            chat.invoke('chatSendMessage', chatConnectionId, $('#inputMessageChat').val());
+        });
+
+        chat.on("receivedMessage", function (message) {
+            $('#divChat').append($('<div />').html(message));
+            $('#inputMessageChat').val("");
+            $('#inputMessageChat').focus();
+
         });
 
 
     });
+
 }
 
 function VerificarCliente(cardapioIdCuenta) {

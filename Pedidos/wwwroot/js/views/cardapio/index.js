@@ -57,7 +57,7 @@ function HubConnect() {
                 titulo: "Royber | Mesa 1",
                 message: $('#inputClienteMessage').val(),
                 position: "float-right",
-                color: "bg-info",
+                color: "bg-success",
                 margin: "ml-5",
                 send: true
             };

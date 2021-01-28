@@ -70,7 +70,7 @@ namespace Pedidos.Hubs
                 titulo = "Royber | Mesa 1",
                 message = "Resivido",
                 position = "float-left",
-                color = "bg-success",
+                color = "bg-info",
                 margin = "mr-5",
                 send = false
             };

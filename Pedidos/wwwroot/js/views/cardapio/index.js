@@ -33,7 +33,7 @@ $(function () {
 var cardapioHubConnectionId;
 
 function HubConnect() {
-    var conecction = new signalR.HubConnectionBuilder().withUrl('/cardapiohub',).build();
+    var conecction = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
 
     conecction.start().then(function () {
 
@@ -45,8 +45,8 @@ function HubConnect() {
         );
 
         //INVOCAR METODOS AL SERVIDOR
-        $('#btnCardapioChatCliente').on('click', function () {
-            conecction.invoke('client_abrirMesa', "1", "sad");
+        $('#btnCardapioModalAdicionar').on('click', function () {
+            conecction.invoke('client_abrirMesa', cardapioHubConnectionId, "1", "sad");
         });
 
         //EJECUTAR FUNCION DEL CLIENTE
@@ -342,7 +342,7 @@ var _cardapioModalValorProducto = 0;
 function CardapioModalMostarValorProducto() {
 
     $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(_cardapioModalValorProducto)).toFixed(2));
-    $('#spanValorProducto').animate({ fontSize: '19px' }, "fast",);
+    $('#spanValorProducto').animate({ fontSize: '18px' }, "fast",);
     $('#spanValorProducto').animate({ fontSize: '15px' }, "fast");
 
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Pedidos.Data;
 using Pedidos.Extensions;
 using Pedidos.Models;
@@ -22,19 +23,42 @@ namespace Pedidos.Hubs
 
         public string ServerGetConnectionId() => Context.ConnectionId;
 
-        //public override async Task OnConnectedAsync()
-        //{
-        //    var usuario = Context.User.Identity.Name;
-        //    await Groups.AddToGroupAsync(Context.ConnectionId, "SignalR Users");
-        //    await base.OnConnectedAsync();
-        //}
-
-        public async Task client_abrirMesa(string idCuenta, string valor)
+        public override async Task OnConnectedAsync()
         {
-            var clientes = await _context.P_Clientes.Where(x => x.idCuenta.ToString() == idCuenta).ToListAsync();
 
-            await Clients.All.SendAsync("server_aprovarMesa", idCuenta, clientes.ToJson());
+            var httpContext = Context.GetHttpContext();
+            var isCardapio = httpContext.Request.Query["isCardapio"];
+
+            if (isCardapio.Count == 0)
+            {
+                var json = Context.User.Claims.First(x => x.Type == "cuenta").Value;
+                if (!string.IsNullOrEmpty(json))
+                {
+                    var cuenta = JsonConvert.DeserializeObject<P_Cuenta>(json);
+                    if (cuenta != null)
+                    {
+                        await Groups.AddToGroupAsync(Context.ConnectionId, "Cuenta" + cuenta.id);
+                    }
+                }
+            }
+
+            await base.OnConnectedAsync();
         }
+
+        public async Task client_abrirMesa(string connectionId, string idCuenta, string valor)
+        {
+
+            await Clients.Client(connectionId).SendAsync("server_aprovarMesa", idCuenta, null);
+        }
+
+        public async Task client_AddProducto(string connectionId, string idCuenta, string valor)
+        {
+
+
+            await Clients.Client(connectionId).SendAsync("server_aprovarMesa", idCuenta, null);
+        }
+
+
 
 
     }

@@ -75,7 +75,7 @@ namespace Pedidos.Hubs
                 send = false
             };
 
-            await Clients.All.SendAsync("clienteReceivedMessage", serverMensaje.ToJson());
+            await Clients.Client(connectionId).SendAsync("clienteReceivedMessage", serverMensaje.ToJson());
         }
 
     }

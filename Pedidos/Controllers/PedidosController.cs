@@ -79,6 +79,9 @@ namespace Pedidos.Controllers
             var direcciones = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             SetSession("Direcciones", direcciones);
 
+            var productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(Cuenta.id)).ToListAsync();
+            SetSession("PedidoProductos", productos);
+
             if (GetSession<P_Pedido>("currentPedido") is null)
             {
                 var currentPedido = new P_Pedido(Cuenta.id);

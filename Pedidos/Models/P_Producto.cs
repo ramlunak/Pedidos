@@ -59,6 +59,11 @@ namespace Pedidos.Models
         public string tamanho3 { get; set; }
         public decimal? valorTamanho3 { get; set; }
 
+
+        //PARA CARGAR DETALLES DEL PRODUCTO      
+        public string JsonAdicionales { get; set; }
+        public string JsonIngredientes { get; set; }
+
         //PROPIEDADES AUXILIARES
 
         [NotMapped]
@@ -183,6 +188,7 @@ namespace Pedidos.Models
         public string tamanhoSeleccionado { get; set; }
         [NotMapped]
         public decimal valorTamanhoSeleccionado { get; set; }
+
         //Solo para enviar esos dados al controlador y ponercelos al pedido
         [NotMapped]
         public string cliente { get; set; }
@@ -211,6 +217,7 @@ namespace Pedidos.Models
         public bool? deliveryPago { get; set; }
         [NotMapped]
         public bool? deliveryEmdinheiro { get; set; }
+
 
     }
 

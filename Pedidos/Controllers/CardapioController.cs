@@ -44,16 +44,16 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> CargarCategorias(int id)
         {
-
-            var productos = await _context.P_Productos.Where(x => x.idCuenta == id && x.activo).ToListAsync();
-            SetSession("CardapioProductos", productos);
+            var idCuenta = id;
 
             try
             {
-                TempData["IsQRCode"] = true;
+                var productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(idCuenta)).ToListAsync();
+                SetSession("CardapioProductos", productos);
 
-                var idCuenta = id;
                 var model = await _context.P_Categorias.Where(x => x.idCuenta == idCuenta && x.activo).ToListAsync();
+
+                TempData["IsQRCode"] = true;
 
                 return Ok(model);
             }
@@ -63,46 +63,50 @@ namespace Pedidos.Controllers
             }
         }
 
-        [HttpPost]
-        public async Task<IActionResult> GetProductos([FromBody] P_Categoria categoria)
-        {
-            var productos = GetSession<List<P_Productos>>("CardapioProductos");
+        //[HttpPost]
+        //public async Task<IActionResult> GetProductos([FromBody] P_Categoria categoria)
+        //{
+        //    var productos = GetSession<List<P_Productos>>("CardapioProductos");
 
-            if (productos == null)
-            {
-                productos = await _context.P_Productos.Where(x => x.idCuenta == categoria.idCuenta && x.activo).ToListAsync();
-                SetSession("CardapioProductos", productos);
-            }
+        //    if (productos == null)
+        //    {
+        //        productos = await _context.P_Productos.Where(x => x.idCuenta == categoria.idCuenta && x.activo).ToListAsync();
+        //        SetSession("CardapioProductos", productos);
+        //    }
 
-            var items = productos.Where(x => x.idCategoria == categoria.id && x.idCuenta == categoria.idCuenta && x.activo).ToList();
-            return Ok(items);
-        }
-
+        //    var items = productos.Where(x => x.idCategoria == categoria.id && x.idCuenta == categoria.idCuenta && x.activo).ToList();
+        //    return Ok(items);
+        //}
 
         public async Task<IActionResult> GetDetalleProducto(int idCuenta, int id)
         {
             try
             {
+                var productos = GetSession<List<P_Productos>>("CardapioProductos");
 
-                var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(idCuenta, id)).ToListAsync();
-                var data = items.FirstOrDefault();
+                if (productos == null)
+                {
+                    productos = productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(idCuenta)).ToListAsync();
+                    SetSession("CardapioProductos", productos);
+                }
+
+                var filter = productos.Where(x => x.id == id).FirstOrDefault();
 
                 var adicionales = new List<P_Adicionais>().ToArray();
                 var ingredientes = new List<P_Ingredientes>().ToArray();
 
-                var productos = JsonConvert.DeserializeObject<P_Productos[]>(data.JsonProducto);
-                if (!string.IsNullOrEmpty(data.JsonAdicionales))
+                if (!string.IsNullOrEmpty(filter.JsonAdicionales))
                 {
-                    adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(data.JsonAdicionales);
+                    adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(filter.JsonAdicionales);
                 }
-                if (!string.IsNullOrEmpty(data.JsonIngredientes))
+                if (!string.IsNullOrEmpty(filter.JsonIngredientes))
                 {
-                    ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(data.JsonIngredientes);
+                    ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(filter.JsonIngredientes);
                 }
 
                 var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).OrderBy(x => x.orden).ToList();
                 var listaIngredientes = ingredientes.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
-                return Ok(new { producto = productos[0], adicionales = listaAdicionales, ingredientes = listaIngredientes });
+                return Ok(new { producto = filter, adicionales = listaAdicionales, ingredientes = listaIngredientes });
             }
             catch (Exception ex)
             {

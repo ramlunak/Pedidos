@@ -508,6 +508,8 @@ function adicionalPlus(id, idProducto) {
             }
 
             $(codigo).html('+' + item.cantidad);
+            $(codigo).animate({ fontSize: '19px' }, "fast",);
+            $(codigo).animate({ fontSize: '15px' }, "fast");
         }
         return item.id === id;
     });
@@ -531,6 +533,8 @@ function adicionalMinus(id, idProducto) {
                 }
             }
             $(codigo).html('+' + item.cantidad);
+            $(codigo).animate({ fontSize: '19px' }, "fast",);
+            $(codigo).animate({ fontSize: '15px' }, "fast");
         }
         return item.id === id;
     });

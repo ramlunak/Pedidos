@@ -37,6 +37,7 @@ $(function () {
 
 var cardapioHubConnectionId;
 
+
 function HubConnect() {
 
     var chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
@@ -47,19 +48,48 @@ function HubConnect() {
             chatConnectionId = data;
         });
 
-        $('#btnSendMessageChat').on('click', function () {
-            chat.invoke('chatSendMessage', chatConnectionId, $('#inputMessageChat').val());
+        $('#btnClienteSendMessage').on('click', function () {
+
+            var newMessage = {
+                idCliente: 1,
+                idCuenta: 1,
+                mesa: 1,
+                titulo: "Royber | Mesa 1",
+                message: $('#inputClienteMessage').val(),
+                position: "float-right",
+                color: "bg-info",
+                margin: "ml-5",
+                send: true
+            };
+
+            ChatAddMessage(JSON.stringify(newMessage));           
+            $('#inputClienteMessage').focus();
+            chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage));
+            $('#inputClienteMessage').val("");
+           
         });
 
-        chat.on("receivedMessage", function (message) {
-            $('#divChat').append($('<div />').html(message));
-            $('#inputMessageChat').val("");
-            $('#inputMessageChat').focus();
-
+        chat.on("clienteReceivedMessage", function (message) {
+            ChatAddMessage(message);
         });
 
 
     });
+
+}
+
+
+function ChatAddMessage(message) {
+
+    var ChatBody = $('#divChatCliente');
+    var msg = JSON.parse(message);
+    ChatBody.append('   <tr>  ' +
+        '                           <td>  ' +
+        '                               <div class="alert ' + msg.color + ' p-1 text-white m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
+        '                                   ' + msg.message +
+        '                               </div>  ' +
+        '                           </td>  ' +
+        '                      </tr>  ');
 
 }
 

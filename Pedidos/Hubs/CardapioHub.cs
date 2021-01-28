@@ -12,6 +12,20 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Hubs
 {
+    public class Message
+    {
+        public int idCliente { get; set; }
+        public int idCuenta { get; set; }
+        public int mesa { get; set; }
+        public string titulo { get; set; }
+        public string message { get; set; }
+        public string position { get; set; }
+        public string color { get; set; }
+        public string margin { get; set; }
+        public bool send { get; set; }
+    }
+
+
     public class CardapioHub : Hub
     {
         private readonly AppDbContext _context;
@@ -44,10 +58,24 @@ namespace Pedidos.Hubs
             await base.OnConnectedAsync();
         }
 
-        public async Task ChatSendMessage(string connectionId, string message)
+        public async Task clienteSendMessage(string connectionId, string idCuenta, string mesa, string message)
         {
             // await Clients.Client(connectionId).SendAsync("receivedMessage", message);
-            await Clients.All.SendAsync("receivedMessage", message);
+
+            var serverMensaje = new Message
+            {
+                idCliente = 1,
+                idCuenta = 1,
+                mesa = 1,
+                titulo = "Royber | Mesa 1",
+                message = "Resivido",
+                position = "float-left",
+                color = "bg-success",
+                margin = "mr-5",
+                send = false
+            };
+
+            await Clients.All.SendAsync("clienteReceivedMessage", serverMensaje.ToJson());
         }
 
     }

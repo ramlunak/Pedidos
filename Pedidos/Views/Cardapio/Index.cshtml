@@ -187,30 +187,21 @@
                 </button>
             </div>
             <div class="modal-body">
-                <table class="h-100">                 
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
-                    <tr><td>asdasd</td></tr>
+                <table id="divChatCliente" style="width:100%">
+                    @*<tr>
+                            <td>
+                                <div class="alert bg-info p-1 text-white m-1 float-right" style="display:inline-grid">
+                                    sadasd
+                                </div>
+                            </td>
+                        </tr>*@
                 </table>
             </div>
             <div class="modal-footer">
-                <textarea id="inputMessageChat" class="form-control w-100" rows="3"></textarea>
+                <textarea id="inputClienteMessage" style="font-size:14px" class="form-control w-100" rows="3"></textarea>
                 <div style="width: 30px">
                     <button type="button" class="btn btn-outline-danger mb-2"><i class="fa fa-trash"></i></button>
-                    <button type="button" class="btn btn-outline-success"><i class="fas fa-paper-plane"></i></button>
+                    <button type="button" id="btnClienteSendMessage" class="btn btn-outline-success"><i class="fas fa-paper-plane"></i></button>
                 </div>
             </div>
         </div>

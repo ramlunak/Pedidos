@@ -8,7 +8,7 @@ $(function () {
 
     HubConnect();
 
-   // var FileProvider = Directory.GetCurrentDirectory();
+    // var FileProvider = Directory.GetCurrentDirectory();
     var asd = 1;
 })
 
@@ -44,13 +44,11 @@ function HubConnect() {
                 path: location.origin + "/ionsound/sounds/",
                 preload: true,
                 multiplay: true,
-                volume: 0.5
+                volume: 1
             });
 
             // play sound
-            ion.sound.play("beyond_doubt", {
-                loop: 2
-            });
+            ion.sound.play("beyond_doubt");
         });
 
 

@@ -1,0 +1,83 @@
+﻿@model Pedidos.Models.P_Caja
+
+@{
+    ViewData["Title"] = "Vendas por periódo";
+    //var filtro = new RecargaSearch();
+    //filtro.input = ViewBag.Semana;
+    //filtro.numero = ViewBag.Numero;
+}
+
+<div class="container text-center d-block col-12 col-md-6 col-lg-6" style="font-size: 13px;font-family: Arial;">
+
+    <div class="card">
+        <div class="card-header">
+            <div class="text-center">
+
+                <div class="m-2"> <b>VENDAS DE PRODUCTOS POR PERIÓDO</b></div>
+
+                <div></div>
+
+                <form asp-action="VentasProductoPorPeriodo">
+                    <div class="d-flex justify-content-center">
+                        <table>
+                            <tr>
+                                <td class="text-right"> <strong>Data Inicio:</strong></td>
+                                <td> <input type="date" id="fechaInicio" name="fechaInicio" value="@ViewBag.FechaInicio" style="width:180px" class="form-control form-control-sm" /></td>
+                                <td rowspan="2">
+                                    <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fa fa-search"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="text-right"> <strong>Data Fim:</strong></td>
+                                <td> <input type="date" id="fechaFin" name="fechaFin" value="@ViewBag.FechaFin" style="width:180px" class="form-control form-control-sm" /></td>
+                            </tr>
+                        </table>
+                    </div>
+
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div>
+
+        @if (ViewBag.Erro != null)
+        {
+            <div class="d-block text-center">
+                <img src="~/img/shopping-cart.png" width="100" />
+                <div style="font-size:20px;color:orangered">Ocurreu um erro, contate com suporte.</div>
+            </div>
+        }
+        else@if (ViewBag.HayVentas && ViewBag.VentasProductoPorPeriodo != null)
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th class="text-left">Produto</th>
+                        <th>Cantidad</th>
+                    </tr>
+                </thead>
+                @foreach (var producto in ViewBag.VentasProductoPorPeriodo)
+                {
+                    <tr>
+                        <td class="text-left">@producto.nombre</td>
+                        <td>@producto.count</td>
+                    </tr>
+                }
+
+            </table>
+        }
+        else
+        {
+            <div class="d-block text-center">
+                <img src="~/img/shopping-cart.png" width="100" />
+                <div style="font-size:20px;color:orangered">Nenhuma venda registrada</div>
+            </div>
+        }
+    </div>
+
+</div>

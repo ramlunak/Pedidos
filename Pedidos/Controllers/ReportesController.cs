@@ -219,11 +219,8 @@ namespace Pedidos.Controllers
                         var productoPorPeriodo = new VentasProductoPorPeriodo();
                         productoPorPeriodo.id = g.Key;
                         productoPorPeriodo.nombre = g.ToList().FirstOrDefault().nombre;
-                        productoPorPeriodo.count = g.ToList().Count();
-
+                        productoPorPeriodo.count = g.ToList().Sum(x => x.cantidad);
                     }
-
-                    ;
 
                     var formasPagamento = await _context.P_FormaPagamento.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
 
@@ -335,7 +332,7 @@ namespace Pedidos.Controllers
                     var productoPorPeriodo = new VentasProductoPorPeriodo();
                     productoPorPeriodo.id = g.Key;
                     productoPorPeriodo.nombre = g.ToList().FirstOrDefault().nombre;
-                    productoPorPeriodo.count = g.ToList().Count();
+                    productoPorPeriodo.count = g.ToList().Sum(x => x.cantidad);
                     ventasProductoPorPeriodo.Add(productoPorPeriodo);
                 }
 

@@ -48,7 +48,7 @@ var chatConnectionId;
 
 function HubConnect() {
 
-    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
+    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').configureLogging(signalR.LogLevel.Trace).build();
 
     chat.start().then(function () {
 
@@ -57,19 +57,20 @@ function HubConnect() {
             chatConnectionId = data;
         });
 
-        //SEND
-        $('#btnClienteSendMessage').on('click', function () {
+    });
 
-            ClienteSendMessage();
+    //SEND
+    $('#btnClienteSendMessage').on('click', function () {
 
-        });
-
-        //RECIVED
-        chat.on("clienteReceivedMessage", function (message) {
-            ChatAddMessage(message);
-        });
+        ClienteSendMessage();
 
     });
+
+    //RECIVED
+    chat.on("clienteReceivedMessage", function (message) {
+        ChatAddMessage(message);
+    });
+
 
 }
 
@@ -89,7 +90,13 @@ function ClienteSendMessage() {
 
     ChatAddMessage(JSON.stringify(newMessage));
     $('#inputClienteMessage').focus();
-    chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage));
+    chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage))
+        .then((res) => {
+            console.log('res', res);
+        })
+        .catch(err => {
+            chat.start();
+        });
     $('#inputClienteMessage').val("");
 
 }

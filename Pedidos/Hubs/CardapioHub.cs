@@ -8,6 +8,7 @@ using Pedidos.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Pedidos.Hubs
@@ -39,27 +40,28 @@ namespace Pedidos.Hubs
 
         public override async Task OnConnectedAsync()
         {
-            var httpContext = Context.GetHttpContext();
-            var isCardapio = httpContext.Request.Query["isCardapio"];
+          //  var httpContext = Context.GetHttpContext();
+           // var isCardapio = httpContext.Request.Query["isCardapio"];
 
-            if (isCardapio.Count == 0)
-            {
-                var json = Context.User.Claims.First(x => x.Type == "cuenta").Value;
-                if (!string.IsNullOrEmpty(json))
-                {
-                    var cuenta = JsonConvert.DeserializeObject<P_Cuenta>(json);
-                    if (cuenta != null)
-                    {
-                        await Groups.AddToGroupAsync(Context.ConnectionId, "Cuenta" + cuenta.id);
-                    }
-                }
-            }
+            //if (isCardapio.Count == 0)
+            //{
+            //    var json = Context.User.Claims.First(x => x.Type == "cuenta").Value;
+            //    if (!string.IsNullOrEmpty(json))
+            //    {
+            //        var cuenta = JsonConvert.DeserializeObject<P_Cuenta>(json);
+            //        if (cuenta != null)
+            //        {
+            //            await Groups.AddToGroupAsync(Context.ConnectionId, "Cuenta" + cuenta.id);
+            //        }
+            //    }
+            //}
 
             await base.OnConnectedAsync();
         }
 
         public async Task clienteSendMessage(string connectionId, string idCuenta, string mesa, string message)
         {
+            //await Clients.User()
             // await Clients.Client(connectionId).SendAsync("receivedMessage", message);
 
             //var serverMensaje = new Message
@@ -75,7 +77,7 @@ namespace Pedidos.Hubs
             //    send = false
             //};
 
-            await Clients.Group($"Cuenta{idCuenta}").SendAsync("serverReceivedMessage", message);
+            await Clients.User($"mastereat_account_{idCuenta}").SendAsync("serverReceivedMessage", message);
         }
 
     }

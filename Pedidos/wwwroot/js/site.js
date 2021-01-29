@@ -34,10 +34,7 @@ function HubConnect() {
             // alert(message);
             ion.sound({
                 sounds: [
-                    { name: "beyond_doubt" },
-                    { name: "bell_ring" },
-                    { name: "branch_break" },
-                    { name: "button_click" }
+                    { name: "beyond_doubt" }
                 ],
 
                 // main config

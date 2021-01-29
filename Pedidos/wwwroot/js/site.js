@@ -8,6 +8,8 @@ $(function () {
 
     HubConnect();
 
+   // var FileProvider = Directory.GetCurrentDirectory();
+    var asd = 1;
 })
 
 
@@ -39,7 +41,7 @@ function HubConnect() {
                 ],
 
                 // main config
-                path: "ion-sound/sounds/",
+                path: location.origin + "/ionsound/sounds/",
                 preload: true,
                 multiplay: true,
                 volume: 0.5
@@ -47,7 +49,7 @@ function HubConnect() {
 
             // play sound
             ion.sound.play("beyond_doubt", {
-                loop: 1
+                loop: 2
             });
         });
 

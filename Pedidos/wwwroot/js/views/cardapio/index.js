@@ -43,78 +43,6 @@ $(function () {
 
 });
 
-var chat;
-var chatConnectionId;
-
-function HubConnect() {
-
-    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').configureLogging(signalR.LogLevel.Trace).build();
-
-    chat.start().then(function () {
-
-        //GET CONNECTION ID
-        chat.invoke('getConnectionId').then((data) => {
-            chatConnectionId = data;
-        });
-
-    });
-
-    //SEND
-    $('#btnClienteSendMessage').on('click', function () {
-
-        ClienteSendMessage();
-
-    });
-
-    //RECIVED
-    chat.on("clienteReceivedMessage", function (message) {
-        ChatAddMessage(message);
-    });
-
-
-}
-
-function ClienteSendMessage() {
-
-    var newMessage = {
-        idCliente: 1,
-        idCuenta: 1,
-        mesa: 1,
-        titulo: "Royber | Mesa 1",
-        message: $('#inputClienteMessage').val(),
-        position: "float-right",
-        color: "bg-success",
-        margin: "ml-5",
-        send: true
-    };
-
-    ChatAddMessage(JSON.stringify(newMessage));
-    $('#inputClienteMessage').focus();
-    chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage))
-        .then((res) => {
-            console.log('res', res);
-        })
-        .catch(err => {
-            chat.start();
-        });
-    $('#inputClienteMessage').val("");
-
-}
-
-function ChatAddMessage(message) {
-
-    var ChatBody = $('#divChatCliente');
-    var msg = JSON.parse(message);
-    ChatBody.append('   <tr>  ' +
-        '                           <td>  ' +
-        '                               <div class="alert ' + msg.color + ' p-1 text-white m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
-        '                                   ' + msg.message +
-        '                               </div>  ' +
-        '                           </td>  ' +
-        '                      </tr>  ');
-
-}
-
 function VerificarCliente(cardapioIdCuenta) {
 
     var clienteCookie = getCookie('NombreClienteCardapioCookies');
@@ -721,4 +649,151 @@ function getCookie(name) {
         if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
     return null;
+}
+
+
+// --------------  CHAT HUB ------------------------
+
+
+var chat;
+var chatConnectionId;
+var chatDisconnected = true;
+var chatIntervelReconnect;
+
+function HubConnect() {
+
+    $('#btnClienteSendMessage').prop('disabled', true);
+    $('#divReconectandoChat').show();
+
+    $('#btnClienteClearMessage').on('click', function () {
+
+        $('#inputClienteMessage').val(null);
+        chat.stop();
+
+    });
+
+
+
+    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').configureLogging(signalR.LogLevel.Trace).build();
+
+    chat.start().then(function () {
+
+        chatDisconnected = false;
+        $('#btnClienteSendMessage').prop('disabled', false);
+        $('#divReconectandoChat').hide();
+        //GET CONNECTION ID      
+
+        chat.invoke('getConnectionId').then((data) => {
+            chatConnectionId = data;
+        });
+
+        chatIntervelReconnect = setInterval(function () {
+            if (chatDisconnected) {
+                $('#btnClienteSendMessage').prop('disabled', true);
+                $('#divReconectandoChat').show();
+                chatReconnect();
+            } else {
+                $('#btnClienteSendMessage').prop('disabled', false);
+                $('#divReconectandoChat').hide();
+            }
+        }, 3000);
+
+    });
+
+
+    chat.onclose(() => {
+        chatDisconnected = true;
+    });
+
+    //----------- FUNTIONS ------------
+
+    //SEND
+    $('#btnClienteSendMessage').on('click', function () {
+        ClienteSendMessage();
+    });
+
+    //RECIVED
+    chat.on("clienteReceivedMessage", function (message) {
+        ChatAddMessage(message);
+    });
+
+}
+
+async function chatReconnect() {
+    await chat.start().then(function () {
+
+        chatDisconnected = false;
+
+        //GET CONNECTION ID
+        chat.invoke('getConnectionId').then((data) => {
+            chatConnectionId = data;
+        });
+
+        clearInterval(chatIntervelReconnect);
+
+        chatIntervelReconnect = setInterval(function () {
+            if (chatDisconnected) {
+                $('#btnClienteSendMessage').prop('disabled', true);
+                $('#divReconectandoChat').show();
+                chatReconnect();
+            } else {
+                $('#btnClienteSendMessage').prop('disabled', false);
+                $('#divReconectandoChat').hide();
+            }
+        }, 3000);
+
+        console.log('reconected success');
+    });
+}
+
+function stopChat() {
+    chat.stop();
+}
+
+
+function ClienteSendMessage() {
+
+    var newMessage = {
+        idCliente: 1,
+        idCuenta: 1,
+        mesa: 1,
+        titulo: "Royber | Mesa 1",
+        message: $('#inputClienteMessage').val(),
+        position: "float-right",
+        color: "bg-success",
+        margin: "ml-5",
+        send: true
+    };
+
+    ChatAddMessage(JSON.stringify(newMessage));
+    $('#inputClienteMessage').focus();
+    chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage))
+        .then((res) => {
+            var asdasd = 'dd';
+            console.log(asdasd);
+        })
+        .catch(err => {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Erro ao conectar com o estabelecimento!',
+                footer: '<a>Verifique se seu telefone está conectado à internet</a>'
+            });
+        });
+    $('#inputClienteMessage').val("");
+
+}
+
+function ChatAddMessage(message) {
+
+    var ChatBody = $('#divChatCliente');
+    var msg = JSON.parse(message);
+    ChatBody.append('   <tr>  ' +
+        '                           <td>  ' +
+        '                               <div class="alert ' + msg.color + ' p-1 text-white m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
+        '                                   ' + msg.message +
+        '                               </div>  ' +
+        '                           </td>  ' +
+        '                      </tr>  ');
+
 }

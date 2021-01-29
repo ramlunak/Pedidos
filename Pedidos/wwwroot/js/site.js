@@ -2,8 +2,37 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-var chat;
+
 $(function () {
     $('[data-toggle="tooltip"]').tooltip();
 
+    HubConnect();
+
 })
+
+
+// CHAT HUB
+
+var chat;
+var chatConnectionId;
+
+function HubConnect() {
+
+    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub').build();
+
+    chat.start().then(function () {
+
+        //GET CONNECTION ID
+        chat.invoke('getConnectionId').then((data) => {
+            chatConnectionId = data;
+        });
+
+        //RECIVED
+        chat.on("serverReceivedMessage", function (message) {
+            alert(message);
+        });
+
+
+    });
+
+}

@@ -62,20 +62,20 @@ namespace Pedidos.Hubs
         {
             // await Clients.Client(connectionId).SendAsync("receivedMessage", message);
 
-            var serverMensaje = new Message
-            {
-                idCliente = 1,
-                idCuenta = 1,
-                mesa = 1,
-                titulo = "Royber | Mesa 1",
-                message = "Resivido",
-                position = "float-left",
-                color = "bg-info",
-                margin = "mr-5",
-                send = false
-            };
+            //var serverMensaje = new Message
+            //{
+            //    idCliente = 1,
+            //    idCuenta = 1,
+            //    mesa = 1,
+            //    titulo = "Royber | Mesa 1",
+            //    message = "Resivido",
+            //    position = "float-left",
+            //    color = "bg-info",
+            //    margin = "mr-5",
+            //    send = false
+            //};
 
-            await Clients.Client(connectionId).SendAsync("clienteReceivedMessage", serverMensaje.ToJson());
+            await Clients.Group($"Cuenta{idCuenta}").SendAsync("serverReceivedMessage", message);
         }
 
     }

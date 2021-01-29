@@ -18,7 +18,6 @@ var _ModalProducto = {
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
-
 $(function () {
 
     cardapioIdCuenta = $('#inputIdCuenta').val();
@@ -33,51 +32,67 @@ $(function () {
         $('#chatCardapioModal').animate({ scrollTop: $('#chatCardapioModal .modal-dialog').height() }, 500);
     });
 
+
+    $('#inputClienteMessage').keypress(function (event) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if (keycode == '13') {
+            ClienteSendMessage();
+            return false;
+        }
+    });
+
 });
 
-var cardapioHubConnectionId;
-
+var chat;
+var chatConnectionId;
 
 function HubConnect() {
 
-    var chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
+    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').build();
 
     chat.start().then(function () {
 
+        //GET CONNECTION ID
         chat.invoke('getConnectionId').then((data) => {
             chatConnectionId = data;
         });
 
+        //SEND
         $('#btnClienteSendMessage').on('click', function () {
 
-            var newMessage = {
-                idCliente: 1,
-                idCuenta: 1,
-                mesa: 1,
-                titulo: "Royber | Mesa 1",
-                message: $('#inputClienteMessage').val(),
-                position: "float-right",
-                color: "bg-success",
-                margin: "ml-5",
-                send: true
-            };
+            ClienteSendMessage();
 
-            ChatAddMessage(JSON.stringify(newMessage));           
-            $('#inputClienteMessage').focus();
-            chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage));
-            $('#inputClienteMessage').val("");
-           
         });
 
+        //RECIVED
         chat.on("clienteReceivedMessage", function (message) {
             ChatAddMessage(message);
         });
-
 
     });
 
 }
 
+function ClienteSendMessage() {
+
+    var newMessage = {
+        idCliente: 1,
+        idCuenta: 1,
+        mesa: 1,
+        titulo: "Royber | Mesa 1",
+        message: $('#inputClienteMessage').val(),
+        position: "float-right",
+        color: "bg-success",
+        margin: "ml-5",
+        send: true
+    };
+
+    ChatAddMessage(JSON.stringify(newMessage));
+    $('#inputClienteMessage').focus();
+    chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage));
+    $('#inputClienteMessage').val("");
+
+}
 
 function ChatAddMessage(message) {
 

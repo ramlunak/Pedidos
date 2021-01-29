@@ -29,7 +29,26 @@ function HubConnect() {
 
         //RECIVED
         chat.on("serverReceivedMessage", function (message) {
-            alert(message);
+            // alert(message);
+            ion.sound({
+                sounds: [
+                    { name: "beyond_doubt" },
+                    { name: "bell_ring" },
+                    { name: "branch_break" },
+                    { name: "button_click" }
+                ],
+
+                // main config
+                path: "ion-sound/sounds/",
+                preload: true,
+                multiplay: true,
+                volume: 0.5
+            });
+
+            // play sound
+            ion.sound.play("beyond_doubt", {
+                loop: 1
+            });
         });
 
 

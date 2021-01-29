@@ -668,10 +668,8 @@ function HubConnect() {
     $('#btnClienteClearMessage').on('click', function () {
 
         $('#inputClienteMessage').val(null);
-        chat.stop();
 
     });
-
 
 
     chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').configureLogging(signalR.LogLevel.Trace).build();
@@ -745,11 +743,6 @@ async function chatReconnect() {
         console.log('reconected success');
     });
 }
-
-function stopChat() {
-    chat.stop();
-}
-
 
 function ClienteSendMessage() {
 

@@ -86,7 +86,3 @@ async function chatReconnect() {
         console.log('reconected success');
     });
 }
-
-function stopChat() {
-    chat.stop();
-}

@@ -352,7 +352,6 @@ function imprimirPedido(idPedido, pendientes) {
         var pedido = findResult[0];
 
 
-
         var comprobantePedido = $("#divComprobantePedido");
         $("#divComprobantePedido").html("");
 
@@ -360,6 +359,10 @@ function imprimirPedido(idPedido, pendientes) {
 
         if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
             comprobantePedido.append('<div class="centrado mb-1"> <b>VIAGEM</b> </div >');
+        }
+
+        if (pedido.idDireccion === null && pedido.direccion === "" && pedido.idMesa === null) {
+            comprobantePedido.append('<div class="centrado mb-1"> <b>RETIRADA</b> </div >');
         }
 
         if (pedido.idCliente !== null && pedido.idCliente !== "") {
@@ -524,7 +527,6 @@ function imprimirPedido(idPedido, pendientes) {
             }
         }
 
-
         if (NombreEstablecimiento) {
 
             comprobantePedido.append('<hr style="margin:4px"/>');
@@ -546,8 +548,8 @@ function imprimirPedido(idPedido, pendientes) {
         }
 
         comprobantePedido.append('<hr style="margin:4px"/>');
+        comprobantePedido.append(' <p style="text-align:end">' + pedido._fecha + '</p>');
         comprobantePedido.append(' <p class="centrado"><b>¡obrigado por sua preferência!</b></p>');
-
 
     }
 

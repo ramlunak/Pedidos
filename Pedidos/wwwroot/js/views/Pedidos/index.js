@@ -170,8 +170,16 @@ $(function () {
     });
 
     $('#inputProducto').on('input propertychange', function (e) {
-        var productosFiltrados = filterItems($('#inputProducto').val());
-        FiltrarProductos(productosFiltrados);
+
+        var filtro = $('#inputProducto').val();
+        if (filtro !== null && filtro !== "") {
+            var productosFiltrados = filterItems(filtro);
+            FiltrarProductos(productosFiltrados);
+        } else {
+            productosFiltrados = [];
+            FiltrarProductos(productosFiltrados);
+        }
+
     });
 
 
@@ -199,8 +207,6 @@ function inputValorProductoChanged() {
     labelValor.show();
 
 }
-
-
 
 //Cargar Direcciones del cliente
 function CargarDirecciones(id) {
@@ -309,7 +315,6 @@ function FiltrarProductos(productos) {
 }
 
 const filterItems = (query) => {
-
     return _Productos.filter(el => el.nombre.toLocaleLowerCase('pt-BR').indexOf(query.toLocaleLowerCase('pt-BR')) > -1);
 };
 

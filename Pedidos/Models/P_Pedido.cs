@@ -69,6 +69,15 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_FormaPagamento> listaFormaPagamento { get; set; } = new List<P_FormaPagamento>();
 
+        [NotMapped]
+        public string _fecha
+        {
+            get
+            {
+                return fecha.ToSouthAmericaStandard().ToString("dd/MM/yyyy H:mm");
+            }
+
+        }
 
 
     }

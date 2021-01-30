@@ -144,7 +144,7 @@ namespace Pedidos.Controllers
             if (countCierres > 0)
             {
                 var ultimoCierre = await _context.P_Caja.OrderByDescending(x => x.id).Where(x => x.idCuenta == Cuenta.id && !x.isOpen).Take(1).ToListAsync();
-                ultimoIdPedido = ultimoCierre.First().idUltimoPedido;
+                ultimoIdPedido = ultimoCierre.First().idUltimoPedido.Value;
             }
 
 

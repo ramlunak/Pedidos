@@ -14,7 +14,7 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int? idPrimerPedido { get; set; }
-        public int idUltimoPedido { get; set; }
+        public int? idUltimoPedido { get; set; }
         public DateTime fecha { get; set; } = DateTime.Now.ToSouthAmericaStandard();
         [Required(ErrorMessage = "O Valor inicial é obrigatorio")]
         [DisplayName("Valor inicial")]

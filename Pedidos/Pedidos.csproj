@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Controllers\CajaControllerOld.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="Reports\Vendas.rdlc" />
     <None Remove="wwwroot\Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Cardapio.sql" />

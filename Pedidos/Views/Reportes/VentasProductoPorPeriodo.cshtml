@@ -1,10 +1,11 @@
 ﻿@model Pedidos.Models.P_Caja
+@using Pedidos.Models.Filtros
 
 @{
     ViewData["Title"] = "Vendas por periódo";
-    //var filtro = new RecargaSearch();
-    //filtro.input = ViewBag.Semana;
-    //filtro.numero = ViewBag.Numero;
+    var filtro = new VentasPorPeriodoFilter();
+    filtro.FechaInicio = ViewBag.FechaInicio;
+    filtro.FechaFin = ViewBag.FechaFin;
 }
 
 <div class="container text-center d-block col-12 col-md-6 col-lg-6" style="font-size: 13px;font-family: Arial;">
@@ -22,14 +23,14 @@
                         <table>
                             <tr>
                                 <td class="text-right"> <strong>Data Inicio:</strong></td>
-                                <td> <input type="date" id="fechaInicio" name="fechaInicio" value="@ViewBag.FechaInicio" style="width:180px" class="form-control form-control-sm" /></td>
+                                <td> <input type="datetime-local" id="fechaInicio" name="fechaInicio" asp-for="@filtro.FechaInicio" style="width:200px" class="form-control form-control-sm" /></td>
                                 <td rowspan="2">
                                     <button type="submit" class="btn btn-sm btn-outline-primary"><i class="fa fa-search"></i></button>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="text-right"> <strong>Data Fim:</strong></td>
-                                <td> <input type="date" id="fechaFin" name="fechaFin" value="@ViewBag.FechaFin" style="width:180px" class="form-control form-control-sm" /></td>
+                                <td> <input type="datetime-local" id="fechaFin" name="fechaFin" asp-for="@filtro.FechaFin" style="width:200px" class="form-control form-control-sm" /></td>
                             </tr>
                         </table>
                     </div>

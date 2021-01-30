@@ -41,7 +41,7 @@ namespace Pedidos.Controllers
             {
                 ViewBag.HayVentas = false;
                 var fecha = DateTime.Now.ToSouthAmericaStandard();
-                var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.fecha == fecha).ToListAsync();
+                var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.fecha >= fecha).ToListAsync();
                 var caja = new P_Caja();
 
                 if (pedidos.Count > 0)
@@ -121,7 +121,7 @@ namespace Pedidos.Controllers
                 }
 
 
-                var query = _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.fecha == fechaActual);
+                var query = _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.fecha >= fechaActual);
                 if (filtro.FechaInicio.HasValue && filtro.FechaFin.HasValue)
                 {
                     query = _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.jsonFormaPagamento != null && x.status == StatusPedido.Finalizado.ToString() && x.fecha >= fechaInicio && x.fecha <= fechaFin);

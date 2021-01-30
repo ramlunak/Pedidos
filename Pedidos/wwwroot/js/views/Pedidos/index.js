@@ -179,9 +179,7 @@ $(function () {
             productosFiltrados = [];
             FiltrarProductos(productosFiltrados);
         }
-
     });
-
 
 });
 

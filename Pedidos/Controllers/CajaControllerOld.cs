@@ -12,28 +12,17 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Controllers
 {
-    public class CajaController : BaseController
+    public class CajaControllerOld : BaseController
     {
         private readonly AppDbContext _context;
 
-        public CajaController(AppDbContext context)
+        public CajaControllerOld(AppDbContext context)
         {
             _context = context;
         }
-             
 
-        public async Task<ActionResult> Lista()
-        {
-            if (!ValidarCuenta())
-            {
-                return RedirectToAction("Salir", "Login");
-            }
-            var model = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && !x.isOpen).Take(50).ToListAsync();
 
-            return View(model.OrderByDescending(x => x.id).ToList());
-        }
-
-        public async Task<ActionResult> Detalle()
+        public async Task<ActionResult> Index()
         {
             if (!ValidarCuenta())
             {
@@ -98,6 +87,17 @@ namespace Pedidos.Controllers
             }
         }
 
+        public async Task<ActionResult> Lista()
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            var model = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && !x.isOpen).Take(50).ToListAsync();
+
+            return View(model.OrderByDescending(x => x.id).ToList());
+        }
+
         public async Task<ActionResult> Fechar()
         {
             if (!ValidarCuenta())
@@ -155,7 +155,7 @@ namespace Pedidos.Controllers
 
             _context.Add(p_Caja);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Detalle));
+            return RedirectToAction(nameof(Index));
         }
 
     }

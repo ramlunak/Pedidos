@@ -18,7 +18,7 @@ function AbrirCaja() {
     }
 
     $('#txtValorInicial').val("");
-    $('#divLoadingBotonesCaija').hide();
+    $('#divBotonesCaija').hide();
     $('#divLoadingAbrirCaija').show();
 
     $.ajax({
@@ -29,6 +29,9 @@ function AbrirCaja() {
         dataType: "json",
         success: function (data) {
 
+            $('#divLoadingBotonesCaija').show();
+            $('#divLoadingAbrirCaija').hide();
+
             if (data.open) {
 
                 Swal.fire({
@@ -38,6 +41,7 @@ function AbrirCaja() {
                     timer: 1500
                 }).then((result) => {
                     $('#modalAbrirCaja').modal('hide');
+                    location.reload();
                 })
 
             } else {
@@ -48,13 +52,11 @@ function AbrirCaja() {
                     text: data.erro
                 }).then((result) => {
                     $('#modalAbrirCaja').modal('hide');
+                    location.reload();
                 });
 
             }
-
-
-            $('#divLoadingBotonesCaija').show();
-            $('#divLoadingAbrirCaija').hide();
+                       
 
         },
         failure: function (response) {

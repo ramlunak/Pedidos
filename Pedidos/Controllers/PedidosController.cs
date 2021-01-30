@@ -386,7 +386,7 @@ namespace Pedidos.Controllers
             var ultimaCaixaFechada = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id && !x.isOpen).OrderBy(x => x.id).LastOrDefaultAsync();
             if (ultimaCaixaFechada != null)
             {
-                idUltimoPedidoCaixa = ultimaCaixaFechada.idUltimoPedido;
+                idUltimoPedidoCaixa = ultimaCaixaFechada.idUltimoPedido.Value;
             }
 
             var pedidosFinalizados = await _context.P_Pedidos.Where(x =>

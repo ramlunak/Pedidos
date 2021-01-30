@@ -6,8 +6,15 @@
 
 <div class="container text-center d-block col-12 col-md-6 col-lg-6" style="font-size: 13px;font-family: Arial;">
 
-    <div class="m-3 text-center" style="color: darkgray">CAIXA</div>
+    <hr />
 
+    <div class="d-block">
+        <div class="text-center" style="color: black">CAIXA @(Model.isOpen?"ABERTA":"FECHADA")</div>
+        @if (Model.fechaCierre.HasValue)
+        {
+            <div class="text-center" style="color: darkgray">@(Model.fecha.ToString("dd/MM/yyyy HH:mm")) Até @(Model.fechaCierre.Value.ToString("dd/MM/yyyy HH:mm"))</div>
+        }
+    </div>
 
     @if (ViewBag.Erro != null)
     {
@@ -21,8 +28,14 @@
 
         @*PERIODO*@
 
-        <hr />
-        <a asp-action="Fechar" class="btn btn-sm btn-outline-success cursor-pointer">Fechar Caixa</a>
+        @if (Model.isOpen)
+        {
+
+            <hr />
+            <a asp-action="CerrarCaja" asp-route-id="@Model.id" class="btn btn-sm btn-outline-success cursor-pointer">Fechar Caixa</a>
+
+        }
+
         <hr />
 
         @*TOTAL*@

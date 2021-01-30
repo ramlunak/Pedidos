@@ -14,8 +14,11 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int? idPrimerPedido { get; set; }
+        public string codigoPrimerPedido { get; set; }
         public int? idUltimoPedido { get; set; }
+        public string codigoUltimoPedido { get; set; }
         public DateTime fecha { get; set; } = DateTime.Now.ToSouthAmericaStandard();
+        public DateTime? fechaCierre { get; set; }
         [Required(ErrorMessage = "O Valor inicial é obrigatorio")]
         [DisplayName("Valor inicial")]
         public decimal inicio { get; set; }

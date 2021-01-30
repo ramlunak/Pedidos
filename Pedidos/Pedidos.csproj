@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <None Remove="Reports\Vendas.rdlc" />
+    <None Remove="SqlScripts\Caja.sql" />
     <None Remove="wwwroot\Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Cardapio.sql" />
     <None Remove="SqlScripts\Categoria - Copy.sql" />

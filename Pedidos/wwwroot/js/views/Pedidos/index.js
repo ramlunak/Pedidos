@@ -1205,6 +1205,11 @@ function actualizarFormaPagamento(idPedido) {
             $('.swal2-deny').prop('id', 'modalBtnOkEnd');
             $('.swal2-confirm').prop('disabled', true);
             $('.swal2-deny').prop('disabled', true);
+            $('.swal2-popup, .swal2-modal, .swal2-show').css('padding', '0px');
+            $('.card, .card-body').css('padding', '5px');
+            $('.swal2-content').css('padding', '5px');
+
+            $('input[name="valorFormaPagamento"]').css('width', '110px');
         },
     }).then((result) => {
 
@@ -1336,6 +1341,16 @@ function SetFormaPagamento(idPedido, finalizar) {
         });
     });
 
+    const invalid = formasPagamento.filter(x => isNaN(parseFloat(x.valor)));
+    if (invalid.length > 0) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Preencha todos os campos corretamente!'
+        })
+        return;
+    }
+
     finalizarPedido = {
         idPedido: idPedido,
         descuento: parseFloat($('#inputDescontoFinalizado').val()),
@@ -1349,8 +1364,6 @@ function SetFormaPagamento(idPedido, finalizar) {
         deliveryPago: _ModalDeliveryFormaPagamento.deliveryPago,
         deliveryEmdinheiro: _ModalDeliveryFormaPagamento.deliveryEmdinheiro
     };
-
-    console.log();
 
     $.ajax({
         type: "POST",

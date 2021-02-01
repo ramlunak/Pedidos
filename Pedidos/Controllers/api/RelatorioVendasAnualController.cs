@@ -38,10 +38,26 @@ namespace Pedidos.Controllers.api
 
             try
             {
-                var exist = await _context.P_RelatorioVendasAnual.AnyAsync(x => x.idCuenta == relatorioVendasAnual.idCuenta && x.year == relatorioVendasAnual.year);
-                if (exist)
+                var exist = await _context.P_RelatorioVendasAnual.Where(x => x.idCuenta == relatorioVendasAnual.idCuenta && x.year == relatorioVendasAnual.year).ToListAsync();
+                if (exist.Any())
                 {
-                    _context.P_RelatorioVendasAnual.Update(relatorioVendasAnual);
+                    var relatorioDb = exist.FirstOrDefault();
+                    relatorioDb.idCuenta = relatorioVendasAnual.idCuenta;
+                    relatorioDb.year = relatorioVendasAnual.year;
+                    relatorioDb.enero = relatorioVendasAnual.enero;
+                    relatorioDb.febrero = relatorioVendasAnual.febrero;
+                    relatorioDb.marzo = relatorioVendasAnual.marzo;
+                    relatorioDb.abril = relatorioVendasAnual.abril;
+                    relatorioDb.mayo = relatorioVendasAnual.mayo;
+                    relatorioDb.junio = relatorioVendasAnual.junio;
+                    relatorioDb.julio = relatorioVendasAnual.julio;
+                    relatorioDb.agosto = relatorioVendasAnual.agosto;
+                    relatorioDb.septiembre = relatorioVendasAnual.septiembre;
+                    relatorioDb.octubre = relatorioVendasAnual.octubre;
+                    relatorioDb.noviembre = relatorioVendasAnual.noviembre;
+                    relatorioDb.diciembre = relatorioVendasAnual.diciembre;
+
+                    _context.P_RelatorioVendasAnual.Update(relatorioDb);
                     await _context.SaveChangesAsync();
                     return true.ToString();
                 }

@@ -30,6 +30,7 @@ $(function () {
     CargarCurrentPedido();
     CargarPedidosPendientes();
     CargarProductos();
+    CargarListaTelefonos();
 
     $('#searchCliente').on('input propertychange', function (e) {
         var filtroCliente = $('#searchCliente').val();
@@ -54,7 +55,6 @@ $(function () {
 
     });
 
-
     $('#searchMesa').on('input propertychange', function (e) {
         var filtroMesa = $('#searchMesa').val();
         if (filtroMesa === null) return;
@@ -76,7 +76,6 @@ $(function () {
 
         });
     });
-
 
     $('#inputNome').on('input propertychange', function (e) {
         $('#spanNombre').html($('#inputNome').val());
@@ -169,6 +168,10 @@ $(function () {
         _ModalProducto.telefono = $('#inputTelefone').val();
     });
 
+    $("#inputTelefone").change(function () {
+        CargarClientePorTelefono($("#inputTelefone").val());
+    });
+
     $('#inputProducto').on('input propertychange', function (e) {
 
         var filtro = $('#inputProducto').val();
@@ -178,6 +181,22 @@ $(function () {
         } else {
             productosFiltrados = [];
             FiltrarProductos(productosFiltrados);
+        }
+    });
+
+    $("#ModalDetalleProducto").keypress(function (e) {
+        console.log(e);
+        if (e.which == 13) {
+            //ENTER KEY
+            AddProducto();
+        } else if (e.which == 45) {
+            //MINUS KEY
+            $('#MINUS_Producto').click();
+
+        } else if (e.which == 43) {
+            //PLUS KEY
+            $('#ADD_Producto').click();
+
         }
     });
 
@@ -220,6 +239,7 @@ function CargarDirecciones(id) {
             $("#EnderecoList").empty();
             $("#inputEndereco").val(null);
             $("#spanEndereco").html(null);
+
             $.each(data, (index, item) => {
 
                 if (index === 0) {
@@ -230,6 +250,38 @@ function CargarDirecciones(id) {
 
                 } else {
                     $("#EnderecoList").append($('<option id="' + item.id + '">').attr('value', item.text));
+                }
+
+            });
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+//Cargar Lista de Telefonos todos los clientes
+function CargarListaTelefonos() {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetListaTelefonos",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            //Llanar lista direcciones
+            $("#TelefonoList").empty();
+
+            $.each(data, (index, item) => {
+
+                if (item !== null && item !== "") {
+                    $("#TelefonoList").append($('<option >').attr('value', item));
                 }
 
 
@@ -244,7 +296,36 @@ function CargarDirecciones(id) {
 
         }
     });
-} function CargarTelefono(id) {
+}
+
+
+//Cargar Cliente Por Telefono
+function CargarClientePorTelefono(telefono) {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CargarClientePorTelefono?telefono=" + telefono,
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            $('#inputNome').val(data);
+            $('#inputNome').trigger('input');
+
+            console.log(data);
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
+function CargarTelefono(id) {
     $.ajax({
         type: "GET",
         url: "/Pedidos/CargarTelefono/" + parseInt(id),
@@ -782,10 +863,10 @@ function TABLE_PedidoProductos() {
         var TR = $('<tr>');
 
         // var btnEdit = '<div class="btn btn-sm btn-outline-success ml-2" onclick="editarCurrentProducto(' + item.id + ')"><i class="fas fa-edit"></i></div>';
-        var btnDelete = '<div class="btn btn-sm btn-outline-danger ml-1"  onclick="deleteCurrentProducto(' + item.id + ')"><i class="fas fa-ban"></i></div>';
+        var btnDelete = '<div class="btn btn-sm btn-outline-danger ml-1" data-toggle="tooltip" data-placement="top" title="Cancelar Produto"  onclick="deleteCurrentProducto(' + item.id + ')"><i class="fas fa-ban"></i></div>';
 
         TD1.append('<div>(<b>' + item.cantidad + '</b>) ' + item.nombre.toUpperCase() + '</div>');
-        TD2.append('<div style="font-size:12px;text-align:center;font-weight:700" class="cursor-pointer d-flex text-nowrap"> <span> R$ ' + item.valorMasAdicionales.toFixed(2) + '</span><div> ' + btnDelete + '</div></div>');
+        TD2.append('<div style="font-size:12px;text-align:center;font-weight:700;justify-content: flex-end;" class="cursor-pointer d-flex text-nowrap"> <span> R$ ' + item.valorMasAdicionales.toFixed(2) + '</span><div> ' + btnDelete + '</div></div>');
 
         TR.append(TD1, TD2);
         TABLE.append(TR);

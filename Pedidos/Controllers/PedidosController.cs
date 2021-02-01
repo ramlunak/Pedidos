@@ -599,6 +599,27 @@ namespace Pedidos.Controllers
             }
         }
 
+        public async Task<IActionResult> GetListaTelefonos()
+        {
+            List<string> telefonos = new List<string>();
+
+            if (GetSession<List<P_Cliente>>("Clientes") != null)
+            {
+                try
+                {
+                    var clientes = GetSession<List<P_Cliente>>("Clientes");
+                    telefonos.AddRange(clientes.Select(x => x.telefono));
+                }
+                catch
+                {
+
+                }
+            }
+
+            return Ok(telefonos);
+
+        }
+
         public async Task<IActionResult> CargarTelefono(int id)
         {
             if (GetSession<List<P_Cliente>>("Clientes") != null)
@@ -617,6 +638,27 @@ namespace Pedidos.Controllers
             }
             return Ok(null);
         }
+
+        public async Task<IActionResult> CargarClientePorTelefono(string telefono)
+        {
+
+            string cliente = "";
+            if (GetSession<List<P_Cliente>>("Clientes") != null)
+            {
+                try
+                {
+                    var clientes = GetSession<List<P_Cliente>>("Clientes");
+                    cliente = clientes.FirstOrDefault(x => x.telefono == telefono).nombre;
+                    return Ok(cliente);
+                }
+                catch
+                {
+
+                }
+            }
+            return Ok(cliente);
+        }
+
 
         public async Task<IActionResult> CancelarCurrentPedido()
         {

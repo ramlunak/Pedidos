@@ -36,7 +36,7 @@ namespace Pedidos.Controllers
             var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-141").ToListAsync();
             var pedido = model.FirstOrDefault();
             pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
-            
+
             return View(pedido);
         }
 
@@ -109,5 +109,38 @@ namespace Pedidos.Controllers
             }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+
+        public async Task<IActionResult> GetReporteVentasAnual()
+        {
+
+            var year = DateTime.Now.ToSouthAmericaStandard().Year;
+            var reportes = await _context.P_RelatorioVendasAnual.Where(x => x.idCuenta == Cuenta.id && x.year == year).ToListAsync();
+            decimal[] array = new decimal[12];
+
+            if (reportes.Any())
+            {
+                var reporte = reportes.FirstOrDefault();
+                array[0] = reporte.enero;
+                array[1] = reporte.febrero;
+                array[2] = reporte.marzo;
+                array[3] = reporte.abril;
+                array[4] = reporte.mayo;
+                array[5] = reporte.junio;
+                array[6] = reporte.julio;
+                array[7] = reporte.agosto;
+                array[8] = reporte.septiembre;
+                array[9] = reporte.octubre;
+                array[10] = reporte.noviembre;
+                array[11] = reporte.diciembre;               
+                return Ok(array);
+            }
+            else
+            {
+                return Ok(array);
+            }
+
+        }
+
     }
 }

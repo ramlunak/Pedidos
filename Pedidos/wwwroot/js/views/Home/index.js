@@ -1,11 +1,7 @@
-﻿var datasets_ventas_anual = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-var ctxVendtasAnual;
+﻿var datasets_ventas_anual = [];
 
 $(function () {
 
-    ctxVendtasAnual = document.getElementById('chartVendtasAnual').getContext('2d');
-
-    CargarGrafico();
     CargarVentasAnual();
 
 });
@@ -21,7 +17,6 @@ function CargarVentasAnual() {
         success: function (data) {
             datasets_ventas_anual = data;
             CargarGrafico();
-            console.log(data);
         },
         failure: function (response) {
 
@@ -34,6 +29,8 @@ function CargarVentasAnual() {
 }
 
 function CargarGrafico() {
+
+    var ctxVendtasAnual = document.getElementById('chartVendtasAnual').getContext('2d');
 
     var chart = new Chart(ctxVendtasAnual, {
         // The type of chart we want to create

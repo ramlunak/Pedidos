@@ -167,13 +167,13 @@ namespace Pedidos.Hangfire
 
             var dataInicio = new DateTime(DateTime.Now.Year, 1, 1);
 
-            for (var i = 0; i < 12; i++)
+            if (cuentas != null)
             {
-                if (cuentas != null)
+                foreach (var item in cuentas)
                 {
-                    var date = dataInicio.AddMonths(i);
-                    foreach (var item in cuentas)
+                    for (var i = 0; i < 12; i++)
                     {
+                        var date = dataInicio.AddMonths(i);
                         var pedidos_mes = await GetPedidosByIdCuenta(item.id, date.ToSouthAmericaStandard().Month, date.ToSouthAmericaStandard().Year);
                         if (pedidos_mes != null && pedidos_mes.Any())
                         {
@@ -236,13 +236,9 @@ namespace Pedidos.Hangfire
                             relatorioVendasAnual.year = date.ToSouthAmericaStandard().Year;
                             await UptadeRelatorioVendasAnual(relatorioVendasAnual);
                         }
-
                     }
                 }
-
             }
-
-
 
         }
 

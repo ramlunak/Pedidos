@@ -44,18 +44,31 @@ namespace Pedidos.Controllers.api
                     var relatorioDb = exist.FirstOrDefault();
                     relatorioDb.idCuenta = relatorioVendasAnual.idCuenta;
                     relatorioDb.year = relatorioVendasAnual.year;
-                    relatorioDb.enero = relatorioVendasAnual.enero;
-                    relatorioDb.febrero = relatorioVendasAnual.febrero;
-                    relatorioDb.marzo = relatorioVendasAnual.marzo;
-                    relatorioDb.abril = relatorioVendasAnual.abril;
-                    relatorioDb.mayo = relatorioVendasAnual.mayo;
-                    relatorioDb.junio = relatorioVendasAnual.junio;
-                    relatorioDb.julio = relatorioVendasAnual.julio;
-                    relatorioDb.agosto = relatorioVendasAnual.agosto;
-                    relatorioDb.septiembre = relatorioVendasAnual.septiembre;
-                    relatorioDb.octubre = relatorioVendasAnual.octubre;
-                    relatorioDb.noviembre = relatorioVendasAnual.noviembre;
-                    relatorioDb.diciembre = relatorioVendasAnual.diciembre;
+
+                    if (relatorioVendasAnual.enero > 0)
+                        relatorioDb.enero = relatorioVendasAnual.enero;
+                    if (relatorioVendasAnual.febrero > 0)
+                        relatorioDb.febrero = relatorioVendasAnual.febrero;
+                    if (relatorioVendasAnual.marzo > 0)
+                        relatorioDb.marzo = relatorioVendasAnual.marzo;
+                    if (relatorioVendasAnual.abril > 0)
+                        relatorioDb.abril = relatorioVendasAnual.abril;
+                    if (relatorioVendasAnual.mayo > 0)
+                        relatorioDb.mayo = relatorioVendasAnual.mayo;
+                    if (relatorioVendasAnual.junio > 0)
+                        relatorioDb.junio = relatorioVendasAnual.junio;
+                    if (relatorioVendasAnual.junio > 0)
+                        relatorioDb.julio = relatorioVendasAnual.julio;
+                    if (relatorioVendasAnual.agosto > 0)
+                        relatorioDb.agosto = relatorioVendasAnual.agosto;
+                    if (relatorioVendasAnual.septiembre > 0)
+                        relatorioDb.septiembre = relatorioVendasAnual.septiembre;
+                    if (relatorioVendasAnual.octubre > 0)
+                        relatorioDb.octubre = relatorioVendasAnual.octubre;
+                    if (relatorioVendasAnual.noviembre > 0)
+                        relatorioDb.noviembre = relatorioVendasAnual.noviembre;
+                    if (relatorioVendasAnual.diciembre > 0)
+                        relatorioDb.diciembre = relatorioVendasAnual.diciembre;
 
                     _context.P_RelatorioVendasAnual.Update(relatorioDb);
                     await _context.SaveChangesAsync();

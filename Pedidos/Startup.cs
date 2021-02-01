@@ -127,13 +127,20 @@ namespace Pedidos
             GlobalJobFilters.Filters.Add(new AutomaticRetryAttribute { Attempts = 0 });
 
             RecurringJob.RemoveIfExists("RelatorioVendasSaidasAnual");
+            RecurringJob.RemoveIfExists("RVS_ActualizarTodosMeses");
 
             RecurringJob.AddOrUpdate(
             recurringJobId: "RelatorioVendasSaidasAnual",
             methodCall: () => new Hangfire.Jobs(Configuration).RelatorioVendasSaidasAnual(),
             cronExpression: Cron.Hourly(),
-            timeZone: TimeZoneInfo.Local
-         );
+            timeZone: TimeZoneInfo.Local);
+
+            RecurringJob.AddOrUpdate(
+           recurringJobId: "RVS_ActualizarTodosMeses",
+           methodCall: () => new Hangfire.Jobs(Configuration).RelatorioVendasSaidas_ActualizarTodosMeses(),
+           cronExpression: Cron.Yearly(),
+           timeZone: TimeZoneInfo.Local);
+
 
             //app.UseStatusCodePages(async context =>
             //{

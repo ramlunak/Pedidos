@@ -159,5 +159,92 @@ namespace Pedidos.Hangfire
                 }
             ;
         }
+
+
+        public async Task RelatorioVendasSaidas_ActualizarTodosMeses()
+        {
+            var cuentas = await GetCuentas();
+
+            var dataInicio = new DateTime(DateTime.Now.Year, 1, 1);
+
+            for (var i = 0; i < 12; i++)
+            {
+                if (cuentas != null)
+                {
+                    var date = dataInicio.AddMonths(i);
+                    foreach (var item in cuentas)
+                    {
+                        var pedidos_mes = await GetPedidosByIdCuenta(item.id, date.ToSouthAmericaStandard().Month, date.ToSouthAmericaStandard().Year);
+                        if (pedidos_mes != null && pedidos_mes.Any())
+                        {
+                            var relatorioVendasAnual = new P_RelatorioVendasAnual();
+                            relatorioVendasAnual.idCuenta = item.id;
+                            relatorioVendasAnual.year = date.ToSouthAmericaStandard().Year;
+
+                            var ventas = pedidos_mes.Sum(x => x.valorProductos + x.tasaEntrega - x.descuento);
+
+                            if (date.ToSouthAmericaStandard().Month == 1)
+                            {
+                                relatorioVendasAnual.enero = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 2)
+                            {
+                                relatorioVendasAnual.febrero = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 3)
+                            {
+                                relatorioVendasAnual.marzo = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 4)
+                            {
+                                relatorioVendasAnual.abril = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 5)
+                            {
+                                relatorioVendasAnual.mayo = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 6)
+                            {
+                                relatorioVendasAnual.julio = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 7)
+                            {
+                                relatorioVendasAnual.julio = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 8)
+                            {
+                                relatorioVendasAnual.agosto = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 9)
+                            {
+                                relatorioVendasAnual.septiembre = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 10)
+                            {
+                                relatorioVendasAnual.octubre = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 11)
+                            {
+                                relatorioVendasAnual.noviembre = ventas;
+                            }
+                            if (date.ToSouthAmericaStandard().Month == 12)
+                            {
+                                relatorioVendasAnual.diciembre = ventas;
+                            }
+
+                            relatorioVendasAnual.idCuenta = item.id;
+                            relatorioVendasAnual.year = date.ToSouthAmericaStandard().Year;
+                            await UptadeRelatorioVendasAnual(relatorioVendasAnual);
+                        }
+
+                    }
+                }
+
+            }
+
+
+
+        }
+
     }
 }

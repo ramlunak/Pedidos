@@ -1,4 +1,5 @@
 ﻿var datasets_ventas_anual = [];
+var chatConnectionId;
 
 $(function () {
 

@@ -37,6 +37,19 @@ namespace Pedidos.Data
             //       $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
         }
 
+        public static string GetSqlProductosAll(int idCuenta)
+        {
+            StringBuilder query = new StringBuilder();
+
+            query.Append($"  SELECT id,codigo,nombre,descripcion,idCategoria,idSubCategoria,idCuenta,valor,unidadeMedida,horasPreparacion,minutosPreparacion,activo,tamanho1,valorTamanho1,tamanho2,valorTamanho2,tamanho3,valorTamanho3,imagen ");
+            query.Append($" ,JsonAdicionales = (SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsAdicionales from [dbo].[P_CategoriaAdicional] where idCategoria = P.idCategoria and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN[dbo].[P_Adicionais] AS A on V.value = A.id FOR JSON PATH) ");
+            query.Append($" ,JsonIngredientes = (SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsIngrediente from [dbo].[P_IngredientesProducto] where idProducto = P.id and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN [dbo].[P_Ingredientes] AS A on V.value = A.id FOR JSON PATH)  ");
+            query.Append($" FROM[dbo].[P_Productos] AS P ");
+            query.Append($" WHERE P.idCuenta = {idCuenta} ");
+            var str = query.ToString();
+            return str;
+        }
+
         public static string GetSqlProductosDetalle(int idCuenta, int? idProducto)
         {
             StringBuilder query = new StringBuilder();

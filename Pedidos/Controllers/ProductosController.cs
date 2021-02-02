@@ -433,25 +433,33 @@ namespace Pedidos.Controllers
                 {
                     return RedirectToAction("Salir", "Login");
                 }
-                var items = await _context.P_Aux.FromSqlRaw(SqlConsultas.GetSqlProductosDetalle(Cuenta.id, id)).ToListAsync();
-                var data = items.FirstOrDefault();
+
+                var productos = GetSession<List<P_Productos>>("PedidoProductos");
+
+                if (productos == null)
+                {
+                    productos = productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(Cuenta.id)).ToListAsync();
+                    SetSession("PedidoProductos", productos);
+                }
+
+                var filter = productos.Where(x => x.id == id).FirstOrDefault();
 
                 var adicionales = new List<P_Adicionais>().ToArray();
                 var ingredientes = new List<P_Ingredientes>().ToArray();
 
-                var productos = JsonConvert.DeserializeObject<P_Productos[]>(data.JsonProducto);
-                if (!string.IsNullOrEmpty(data.JsonAdicionales))
+                if (!string.IsNullOrEmpty(filter.JsonAdicionales))
                 {
-                    adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(data.JsonAdicionales);
+                    adicionales = JsonConvert.DeserializeObject<P_Adicionais[]>(filter.JsonAdicionales);
                 }
-                if (!string.IsNullOrEmpty(data.JsonIngredientes))
+                if (!string.IsNullOrEmpty(filter.JsonIngredientes))
                 {
-                    ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(data.JsonIngredientes);
+                    ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(filter.JsonIngredientes);
                 }
 
                 var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).OrderBy(x => x.orden).ToList();
                 var listaIngredientes = ingredientes.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
-                return Ok(new { producto = productos[0], adicionales = listaAdicionales, ingredientes = listaIngredientes });
+                return Ok(new { producto = filter, adicionales = listaAdicionales, ingredientes = listaIngredientes });
+
             }
             catch (Exception ex)
             {

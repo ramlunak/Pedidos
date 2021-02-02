@@ -27,7 +27,9 @@
                     <ul class="nav navbar-nav navbar-right">
                         @*<li class="nav-item"><a class="nav-link text-dark"> @ViewData["Nombre"]</a></li>*@
                         <li class="nav-item d-flex">
-
+                            <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug">
+                                <i class="fas fa-bug fa-2x"></i>
+                            </a>
                             <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug" asp-controller="Mejorias" asp-action="Index">
                                 <i class="fas fa-bug fa-2x"></i>
                             </a>
@@ -64,11 +66,11 @@
                             </div>
                         </li>
 
-                        @*<li class="nav-item">
-                                <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Mesas" asp-area="" asp-controller="Mesas" asp-action="Lista">
-                                    <i class="fas fa-box fa-2x" aria-hidden="true"></i>
-                                </a>
-                            </li>*@
+                        <li class="nav-item">
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Mesas" asp-area="" asp-controller="Mesas" asp-action="Lista">
+                                <i class="fas fa-box fa-2x" aria-hidden="true"></i>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Clientes" asp-area="" asp-controller="Clientes" asp-action="Index">
                                 <i class="fas fa-users fa-2x"></i>
@@ -199,6 +201,8 @@
     <script src="~/lib/printThis.js" asp-append-version="true"></script>
     <script src="~/lib/croppie/croppie.min.js" asp-append-version="true"></script>
     <script src="~/lib/chartjs-2.8.0/chartjs280.js" asp-append-version="true"></script>
+    <script src="~/ionsound/js/ion.sound.js"></script>
+    <script src="~/aspnet/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await Html.PartialAsync("_notificationPartial")

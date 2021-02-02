@@ -18,6 +18,10 @@
       "provider": "unpkg",
       "library": "@aspnet/signalr@1.1.4",
       "destination": "wwwroot/aspnet/signalr/"
+    },
+    {
+      "library": "ion-sound@3.0.7",
+      "destination": "wwwroot/ion-sound/"
     }
   ]
 }

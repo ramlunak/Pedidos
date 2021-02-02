@@ -19,5 +19,6 @@ namespace Pedidos.Models
         public string nombre { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; } = true;
+        public bool registroPorCardapio { get; set; } = false;
     }
 }

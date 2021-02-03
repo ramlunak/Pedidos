@@ -52,3 +52,121 @@
         </div>
     </div>
 }
+
+@if (ViewBag.Productos != null)
+{
+    <div class="card m-2">
+        <div class="card-header bg-info text-white">
+            <div class="row d-flex justify-content-center">
+                <div class="text-center">
+                    PRODUTOS
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                @foreach (var producto in ViewBag.Productos)
+                {
+                    var item = (P_Productos)producto;
+
+                    var modalId = $"modal{item.id}";
+                    var imgDataURL = string.Empty;
+                    if (item.imagen != null)
+                    {
+                        string imreBase64Data = Convert.ToBase64String(item.imagen);
+                        imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                    }
+
+                    bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue ? true : false;
+
+                    <div class="col-12 col-md-6 col-xl-4 mb-2">
+                        <div class="card">
+                            <div class="card-header bg-primary p-2">
+                                <div class="row d-flex align-content-center pl-3">
+
+                                    <div>
+                                        @if (item.imagen != null && item.imagen.Length > 0)
+                                        {
+                                            <img class="rounded-circle border border-primary producto-image-50px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
+                                        }
+                                    </div>
+                                    <div class="text-center d-flex align-content-center">
+                                        <b class="ml-2" style="align-items: center; display: flex; color:white">@item.nombre.ToUpper()</b>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="card-body">
+
+                                <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content" style="background-color: transparent;border: none;">
+
+                                            <div class="modal-body">
+                                                <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <table>
+                                        @if (tieneTemanhos)
+                                        {
+                                            <tr>
+                                                <td colspan="2">
+                                                    <div class="d-flex justify-content-between">
+                                                        @if (item.valorTamanho1.HasValue)
+                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
+
+                                                        @if (item.valorTamanho2.HasValue)
+                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
+
+                                                        @if (item.valorTamanho3.HasValue)
+                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
+
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                        else
+                                        {
+                                            <tr>
+                                                <td><b>Preço</b></td>
+                                                <td>: <b style="color:green">R$ @item.valor.ToString("F2")</b> </td>
+                                            </tr>
+                                        }
+                                        <tr>
+                                            <td><b>Categoría</b></td>
+                                            <td>: @item.Categoria</td>
+                                        </tr>
+                                        @if (!string.IsNullOrEmpty(item.tempo))
+                                        {
+                                            <tr>
+                                                <td><b>Tempo</b></td>
+                                                <td>:   <i class="fa fa-clock" style="color:gray"></i> @item.tempo</td>
+                                            </tr>
+                                        }
+                                    </table>
+                                </div>
+                                @if (!string.IsNullOrEmpty(item.descripcion))
+                                {
+                                    <div class="row">
+                                        <p>
+                                            <b>descrição:</b> @item.descripcion
+                                        </p>
+                                    </div>
+                                }
+                            </div>
+
+                        </div>
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+}

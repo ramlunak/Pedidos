@@ -37,6 +37,7 @@ namespace Pedidos.Controllers
 
             var categorias = new List<P_Categoria>();
             var productos = new List<P_Productos>();
+            var rowErros = 0;
 
             using (var stream = new MemoryStream())
             {
@@ -45,6 +46,7 @@ namespace Pedidos.Controllers
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     var row = 1;
+                   
                     while (reader.Read())
                     {
 
@@ -52,6 +54,7 @@ namespace Pedidos.Controllers
                         {
                             try
                             {
+                                //CARGAR CATEGORIAS
                                 var nomeCategoria = reader.GetValue(0);
                                 if (nomeCategoria != null && !nomeCategoria.ToString().IsNullOrEmtpy())
                                 {
@@ -60,6 +63,48 @@ namespace Pedidos.Controllers
                                         nombre = nomeCategoria.ToString().Trim()
                                     });
                                 }
+
+                                //CARGAR PRODUCTOS
+                                var nomeProducto = reader.GetValue(2);
+                                var categoriaProducto = reader.GetValue(3);
+                                var valor = reader.GetValue(4);
+                                var horas = reader.GetValue(5);
+                                var minutos = reader.GetValue(6);
+                                var descripcion = reader.GetValue(7);
+                                var tamanho1 = reader.GetValue(8);
+                                var valorTamanho1 = reader.GetValue(9);
+                                var tamanho2 = reader.GetValue(10);
+                                var valorTamanho2 = reader.GetValue(11);
+                                var tamanho3 = reader.GetValue(12);
+                                var valorTamanho3 = reader.GetValue(13);
+
+                                if (nomeProducto == null || categoriaProducto == null)
+                                {
+                                    rowErros++;
+                                }
+                                else if (valor == null && valorTamanho1 == null && valorTamanho2 == null && valorTamanho3 == null)
+                                {
+                                    rowErros++;
+                                }
+                                else
+                                {
+                                    var producto = new P_Productos();
+                                    producto.nombre = nomeProducto.ToString().Trim();
+                                    producto.Categoria = categoriaProducto.ToString().Trim();
+                                    producto.valor = valor is null ? 0 : Convert.ToDecimal(valor.ToString().Trim().Replace(",", "."));
+                                    producto.horasPreparacion = horas is null ? 0 : Convert.ToInt32(horas.ToString().Trim());
+                                    producto.minutosPreparacion = minutos is null ? 0 : Convert.ToInt32(minutos.ToString().Trim());
+                                    producto.descripcion = descripcion.ToString();
+                                    producto.tamanho1 = tamanho1 is null ? null : tamanho1.ToString().Trim();
+                                    producto.valorTamanho1 = valorTamanho1 is null ? 0 : Convert.ToDecimal(valorTamanho1.ToString().Trim().Replace(",", "."));
+                                    producto.tamanho2 = tamanho2 is null ? null : tamanho2.ToString().Trim();
+                                    producto.valorTamanho2 = valorTamanho2 is null ? 0 : Convert.ToDecimal(valorTamanho2.ToString().Trim().Replace(",", "."));
+                                    producto.tamanho3 = tamanho3 is null ? null : tamanho3.ToString().Trim();
+                                    producto.valorTamanho3 = valorTamanho3 is null ? 0 : Convert.ToDecimal(valorTamanho3.ToString().Trim().Replace(",", "."));
+
+                                    productos.Add(producto);
+                                }
+
                             }
                             catch (Exception ex)
                             {
@@ -73,6 +118,8 @@ namespace Pedidos.Controllers
             }
 
             ViewBag.Categorias = categorias;
+            ViewBag.Productos = productos;
+            ViewBag.RowErros = rowErros;
 
             return View();
         }

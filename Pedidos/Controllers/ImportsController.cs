@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Pedidos.Extensions;
 
 namespace Pedidos.Controllers
 {
@@ -34,6 +35,7 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
+            var categorias = new List<P_Categoria>();
             var productos = new List<P_Productos>();
 
             using (var stream = new MemoryStream())
@@ -42,39 +44,36 @@ namespace Pedidos.Controllers
 
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
+                    var row = 1;
                     while (reader.Read())
                     {
-                        try
+
+                        if (row >= 4)
                         {
-                            var sd = reader.GetValue(0);
-                            ;
+                            try
+                            {
+                                var nomeCategoria = reader.GetValue(0);
+                                if (nomeCategoria != null && !nomeCategoria.ToString().IsNullOrEmtpy())
+                                {
+                                    categorias.Add(new P_Categoria
+                                    {
+                                        nombre = nomeCategoria.ToString().Trim()
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                ;
+                            }
                         }
-                        catch (Exception ex)
-                        {
-                            ;
-                        }
-                        
+                        row++;
                     }
                 }
 
-                //using (var package = new ExcelPackage())
-                //{
-                //    ExcelWorksheets worksheets = package.Workbook.Worksheets;
-                //    ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
-                //    var rowcount = worksheet.Dimension.Rows;
-
-                //    for (int row = 2; row <= rowcount; row++)
-                //    {
-                //        productos.Add(new P_Productos
-                //        {
-                //            nombre = worksheet.Cells[row, 2].ToString().Trim()
-                //        });
-                //    }
-
-                //}
             }
 
-            var sdafsd = productos;
+            ViewBag.Categorias = categorias;
+
             return View();
         }
 

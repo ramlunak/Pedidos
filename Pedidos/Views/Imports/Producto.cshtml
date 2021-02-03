@@ -12,3 +12,43 @@
 
     </form>
 </div>
+
+@if (ViewBag.Categorias != null)
+{
+    <div class="card m-2">
+        <div class="card-header bg-info text-white">
+            <div class="row d-flex justify-content-center">
+                <div class="text-center">
+                    CATEGORÍAS
+                </div>
+            </div>
+
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-8">
+                            Nome
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Categorias)
+                    {
+                        <tr>
+                            <td>
+                                @item.nombre
+                            </td>
+
+                            <td>
+                            </td>
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

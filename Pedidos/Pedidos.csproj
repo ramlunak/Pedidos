@@ -10,7 +10,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Caja.sql" />
     <None Remove="wwwroot\Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Cardapio.sql" />
@@ -36,7 +35,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Reports\Vendas.rdlc" />
     <EmbeddedResource Include="wwwroot\Reports\Vendas.rdlc" />
   </ItemGroup>
 

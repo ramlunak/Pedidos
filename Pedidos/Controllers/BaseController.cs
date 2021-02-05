@@ -27,7 +27,10 @@ namespace Pedidos.Controllers
             {
                 List<Claim> claims = new List<Claim>();
                 claims.Add(new Claim("cuenta", JsonConvert.SerializeObject(cuenta)));
-                claims.Add(new Claim(ClaimTypes.Role, cuenta.rol));
+                if (cuenta != null && !cuenta.rol.IsNullOrEmtpy())
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, cuenta.rol));
+                }
                 claims.Add(new Claim(ClaimTypes.NameIdentifier, $"mastereat_account_{cuenta.id}"));
 
                 ClaimsIdentity identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

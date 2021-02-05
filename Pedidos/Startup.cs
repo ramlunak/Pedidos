@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
@@ -43,6 +44,9 @@ namespace Pedidos
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddControllersWithViews().AddSessionStateTempDataProvider();
             services.AddRazorPages().AddSessionStateTempDataProvider();
+
+            //Para las TagHelpers Authorization
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSignalR();
 

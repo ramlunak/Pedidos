@@ -44,7 +44,8 @@
                         </li>
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
+
+                        <li class="nav-item" asp-authorize asp-roles="@RolesSistema.Administrador">
                             <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Home" asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="fa fa-home fa-2x" aria-hidden="true"></i>
                             </a>

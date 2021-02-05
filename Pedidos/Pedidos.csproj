@@ -167,6 +167,10 @@
     </None>
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="TagHelpers\Enums\" />
+  </ItemGroup>
+
 
 
 </Project>

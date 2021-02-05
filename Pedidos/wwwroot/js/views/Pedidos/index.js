@@ -509,14 +509,37 @@ function ShowDetallesProducto(id) {
 
 }
 
+function ModalMostarValorProducto() {
+
+    let valorProducto = _ModalProducto.valor;
+
+    if (_ModalProducto.valorTamanhoSeleccionado != null && _ModalProducto.valorTamanhoSeleccionado > 0) {
+        valorProducto = _ModalProducto.valorTamanhoSeleccionado;
+    }
+
+    $.each(_ModalAdicionales, function (index, item) {
+        if (item.valor != null && item.cantidad > 0) {
+            valorProducto = valorProducto + (item.cantidad * item.valor);
+        }
+    });
+
+    $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(valorProducto)).toFixed(2));
+    $('#spanValorProducto').animate({ fontSize: '18px' }, 80);
+    $('#spanValorProducto').animate({ fontSize: '15px' }, 80);
+
+}
+
+
 //cargar info del producto en el modal 
 function CargarDatosModalDetalles(data) {
 
     $('#spanNomeProducto').html(data.producto.nombre.toUpperCase());
     $('#spanValorProducto').html(data.producto.valor.toFixed(2));
+
     $('#spanDescripcionProducto').html(data.producto.descripcion);
     $('#modalCantidadProducto').html('(' + data.producto.cantidad + ')');
     $("#MINUS_Producto").attr('disabled', 'disabled');
+
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
@@ -681,9 +704,15 @@ function adicionalPlus(id, idProducto) {
             }
 
             $(codigo).html('+' + item.cantidad);
+            $(codigo).animate({ fontSize: '19px' }, 80);
+            $(codigo).animate({ fontSize: '15px' }, 80);
+
+            $(codigo).html('+' + item.cantidad);
         }
         return item.id === id;
     });
+
+    ModalMostarValorProducto();
 
 }
 
@@ -703,10 +732,17 @@ function adicionalMinus(id, idProducto) {
                     $(minusId).attr('disabled', 'disabled');
                 }
             }
+
+            $(codigo).html('+' + item.cantidad);
+            $(codigo).animate({ fontSize: '19px' }, "fast",);
+            $(codigo).animate({ fontSize: '15px' }, "fast");
+
             $(codigo).html('+' + item.cantidad);
         }
         return item.id === id;
     });
+
+    ModalMostarValorProducto();
 }
 
 //evento de marcar y desmarcar ingredeinte
@@ -730,6 +766,10 @@ function productoMinus(btn) {
     _ModalProducto.cantidad--;
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
 
+    $('#modalCantidadProducto').animate({ fontSize: '19px' }, 80);
+    $('#modalCantidadProducto').animate({ fontSize: '17px' }, 80);
+    ModalMostarValorProducto();
+
     if (parseInt(_ModalProducto.cantidad) === 1) {
         $("#MINUS_Producto").attr('disabled', 'disabled');
     }
@@ -740,6 +780,10 @@ function productoMinus(btn) {
 function productoPlus() {
     _ModalProducto.cantidad++;
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
+
+    $('#modalCantidadProducto').animate({ fontSize: '19px' }, 80);
+    $('#modalCantidadProducto').animate({ fontSize: '17px' }, 80);
+    ModalMostarValorProducto();
 
     $("#MINUS_Producto").removeAttr('disabled');
 

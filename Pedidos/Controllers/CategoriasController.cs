@@ -152,7 +152,10 @@ namespace Pedidos.Controllers
 
                 try
                 {
-                    _context.Update(p_Categoria);
+                    var categoria = await _context.P_Categorias.FindAsync(id);
+                    categoria.nombre = p_Categoria.nombre;
+
+                    _context.Update(categoria);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

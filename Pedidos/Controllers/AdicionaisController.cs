@@ -186,7 +186,10 @@ namespace Pedidos.Controllers
 
                 try
                 {
-                    _context.Update(p_Adicionais);
+                    var entidad = await _context.P_Adicionais.FindAsync(id);
+                    entidad.nombre = p_Adicionais.nombre;
+
+                    _context.Update(entidad);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)

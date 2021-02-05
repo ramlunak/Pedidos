@@ -403,14 +403,15 @@ function CargarProductos() {
 
     $.ajax({
         type: "GET",
-        url: "/Productos/GetProductos/",
+        url: "/Productos/GetProductos",
         traditional: true,
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
 
-
+            console.log('data', data);
             _Productos = data;
+
         },
         failure: function (response) {
             console.log('failure', response);

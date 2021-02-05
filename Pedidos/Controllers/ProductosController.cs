@@ -421,7 +421,7 @@ namespace Pedidos.Controllers
             }
             catch (Exception ex)
             {
-                return Ok();
+                return Ok(ex.ToString());
             }
         }
 

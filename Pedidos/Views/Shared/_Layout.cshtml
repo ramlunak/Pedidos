@@ -28,8 +28,8 @@
                         @*<li class="nav-item"><a class="nav-link text-dark"> @ViewData["Nombre"]</a></li>*@
                         <li class="nav-item d-flex">
                             @*<a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug">
-                                <i class="fas fa-bug fa-2x"></i>
-                            </a>*@
+                                    <i class="fas fa-bug fa-2x"></i>
+                                </a>*@
                             <a class="nav-link text-dark cursor-pointer text-primary" data-toggle="tooltip" data-placement="top" title="Informar Bug" asp-controller="Mejorias" asp-action="Index">
                                 <i class="fas fa-bug fa-2x"></i>
                             </a>
@@ -45,11 +45,18 @@
                     </ul>
                     <ul class="navbar-nav flex-grow-1">
 
-                        <li class="nav-item"> 
-                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Home" asp-authorize asp-roles="@RolesSistema.Administrador" asp-area="" asp-controller="Home" asp-action="Index">
+                        <li class="nav-item">
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Home" asp-area="" asp-controller="Home" asp-action="Index">
                                 <i class="fa fa-home fa-2x" aria-hidden="true"></i>
                             </a>
                         </li>
+
+                        <li class="nav-item">
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Contas" asp-authorize asp-roles="@RolesSistema.Administrador" asp-area="" asp-controller="Cuentas" asp-action="Index">
+                                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                            </a>
+                        </li>
+
 
                         <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="Relatórios">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -68,12 +75,12 @@
                         </li>
 
                         @*<li class="nav-item">
-                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Mesas" asp-area="" asp-controller="Mesas" asp-action="Lista">
-                                <i class="fas fa-box fa-2x" aria-hidden="true"></i>
-                            </a>
-                        </li>*@
+                                <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Mesas" asp-area="" asp-controller="Mesas" asp-action="Lista">
+                                    <i class="fas fa-box fa-2x" aria-hidden="true"></i>
+                                </a>
+                            </li>*@
                         <li class="nav-item">
-                            <a class="m-1 nav-link text-dark btn btn-outline-primary"  data-toggle="tooltip" data-placement="top" title="Clientes" asp-area="" asp-controller="Clientes" asp-action="Index">
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Clientes" asp-area="" asp-controller="Clientes" asp-action="Index">
                                 <i class="fas fa-users fa-2x"></i>
                             </a>
                         </li>

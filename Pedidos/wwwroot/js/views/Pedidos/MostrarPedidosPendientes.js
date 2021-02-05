@@ -268,11 +268,11 @@ function MostarPedidosPendientes() {
             deliveryPago = "";
         }
 
-        if (pedido.idMesa !== null && pedido.idMesa !== undefined && pedido.idMesa) {
-            deliveryCartao = "";
-            deliveryDinheiro = "";
-            deliveryPago = "";
-        }
+        //if (pedido.idMesa !== null && pedido.idMesa !== undefined && pedido.idMesa) {
+        //    deliveryCartao = "";
+        //    deliveryDinheiro = "";
+        //    deliveryPago = "";
+        //}
 
         CARD_FUTTER.append('<div >' + deliveryCartao + deliveryDinheiro + deliveryPago + '  </div>');
         CARD_FUTTER.append('<a class="btn btn-outline-secondary cursor-pointer" onclick="imprimirPedido(' + pedido.id + ',' + true + ')" target="_blank"><i class="fa fa-print cursor-pointer float-right" aria-hidden="true" ></i></a>');
@@ -373,7 +373,7 @@ function imprimirPedido(idPedido, pendientes) {
             comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' </div >');
         }
 
-        if (pedido.idMesa !== null && pedido.idMesa !== "") {
+        if (!isNaN(parseInt(pedido.idMesa))) {
             comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
         }
 

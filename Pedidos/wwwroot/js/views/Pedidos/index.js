@@ -309,10 +309,11 @@ function CargarClientePorTelefono(telefono) {
         dataType: "json",
         success: function (data) {
 
-            $('#inputNome').val(data);
-            $('#inputNome').trigger('input');
+            if (data !== null && data !== "") {
+                $('#inputNome').val(data);
+                $('#inputNome').trigger('input');
+            }
 
-            console.log(data);
         },
         failure: function (response) {
             console.log('failure', response);
@@ -808,6 +809,53 @@ function UpdataDatosCliente() {
         }
     });
 
+}
+
+
+function editar(idPedido) {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetCurrentPedido/" + idPedido,
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            _CurrentPedido = data.currentPedido;
+            _CurrentPedido.isNew = false;
+
+            _ModalProducto.cliente = _CurrentPedido.cliente;
+            _ModalProducto.idCliente = _CurrentPedido.idCliente;
+            _ModalProducto.aplicativo = _CurrentPedido.aplicativo;
+            _ModalProducto.idAplicativo = _CurrentPedido.idAplicativo;
+            _ModalProducto.idMesa = _CurrentPedido.idMesa;
+            _ModalProducto.direccion = _CurrentPedido.direccion;
+            _ModalProducto.idDireccion = _CurrentPedido.idDireccion;
+            _ModalProducto.telefono = _CurrentPedido.telefono;
+
+            if (_CurrentPedido.deliveryEmCartao) {
+
+                metodoPagoDelivery("_deliveryEmCartaoCheck");
+
+            } else if (_CurrentPedido.deliveryPago) {
+
+                metodoPagoDelivery("_deliveryPagoCheck");
+
+            } else if (_CurrentPedido.deliveryEmdinheiro) {
+
+                metodoPagoDelivery("_deliveryEmdinheiroCheck");
+                $('#inputDeliveryDinheiroTotal').val(_CurrentPedido.deliveryDinheiroTotal);
+            }
+
+            MostarCurrentPedido();
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
 }
 
 //cargar datos del pedido en la pantalla
@@ -1332,53 +1380,53 @@ function actualizarFormaPagamento(idPedido) {
         calcularTotalPagado();
     });
 
-    $("#inputDeliveryDinheiroTotal2").mask("###0.00", { reverse: true });
+    //$("#inputDeliveryDinheiroTotal2").mask("###0.00", { reverse: true });
 
-    $('button[name="buttonDeliveryCheck2"]').on('click', function (e) {
-        e.preventDefault();
+    //$('button[name="buttonDeliveryCheck2"]').on('click', function (e) {
+    //    e.preventDefault();
 
-        var id = $(e.target)[0].id;
+    //    var id = $(e.target)[0].id;
 
-        if (id === "_deliveryEmCartaoCheck2") {
-            $('#deliveryEmCartaoCheck2').show();
-            $('#deliveryEmdinheiroCheck2').hide();
-            $('#deliveryPagoCheck2').hide();
+    //    if (id === "_deliveryEmCartaoCheck2") {
+    //        $('#deliveryEmCartaoCheck2').show();
+    //        $('#deliveryEmdinheiroCheck2').hide();
+    //        $('#deliveryPagoCheck2').hide();
 
-            _ModalDeliveryFormaPagamento.deliveryEmCartao = true;
-            _ModalDeliveryFormaPagamento.deliveryPago = false;
-            _ModalDeliveryFormaPagamento.deliveryEmdinheiro = false;
+    //        _ModalDeliveryFormaPagamento.deliveryEmCartao = true;
+    //        _ModalDeliveryFormaPagamento.deliveryPago = false;
+    //        _ModalDeliveryFormaPagamento.deliveryEmdinheiro = false;
 
-            $('#divDeliveryDinheiroTotal2').hide();
-            $('#inputDeliveryDinheiroTotal2').val(null);
-        }
+    //        $('#divDeliveryDinheiroTotal2').hide();
+    //        $('#inputDeliveryDinheiroTotal2').val(null);
+    //    }
 
-        if (id === "_deliveryPagoCheck2") {
-            $('#deliveryPagoCheck2').show();
-            $('#deliveryEmdinheiroCheck2').hide();
-            $('#deliveryEmCartaoCheck2').hide();
+    //    if (id === "_deliveryPagoCheck2") {
+    //        $('#deliveryPagoCheck2').show();
+    //        $('#deliveryEmdinheiroCheck2').hide();
+    //        $('#deliveryEmCartaoCheck2').hide();
 
-            _ModalDeliveryFormaPagamento.deliveryEmCartao = false;
-            _ModalDeliveryFormaPagamento.deliveryPago = true;
-            _ModalDeliveryFormaPagamento.deliveryEmdinheiro = false;
+    //        _ModalDeliveryFormaPagamento.deliveryEmCartao = false;
+    //        _ModalDeliveryFormaPagamento.deliveryPago = true;
+    //        _ModalDeliveryFormaPagamento.deliveryEmdinheiro = false;
 
-            $('#divDeliveryDinheiroTotal2').hide();
-            $('#inputDeliveryDinheiroTotal2').val(null);
+    //        $('#divDeliveryDinheiroTotal2').hide();
+    //        $('#inputDeliveryDinheiroTotal2').val(null);
 
-        }
+    //    }
 
-        if (id === "_deliveryEmdinheiroCheck2") {
-            $('#deliveryEmdinheiroCheck2').show();
-            $('#deliveryPagoCheck2').hide();
-            $('#deliveryEmCartaoCheck2').hide();
+    //    if (id === "_deliveryEmdinheiroCheck2") {
+    //        $('#deliveryEmdinheiroCheck2').show();
+    //        $('#deliveryPagoCheck2').hide();
+    //        $('#deliveryEmCartaoCheck2').hide();
 
-            _ModalDeliveryFormaPagamento.deliveryEmCartao = false;
-            _ModalDeliveryFormaPagamento.deliveryPago = false;
-            _ModalDeliveryFormaPagamento.deliveryEmdinheiro = true;
+    //        _ModalDeliveryFormaPagamento.deliveryEmCartao = false;
+    //        _ModalDeliveryFormaPagamento.deliveryPago = false;
+    //        _ModalDeliveryFormaPagamento.deliveryEmdinheiro = true;
 
-            $('#divDeliveryDinheiroTotal2').show();
-        }
+    //        $('#divDeliveryDinheiroTotal2').show();
+    //    }
 
-    });
+    //});
 
     //CARGAR FORMA PAGAMENTO
 
@@ -1664,37 +1712,6 @@ function calcularTotalPagado() {
     }
 }
 
-function editar(idPedido) {
-    $.ajax({
-        type: "GET",
-        url: "/Pedidos/GetCurrentPedido/" + idPedido,
-        traditional: true,
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (data) {
-            _CurrentPedido = data.currentPedido;
-            _CurrentPedido.isNew = false;
-
-            _ModalProducto.cliente = _CurrentPedido.cliente;
-            _ModalProducto.idCliente = _CurrentPedido.idCliente;
-            _ModalProducto.aplicativo = _CurrentPedido.aplicativo;
-            _ModalProducto.idAplicativo = _CurrentPedido.idAplicativo;
-            _ModalProducto.idMesa = _CurrentPedido.idMesa;
-            _ModalProducto.direccion = _CurrentPedido.direccion;
-            _ModalProducto.idDireccion = _CurrentPedido.idDireccion;
-            _ModalProducto.telefono = _CurrentPedido.telefono;
-
-            MostarCurrentPedido();
-        },
-        failure: function (response) {
-            console.log('failure', response);
-        },
-        error: function (response) {
-            console.log('error', response);
-
-        }
-    });
-}
 
 function CancelarCurrentPedido() {
     $.ajax({
@@ -1715,6 +1732,7 @@ function CancelarCurrentPedido() {
                 telefono: '',
                 observacion: ''
             };
+            metodoPagoDelivery("_deliveryEmCartaoCheck");
             MostarCurrentPedido();
         },
         failure: function (response) {

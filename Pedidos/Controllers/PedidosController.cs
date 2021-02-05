@@ -651,7 +651,11 @@ namespace Pedidos.Controllers
                 try
                 {
                     var clientes = GetSession<List<P_Cliente>>("Clientes");
-                    cliente = clientes.FirstOrDefault(x => x.telefono == telefono).nombre;
+                    var cli = clientes.FirstOrDefault(x => x.telefono == telefono);
+                    if (cli != null)
+                    {
+                        cliente = cli.nombre;
+                    }
                     return Ok(cliente);
                 }
                 catch

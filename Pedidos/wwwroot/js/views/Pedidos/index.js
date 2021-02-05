@@ -636,6 +636,7 @@ function checkTamanho(tamanho) {
         $('#spanValorProducto').html(_ModalProducto.valorTamanho3.toFixed(2));
     }
 
+    ModalMostarValorProducto();
 }
 
 

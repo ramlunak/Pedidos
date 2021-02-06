@@ -329,7 +329,6 @@ function marcarProductoPreparado(idPedido, idProducto, posicion, timer) {
     });
 }
 
-
 function imprimirPedido(idPedido, pendientes) {
 
     var NombreEstablecimiento = $('#NombreEstablecimiento').val();
@@ -490,20 +489,31 @@ function imprimirPedido(idPedido, pendientes) {
         //RESUMEN PAGAMENTO
         comprobantePedido.append('<hr style="margin:4px"/>');
 
+        //Descuento
+        var trDescuento = "";
+        if (pedido.descuento > 0) {
+            trDescuento = '         <tr>  ' +
+                '                       <td style="width:50%;text-align:right">Descuento:</td>  ' +
+                '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.descuento).toFixed(2) + '</td>  ' +
+                '                   </tr>  ';
+        }
+
+        var trtasaEntrega = "";
+        if (pedido.tasaEntrega > 0) {
+            trtasaEntrega = '       <tr>  ' +
+                '                       <td style="width:50%;text-align:right">Tasa de Entrega:</td>  ' +
+                '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.tasaEntrega).toFixed(2) + '</td>  ' +
+                '                   </tr>  ';
+        }
+
         comprobantePedido.append('<div class="centrado">  ' +
             '               <table style="width:100%">  ' +
             '                   <tr>  ' +
             '                       <td style="width:50%;text-align:right"><b>Total a Pagar:</b></td>  ' +
             '                       <td style="width: 50%;text-align: left"> <b>R$ ' + (pedido.valorProductos - pedido.descuento + pedido.tasaEntrega).toFixed(2) + '</b></td>  ' +
             '                   </tr>  ' +
-            '                   <tr>  ' +
-            '                       <td style="width:50%;text-align:right">Descuento:</td>  ' +
-            '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.descuento).toFixed(2) + '</td>  ' +
-            '                   </tr>  ' +
-            '                   <tr>  ' +
-            '                       <td style="width:50%;text-align:right">Tasa de Entrega:</td>  ' +
-            '                       <td style="width: 50%;text-align: left">R$ ' + (pedido.tasaEntrega).toFixed(2) + '</td>  ' +
-            '                   </tr>  ' +
+            trDescuento +
+            trtasaEntrega +
             '               </table>  ' +
             '          </div> ');
 

@@ -22,18 +22,7 @@ $(function () {
         $('#form_group_valor').show('slow');
     })
 
-    //$(".inputDecimal").change(function () {
-
-    //    let vT1 = $('#inputValorTamanho1').val();
-    //    let vT2 = $('#inputValorTamanho2').val();
-    //    let vT3 = $('#inputValorTamanho3').val();
-
-    //    if (vT1 === "" && vT2 === "" && vT3 === "") {
-    //        $('#btnToggleTamanhos').click();
-    //    }
-
-    //});
-
+    
 });
 
 

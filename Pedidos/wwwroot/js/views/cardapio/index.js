@@ -232,6 +232,11 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
             divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho3 !== null)
             divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
+        if (item.valor === 0 && item.valorTamanho4 !== null)
+            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho4 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
+        if (item.valor === 0 && item.valorTamanho5 !== null)
+            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
+
         TD1.append(divTamanhos);
 
         TD2.append('<div class="d-flex align-items-center unselectable" style="font-size:22px;color:green;font-weight: 600;cursor:pointer">+</div>');
@@ -392,8 +397,31 @@ function mostrarTamanhos(producto) {
         $('#btnTamanho3').addClass('btn-outline-primary');
         $('#btnTamanho3').show();
         $('#checkedTamanho3').hide();
-    } else {
+    }
+    else {
         $('#btnTamanho3').hide();
+    }
+
+    if (producto.tamanho4 !== null && producto.tamanho4 !== "" && producto.tamanho4 !== undefined) {
+        $('#nomeTamanho4').html(producto.tamanho4);
+        $('#valorTamanho4').html(producto.valorTamanho4.toFixed(2));
+        $('#btnTamanho4').addClass('btn-outline-primary');
+        $('#btnTamanho4').show();
+        $('#checkedTamanho4').hide();
+    }
+    else {
+        $('#btnTamanho4').hide();
+    }
+
+    if (producto.tamanho5 !== null && producto.tamanho5 !== "" && producto.tamanho5 !== undefined) {
+        $('#nomeTamanho5').html(producto.tamanho5);
+        $('#valorTamanho5').html(producto.valorTamanho5.toFixed(2));
+        $('#btnTamanho5').addClass('btn-outline-primary');
+        $('#btnTamanho5').show();
+        $('#checkedTamanho5').hide();
+    }
+    else {
+        $('#btnTamanho5').hide();
     }
 
 }
@@ -406,9 +434,13 @@ function checkTamanho(tamanho) {
         $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
         $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho4').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho5').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#checkedTamanho1').show('slow');
         $('#checkedTamanho2').hide('slow');
         $('#checkedTamanho3').hide('slow');
+        $('#checkedTamanho4').hide('slow');
+        $('#checkedTamanho5').hide('slow');
         _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho1;
         _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho1;
         $('#spanValorProducto').html(_ModalProducto.valorTamanho1.toFixed(2));
@@ -418,9 +450,13 @@ function checkTamanho(tamanho) {
         $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
         $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho4').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho5').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#checkedTamanho1').hide('slow');
         $('#checkedTamanho2').show('slow');
         $('#checkedTamanho3').hide('slow');
+        $('#checkedTamanho4').hide('slow');
+        $('#checkedTamanho5').hide('slow');
         _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho2;
         _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho2;
         $('#spanValorProducto').html(_ModalProducto.valorTamanho2.toFixed(2));
@@ -430,12 +466,45 @@ function checkTamanho(tamanho) {
         $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
+        $('#btnTamanho4').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho5').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
         $('#checkedTamanho1').hide('slow');
         $('#checkedTamanho2').hide('slow');
         $('#checkedTamanho3').show('slow');
+        $('#checkedTamanho4').hide('slow');
+        $('#checkedTamanho5').hide('slow');
         _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho3;
         _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho3;
         $('#spanValorProducto').html(_ModalProducto.valorTamanho3.toFixed(2));
+    } else if (tamanho === 4) {
+        $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho4').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
+        $('#btnTamanho5').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#checkedTamanho1').hide('slow');
+        $('#checkedTamanho2').hide('slow');
+        $('#checkedTamanho3').hide('slow');
+        $('#checkedTamanho4').show('slow');
+        $('#checkedTamanho5').hide('slow');
+        _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho4;
+        _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho4;
+        $('#spanValorProducto').html(_ModalProducto.valorTamanho4.toFixed(2));
+    } else if (tamanho === 5) {
+
+        $('#btnTamanho1').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho2').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho3').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho4').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-outline-primary');
+        $('#btnTamanho5').removeClass('btn-outline-primary').removeClass('btn-primary').addClass('btn-primary');
+        $('#checkedTamanho1').hide('slow');
+        $('#checkedTamanho2').hide('slow');
+        $('#checkedTamanho3').hide('slow');
+        $('#checkedTamanho4').hide('slow');
+        $('#checkedTamanho5').show('slow');
+        _ModalProducto.tamanhoSeleccionado = _ModalProducto.tamanho5;
+        _ModalProducto.valorTamanhoSeleccionado = _ModalProducto.valorTamanho5;
+        $('#spanValorProducto').html(_ModalProducto.valorTamanho5.toFixed(2));
     }
 
 }

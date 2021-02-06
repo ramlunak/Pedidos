@@ -400,7 +400,7 @@ function imprimirPedido(idPedido, pendientes) {
             var tamanho = "";
 
             if (producto.tamanhoSeleccionado != null && producto.tamanhoSeleccionado != "") {
-                tamanho = '<div> Tamanho ' + producto.tamanhoSeleccionado + ' : R$ ' + producto.valorTamanhoSeleccionado.toFixed(2) + '</div>';
+                tamanho = '<div>' + producto.tamanhoSeleccionado + ' : R$ ' + producto.valorTamanhoSeleccionado.toFixed(2) + '</div>';
 
             } else {
                 tamanho = '<div> Valor : R$ ' + producto.valor.toFixed(2) + '</div>';

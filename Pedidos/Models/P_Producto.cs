@@ -58,7 +58,18 @@ namespace Pedidos.Models
         public decimal? valorTamanho2 { get; set; }
         public string tamanho3 { get; set; }
         public decimal? valorTamanho3 { get; set; }
-
+        public string tamanho4 { get; set; }
+        public decimal? valorTamanho4 { get; set; }
+        public string tamanho5 { get; set; }
+        public decimal? valorTamanho5 { get; set; }
+        public string tamanho6 { get; set; }
+        public decimal? valorTamanho6 { get; set; }
+        public string tamanho7 { get; set; }
+        public decimal? valorTamanho7 { get; set; }
+        public string tamanho8 { get; set; }
+        public decimal? valorTamanho8 { get; set; }
+        public string tamanho9 { get; set; }
+        public decimal? valorTamanho9 { get; set; }
 
         //PARA CARGAR DETALLES DEL PRODUCTO      
         public string JsonAdicionales { get; set; }

@@ -52,7 +52,7 @@
                     imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                 }
 
-                bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue ? true : false;
+                bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue|| item.valorTamanho4.HasValue|| item.valorTamanho5.HasValue ? true : false;
 
                 <div class="col-12 col-md-6 col-xl-4 mb-2">
                     <div class="card">
@@ -92,15 +92,21 @@
                                     {
                                         <tr>
                                             <td colspan="2">
-                                                <div class="d-flex justify-content-between">
+                                                <div class="d-flex row m-1">
                                                     @if (item.valorTamanho1.HasValue)
-                                                    {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
+                                                    {<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
 
                                                     @if (item.valorTamanho2.HasValue)
-                                                    {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
+                                                    {<div class="btn btn-sm btn-secondary  text-nowrap m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
 
                                                     @if (item.valorTamanho3.HasValue)
-                                                    {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
+                                                    {<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
+
+                                                    @if (item.valorTamanho4.HasValue)
+                                                    {<div class="btn btn-sm btn-secondary  text-nowrap m-1 d-flex">@item.tamanho4 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho4.Value.ToString("F2")</div> </div>}
+
+                                                    @if (item.valorTamanho5.HasValue)
+                                                    {<div class="btn btn-sm btn-secondary  text-nowrap m-1 d-flex">@item.tamanho5 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho5.Value.ToString("F2")</div> </div>}
 
                                                 </div>
                                             </td>

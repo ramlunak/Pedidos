@@ -173,8 +173,20 @@ namespace Pedidos.Controllers
                     return View(p_Productos);
                 }
 
+                if (!string.IsNullOrEmpty(p_Productos.tamanho4) && !p_Productos.valorTamanho4.HasValue)
+                {
+                    PrompErro($"Informe o valor do tamanho {p_Productos.tamanho4}");
+                    return View(p_Productos);
+                }
 
-                if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue)
+                if (!string.IsNullOrEmpty(p_Productos.tamanho5) && !p_Productos.valorTamanho5.HasValue)
+                {
+                    PrompErro($"Informe o valor do tamanho {p_Productos.tamanho5}");
+                    return View(p_Productos);
+                }
+
+
+                if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue || p_Productos.valorTamanho4.HasValue || p_Productos.valorTamanho5.HasValue)
                 {
                     p_Productos.valor = 0;
                 }
@@ -274,6 +286,18 @@ namespace Pedidos.Controllers
                 return View(p_Productos);
             }
 
+            if (!string.IsNullOrEmpty(p_Productos.tamanho4) && !p_Productos.valorTamanho4.HasValue)
+            {
+                PrompErro($"Informe o valor do tamanho {p_Productos.tamanho4}");
+                return View(p_Productos);
+            }
+
+            if (!string.IsNullOrEmpty(p_Productos.tamanho5) && !p_Productos.valorTamanho5.HasValue)
+            {
+                PrompErro($"Informe o valor do tamanho {p_Productos.tamanho5}");
+                return View(p_Productos);
+            }
+
 
             if (ModelState.ErrorCount == 1)
                 ModelState.Clear();
@@ -307,7 +331,7 @@ namespace Pedidos.Controllers
                         }
                     }
 
-                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue)
+                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue|| p_Productos.valorTamanho4.HasValue|| p_Productos.valorTamanho5.HasValue)
                     {
                         p_Productos.valor = 0;
                     }

@@ -188,6 +188,7 @@ namespace Pedidos.Controllers
                 {
                     var entidad = await _context.P_Adicionais.FindAsync(id);
                     entidad.nombre = p_Adicionais.nombre;
+                    entidad.Valor = p_Adicionais.Valor;
 
                     _context.Update(entidad);
                     await _context.SaveChangesAsync();

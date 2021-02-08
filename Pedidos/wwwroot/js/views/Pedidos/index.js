@@ -235,10 +235,12 @@ function CargarDirecciones(id) {
         dataType: "json",
         success: function (data) {
 
-            //Llanar lista direcciones
-            $("#EnderecoList").empty();
-            $("#inputEndereco").val(null);
-            $("#spanEndereco").html(null);
+            if (data !== null && data.length > 0) {
+                //Llanar lista direcciones
+                $("#EnderecoList").empty();
+                $("#inputEndereco").val(null);
+                $("#spanEndereco").html(null);
+            }
 
             $.each(data, (index, item) => {
 
@@ -335,7 +337,9 @@ function CargarTelefono(id) {
         dataType: "json",
         success: function (data) {
 
-            $("#inputTelefone").val(data);
+            if (data !== null && data.length > 0) {
+                $("#inputTelefone").val(data);
+            }
             ////Llanar lista direcciones
             //
             //$.each(data, (index, item) => {
@@ -373,20 +377,20 @@ function FiltrarProductos(productos) {
         var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.id + ')">');
 
         TD1.append('<div><b>' + item.nombre + '</b></div>');
-        var divTamanhos = $('<div style="display: flex">');
+        var divTamanhos = $('<div style="display: inline-table">');
 
         if (item.valor !== 0)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho1 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho2 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho3 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho4 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">' + item.tamanho4 + ' <div class="ml-1 " style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho4 + ' <div class="ml-1 " style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho5 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
 
         TD1.append(divTamanhos);
 

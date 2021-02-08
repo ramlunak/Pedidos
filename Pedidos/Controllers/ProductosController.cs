@@ -87,6 +87,23 @@ namespace Pedidos.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Adicionales(int id)
+        {
+            await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
+
+            //var query = await _context.P_Ingredientes.FromSqlRaw($"EXEC GetIngredientesPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
+            //var model = from ING in query
+            //            select new ListarIngredientesPorProducto()
+            //            {
+            //                idProducto = id,
+            //                idIngrediente = ING.id,
+            //                ingrediente = ING.nombre,
+            //                selected = ING.activo
+            //            };
+
+            return View(new List<ListarAdicionalesPorProducto>());
+        }
+
         // GET: Productos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -331,7 +348,7 @@ namespace Pedidos.Controllers
                         }
                     }
 
-                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue|| p_Productos.valorTamanho4.HasValue|| p_Productos.valorTamanho5.HasValue)
+                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue || p_Productos.valorTamanho4.HasValue || p_Productos.valorTamanho5.HasValue)
                     {
                         p_Productos.valor = 0;
                     }

@@ -235,9 +235,11 @@ function CargarDirecciones(id) {
         dataType: "json",
         success: function (data) {
 
+            $("#EnderecoList").empty();
+
             if (data !== null && data.length > 0) {
                 //Llanar lista direcciones
-                $("#EnderecoList").empty();
+              
                 $("#inputEndereco").val(null);
                 $("#spanEndereco").html(null);
             }
@@ -349,7 +351,6 @@ function CargarTelefono(id) {
             //    } else {
             //        $("#EnderecoList").append($('<option id="' + item.id + '">').attr('value', item.text));
             //    }
-
 
             //});
 

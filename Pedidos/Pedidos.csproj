@@ -6,11 +6,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Reports\**" />
+    <Content Remove="Reports\**" />
+    <EmbeddedResource Remove="Reports\**" />
+    <None Remove="Reports\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Controllers\CajaControllerOld.cs" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Caja.sql" />
     <None Remove="wwwroot\Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Cardapio.sql" />
@@ -36,7 +42,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Reports\Vendas.rdlc" />
     <EmbeddedResource Include="wwwroot\Reports\Vendas.rdlc" />
   </ItemGroup>
 

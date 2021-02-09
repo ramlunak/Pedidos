@@ -72,6 +72,11 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Ingredientes(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
             await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
 
             var query = await _context.P_Ingredientes.FromSqlRaw($"EXEC GetIngredientesPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
@@ -89,7 +94,12 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Adicionales(int id)
         {
-            await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
+            //await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
 
             //var query = await _context.P_Ingredientes.FromSqlRaw($"EXEC GetIngredientesPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
             //var model = from ING in query
@@ -101,7 +111,20 @@ namespace Pedidos.Controllers
             //                selected = ING.activo
             //            };
 
-            return View(new List<ListarAdicionalesPorProducto>());
+            var model = new List<ListarAdicionalesPorProducto>();
+            var adicionales = await _context.P_Adicionais.ToListAsync();
+
+            foreach (var item in adicionales)
+            {
+                var adicionalProducto = new ListarAdicionalesPorProducto();
+                adicionalProducto.adicional = item.nombre;
+                adicionalProducto.idAdicional = item.id;
+                adicionalProducto.idProducto = id;
+                adicionalProducto.selected = false;
+                model.Add(adicionalProducto);
+            }
+
+            return View(model);
         }
 
         // GET: Productos/Details/5

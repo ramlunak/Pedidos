@@ -74,7 +74,7 @@ namespace Pedidos.Models
         {
             get
             {
-                return fecha.ToSouthAmericaStandard().ToString("dd/MM/yyyy H:mm");
+                return fecha.ToString("MM/dd/yyyy HH:mm");
             }
 
         }

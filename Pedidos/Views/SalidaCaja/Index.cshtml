@@ -31,11 +31,12 @@
                 {
                     <tr>
 
-                        <td >
+                        <td style="width:100%">
                             @Html.DisplayFor(modelItem => item.motivo)
                         </td>
-                        <td width="90%">
-                            @Html.DisplayFor(modelItem => item.valor)
+
+                        <td style="width:auto" class="text-nowrap">
+                           R$ @Html.DisplayFor(modelItem => item.valor)
                         </td>
 
 

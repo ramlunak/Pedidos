@@ -175,6 +175,22 @@ namespace Pedidos.Controllers
             caja.fechaCierre = DateTime.Now.ToSouthAmericaStandard();
             _context.P_Caja.Update(caja);
             await _context.SaveChangesAsync();
+
+            try
+            {
+                var salidasCaja = await _context.P_SalidaCaja.Where(x => x.idCuenta == Cuenta.id && !x.idCaja.HasValue).ToListAsync();
+                foreach (var salida in salidasCaja)
+                {
+                    salida.idCaja = caja.id;
+                    _context.P_SalidaCaja.Update(salida);
+                    await _context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                PrompErro(ex.ToString());
+            }
+
             return RedirectToAction(nameof(Lista));
         }
 

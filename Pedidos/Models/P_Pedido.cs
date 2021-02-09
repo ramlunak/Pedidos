@@ -107,6 +107,7 @@ namespace Pedidos.Models
         public bool? deliveryPago { get; set; } = false;
         public bool? deliveryEmdinheiro { get; set; } = false;
 
+        public bool cadastrarCliente { get; set; } = true;
     }
 
 

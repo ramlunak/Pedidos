@@ -111,7 +111,8 @@
                         @*<div class="m-1 btn btn-sm btn-outline-primary cursor-pointer d-flex align-items-center" onclick="showModalInfoDelivery()"><i class="fas fa-motorcycle mr-2" style="color:black"></i> DELIVERY</div>*@
                         <div class="d-flex">
                             <div class="ml-2">
-                                <a id="btnSalvarPedido" class="btn btn-sm btn-primary cursor-pointer" onclick="GuardarCurrentPedido()" style="color:white">salvar</a>
+                                <button id="btnSalvarPedido" class="btn btn-sm btn-outline-secondary cursor-pointer" onclick="GuardarCurrentPedido(false)" data-toggle="tooltip" data-placement="top" title="Não cadastrar cliente">Salvar sem cadastrar</button>
+                                <button id="btnSalvarPedido" class="btn btn-sm btn-outline-primary cursor-pointer" onclick="GuardarCurrentPedido(true)" data-toggle="tooltip" data-placement="top" title="Cadastrar cliente">Salvar</button>
                             </div>
                         </div>
                     </div>
@@ -119,184 +120,184 @@
             </div>
 
             @*FORMULARIO*@
-        <div class="form-group position-relative">
-            <form autocomplete="off">
+            <div class="form-group position-relative">
+                <form autocomplete="off">
+                    <div class="row m-1">
+
+                        <div class="col-12 col-md-8  m-0 p-0 mb-2">
+                            <input type="search" id="inputNome" list="ClienteList" placeholder="Cliente" asp-for="cliente" class="form-control form-control-sm w-100" />
+                            <datalist id="ClienteList" class="w-100">
+                                @if (ViewBag.Clientes != null)
+                                {
+                                    @foreach (var cliente in ViewBag.Clientes)
+                                    {
+                                        <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
+                                    }
+                                }
+                            </datalist>
+                            <input id="idCliente" asp-for="idCliente" hidden class="form-control" />
+                        </div>
+
+                        <div class="col-12 col-md-4 mb-2 p-0">
+                            <input id="inputTelefone" type="search" list="TelefonoList" class="form-control form-control-sm" placeholder="Telefone" />
+                            <datalist id="TelefonoList" class="col-12 col-md-4">
+                            </datalist>
+                        </div>
+
+                        <div class="col-12 m-0 p-0 mb-2">
+                            <input type="search" id="inputEndereco" list="EnderecoList" placeholder="Endereço" class="form-control form-control-sm w-100" />
+                            <datalist id="EnderecoList" class="w-100">
+                            </datalist>
+                            <input id="idDireccion" asp-for="idDireccion" hidden class="form-control" />
+                        </div>
+
+                        <div class="col-12 col-md-8 m-0 p-0 mb-2">
+                            <input type="search" id="inputAplicativo" list="AplicativoList" placeholder="Aplicativo" asp-for="aplicativo" class="form-control form-control-sm w-100" />
+                            <datalist id="AplicativoList" class="w-100">
+                                @if (ViewBag.Aplicativos != null)
+                                {
+                                    @foreach (var aplicativo in ViewBag.Aplicativos)
+                                    {
+                                        <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
+                                    }
+                                }
+                            </datalist>
+                            <input id="idAplicativo" asp-for="idAplicativo" hidden class="form-control" />
+                        </div>
+
+                        <input id="idMesa" class="form-control form-control-sm col-12 col-md-4" placeholder="Mesa" />
+
+                    </div>
+                </form>
+
+                <div id="divInfoPagamentoDelivery" class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button id="_deliveryEmCartaoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
+                            Cartão
+                            <i id="deliveryEmCartaoCheck" style=" @(Model.deliveryEmCartao.HasValue && Model.deliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
+                        </button>
+                        <button id="_deliveryPagoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
+                            Pago
+                            <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.deliveryPago.HasValue && Model.deliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                        </button>
+                        <button id="_deliveryEmdinheiroCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
+                            Dineiro
+                            <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
+                        </button>
+                    </div>
+
+                    <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value ? "display:flex" : "display:none")">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text" id="btnGroupAddon">R$</div>
+                        </div>
+                        <input type="text" id="inputDeliveryDinheiroTotal" style="width:100px" class="form-control" placeholder="Dinheiro">
+                    </div>
+                </div>
+
+                <hr />
+
                 <div class="row m-1">
-
-                    <div class="col-12 col-md-8  m-0 p-0 mb-2">
-                        <input type="search" id="inputNome" list="ClienteList" placeholder="Cliente" asp-for="cliente" class="form-control form-control-sm w-100" />
-                        <datalist id="ClienteList" class="w-100">
-                            @if (ViewBag.Clientes != null)
-                            {
-                                @foreach (var cliente in ViewBag.Clientes)
-                                {
-                                    <option id="@(cliente.id)" value="@(cliente.nombre)"></option>
-                                }
-                            }
-                        </datalist>
-                        <input id="idCliente" asp-for="idCliente" hidden class="form-control" />
-                    </div>
-
-                    <div class="col-12 col-md-4 mb-2 p-0">
-                        <input id="inputTelefone" type="search" list="TelefonoList" class="form-control form-control-sm" placeholder="Telefone" />
-                        <datalist id="TelefonoList" class="col-12 col-md-4">
-                        </datalist>
-                    </div>
-
-                    <div class="col-12 m-0 p-0 mb-2">
-                        <input type="search" id="inputEndereco" list="EnderecoList" placeholder="Endereço" class="form-control form-control-sm w-100" />
-                        <datalist id="EnderecoList" class="w-100">
-                        </datalist>
-                        <input id="idDireccion" asp-for="idDireccion" hidden class="form-control" />
-                    </div>
-
-                    <div class="col-12 col-md-8 m-0 p-0 mb-2">
-                        <input type="search" id="inputAplicativo" list="AplicativoList" placeholder="Aplicativo" asp-for="aplicativo" class="form-control form-control-sm w-100" />
-                        <datalist id="AplicativoList" class="w-100">
-                            @if (ViewBag.Aplicativos != null)
-                            {
-                                @foreach (var aplicativo in ViewBag.Aplicativos)
-                                {
-                                    <option id="@(aplicativo.id)" value="@(aplicativo.nombre)"></option>
-                                }
-                            }
-                        </datalist>
-                        <input id="idAplicativo" asp-for="idAplicativo" hidden class="form-control" />
-                    </div>
-
-                    <input id="idMesa" class="form-control form-control-sm col-12 col-md-4" placeholder="Mesa" />
-
-                </div>
-            </form>
-
-            <div id="divInfoPagamentoDelivery" class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
-                <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button id="_deliveryEmCartaoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
-                        Cartão
-                        <i id="deliveryEmCartaoCheck" style=" @(Model.deliveryEmCartao.HasValue && Model.deliveryEmCartao.Value ? "display:inline-block" : "display:none") ;color:white;font-size: 12px;" class="fa fa-check"></i>
-                    </button>
-                    <button id="_deliveryPagoCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
-                        Pago
-                        <i id="deliveryPagoCheck" class="fa fa-check" style=" @(Model.deliveryPago.HasValue && Model.deliveryPago.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
-                    </button>
-                    <button id="_deliveryEmdinheiroCheck" type="button" class="btn btn-secondary" name="buttonDeliveryCheck">
-                        Dineiro
-                        <i id="deliveryEmdinheiroCheck" class="fa fa-check" style=" @(Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value ? "display:inline-block" : "display:none") ;color: white;font-size: 12px;"></i>
-                    </button>
+                    <input id="inputProducto" class="form-control form-control-sm" placeholder="Producto" />
                 </div>
 
-                <div class="input-group" id="divDeliveryDinheiroTotal" style=" @(Model.deliveryEmdinheiro.HasValue && Model.deliveryEmdinheiro.Value ? "display:flex" : "display:none")">
-                    <div class="input-group-prepend">
-                        <div class="input-group-text" id="btnGroupAddon">R$</div>
-                    </div>
-                    <input type="text" id="inputDeliveryDinheiroTotal" style="width:100px" class="form-control" placeholder="Dinheiro">
+                <div class="position-absolute w-100" style="z-index: 99;background-color: white">
+                    <table id="tableProductos" class="table">
+                    </table>
                 </div>
-            </div>
 
-            <hr />
+                <!-- Modal -->
+                <div style="z-index:99999" class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div style="z-index:99999" class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content" style="font-size:14px;">
 
-            <div class="row m-1">
-                <input id="inputProducto" class="form-control form-control-sm" placeholder="Producto" />
-            </div>
-
-            <div class="position-absolute w-100" style="z-index: 99;background-color: white">
-                <table id="tableProductos" class="table">
-                </table>
-            </div>
-
-            <!-- Modal -->
-            <div style="z-index:99999" class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                <div style="z-index:99999" class="modal-dialog modal-dialog-centered" role="document">
-                    <div class="modal-content" style="font-size:14px;">
-
-                        <div class="modal-header">
-                            <div class="d-flex justify-content-between w-100">
-                                <div><samp id="spanNomeProducto"></samp></div>
-                                <div class="d-flex">
-                                    <div class="unselectable cursor-pointer mr-1">R$ <samp id="spanValorProducto" onclick="showInputValorProducto()"></samp></div>
-                                    <input id="inputValorProducto" onblur="inputValorProductoChanged()" style="width:70px;display:none" type="text" class="form-control form-control-sm" />
+                            <div class="modal-header">
+                                <div class="d-flex justify-content-between w-100">
+                                    <div><samp id="spanNomeProducto"></samp></div>
+                                    <div class="d-flex">
+                                        <div class="unselectable cursor-pointer mr-1">R$ <samp id="spanValorProducto" onclick="showInputValorProducto()"></samp></div>
+                                        <input id="inputValorProducto" onblur="inputValorProductoChanged()" style="width:70px;display:none" type="text" class="form-control form-control-sm" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="modal-body">
-                            <div>
-                                <span id="spanDescripcionProducto"></span>
-                            </div>
+                            <div class="modal-body">
+                                <div>
+                                    <span id="spanDescripcionProducto"></span>
+                                </div>
 
-                            <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
-                                <hr class="w-100" />
-                                <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONALES</div>
-                                <hr class="w-100" />
-                            </div>
+                                <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
+                                    <hr class="w-100" />
+                                    <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONALES</div>
+                                    <hr class="w-100" />
+                                </div>
 
-                            @*ADICIONALES*@
-                            <div class="ml-2" style="color:darkcyan">
+                                @*ADICIONALES*@
+                                <div class="ml-2" style="color:darkcyan">
 
-                                <div class="collapse" id="collapseAdicionales">
-                                    <table id="modalTableAdicionales" class="w-100">
-                                        @*LISTA DE ADICIONALES DINAMICA*@
+                                    <div class="collapse" id="collapseAdicionales">
+                                        <table id="modalTableAdicionales" class="w-100">
+                                            @*LISTA DE ADICIONALES DINAMICA*@
+                                        </table>
+                                    </div>
+
+                                </div>
+
+                                <div class="d-flex align-content-center">
+                                    <hr class="w-100" />
+                                    <div class="m-1" style="color:gray">INGREDIENTES</div>
+                                    <hr class="w-100" />
+                                </div>
+
+                                @*INGREDIENTES*@
+                                <div class="ml-2" style="color:brown">
+
+                                    <table id="modalTableIngredientes" class="w-100">
+                                        @*LISTA DE INGREDIENTES DINAMICA*@
                                     </table>
+
+                                </div>
+
+                                <div class="mt-2">
+                                    <div id="modalObservacionContent" class="form-group">
+                                    </div>
+                                </div>
+
+                                <div class="mt-2">
+                                    <div id="modalTamanhos" class="form-group">
+                                        <div id="btnTamanho1" class="btn btn-sm m-1" onclick="checkTamanho(1)">
+                                            <span id="nomeTamanho1" class="mr-2"></span>R$ <span id="valorTamanho1" class="mr-2"></span> <i id="checkedTamanho1" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="btnTamanho2" class="btn btn-sm m-1" onclick="checkTamanho(2)">
+                                            <span id="nomeTamanho2" class="mr-2"></span>R$ <span id="valorTamanho2" class="mr-2"></span><i id="checkedTamanho2" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="btnTamanho3" class="btn btn-sm m-1" onclick="checkTamanho(3)">
+                                            <span id="nomeTamanho3" class="mr-2"></span> R$<span id="valorTamanho3" class="mr-2"></span><i id="checkedTamanho3" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="btnTamanho4" class="btn btn-sm m-1" onclick="checkTamanho(4)">
+                                            <span id="nomeTamanho4" class="mr-2"></span> R$<span id="valorTamanho4" class="mr-2"></span><i id="checkedTamanho4" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                        <div id="btnTamanho5" class="btn btn-sm m-1" onclick="checkTamanho(5)">
+                                            <span id="nomeTamanho5" class="mr-2"></span> R$<span id="valorTamanho5" class="mr-2"></span><i id="checkedTamanho5" class="fa fa-check" aria-hidden="true"></i>
+                                        </div>
+                                    </div>
                                 </div>
 
                             </div>
 
-                            <div class="d-flex align-content-center">
-                                <hr class="w-100" />
-                                <div class="m-1" style="color:gray">INGREDIENTES</div>
-                                <hr class="w-100" />
-                            </div>
-
-                            @*INGREDIENTES*@
-                            <div class="ml-2" style="color:brown">
-
-                                <table id="modalTableIngredientes" class="w-100">
-                                    @*LISTA DE INGREDIENTES DINAMICA*@
-                                </table>
-
-                            </div>
-
-                            <div class="mt-2">
-                                <div id="modalObservacionContent" class="form-group">
+                            <div class="modal-footer d-flex justify-content-between">
+                                <div>
+                                    <button class="btn btn-sm cursor-pointer" id="MINUS_Producto" onclick="productoMinus(this)" disabled="disabled"><i style="font-size:20px" class="fa fa-minus-circle"></i></button>
+                                    <button class="btn btn-sm cursor-pointer" id="ADD_Producto" onclick="productoPlus(this)"><i style="font-size:20px" class="fa fa-plus-circle"></i></button>
                                 </div>
-                            </div>
-
-                            <div class="mt-2">
-                                <div id="modalTamanhos" class="form-group">
-                                    <div id="btnTamanho1" class="btn btn-sm m-1" onclick="checkTamanho(1)">
-                                        <span id="nomeTamanho1" class="mr-2"></span>R$ <span id="valorTamanho1" class="mr-2"></span> <i id="checkedTamanho1" class="fa fa-check" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="btnTamanho2" class="btn btn-sm m-1" onclick="checkTamanho(2)">
-                                        <span id="nomeTamanho2" class="mr-2"></span>R$ <span id="valorTamanho2" class="mr-2"></span><i id="checkedTamanho2" class="fa fa-check" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="btnTamanho3" class="btn btn-sm m-1" onclick="checkTamanho(3)">
-                                        <span id="nomeTamanho3" class="mr-2"></span> R$<span id="valorTamanho3" class="mr-2"></span><i id="checkedTamanho3" class="fa fa-check" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="btnTamanho4" class="btn btn-sm m-1" onclick="checkTamanho(4)">
-                                        <span id="nomeTamanho4" class="mr-2"></span> R$<span id="valorTamanho4" class="mr-2"></span><i id="checkedTamanho4" class="fa fa-check" aria-hidden="true"></i>
-                                    </div>
-                                    <div id="btnTamanho5" class="btn btn-sm m-1" onclick="checkTamanho(5)">
-                                        <span id="nomeTamanho5" class="mr-2"></span> R$<span id="valorTamanho5" class="mr-2"></span><i id="checkedTamanho5" class="fa fa-check" aria-hidden="true"></i>
-                                    </div>
+                                <div>
+                                    <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
                                 </div>
-                            </div>
-
-                        </div>
-
-                        <div class="modal-footer d-flex justify-content-between">
-                            <div>
-                                <button class="btn btn-sm cursor-pointer" id="MINUS_Producto" onclick="productoMinus(this)" disabled="disabled"><i style="font-size:20px" class="fa fa-minus-circle"></i></button>
-                                <button class="btn btn-sm cursor-pointer" id="ADD_Producto" onclick="productoPlus(this)"><i style="font-size:20px" class="fa fa-plus-circle"></i></button>
-                            </div>
-                            <div>
-                                <button id="btnModalAdicionar" class="btn btn-sm btn-outline-success cursor-pointer" onclick="AddProducto()"><span id="modalCantidadProducto">(1)</span> Adicionar</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-        </div>
+            </div>
         </div>
 
         @*LISTA PEDIDOS*@

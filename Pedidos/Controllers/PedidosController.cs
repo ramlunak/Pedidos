@@ -214,74 +214,77 @@ namespace Pedidos.Controllers
 
                     var actualizarPagina = false;
 
-                    if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
+                    if (pedidoaux.cadastrarCliente)
                     {
-                        var cliente = new P_Cliente();
-                        cliente.idCuenta = Cuenta.id;
-                        cliente.activo = true;
-                        cliente.telefono = currentPedido.telefono;
-                        cliente.nombre = currentPedido.cliente;
-                        _context.P_Clientes.Add(cliente);
-                        await _context.SaveChangesAsync();
-                        currentPedido.idCliente = cliente.id;
-                        actualizarPagina = true;
-
-                        if (currentPedido.idDireccion is null && !string.IsNullOrEmpty(currentPedido.direccion))
+                        if (currentPedido.idCliente is null && !string.IsNullOrEmpty(currentPedido.cliente))
                         {
-                            var direccion = new P_Direcciones();
-                            direccion.idCuenta = Cuenta.id;
-                            direccion.idCliente = cliente.id;
-                            direccion.activo = true;
-                            direccion.code = "N/A";
-                            direccion.address = "N/A";
-                            direccion.numero = "N/A";
-                            direccion.complemento = "N/A";
-                            direccion.state = "N/A";
-                            direccion.city = "N/A";
-                            direccion.district = "N/A";
-                            direccion.auxiliar = currentPedido.direccion;
-                            _context.P_Direcciones.Add(direccion);
+                            var cliente = new P_Cliente();
+                            cliente.idCuenta = Cuenta.id;
+                            cliente.activo = true;
+                            cliente.telefono = currentPedido.telefono;
+                            cliente.nombre = currentPedido.cliente;
+                            _context.P_Clientes.Add(cliente);
                             await _context.SaveChangesAsync();
-                            currentPedido.idDireccion = direccion.id;
+                            currentPedido.idCliente = cliente.id;
                             actualizarPagina = true;
-                        }
 
-                    }
-                    else
-                    {
-                        if (currentPedido.idDireccion is null && !string.IsNullOrEmpty(currentPedido.direccion))
-                        {
-                            var direccion = new P_Direcciones();
-                            direccion.idCuenta = Cuenta.id;
-                            direccion.idCliente = currentPedido.idCliente;
-                            direccion.activo = true;
-                            direccion.code = "N/A";
-                            direccion.address = "N/A";
-                            direccion.numero = "N/A";
-                            direccion.complemento = "N/A";
-                            direccion.state = "N/A";
-                            direccion.city = "N/A";
-                            direccion.district = "N/A";
-                            direccion.auxiliar = currentPedido.direccion;
-                            _context.P_Direcciones.Add(direccion);
-                            await _context.SaveChangesAsync();
-                            currentPedido.idDireccion = direccion.id;
-                            actualizarPagina = true;
-                        }
-
-                        if (!string.IsNullOrEmpty(currentPedido.telefono))
-                        {
-                            var cliente = await _context.P_Clientes.FindAsync(currentPedido.idCliente);
-                            if (string.IsNullOrEmpty(cliente.telefono) || cliente.telefono != currentPedido.telefono)
+                            if (currentPedido.idDireccion is null && !string.IsNullOrEmpty(currentPedido.direccion))
                             {
-                                cliente.telefono = currentPedido.telefono;
-                                cliente.activo = true;
-                                _context.P_Clientes.Update(cliente);
+                                var direccion = new P_Direcciones();
+                                direccion.idCuenta = Cuenta.id;
+                                direccion.idCliente = cliente.id;
+                                direccion.activo = true;
+                                direccion.code = "N/A";
+                                direccion.address = "N/A";
+                                direccion.numero = "N/A";
+                                direccion.complemento = "N/A";
+                                direccion.state = "N/A";
+                                direccion.city = "N/A";
+                                direccion.district = "N/A";
+                                direccion.auxiliar = currentPedido.direccion;
+                                _context.P_Direcciones.Add(direccion);
                                 await _context.SaveChangesAsync();
+                                currentPedido.idDireccion = direccion.id;
                                 actualizarPagina = true;
                             }
-                        }
 
+                        }
+                        else
+                        {
+                            if (currentPedido.idDireccion is null && !string.IsNullOrEmpty(currentPedido.direccion))
+                            {
+                                var direccion = new P_Direcciones();
+                                direccion.idCuenta = Cuenta.id;
+                                direccion.idCliente = currentPedido.idCliente;
+                                direccion.activo = true;
+                                direccion.code = "N/A";
+                                direccion.address = "N/A";
+                                direccion.numero = "N/A";
+                                direccion.complemento = "N/A";
+                                direccion.state = "N/A";
+                                direccion.city = "N/A";
+                                direccion.district = "N/A";
+                                direccion.auxiliar = currentPedido.direccion;
+                                _context.P_Direcciones.Add(direccion);
+                                await _context.SaveChangesAsync();
+                                currentPedido.idDireccion = direccion.id;
+                                actualizarPagina = true;
+                            }
+
+                            if (!string.IsNullOrEmpty(currentPedido.telefono))
+                            {
+                                var cliente = await _context.P_Clientes.FindAsync(currentPedido.idCliente);
+                                if (string.IsNullOrEmpty(cliente.telefono) || cliente.telefono != currentPedido.telefono)
+                                {
+                                    cliente.telefono = currentPedido.telefono;
+                                    cliente.activo = true;
+                                    _context.P_Clientes.Update(cliente);
+                                    await _context.SaveChangesAsync();
+                                    actualizarPagina = true;
+                                }
+                            }
+
+                        }
                     }
 
                     if (currentPedido.idAplicativo is null && !string.IsNullOrEmpty(currentPedido.aplicativo))

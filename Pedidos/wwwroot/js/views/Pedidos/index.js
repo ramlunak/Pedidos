@@ -1052,7 +1052,7 @@ function hideLoading() {
     loading.close();
 }
 
-function GuardarCurrentPedido() {
+function GuardarCurrentPedido(cadastrar) {
 
     var pedido = {
         cliente: $('#inputNome').val(),
@@ -1066,7 +1066,8 @@ function GuardarCurrentPedido() {
         deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal').val()),
         deliveryEmCartao: _ModalProducto.deliveryEmCartao,
         deliveryPago: _ModalProducto.deliveryPago,
-        deliveryEmdinheiro: _ModalProducto.deliveryEmdinheiro
+        deliveryEmdinheiro: _ModalProducto.deliveryEmdinheiro,
+        cadastrarCliente: cadastrar
     }
 
     showLoading();

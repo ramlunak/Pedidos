@@ -18,10 +18,16 @@ function MostarPedidosPendientes() {
 
         var mesa = '';
         var aplicativo = '';
+
         if (pedido.idMesa !== null && pedido.idMesa !== undefined && pedido.idMesa !== "" && pedido.idMesa > 0) {
-            mesa = '<div style="font-size:11px">MESA ' + pedido.idMesa + '</div>';
+            mesa = '<div style="font-size:12px">MESA ' + pedido.idMesa + '</div>';
         } if (pedido.aplicativo !== null && pedido.aplicativo !== undefined && pedido.aplicativo !== "") {
-            aplicativo = '<div style="font-size:11px">' + pedido.aplicativo + '</div>';
+            aplicativo = '<div style="font-size:12px">' + pedido.aplicativo + '</div>';
+        }
+
+        var retirada = '';
+        if (pedido.idDireccion === null && pedido.direccion === "" && pedido.idMesa === null) {
+            retirada = '<div class="centrado mb-1" style="font-size:12px"> <b>RETIRADA</b> </div >';
         }
 
         var tasaEntrega = ' <div style="font-size:13px">Taxa de entrega: <b>R$ ' + pedido.tasaEntrega.toFixed(2) + '</b></div>  ';
@@ -63,7 +69,7 @@ function MostarPedidosPendientes() {
             '               <div class="d-block" style="text-align:left">  ' +
             '                   <div style="font-size:13px" class="d-flex"><b>Codigo: ' + pedido.codigo + '</b>  </div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
-            '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
+            '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo + retirada +
             '               </div>  ' + PedidoTiempo +
             '               <div class="d-block" style="text-align:right">  ' +
             '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +

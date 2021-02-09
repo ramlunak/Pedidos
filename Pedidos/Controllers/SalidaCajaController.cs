@@ -31,7 +31,11 @@ namespace Pedidos.Controllers
             var salidas = await _context.P_SalidaCaja.Where(x => x.idCuenta == Cuenta.id && !x.idCaja.HasValue).ToListAsync();
             foreach (var item in salidas)
             {
-                item.motivo = _context.P_MotivoSalidaCaja.FindAsync(item.id).Result.motivo;
+                if (await _context.P_MotivoSalidaCaja.AnyAsync(x => x.id == item.id))
+                {
+                    item.motivo = _context.P_MotivoSalidaCaja.FindAsync(item.id).Result.motivo;
+                }
+
             }
 
             return View(salidas);

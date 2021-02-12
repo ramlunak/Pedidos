@@ -11,6 +11,7 @@ using Newtonsoft;
 using Newtonsoft.Json;
 using Pedidos.Models.Enums;
 using Pedidos.Extensions;
+using Pedidos.Hubs;
 
 namespace Pedidos.Controllers
 {
@@ -750,7 +751,6 @@ namespace Pedidos.Controllers
         //    }
         //}
 
-
         public async Task<IActionResult> Print(int id)
         {
             if (!ValidarCuenta())
@@ -760,6 +760,23 @@ namespace Pedidos.Controllers
             var pedido = await _context.P_Pedidos.FindAsync(id);
             pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();
             return View(pedido);
+        }
+
+        //CARDAPIO
+        public async Task<IActionResult> GuardarMensaje([FromBody] MessageHub message)
+        {
+            var mensajes = GetSession<List<MessageHub>>("CardapioMensajes");
+
+            if (mensajes == null)
+            {
+                mensajes = new List<MessageHub>();
+            }
+
+            mensajes.Add(message);
+
+            SetSession("CardapioMensajes", mensajes);
+            return Ok(message);
+
         }
 
     }

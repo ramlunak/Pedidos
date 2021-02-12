@@ -13,8 +13,9 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Hubs
 {
-    public class Message
+    public class MessageHub
     {
+        public string chatConnectionId { get; set; }
         public int idCliente { get; set; }
         public int idCuenta { get; set; }
         public int mesa { get; set; }
@@ -23,9 +24,9 @@ namespace Pedidos.Hubs
         public string position { get; set; }
         public string color { get; set; }
         public string margin { get; set; }
-        public bool send { get; set; }
+        public bool clientSend { get; set; }
+        public bool cuentaSend { get; set; }
     }
-
 
     public class CardapioHub : Hub
     {

@@ -740,7 +740,6 @@ function HubConnect() {
 
     });
 
-
     chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').configureLogging(signalR.LogLevel.Trace).build();
 
     chat.start().then(function () {
@@ -816,6 +815,7 @@ async function chatReconnect() {
 function ClienteSendMessage() {
 
     var newMessage = {
+        chatConnectionId: chatConnectionId,
         idCliente: 1,
         idCuenta: 1,
         mesa: 1,
@@ -824,7 +824,8 @@ function ClienteSendMessage() {
         position: "float-right",
         color: "bg-success",
         margin: "ml-5",
-        send: true
+        clientSend: true,
+        cuentaSend: false
     };
 
     ChatAddMessage(JSON.stringify(newMessage));

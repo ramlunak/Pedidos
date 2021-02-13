@@ -19,6 +19,27 @@ var _ModalProducto = {
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 
+function setCookie(name, value, days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
+
 $(function () {
 
     cardapioIdCuenta = $('#inputIdCuenta').val();
@@ -223,20 +244,20 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
         var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.idCuenta + ',' + item.id + ')">');
 
         TD1.append('<div><b>' + item.nombre + '</b></div>');
-        var divTamanhos = $('<div style="display: flex">');
+        var divTamanhos = $('<div style="display: inline-table">');
 
         if (item.valor !== 0)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho1 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho2 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho3 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho4 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho4 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho4 + ' <div class="ml-1 " style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho5 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary   m-1 d-flex">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
 
         TD1.append(divTamanhos);
 
@@ -328,13 +349,23 @@ function ShowDetallesProducto(idCuenta, id) {
 
 }
 
-var _cardapioModalValorProducto = 0;
+function ModalMostarValorProducto() {
 
-function CardapioModalMostarValorProducto() {
+    let valorProducto = _ModalProducto.valor;
 
-    $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(_cardapioModalValorProducto)).toFixed(2));
-    $('#spanValorProducto').animate({ fontSize: '18px' }, "fast",);
-    $('#spanValorProducto').animate({ fontSize: '15px' }, "fast");
+    if (_ModalProducto.valorTamanhoSeleccionado != null && _ModalProducto.valorTamanhoSeleccionado > 0) {
+        valorProducto = _ModalProducto.valorTamanhoSeleccionado;
+    }
+
+    $.each(_ModalAdicionales, function (index, item) {
+        if (item.valor != null && item.cantidad > 0) {
+            valorProducto = valorProducto + (item.cantidad * item.valor);
+        }
+    });
+
+    $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(valorProducto)).toFixed(2));
+    $('#spanValorProducto').animate({ fontSize: '18px' }, 80);
+    $('#spanValorProducto').animate({ fontSize: '15px' }, 80);
 
 }
 
@@ -343,11 +374,11 @@ function CargarDatosModalDetalles(data) {
 
     $('#spanNomeProducto').html(data.producto.nombre.toUpperCase());
     $('#spanValorProducto').html(data.producto.valor.toFixed(2));
-    _cardapioModalValorProducto = data.producto.valor.toFixed(2);
 
     $('#spanDescripcionProducto').html(data.producto.descripcion);
     $('#modalCantidadProducto').html('(' + data.producto.cantidad + ')');
     $("#MINUS_Producto").attr('disabled', 'disabled');
+
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
@@ -398,8 +429,7 @@ function mostrarTamanhos(producto) {
         $('#btnTamanho3').addClass('btn-outline-primary');
         $('#btnTamanho3').show();
         $('#checkedTamanho3').hide();
-    }
-    else {
+    } else {
         $('#btnTamanho3').hide();
     }
 
@@ -409,8 +439,7 @@ function mostrarTamanhos(producto) {
         $('#btnTamanho4').addClass('btn-outline-primary');
         $('#btnTamanho4').show();
         $('#checkedTamanho4').hide();
-    }
-    else {
+    } else {
         $('#btnTamanho4').hide();
     }
 
@@ -420,8 +449,7 @@ function mostrarTamanhos(producto) {
         $('#btnTamanho5').addClass('btn-outline-primary');
         $('#btnTamanho5').show();
         $('#checkedTamanho5').hide();
-    }
-    else {
+    } else {
         $('#btnTamanho5').hide();
     }
 
@@ -508,6 +536,7 @@ function checkTamanho(tamanho) {
         $('#spanValorProducto').html(_ModalProducto.valorTamanho5.toFixed(2));
     }
 
+    ModalMostarValorProducto();
 }
 
 //crear tabla de los adicionales en el modal
@@ -526,8 +555,8 @@ function TABLE_Adicional(adicionales, idProducto) {
         var codigo = "ADC_" + item.id + "_" + idProducto;
         var minusId = "Minus_" + item.id + "_" + idProducto;
 
-        TD1.append('<div class="unselectable mb-2"> <a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
-        TD2.append('<div class="unselectable text-nowrap" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
+        TD1.append('<div class="unselectable"> <a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
+        TD2.append('<div class="unselectable" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
         TD3.append('<div style="width:60px;text-align: end"> <button id=' + minusId + ' disabled="disabled" onclick="adicionalMinus(' + item.id + ',' + idProducto + ')" class="btn-plano mr-2 unselectable"><i  class="fa fa-minus cursor-pointer"></i></button><button onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="btn-plano unselectable"><i  class="fa fa-plus cursor-pointer"></i></button></div>');
 
         TR.append(TD1, TD2, TD3);
@@ -568,22 +597,22 @@ function adicionalPlus(id, idProducto) {
         if (item.id === id) {
             if (item.cantidad === null || item.cantidad === undefined) {
                 item.cantidad = 1;
-                _cardapioModalValorProducto = parseFloat(_cardapioModalValorProducto) + item.valor;
                 $(minusId).removeAttr('disabled');
             } else {
                 item.cantidad++;
-                _cardapioModalValorProducto = parseFloat(_cardapioModalValorProducto) + item.valor;
                 $(minusId).removeAttr('disabled');
             }
 
-            CardapioModalMostarValorProducto();
+            $(codigo).html('+' + item.cantidad);
+            $(codigo).animate({ fontSize: '19px' }, 80);
+            $(codigo).animate({ fontSize: '15px' }, 80);
 
             $(codigo).html('+' + item.cantidad);
-            $(codigo).animate({ fontSize: '19px' }, "fast",);
-            $(codigo).animate({ fontSize: '15px' }, "fast");
         }
         return item.id === id;
     });
+
+    ModalMostarValorProducto();
 
 }
 
@@ -599,22 +628,21 @@ function adicionalMinus(id, idProducto) {
                 return;
             } else {
                 item.cantidad--;
-                _cardapioModalValorProducto = parseFloat(_cardapioModalValorProducto) - item.valor;
-
                 if (parseInt(item.cantidad) === 0) {
                     $(minusId).attr('disabled', 'disabled');
                 }
             }
 
-            CardapioModalMostarValorProducto();
-
             $(codigo).html('+' + item.cantidad);
             $(codigo).animate({ fontSize: '19px' }, "fast",);
             $(codigo).animate({ fontSize: '15px' }, "fast");
 
+            $(codigo).html('+' + item.cantidad);
         }
         return item.id === id;
     });
+
+    ModalMostarValorProducto();
 }
 
 //evento de marcar y desmarcar ingredeinte
@@ -637,27 +665,27 @@ function productoMinus(btn) {
 
     _ModalProducto.cantidad--;
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
-    $('#modalCantidadProducto').animate({ fontSize: '19px' }, "fast",);
-    $('#modalCantidadProducto').animate({ fontSize: '17px' }, "fast");
 
+    $('#modalCantidadProducto').animate({ fontSize: '19px' }, 80);
+    $('#modalCantidadProducto').animate({ fontSize: '17px' }, 80);
+    ModalMostarValorProducto();
 
     if (parseInt(_ModalProducto.cantidad) === 1) {
         $("#MINUS_Producto").attr('disabled', 'disabled');
     }
 
-    CardapioModalMostarValorProducto();
 }
 
 //evento de adicionar contidad de productos
 function productoPlus() {
     _ModalProducto.cantidad++;
     $('#modalCantidadProducto').html('(' + _ModalProducto.cantidad + ')');
-    $('#modalCantidadProducto').animate({ fontSize: '19px' }, "fast",);
-    $('#modalCantidadProducto').animate({ fontSize: '17px' }, "fast");
+
+    $('#modalCantidadProducto').animate({ fontSize: '19px' }, 80);
+    $('#modalCantidadProducto').animate({ fontSize: '17px' }, 80);
+    ModalMostarValorProducto();
 
     $("#MINUS_Producto").removeAttr('disabled');
-
-    CardapioModalMostarValorProducto();
 
 }
 
@@ -700,27 +728,6 @@ function AddProducto() {
         }
     });
 }
-
-function setCookie(name, value, days) {
-    var expires = "";
-    if (days) {
-        var date = new Date();
-        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        expires = "; expires=" + date.toUTCString();
-    }
-    document.cookie = name + "=" + (value || "") + expires + "; path=/";
-}
-function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for (var i = 0; i < ca.length; i++) {
-        var c = ca[i];
-        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
-    }
-    return null;
-}
-
 
 // --------------  CHAT HUB ------------------------
 

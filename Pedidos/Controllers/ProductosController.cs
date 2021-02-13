@@ -72,6 +72,11 @@ namespace Pedidos.Controllers
 
         public async Task<IActionResult> Ingredientes(int id)
         {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
             await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
 
             var query = await _context.P_Ingredientes.FromSqlRaw($"EXEC GetIngredientesPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
@@ -83,6 +88,41 @@ namespace Pedidos.Controllers
                             ingrediente = ING.nombre,
                             selected = ING.activo
                         };
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Adicionales(int id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
+            //await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
+
+            //var query = await _context.P_Ingredientes.FromSqlRaw($"EXEC GetIngredientesPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
+            //var model = from ING in query
+            //            select new ListarIngredientesPorProducto()
+            //            {
+            //                idProducto = id,
+            //                idIngrediente = ING.id,
+            //                ingrediente = ING.nombre,
+            //                selected = ING.activo
+            //            };
+
+            var model = new List<ListarAdicionalesPorProducto>();
+            var adicionales = await _context.P_Adicionais.ToListAsync();
+
+            foreach (var item in adicionales)
+            {
+                var adicionalProducto = new ListarAdicionalesPorProducto();
+                adicionalProducto.adicional = item.nombre;
+                adicionalProducto.idAdicional = item.id;
+                adicionalProducto.idProducto = id;
+                adicionalProducto.selected = false;
+                model.Add(adicionalProducto);
+            }
 
             return View(model);
         }
@@ -331,7 +371,7 @@ namespace Pedidos.Controllers
                         }
                     }
 
-                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue|| p_Productos.valorTamanho4.HasValue|| p_Productos.valorTamanho5.HasValue)
+                    if (p_Productos.valorTamanho1.HasValue || p_Productos.valorTamanho2.HasValue || p_Productos.valorTamanho3.HasValue || p_Productos.valorTamanho4.HasValue || p_Productos.valorTamanho5.HasValue)
                     {
                         p_Productos.valor = 0;
                     }

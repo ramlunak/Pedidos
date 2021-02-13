@@ -231,6 +231,55 @@
     </div>
 </div>
 
+<!-- Modal Pedidos Cardapio-->
+<div class="modal fade" id="chatPedidosCardapioModal" tabindex="-1" role="dialog" aria-labelledby="chatPedidosCardapioModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <div>
+                    <h5 class="modal-title" id="chatPedidosCardapioModalTitle">Modal title</h5>
+
+                    <div id="divReconectandoChat">
+                        <div class="d-flex align-items-center">
+                            <div class="spinner-border text-danger mr-1" role="status" style="font-size: 7px; width: 16px; height: 16px;">
+                                <span class="sr-only">Loading...</span>
+                            </div>
+                            <div>
+                                <span style="font-size:12px;color:red">Reconetando...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="divChatCliente" style="width:100%">
+                    @*<tr>
+                            <td>
+                                <div class="alert bg-info p-1 text-white m-1 float-right" style="display:inline-grid">
+                                    sadasd
+                                </div>
+                            </td>
+                        </tr>*@
+                </table>
+            </div>
+            <div class="modal-footer">
+                <textarea id="inputClienteMessage" placeholder="Digite seu mensagem" style="font-size:14px" class="form-control w-100" rows="3"></textarea>
+                <div style="width: 30px">
+                    <button type="button" id="btnClienteClearMessage" class="btn btn-outline-danger mb-2"><i class="fa fa-trash"></i></button>
+                    <button type="button" id="btnClienteSendMessage" class="btn btn-outline-success"><i class="fas fa-paper-plane"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <script src="~/lib/jquery/dist/jquery.js"></script>
 <script src="~/aspnet/signalr/dist/browser/signalr.js" asp-append-version="true"></script>
 <script src="~/ionsound/js/ion.sound.js"></script>

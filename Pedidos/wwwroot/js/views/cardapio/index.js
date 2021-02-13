@@ -744,7 +744,7 @@ function HubConnectCliente() {
     $('#btnClienteClearMessage').on('click', function () {
 
         $('#inputClienteMessage').val(null);
-      
+
     });
 
     var codigo_coneccion_cliente = 'cli_acc' + cardapioIdCuenta + '_' + cardapioMesa;
@@ -757,7 +757,7 @@ function HubConnectCliente() {
 
         $('#btnClienteSendMessage').prop('disabled', false);
         $('#divReconectandoChat').hide();
-       
+
         chat.invoke('getConnectionId').then((data) => {
             chatConnectionId = data;
         });
@@ -799,7 +799,7 @@ function HubConnectCliente() {
             path: location.origin + "/ionsound/sounds/",
             preload: true,
             multiplay: true,
-            volume: 1
+            volume: 0.5
         });
 
         // play sound
@@ -816,7 +816,7 @@ async function chatReconnect() {
         chat.invoke('getConnectionId').then((data) => {
             chatConnectionId = data;
         });
-                
+
         console.log('reconected success');
     });
 }
@@ -825,10 +825,10 @@ function ClienteSendMessage() {
 
     var newMessage = {
         chatConnectionId: chatConnectionId,
-        idCliente: 1,
-        idCuenta: 1,
-        mesa: 1,
-        titulo: "Royber | Mesa 1",
+        codigoConeccionCliente: "cli_acc" + cardapioIdCuenta + "_" + cardapioMesa,
+        idCuenta: cardapioIdCuenta,
+        mesa: cardapioMesa,
+        nombreCliente: nombreCliente,
         message: $('#inputClienteMessage').val(),
         position: "float-right",
         color: "bg-success",
@@ -839,7 +839,7 @@ function ClienteSendMessage() {
 
     ChatAddMessage(JSON.stringify(newMessage));
     $('#inputClienteMessage').focus();
-    chat.invoke('clienteSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage))
+    chat.invoke('clienteSendMessage', chatConnectionId, cardapioIdCuenta, cardapioMesa, JSON.stringify(newMessage))
         .then((res) => {
             var asdasd = 'dd';
             console.log(asdasd);

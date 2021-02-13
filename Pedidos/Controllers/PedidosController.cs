@@ -670,7 +670,6 @@ namespace Pedidos.Controllers
             return Ok(cliente);
         }
 
-
         public async Task<IActionResult> CancelarCurrentPedido()
         {
             var currentPedido = new P_Pedido(Cuenta.id);
@@ -763,6 +762,7 @@ namespace Pedidos.Controllers
         }
 
         //CARDAPIO
+
         public async Task<IActionResult> GuardarMensaje([FromBody] MessageHub message)
         {
             var mensajes = GetSession<List<MessageHub>>("CardapioMensajes");
@@ -776,6 +776,34 @@ namespace Pedidos.Controllers
 
             SetSession("CardapioMensajes", mensajes);
             return Ok(message);
+
+        }
+
+        public IActionResult CargarGruposMensajes()
+        {
+            var mensajes = GetSession<List<MessageHub>>("CardapioMensajes");
+
+            if (mensajes == null)
+            {
+                mensajes = new List<MessageHub>();
+            }
+
+            mensajes = mensajes.Where(x => x != null).ToList();
+
+            var grupos = from mensage in mensajes
+                         group mensage by mensage.codigoConeccionCliente into grupo
+                         select new GroupMessageHub
+                         {
+                             codigoConeccionCliente = grupo.Key,
+                             nombreCliente = grupo.FirstOrDefault().nombreCliente,
+                             mesa = grupo.FirstOrDefault().mesa,
+                             sinLeer = 3,
+                             mensajes = grupo.ToList()
+                         };
+
+            grupos.OrderBy(x => x.codigoConeccionCliente).ToList();
+
+            return Ok(grupos);
 
         }
 

@@ -301,12 +301,12 @@
 
             <div class="card p-0 border-warning mb-1">
                 <div class="card-body p-1">
-                    <button type="button" class="btn btn-success btn-sm mr-2" onclick="CargarPedidosFinalizados()" data-toggle="modal" data-target="#chatModal">
+                    <button type="button" class="btn btn-success btn-sm mr-2" onclick="CargarGruposMensajes()" data-toggle="modal" data-target="#chatModal">
                         <i class="fas fa-sms"></i>
                         <span id="spanCountSMS" class="badge bg-primary" style="font-size:15px">0</span>
                     </button>
 
-                    <button type="button" class="btn btn-warning btn-sm mr-2" onclick="CargarPedidosFinalizados()" data-toggle="modal" data-target="#ModalPdidosFinalizados">
+                    <button type="button" class="btn btn-warning btn-sm mr-2" onclick="CargarPedidosFinalizados()" data-toggle="modal" data-target="#chatPedidoCardapioModal">
                         <i class="far fa-bell"></i>
                         <span id="spanCountNotification" class="badge bg-info text-white" style="font-size:15px">0</span>
                     </button>
@@ -398,9 +398,7 @@
     </div>
 </div>
 
-@*CHAT MODAL*@
-
-<!-- Modal -->
+<!-- Modal Chat-->
 <div class="modal fade" id="chatModal" tabindex="-1" role="dialog" aria-labelledby="chatModalTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
@@ -418,15 +416,16 @@
                                 Clientes
                             </div>
                             <div class="card-body p-0">
-                                <table id="tableChatCardapioGruposClientes" style="height:435px;max-height:435px;display:block;overflow-y:auto;background-color:lightgray">
-                                    <tbody class="d-block">
-                                        <tr style="display:grid">
+                                <table id="tableChatCardapioGruposClientes" style="height:435px;max-height:435px;display:block;overflow-y:auto">
+                                    <tbody class="d-block p-1">
+
+                                        @*<tr style="display:grid">
                                             <td>
-                                                <div class="card">
-                                                    <div class="card-body bg-white w-100">
+                                                <div class="card hover cursor-pointer">
+                                                    <div class="card-body bg-white w-100 p-1">
                                                         <div class="d-flex">
                                                             <div>
-                                                                <img src="~/img/cliente_sms.png" style="width:40px" />
+                                                                <img src="~/img/client.png" style="width:40px" />
                                                             </div>
                                                             <div class="d-block ml-2">
                                                                 <div><strong>Royber</strong></div>
@@ -437,7 +436,8 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                        </tr>
+                                        </tr>*@
+
                                     </tbody>
                                 </table>
                             </div>
@@ -451,11 +451,15 @@
                             <div class="card-body p-0">
                                 <table id="tableChatCardapioMensajesCliente" style="height:350px;max-height:350px;display:block;overflow-y:auto">
                                 </table>
-                                <div class="modal-footer p-1">
-                                    <textarea id="inputEstablecimientoMessage" placeholder="Digite seu mensagem" style="font-size:14px" class="form-control w-100" rows="3"></textarea>
-                                    <div style="width: 30px">
-                                        <button type="button" id="btnEstablecimientoClearMessage" class="btn btn-sm btn-outline-danger mb-2"><i class="fa fa-trash"></i></button>
-                                        <button type="button" id="btnEstablecimientoSendMessage" class="btn btn-sm btn-outline-success"><i class="fas fa-paper-plane"></i></button>
+                                <div class="modal-footer d-block p-1">
+                                    <div class="d-flex">
+                                        <div class="w-100 mr-2">
+                                            <textarea id="inputEstablecimientoMessage" placeholder="Digite seu mensagem" style="font-size:14px" class="form-control w-100" rows="3"></textarea>
+                                        </div>
+                                        <div style="width: 30px">
+                                            <button type="button" id="btnEstablecimientoClearMessage" class="btn btn-sm btn-outline-danger mb-2"><i class="fa fa-trash"></i></button>
+                                            <button type="button" id="btnEstablecimientoSendMessage" class="btn btn-sm btn-outline-success"><i class="fas fa-paper-plane"></i></button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -466,6 +470,56 @@
         </div>
     </div>
 </div>
+
+
+<!-- Modal Pedidos Cardapio-->
+<div class="modal fade" id="chatPedidoCardapioModal" tabindex="-1" role="dialog" aria-labelledby="chatPedidoCardapioModalTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="chatPedidoCardapioModalTitle">Pedidos </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="p-2" id="tableChatCardapioGruposClientes" style="height:435px;max-height:435px;display:block;overflow-y:auto">
+                    <tbody class="d-block">
+
+                        <tr style="display:grid">
+                            <td>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <div class="d-flex">
+                                            <img src="~/img/client.png" style="width:25px;height:25px" class="mr-2" />
+                                            <div><strong>Royber | </strong></div>
+                                            <div class="ml-1"><small>Mesa 1</small></div>
+                                        </div>
+                                    </div>
+                                    <div class="card-body bg-white w-100">
+                                        <div class="d-flex">
+                                            <div>
+                                                <img src="~/img/cliente_sms.png" style="width:40px" />
+                                            </div>
+                                            <div class="d-block ml-2">
+                                                <div><strong>Royber</strong></div>
+                                                <div><small>Mesa 1</small></div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

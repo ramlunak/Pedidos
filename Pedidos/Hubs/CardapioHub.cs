@@ -17,15 +17,24 @@ namespace Pedidos.Hubs
     {
         public string chatConnectionId { get; set; }
         public string codigoConeccionCliente { get; set; }
-        public int idCuenta { get; set; }
-        public int mesa { get; set; }
-        public string titulo { get; set; }
+        public string idCuenta { get; set; }
+        public string mesa { get; set; }
+        public string nombreCliente { get; set; }
         public string message { get; set; }
         public string position { get; set; }
         public string color { get; set; }
         public string margin { get; set; }
         public bool clientSend { get; set; }
         public bool cuentaSend { get; set; }
+    }
+
+    public class GroupMessageHub
+    {
+        public string codigoConeccionCliente { get; set; }
+        public string nombreCliente { get; set; }
+        public string mesa { get; set; }
+        public int sinLeer { get; set; }
+        public List<MessageHub> mensajes { get; set; }
     }
 
     public class CardapioHub : Hub

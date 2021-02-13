@@ -64,7 +64,7 @@ function HubConnect() {
             path: location.origin + "/ionsound/sounds/",
             preload: true,
             multiplay: true,
-            volume: 1
+            volume: 0.5
         });
 
         // play sound
@@ -105,8 +105,8 @@ function guardaMensaje(mensaje) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (message) {
-
-            ChatAddMessageCliente(message);
+            CargarGruposMensajes();
+           // ChatAddMessageCliente(message);
         },
         failure: function (response) {
             console.log('failure', response);
@@ -153,9 +153,10 @@ function ChatAddMessageCliente(msg) {
 function establecimientoSendMessage() {
 
     var newMessage = {
+        codigoConeccionCliente: "cli_acc5_1",
         idCuenta: 1,
         mesa: 1,
-        titulo: "Royber | Mesa 1",
+        nombreCliente: "Royber",
         message: $('#inputEstablecimientoMessage').val(),
         position: "float-right",
         color: "bg-success",

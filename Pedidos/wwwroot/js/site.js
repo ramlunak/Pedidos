@@ -64,7 +64,7 @@ function HubConnect() {
             path: location.origin + "/ionsound/sounds/",
             preload: true,
             multiplay: true,
-            volume: 2
+            volume: 1
         });
 
         // play sound

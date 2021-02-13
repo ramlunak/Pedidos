@@ -68,7 +68,7 @@ function CargarGrafico() {
             labels: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
             datasets: [
                 {
-                    label: 'Vendas',
+                    label: '',                                        
                     // backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'blue',
                     data: datasets_ventas_anual
@@ -78,8 +78,14 @@ function CargarGrafico() {
         },
         // Configuration options go here
         options: {
+            legend: {
+                display: false,
+                labels: {
+                    fontColor: 'rgb(255, 99, 132)'
+                }
+            },
             title: {
-                display: true,
+                display: false,
                 text: 'RELATORIO DE VENDAS E SAIDAS ANUAL'
             }
         }

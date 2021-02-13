@@ -792,7 +792,7 @@ function HubConnectCliente() {
             path: location.origin + "/ionsound/sounds/",
             preload: true,
             multiplay: true,
-            volume: 0.5
+            volume: 2
         });
 
         // play sound
@@ -858,16 +858,16 @@ function ChatAddMessage(message) {
     if (msg.cuentaSend) {
         msg.position = "float-left";
         msg.margin = "mr-5";
-        msg.color = "bg-secondary";
+        msg.color = "border-secondary";
     } else {
         msg.position = "float-right";
         msg.margin = "ml-5";
-        msg.color = "bg-success";
+        msg.color = "border-success";
     }
 
     ChatBody.append('   <tr>  ' +
         '                           <td>  ' +
-        '                               <div class="alert ' + msg.color + ' p-1 text-white m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
+        '                               <div class="alert ' + msg.color + ' p-1 text-black m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
         '                                   ' + msg.message +
         '                               </div>  ' +
         '                           </td>  ' +

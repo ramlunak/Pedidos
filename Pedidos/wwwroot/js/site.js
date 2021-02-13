@@ -106,7 +106,7 @@ function guardaMensaje(mensaje) {
         dataType: "json",
         success: function (message) {
             CargarGruposMensajes();
-           // ChatAddMessageCliente(message);
+            ChatAddMessageCliente(message);
         },
         failure: function (response) {
             console.log('failure', response);

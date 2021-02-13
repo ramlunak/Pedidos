@@ -1,5 +1,6 @@
 ﻿var cardapioIdCuenta;
 var cardapioMesa;
+var nombreCliente;
 
 var cardapioProductos = [];
 
@@ -23,7 +24,7 @@ $(function () {
     cardapioIdCuenta = $('#inputIdCuenta').val();
     cardapioMesa = $('#inputMesa').val();
 
-    HubConnect();
+    HubConnectCliente();
 
     VerificarCliente(cardapioIdCuenta);
     GetCategorias(cardapioIdCuenta);
@@ -43,14 +44,14 @@ $(function () {
 
 });
 
-function VerificarCliente(cardapioIdCuenta) {
 
+function VerificarCliente(cardapioIdCuenta) {
     var clienteCookie = getCookie('NombreClienteCardapioCookies');
     console.log(clienteCookie);
     if (clienteCookie === null || clienteCookie === undefined || clienteCookie === "") {
         PedirNombre(cardapioIdCuenta);
     } else {
-        var nombreCliente = getCookie('NombreClienteCardapioCookies');
+        nombreCliente = getCookie('NombreClienteCardapioCookies');
         $('#cardapioNombreCliente').html(nombreCliente);
     }
 }
@@ -723,13 +724,12 @@ function getCookie(name) {
 
 // --------------  CHAT HUB ------------------------
 
-
 var chat;
 var chatConnectionId;
 var chatDisconnected = true;
 var chatIntervelReconnect;
 
-function HubConnect() {
+function HubConnectCliente() {
 
     $('#btnClienteSendMessage').prop('disabled', true);
     $('#divReconectandoChat').show();
@@ -737,18 +737,20 @@ function HubConnect() {
     $('#btnClienteClearMessage').on('click', function () {
 
         $('#inputClienteMessage').val(null);
-
+      
     });
 
-    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true').configureLogging(signalR.LogLevel.Trace).build();
+    var codigo_coneccion_cliente = 'cli_acc' + cardapioIdCuenta + '_' + cardapioMesa;
+
+    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true&codigo_coneccion_cliente=' + codigo_coneccion_cliente).configureLogging(signalR.LogLevel.Trace).build();
 
     chat.start().then(function () {
 
         chatDisconnected = false;
+
         $('#btnClienteSendMessage').prop('disabled', false);
         $('#divReconectandoChat').hide();
-        //GET CONNECTION ID      
-
+       
         chat.invoke('getConnectionId').then((data) => {
             chatConnectionId = data;
         });
@@ -765,7 +767,6 @@ function HubConnect() {
         }, 3000);
 
     });
-
 
     chat.onclose(() => {
         chatDisconnected = true;
@@ -781,6 +782,21 @@ function HubConnect() {
     //RECIVED
     chat.on("clienteReceivedMessage", function (message) {
         ChatAddMessage(message);
+        // alert(message);
+        ion.sound({
+            sounds: [
+                { name: "beyond_doubt" }
+            ],
+
+            // main config
+            path: location.origin + "/ionsound/sounds/",
+            preload: true,
+            multiplay: true,
+            volume: 0.5
+        });
+
+        // play sound
+        ion.sound.play("beyond_doubt");
     });
 
 }
@@ -794,20 +810,7 @@ async function chatReconnect() {
         chat.invoke('getConnectionId').then((data) => {
             chatConnectionId = data;
         });
-
-        clearInterval(chatIntervelReconnect);
-
-        chatIntervelReconnect = setInterval(function () {
-            if (chatDisconnected) {
-                $('#btnClienteSendMessage').prop('disabled', true);
-                $('#divReconectandoChat').show();
-                chatReconnect();
-            } else {
-                $('#btnClienteSendMessage').prop('disabled', false);
-                $('#divReconectandoChat').hide();
-            }
-        }, 3000);
-
+                
         console.log('reconected success');
     });
 }
@@ -851,6 +854,17 @@ function ChatAddMessage(message) {
 
     var ChatBody = $('#divChatCliente');
     var msg = JSON.parse(message);
+
+    if (msg.cuentaSend) {
+        msg.position = "float-left";
+        msg.margin = "mr-5";
+        msg.color = "bg-secondary";
+    } else {
+        msg.position = "float-right";
+        msg.margin = "ml-5";
+        msg.color = "bg-success";
+    }
+
     ChatBody.append('   <tr>  ' +
         '                           <td>  ' +
         '                               <div class="alert ' + msg.color + ' p-1 text-white m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +

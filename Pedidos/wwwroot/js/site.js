@@ -8,7 +8,6 @@ $(function () {
 
     HubConnect();
 
-    // var FileProvider = Directory.GetCurrentDirectory();   
 })
 
 
@@ -45,6 +44,10 @@ function HubConnect() {
     });
 
     //----------- FUNTIONS ------------
+    //SEND
+    $('#btnEstablecimientoSendMessage').on('click', function () {
+        establecimientoSendMessage();
+    });
 
     //RECIVED
     chat.on("serverReceivedMessage", function (message) {
@@ -61,7 +64,7 @@ function HubConnect() {
             path: location.origin + "/ionsound/sounds/",
             preload: true,
             multiplay: true,
-            volume: 1
+            volume: 0.5
         });
 
         // play sound
@@ -133,8 +136,8 @@ function ChatAddMessageCliente(msg) {
         msg.margin = "ml-5";
         msg.color = "bg-success";
     }
-   
-    tableChatCardapioMensajesCliente.append('   <tr>  ' +
+
+    tableChatCardapioMensajesCliente.append('<tr style="display: grid;">  ' +
         '                           <td style="font-size: 13px">  ' +
         '                               <div class="alert ' + msg.color + ' p-1 text-white m-0 ml-1 mr-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
         '                                   ' + msg.message +
@@ -147,14 +150,13 @@ function ChatAddMessageCliente(msg) {
 
 }
 
-function CuentaSendMessage() {
+function establecimientoSendMessage() {
 
     var newMessage = {
-        idCliente: 1,
         idCuenta: 1,
         mesa: 1,
         titulo: "Royber | Mesa 1",
-        message: $('#inputClienteMessage').val(),
+        message: $('#inputEstablecimientoMessage').val(),
         position: "float-right",
         color: "bg-success",
         margin: "ml-5",
@@ -162,23 +164,23 @@ function CuentaSendMessage() {
         cuentaSend: true
     };
 
-    ChatAddMessage(JSON.stringify(newMessage));
-    $('#inputClienteMessage').focus();
+    $('#inputEstablecimientoMessage').focus();
 
-    chat.invoke('CuentaSendMessage', chatConnectionId, $('#inputIdCuenta').val(), $('#inputMesa').val(), JSON.stringify(newMessage))
+    chat.invoke('establecimientoSendMessage', 'cli_acc5_1', JSON.stringify(newMessage))
         .then((res) => {
-            var asdasd = 'dd';
-            console.log(asdasd);
+            console.log('establecimientoSendMessage', res);
+
+            ChatAddMessageCliente(newMessage);
         })
         .catch(err => {
             Swal.fire({
                 icon: 'error',
                 title: 'Oops...',
-                text: 'Erro ao conectar com o estabelecimento!',
-                footer: '<a>Verifique se seu telefone está conectado à internet</a>'
+                text: 'Erro ao conectar com o cliente!',
+                footer: '<a>Verifique que está conectado à internet</a>'
             });
         });
-    $('#inputClienteMessage').val("");
+    $('#inputEstablecimientoMessage').val("");
 
 }
 

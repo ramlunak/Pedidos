@@ -16,7 +16,7 @@ namespace Pedidos.Hubs
     public class MessageHub
     {
         public string chatConnectionId { get; set; }
-        public int idCliente { get; set; }
+        public string codigoConeccionCliente { get; set; }
         public int idCuenta { get; set; }
         public int mesa { get; set; }
         public string titulo { get; set; }
@@ -41,44 +41,36 @@ namespace Pedidos.Hubs
 
         public override async Task OnConnectedAsync()
         {
-          //  var httpContext = Context.GetHttpContext();
-           // var isCardapio = httpContext.Request.Query["isCardapio"];
+            var httpContext = Context.GetHttpContext();
+            var isCardapio = httpContext.Request.Query["isCardapio"];
+            var codigoConecionCliente = httpContext.Request.Query["codigo_coneccion_cliente"];
 
-            //if (isCardapio.Count == 0)
-            //{
-            //    var json = Context.User.Claims.First(x => x.Type == "cuenta").Value;
-            //    if (!string.IsNullOrEmpty(json))
-            //    {
-            //        var cuenta = JsonConvert.DeserializeObject<P_Cuenta>(json);
-            //        if (cuenta != null)
-            //        {
-            //            await Groups.AddToGroupAsync(Context.ConnectionId, "Cuenta" + cuenta.id);
-            //        }
-            //    }
-            //}
+            if (isCardapio.Count > 0)
+            {
+                await Groups.AddToGroupAsync(Context.ConnectionId, codigoConecionCliente[0]);
+                ;
+                //    var json = Context.User.Claims.First(x => x.Type == "cuenta").Value;
+                //    if (!string.IsNullOrEmpty(json))
+                //    {
+                //        var cuenta = JsonConvert.DeserializeObject<P_Cuenta>(json);
+                //        if (cuenta != null)
+                //        {
+                //            await Groups.AddToGroupAsync(Context.ConnectionId, "Cuenta" + cuenta.id);
+                //        }
+                //    }
+            }
 
             await base.OnConnectedAsync();
         }
 
         public async Task clienteSendMessage(string connectionId, string idCuenta, string mesa, string message)
         {
-            //await Clients.User()
-            // await Clients.Client(connectionId).SendAsync("receivedMessage", message);
-
-            //var serverMensaje = new Message
-            //{
-            //    idCliente = 1,
-            //    idCuenta = 1,
-            //    mesa = 1,
-            //    titulo = "Royber | Mesa 1",
-            //    message = "Resivido",
-            //    position = "float-left",
-            //    color = "bg-info",
-            //    margin = "mr-5",
-            //    send = false
-            //};
-
             await Clients.User($"mastereat_account_{idCuenta}").SendAsync("serverReceivedMessage", message);
+        }
+
+        public async Task establecimientoSendMessage(string codigoConeccionCliente, string message)
+        {
+            await Clients.Group(codigoConeccionCliente).SendAsync("clienteReceivedMessage", message);
         }
 
     }

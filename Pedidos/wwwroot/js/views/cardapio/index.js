@@ -869,16 +869,16 @@ function ChatAddMessage(message) {
     if (msg.cuentaSend) {
         msg.position = "float-left";
         msg.margin = "mr-5";
-        msg.color = "border-secondary";
+        msg.color = "bg-secondary";
     } else {
         msg.position = "float-right";
         msg.margin = "ml-5";
-        msg.color = "border-success";
+        msg.color = "bg-success";
     }
 
     ChatBody.append('   <tr>  ' +
         '                           <td>  ' +
-        '                               <div class="alert ' + msg.color + ' p-1 text-black m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
+        '                               <div class="alert ' + msg.color + ' p-1 text-white m-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
         '                                   ' + msg.message +
         '                               </div>  ' +
         '                           </td>  ' +

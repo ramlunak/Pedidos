@@ -204,16 +204,16 @@ function ChatAddMessageCliente(msg) {
     if (msg.clientSend) {
         msg.position = "float-left";
         msg.margin = "mr-5";
-        msg.color = "border-secondary";
+        msg.color = "bg-secondary";
     } else {
         msg.position = "float-right";
         msg.margin = "ml-5";
-        msg.color = "border-success";
+        msg.color = "bg-success";
     }
 
     tableChatCardapioMensajesCliente.append('<tr style="display: grid;">  ' +
         '                           <td style="font-size: 13px">  ' +
-        '                               <div class="alert ' + msg.color + ' p-1 text-black m-0 ml-1 mr-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
+        '                               <div class="alert ' + msg.color + ' p-1 text-white m-0 ml-1 mr-1 ' + msg.position + ' ' + msg.margin + ' " style="display:inline-grid">  ' +
         '                                   ' + msg.message +
         '                               </div>  ' +
         '                           </td>  ' +

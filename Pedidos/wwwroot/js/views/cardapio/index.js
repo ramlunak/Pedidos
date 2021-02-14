@@ -243,21 +243,21 @@ function cargarProductosCategoria(idCategoria, idCuenta, productos) {
         var TD2 = $('<td style="width:auto">');
         var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.idCuenta + ',' + item.id + ')">');
 
-        TD1.append('<div><b>' + item.nombre + '</b></div>');
+        TD1.append('<div style=";font-size:18px"><b>' + item.nombre + '</b></div>');
         var divTamanhos = $('<div style="display: inline-table">');
 
         if (item.valor !== 0)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;"> <div class="ml-1" style="color:chartreuse">R$ ' + item.valor + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;"> <div class="ml-1" style="color:chartreuse;;font-size:15px">R$ ' + item.valor + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho1 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;font-size:15px">' + item.tamanho1 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho1.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho2 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;font-size:15px">' + item.tamanho2 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho2.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho3 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;font-size:15px">' + item.tamanho3 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho3.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho4 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho4 + ' <div class="ml-1 " style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;font-size:15px">' + item.tamanho4 + ' <div class="ml-1 " style="color:chartreuse">R$ ' + item.valorTamanho4.toFixed(2) + '</div> </div>');
         if (item.valor === 0 && item.valorTamanho5 !== null)
-            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
+            divTamanhos.append('<div class="btn btn-sm btn-secondary text-nowrap  m-1 d-flex" style="width:max-content;float: left;font-size:15px">' + item.tamanho5 + ' <div class="ml-1" style="color:chartreuse">R$ ' + item.valorTamanho5.toFixed(2) + '</div> </div>');
 
         TD1.append(divTamanhos);
 
@@ -545,6 +545,12 @@ function TABLE_Adicional(adicionales, idProducto) {
     var TABLE = $('#modalTableAdicionales');
     TABLE.empty();
 
+    if (adicionales.length === 0) {
+        $('#divSeparadorAdicionales').hide();
+    } else {
+        $('#divSeparadorAdicionales').show();
+    }
+
     $.each(adicionales, function (index, item) {
 
         var TD1 = $('<td style="width:100%">');
@@ -569,6 +575,12 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
 
     var TABLE = $('#modalTableIngredientes');
     TABLE.empty();
+
+    if (ingredientes.length === 0) {
+        $('#divSeparadorIngredientes').hide();
+    } else {
+        $('#divSeparadorIngredientes').show();
+    }
 
     $.each(ingredientes, function (index, item) {
 

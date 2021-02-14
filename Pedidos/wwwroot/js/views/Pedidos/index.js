@@ -718,6 +718,12 @@ function TABLE_Adicional(adicionales, idProducto) {
     var TABLE = $('#modalTableAdicionales');
     TABLE.empty();
 
+    if (adicionales.length === 0) {
+        $('#divSeparadorAdicionales').hide();
+    } else {
+        $('#divSeparadorAdicionales').show();
+    }
+
     $.each(adicionales, function (index, item) {
 
         var TD1 = $('<td style="width:100%">');
@@ -742,6 +748,12 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
 
     var TABLE = $('#modalTableIngredientes');
     TABLE.empty();
+
+    if (ingredientes.length === 0) {
+        $('#divSeparadorIngredientes').hide();
+    } else {
+        $('#divSeparadorIngredientes').show();
+    }
 
     $.each(ingredientes, function (index, item) {
 

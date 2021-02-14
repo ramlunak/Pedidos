@@ -109,10 +109,12 @@
                     <span id="spanDescripcionProducto"></span>
                 </div>
 
-                <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
-                    <hr class="w-100" />
-                    <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONAIS</div>
-                    <hr class="w-100" />
+                <div id="divSeparadorAdicionales">
+                    <div id="expandAdicionales" class="d-flex align-content-center" data-toggle="collapse" data-target="#collapseAdicionales" aria-expanded="false" aria-controls="collapseAdicionales">
+                        <hr class="w-100" />
+                        <div class="m-1 btn btn-sm btn-outline-primary cursor-pointer">ADICIONAIS</div>
+                        <hr class="w-100" />
+                    </div>
                 </div>
 
                 @*ADICIONALES*@
@@ -126,10 +128,12 @@
 
                 </div>
 
-                <div class="d-flex align-content-center">
-                    <hr class="w-100" />
-                    <div class="m-1" style="color:gray">INGREDIENTES</div>
-                    <hr class="w-100" />
+                <div id="divSeparadorIngredientes">
+                    <div class="d-flex align-content-center">
+                        <hr class="w-100" />
+                        <div class="m-1" style="color:gray">INGREDIENTES</div>
+                        <hr class="w-100" />
+                    </div>
                 </div>
 
                 @*INGREDIENTES*@
@@ -148,19 +152,19 @@
 
                 <div class="mt-2">
                     <div id="modalTamanhos" class="form-group">
-                        <div id="btnTamanho1" class="btn btn-sm m-1" onclick="checkTamanho(1)">
+                        <div id="btnTamanho1" class="btn btn-sm m-1" onclick="checkTamanho(1)" style="font-size:14px">
                             <span id="nomeTamanho1" class="mr-2"></span>R$ <span id="valorTamanho1" class="mr-2"></span> <i id="checkedTamanho1" class="fa fa-check" aria-hidden="true"></i>
                         </div>
-                        <div id="btnTamanho2" class="btn btn-sm m-1" onclick="checkTamanho(2)">
+                        <div id="btnTamanho2" class="btn btn-sm m-1" onclick="checkTamanho(2)" style="font-size:14px">
                             <span id="nomeTamanho2" class="mr-2"></span>R$ <span id="valorTamanho2" class="mr-2"></span><i id="checkedTamanho2" class="fa fa-check" aria-hidden="true"></i>
                         </div>
-                        <div id="btnTamanho3" class="btn btn-sm m-1" onclick="checkTamanho(3)">
+                        <div id="btnTamanho3" class="btn btn-sm m-1" onclick="checkTamanho(3)" style="font-size:14px">
                             <span id="nomeTamanho3" class="mr-2"></span> R$<span id="valorTamanho3" class="mr-2"></span><i id="checkedTamanho3" class="fa fa-check" aria-hidden="true"></i>
                         </div>
-                        <div id="btnTamanho4" class="btn btn-sm m-1" onclick="checkTamanho(4)">
+                        <div id="btnTamanho4" class="btn btn-sm m-1" onclick="checkTamanho(4)" style="font-size:14px">
                             <span id="nomeTamanho4" class="mr-2"></span> R$<span id="valorTamanho4" class="mr-2"></span><i id="checkedTamanho4" class="fa fa-check" aria-hidden="true"></i>
                         </div>
-                        <div id="btnTamanho5" class="btn btn-sm m-1" onclick="checkTamanho(5)">
+                        <div id="btnTamanho5" class="btn btn-sm m-1" onclick="checkTamanho(5)" style="font-size:14px">
                             <span id="nomeTamanho5" class="mr-2"></span> R$<span id="valorTamanho5" class="mr-2"></span><i id="checkedTamanho5" class="fa fa-check" aria-hidden="true"></i>
                         </div>
                     </div>

@@ -32,28 +32,6 @@ namespace Pedidos.Controllers
             return View(model);
         }
 
-        // GET: Barrios/Details/5
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (!ValidarCuenta())
-            {
-                return RedirectToAction("Salir", "Login");
-            }
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var p_Barrios = await _context.P_Barrios
-                .FirstOrDefaultAsync(m => m.id == id);
-            if (p_Barrios == null)
-            {
-                return NotFound();
-            }
-
-            return View(p_Barrios);
-        }
-
         // GET: Barrios/Create
         public IActionResult Create()
         {

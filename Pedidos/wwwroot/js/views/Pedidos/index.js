@@ -239,7 +239,7 @@ function CargarDirecciones(id) {
 
             if (data !== null && data.length > 0) {
                 //Llanar lista direcciones
-              
+
                 $("#inputEndereco").val(null);
                 $("#spanEndereco").html(null);
             }
@@ -728,7 +728,7 @@ function TABLE_Adicional(adicionales, idProducto) {
         var codigo = "ADC_" + item.id + "_" + idProducto;
         var minusId = "Minus_" + item.id + "_" + idProducto;
 
-        TD1.append('<div class="unselectable"> <a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
+        TD1.append('<div class="unselectable"> <a id=' + codigo + ' style="color:blue"></a> ' + item.nombre + '</div>');
         TD2.append('<div class="unselectable" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
         TD3.append('<div style="width:60px;text-align: end"> <button id=' + minusId + ' disabled="disabled" onclick="adicionalMinus(' + item.id + ',' + idProducto + ')" class="btn-plano mr-2 unselectable"><i  class="fa fa-minus cursor-pointer"></i></button><button onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="btn-plano unselectable"><i  class="fa fa-plus cursor-pointer"></i></button></div>');
 
@@ -780,7 +780,9 @@ function adicionalPlus(id, idProducto) {
             $(codigo).animate({ fontSize: '19px' }, 80);
             $(codigo).animate({ fontSize: '15px' }, 80);
 
-            $(codigo).html('+' + item.cantidad);
+            if (item.cantidad === 0) {
+                $(codigo).html('');
+            }
         }
         return item.id === id;
     });

@@ -555,8 +555,8 @@ function TABLE_Adicional(adicionales, idProducto) {
         var codigo = "ADC_" + item.id + "_" + idProducto;
         var minusId = "Minus_" + item.id + "_" + idProducto;
 
-        TD1.append('<div class="unselectable"> <a id=' + codigo + ' style="color:blue">+0</a> ' + item.nombre + '</div>');
-        TD2.append('<div class="unselectable" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
+        TD1.append('<div class="unselectable"> <a id=' + codigo + ' style="color:blue"></a> ' + item.nombre + '</div>');
+        TD2.append('<div class="unselectable text-nowrap" style="width:50px;text-align:end">R$ ' + item.valor.toFixed(2) + '</div>');
         TD3.append('<div style="width:60px;text-align: end"> <button id=' + minusId + ' disabled="disabled" onclick="adicionalMinus(' + item.id + ',' + idProducto + ')" class="btn-plano mr-2 unselectable"><i  class="fa fa-minus cursor-pointer"></i></button><button onclick="adicionalPlus(' + item.id + ',' + idProducto + ')" class="btn-plano unselectable"><i  class="fa fa-plus cursor-pointer"></i></button></div>');
 
         TR.append(TD1, TD2, TD3);
@@ -607,7 +607,6 @@ function adicionalPlus(id, idProducto) {
             $(codigo).animate({ fontSize: '19px' }, 80);
             $(codigo).animate({ fontSize: '15px' }, 80);
 
-            $(codigo).html('+' + item.cantidad);
         }
         return item.id === id;
     });
@@ -637,7 +636,9 @@ function adicionalMinus(id, idProducto) {
             $(codigo).animate({ fontSize: '19px' }, "fast",);
             $(codigo).animate({ fontSize: '15px' }, "fast");
 
-            $(codigo).html('+' + item.cantidad);
+            if (item.cantidad === 0) {
+                $(codigo).html('');
+            }
         }
         return item.id === id;
     });
@@ -707,6 +708,8 @@ function AddProductoCardapio() {
     _ModalProducto.deliveryDinheiroTotal = parseFloat($('#inputDeliveryDinheiroTotal').val());
 
     _ModalProducto.codigoConeccionCliente = "cli_acc" + cardapioIdCuenta + "_" + cardapioMesa;
+    _ModalProducto.cliente = nombreCliente;
+    _ModalProducto.idMesa = parseInt(cardapioMesa);
 
     chat.invoke('clienteSendProducto', chatConnectionId, cardapioIdCuenta, cardapioMesa, JSON.stringify(_ModalProducto))
         .then((res) => {

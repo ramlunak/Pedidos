@@ -239,8 +239,8 @@ function pedidosCardapioAddProductoPendiente(producto, index) {
         '                                       <div class="card-header">  ' +
         '                                           <div class="d-flex">  ' +
         '                                               <img src="../../img/client.png" style="width:25px;height:25px" class="mr-2" />  ' +
-        '                                               <div><strong>Royber | </strong></div>  ' +
-        '                                               <div class="ml-1"><small>Mesa 1</small></div>  ' +
+        '                                               <div><strong>' + producto.cliente + ' | </strong></div>  ' +
+        '                                               <div class="ml-1"><small>Mesa ' + producto.idMesa + '</small></div>  ' +
         '                                           </div>  ' +
         '                                       </div>  ' +
         '                                       <div class="card-body bg-white w-100" id="card_index_' + index + '_' + producto.codigoConeccionCliente + '">  ' +
@@ -347,7 +347,7 @@ function pedidosCardapioAddProductoPendiente(producto, index) {
     panelInredientesAdicionales.append(panelBody);
 
     TD1_PRD.append(panelInredientesAdicionales);
-  
+
     TR2_PRD.append(TD1_PRD);
 
     //ADD TRS A LA TABLA

@@ -4,27 +4,15 @@
     ViewData["Title"] = "Index";
 }
 
-<!--div class="d-flex justify-content-between m-1">
-   <div class="btn btn-sm btn-primary"><a style="color:white" asp-action="Create">Novo Produto</a></div>
-   <div>-->
-<!-- Search form -->
-<!--<form id="formSearchCategoria">
-            <div class="d-flex align-items-center">
-                <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="search" placeholder="Buscar"
-                       aria-label="Search">
-                <button style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:dodgerblue" class="fa fa-search"></i></button>
-                <div onclick="LimpiarNombre()" class="btn" style="background-color:transparent;border-color:transparent;padding:1px">  <i style="color:orangered" class="fa fa-ban" aria-hidden="true"></i></div>
-
-            </div>
-        </form>
-    </div>
-</div>-->
-
 <div class="card m-2">
     <div class="card-header">
         <div class="row d-flex justify-content-between p-2">
             <div>
                 <a class="btn btn-sm btn-primary" asp-action="Create">NOVO PRODUTO</a>
+                <a class="btn btn-sm btn-outline-secondary" data-toggle="tooltip" data-placement="top" title="Importar" asp-area="" asp-controller="Imports" asp-action="Producto">
+                    <i class="fas fa-file-upload fa-1x"></i>
+                    Importar
+                </a>
             </div>
             <div>
                 <form id="formSearchCategoria">

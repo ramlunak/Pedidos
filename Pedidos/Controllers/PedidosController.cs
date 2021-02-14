@@ -807,5 +807,47 @@ namespace Pedidos.Controllers
 
         }
 
+        public async Task<IActionResult> CardapioGuardarProductoPendiente([FromBody] P_Productos producto)
+        {
+            var productosPendientes = GetSession<List<P_Productos>>("CardapioProductosPendientes");
+
+            if (productosPendientes == null)
+            {
+                productosPendientes = new List<P_Productos>();
+            }
+
+            producto.fecha_pedido = DateTime.Now.ToSouthAmericaStandard();
+            producto.imagen = null;
+
+            if (!string.IsNullOrEmpty(producto.tamanhoSeleccionado))
+            {
+                producto.valor = producto.valorTamanhoSeleccionado;
+            }
+
+            producto.Adicionales.RemoveAll(a => a.cantidad == 0);
+            producto.Ingredientes.RemoveAll(i => i.selected);
+
+            productosPendientes.Add(producto);
+            productosPendientes.Where(x => x.isNew).Select((p, i) => { p.posicion = i; return p; }).ToList();
+
+            SetSession("CardapioProductosPendientes", productosPendientes);
+
+            var index = productosPendientes.IndexOf(producto);
+            return Ok(new { producto, index });
+        }
+
+        public IActionResult CargarProductosPendientes()
+        {
+            var productosPendientes = GetSession<List<P_Productos>>("CardapioProductosPendientes");
+
+            if (productosPendientes == null)
+            {
+                productosPendientes = new List<P_Productos>();
+            }
+
+            return Ok(productosPendientes.OrderBy(x => x.posicion).ToList());
+
+        }
+
     }
 }

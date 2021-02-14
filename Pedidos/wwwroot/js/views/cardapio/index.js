@@ -690,7 +690,9 @@ function productoPlus() {
 }
 
 //agregar el producto al pedido en adicion
-function AddProducto() {
+function AddProductoCardapio() {
+
+    $('#ModalDetalleProducto').modal('hide');
 
     _ModalProducto.adicionales = _ModalAdicionales;
     _ModalProducto.ingredientes = _ModalIngredientes;
@@ -704,29 +706,16 @@ function AddProducto() {
 
     _ModalProducto.deliveryDinheiroTotal = parseFloat($('#inputDeliveryDinheiroTotal').val());
 
-    $.ajax({
-        type: "POST",
-        url: "/Pedidos/AddProducto",
-        traditional: true,
-        data: JSON.stringify(_ModalProducto),
-        contentType: "application/json; charset=utf-8",
-        dataType: "json",
-        success: function (result) {
+    _ModalProducto.codigoConeccionCliente = "cli_acc" + cardapioIdCuenta + "_" + cardapioMesa;
 
-            $('#ModalDetalleProducto').modal('hide');
-            _CurrentPedido = result.currentPedido;
-            MostarCurrentPedido();
+    chat.invoke('clienteSendProducto', chatConnectionId, cardapioIdCuenta, cardapioMesa, JSON.stringify(_ModalProducto))
+        .then((res) => {
+            console.log(res);
+        })
+        .catch(err => {
+            console.log(err);
+        });
 
-        },
-        failure: function (response) {
-            console.log('failure', response);
-
-        },
-        error: function (response) {
-            console.log('error', response);
-
-        }
-    });
 }
 
 // --------------  CHAT HUB ------------------------
@@ -838,6 +827,7 @@ function ClienteSendMessage() {
     };
 
     ChatAddMessage(JSON.stringify(newMessage));
+
     $('#inputClienteMessage').focus();
     chat.invoke('clienteSendMessage', chatConnectionId, cardapioIdCuenta, cardapioMesa, JSON.stringify(newMessage))
         .then((res) => {

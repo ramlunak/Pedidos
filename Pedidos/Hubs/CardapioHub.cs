@@ -57,30 +57,32 @@ namespace Pedidos.Hubs
             if (isCardapio.Count > 0)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, codigoConecionCliente[0]);
-                ;
-                //    var json = Context.User.Claims.First(x => x.Type == "cuenta").Value;
-                //    if (!string.IsNullOrEmpty(json))
-                //    {
-                //        var cuenta = JsonConvert.DeserializeObject<P_Cuenta>(json);
-                //        if (cuenta != null)
-                //        {
-                //            await Groups.AddToGroupAsync(Context.ConnectionId, "Cuenta" + cuenta.id);
-                //        }
-                //    }
             }
 
             await base.OnConnectedAsync();
         }
+
+        #region CLIENTE SEND
 
         public async Task clienteSendMessage(string connectionId, string idCuenta, string mesa, string message)
         {
             await Clients.User($"mastereat_account_{idCuenta}").SendAsync("serverReceivedMessage", message);
         }
 
+        public async Task clienteSendProducto(string connectionId, string idCuenta, string mesa, string producto)
+        {
+            await Clients.User($"mastereat_account_{idCuenta}").SendAsync("serverReceivedProducto", producto);
+        }
+
+        #endregion
+
+        #region ESTABLECIMIENTO SEND 
+
         public async Task establecimientoSendMessage(string codigoConeccionCliente, string message)
         {
             await Clients.Group(codigoConeccionCliente).SendAsync("clienteReceivedMessage", message);
         }
 
+        #endregion
     }
 }

@@ -68,3 +68,38 @@ function MostarGruposMensajes(grupos) {
     });
 
 }
+
+function CargarProductosPendientes() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CargarProductosPendientes/",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (productos) {
+            MostrarProductosPendientes(productos);
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+function MostrarProductosPendientes(productos) {
+
+    productosPendientesCount = productos.length;
+    $('#spanProductosPendientesCount').html(productosPendientesCount);
+
+    var tableChatCardapioPedidosPendientes = $('#tableChatCardapioPedidosPendientes');
+    tableChatCardapioPedidosPendientes.empty();
+
+    $.each(productos, function (index, producto) {
+        pedidosCardapioAddProductoPendiente(producto, producto.posicion);
+    });
+
+}

@@ -229,6 +229,8 @@ namespace Pedidos.Models
         [NotMapped]
         public bool? deliveryEmdinheiro { get; set; }
 
+        [NotMapped]
+        public string codigoConeccionCliente { get; set; }
 
     }
 

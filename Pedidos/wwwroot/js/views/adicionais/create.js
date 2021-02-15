@@ -2,7 +2,7 @@
 
 $(function () {
 
-    $('#txtValor').maskMoney({ prefix: '', allowNegative: false, thousands: '', decimal: '.', affixesStay: false });
+    $('#txtValor') $("#txtTasa").mask("###0.00", { reverse: true });
 
 });
 

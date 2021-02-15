@@ -120,6 +120,7 @@ namespace Pedidos.Controllers
                     entidad.estado = p_Barrios.estado;
                     entidad.municipio = p_Barrios.municipio;
                     entidad.nombre = p_Barrios.nombre;
+                    entidad.tasa = p_Barrios.tasa;
                     entidad.activo = p_Barrios.activo;
 
                     _context.Update(entidad);

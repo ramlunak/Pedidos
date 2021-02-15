@@ -16,6 +16,7 @@ namespace Pedidos.Models
         public string municipio { get; set; }
         [Required]
         public string nombre { get; set; }
+        public decimal? tasa { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
         public string text

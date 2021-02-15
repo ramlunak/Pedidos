@@ -29,6 +29,9 @@
                         Barrio
                     </th>
                     <th>
+                        Taxa
+                    </th>
+                    <th>
                         @Html.DisplayNameFor(model => model.activo)
                     </th>
 
@@ -47,6 +50,9 @@
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.nombre)
+                        </td>
+                        <td>
+                            @(item.tasa.HasValue ?$"R$ {item.tasa.Value.ToString("F2")}":$"R$ 0.00")
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.activo)

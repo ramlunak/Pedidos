@@ -220,6 +220,20 @@ namespace Pedidos.Controllers
                     currentPedido.deliveryPago = pedidoaux.deliveryPago;
                     currentPedido.deliveryEmdinheiro = pedidoaux.deliveryEmdinheiro;
 
+                    if (currentPedido.idBarrio.HasValue)
+                    {
+                        var barrios = GetSession<List<P_Barrio>>("Barrios");
+                        if (barrios != null && barrios.Any())
+                        {
+                            var tasa = barrios.First(x => x.id == currentPedido.idBarrio).tasa;
+                            currentPedido.tasaEntrega = tasa.HasValue ? tasa.Value : 0;
+                        }
+                    }
+                    else
+                    {
+                        currentPedido.tasaEntrega = 0;
+                    }
+
                     var actualizarPagina = false;
 
                     if (pedidoaux.cadastrarCliente)

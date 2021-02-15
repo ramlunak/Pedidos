@@ -3,6 +3,7 @@
     estado varchar(50) not null,   
     municipio varchar(255) not null,   
     nombre varchar(255) not null,   
+    tasa decimal null,   
     idCuenta int not null,
     activo bit not null
 );

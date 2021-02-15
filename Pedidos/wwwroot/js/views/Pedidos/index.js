@@ -1931,7 +1931,9 @@ function CancelarCurrentPedido() {
                 aplicativo: '',
                 idAplicativo: null,
                 idMesa: null,
+                idBarrio: null,
                 direccion: '',
+                barrio: '',
                 telefono: '',
                 observacion: ''
             };

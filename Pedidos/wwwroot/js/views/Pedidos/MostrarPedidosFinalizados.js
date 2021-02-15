@@ -77,7 +77,7 @@ function MostarPedidosFinalizados(pedidosFinalizados) {
             '               <div class="d-block" style="text-align:left">  ' +
             '                   <div style="font-size:13px"><b>Codigo: ' + pedido.codigo + '<b/></div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
-            '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo +
+            '                   <div style="font-size:13px">' + pedido.direccion + ' ' + pedido.barrio + '</div>  ' + mesa + aplicativo +
             '               </div>  ' +
             '               <div class="d-block" style="text-align:right">  ' +
             '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +

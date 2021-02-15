@@ -22,7 +22,7 @@ namespace Pedidos.Models
         {
             get
             {
-                var mun = municipio.Substring(0, 3);
+                var mun = municipio.Substring(0, 4);
                 return $"{nombre}, {mun}, {estado.ToUpper()}";
 
             }

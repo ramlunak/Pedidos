@@ -21,6 +21,8 @@ namespace Pedidos.Models
         public int? idCliente { get; set; }
         public string cliente { get; set; }
         public int? idDireccion { get; set; }
+        public int? idBarrio { get; set; }
+        public string barrio { get; set; }
         public string direccion { get; set; }
         public int? idMesa { get; set; }
         public int? idAplicativo { get; set; }
@@ -91,7 +93,9 @@ namespace Pedidos.Models
         public string aplicativo { get; set; }
         public int? idMesa { get; set; }
         public string direccion { get; set; }
-        public int? idDireccion { get; set; }
+        public int? idDireccion { get; set; }      
+        public string barrio { get; set; }        
+        public int? idBarrio { get; set; }
         public string telefono { get; set; }
         public int? idFormaPagamento { get; set; }
         public decimal? descuento { get; set; }

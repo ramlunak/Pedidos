@@ -80,6 +80,9 @@ namespace Pedidos.Controllers
             var direcciones = await _context.P_Direcciones.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
             SetSession("Direcciones", direcciones);
 
+            var barrios = await _context.P_Barrios.Where(x => x.idCuenta == Cuenta.id && x.activo).ToListAsync();
+            SetSession("Barrios", barrios);
+
             var productos = await _context.P_Productos.FromSqlRaw(SqlConsultas.GetSqlProductosAll(Cuenta.id)).ToListAsync();
             SetSession("PedidoProductos", productos);
 
@@ -138,6 +141,8 @@ namespace Pedidos.Controllers
             currentPedido.idMesa = producto.idMesa;
             currentPedido.idDireccion = producto.idDireccion;
             currentPedido.direccion = producto.direccion;
+            currentPedido.idBarrio = producto.idBarrio;
+            currentPedido.barrio = producto.barrio;
             currentPedido.telefono = producto.telefono;
 
             currentPedido.deliveryDinheiroTotal = producto.deliveryDinheiroTotal;
@@ -206,6 +211,8 @@ namespace Pedidos.Controllers
                     currentPedido.idMesa = pedidoaux.idMesa;
                     currentPedido.idDireccion = pedidoaux.idDireccion;
                     currentPedido.direccion = pedidoaux.direccion;
+                    currentPedido.idBarrio = pedidoaux.idBarrio;
+                    currentPedido.barrio = pedidoaux.barrio;
                     currentPedido.telefono = pedidoaux.telefono;
 
                     currentPedido.deliveryDinheiroTotal = pedidoaux.deliveryDinheiroTotal;
@@ -637,6 +644,24 @@ namespace Pedidos.Controllers
                     var cli = clientes.FirstOrDefault(x => x.id == id);
                     var telefono = cli != null ? cli.telefono : null;
                     return Ok(telefono);
+                }
+                catch (Exception)
+                {
+                    return Ok(null);
+                }
+            }
+            return Ok(null);
+        }
+
+
+        public async Task<IActionResult> GetBarrios(int id)
+        {
+            if (GetSession<List<P_Barrio>>("Barrios") != null)
+            {
+                try
+                {
+                    var barrios = GetSession<List<P_Barrio>>("Barrios");
+                    return Ok(barrios);
                 }
                 catch (Exception)
                 {

@@ -31,6 +31,7 @@ $(function () {
     CargarPedidosPendientes();
     CargarProductos();
     CargarListaTelefonos();
+    CargarBarrios();
 
     $('#searchCliente').on('input propertychange', function (e) {
         var filtroCliente = $('#searchCliente').val();
@@ -136,10 +137,16 @@ $(function () {
             $('#inputEndereco').trigger("input");
             $('#inputEndereco').hide()
 
+            $('#inputBarrio').val(null);
+            $('#idBarrio').val('');
+            $('#inputBarrio').trigger("input");
+            $('#inputBarrio').hide()
+
         } else {
             $('#spanMesa').hide();
             //  $('#divInfoPagamentoDelivery').show();
             $('#inputEndereco').show();
+            $('#inputBarrio').show();
             $('#inputAplicativo').show();
         }
 
@@ -161,6 +168,26 @@ $(function () {
 
         _CurrentPedido.direccion = $('#inputEndereco').val();
         _ModalProducto.direccion = $('#inputEndereco').val();
+
+    });
+
+
+    $('#inputBarrio').on('input propertychange', function (e) {
+        $('#spanBarrio').html($('#inputBarrio').val());
+
+        var opt = $('option[value="' + $(this).val() + '"]');
+        var id = opt.length ? opt.attr('id') : '';
+
+        if (id !== '' && id !== undefined) {
+            $('#inputBarrio').css({ "border-color": "#04CD5A", "border-weight": "2px", "border-style": "solid" });
+            $('#idBarrio').val(id);
+        } else {
+            $('#inputBarrio').css({ "border": "1px solid #ced4da" });
+            $('#idBarrio').val('');
+        }
+
+        _CurrentPedido.barrio = $('#inputBarrio').val();
+        _ModalProducto.barrio = $('#inputBarrio').val();
 
     });
 
@@ -288,6 +315,36 @@ function CargarListaTelefonos() {
                     $("#TelefonoList").append($('<option >').attr('value', item));
                 }
 
+
+            });
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+//Cargar Barrios
+function CargarBarrios() {
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/GetBarrios",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            //Llanar lista barrios
+            $("#BarrioList").empty();
+
+            $.each(data, (index, item) => {
+
+                $("#BarrioList").append($('<option id="' + item.id + '">').attr('value', item.text));
 
             });
 
@@ -499,6 +556,8 @@ function ShowDetallesProducto(id) {
             _ModalProducto.idMesa = parseInt(datosClienteFormulario.idMesa);
             _ModalProducto.direccion = datosClienteFormulario.direccion;
             _ModalProducto.idDireccion = datosClienteFormulario.idDireccion;
+            _ModalProducto.idBarrio = datosClienteFormulario.idBarrio;
+            _ModalProducto.barrio = datosClienteFormulario.barrio;
             _ModalProducto.telefono = datosClienteFormulario.telefono;
 
             _ModalProducto.deliveryEmCartao = datosClienteFormulario.deliveryEmCartao;
@@ -887,6 +946,9 @@ function AddProducto() {
     _ModalProducto.idAplicativo = parseInt($('#idAplicativo').val());
     _ModalProducto.idMesa = parseInt($('#idMesa').val());
     _ModalProducto.idDireccion = parseInt($('#idDireccion').val());
+    _ModalProducto.direccion = $('#inputEndereco').val();
+    _ModalProducto.idBarrio = parseInt($('#idBarrio').val());
+    _ModalProducto.barrio = $('#inputBarrio').val();
     _ModalProducto.telefono = $('#inputTelefone').val();
 
     _ModalProducto.deliveryDinheiroTotal = parseFloat($('#inputDeliveryDinheiroTotal').val());
@@ -961,6 +1023,8 @@ function editar(idPedido) {
             _ModalProducto.idMesa = _CurrentPedido.idMesa;
             _ModalProducto.direccion = _CurrentPedido.direccion;
             _ModalProducto.idDireccion = _CurrentPedido.idDireccion;
+            _ModalProducto.idBarrio = _CurrentPedido.idBarrio;
+            _ModalProducto.barrio = _CurrentPedido.barrio;
             _ModalProducto.telefono = _CurrentPedido.telefono;
 
             if (_CurrentPedido.deliveryEmCartao) {
@@ -1021,6 +1085,9 @@ function MostarCurrentPedido() {
     $('#inputEndereco').val(_CurrentPedido.direccion);
     $('#idDireccion').val(_CurrentPedido.idDireccion);
 
+    $('#inputBarrio').val(_CurrentPedido.barrio);
+    $('#idBarrio').val(_CurrentPedido.idBarrio);
+
     $('#inputDescuento').val(_CurrentPedido.descuento);
     $('#inputPago').prop("checked", _CurrentPedido.DeliveryPago);
 
@@ -1076,6 +1143,8 @@ function GuardarCurrentPedido(cadastrar) {
         aplicativo: $('#inputAplicativo').val(),
         idMesa: parseInt($('#idMesa').val()),
         direccion: $('#inputEndereco').val(),
+        barrio: $('#inputBarrio').val(),
+        idBarrio: parseInt($('#idBarrio').val()),
         idDireccion: parseInt($('#idDireccion').val()),
         telefono: $('#inputTelefone').val(),
         deliveryDinheiroTotal: parseFloat($('#inputDeliveryDinheiroTotal').val()),
@@ -1108,7 +1177,9 @@ function GuardarCurrentPedido(cadastrar) {
                     aplicativo: '',
                     idAplicativo: null,
                     idMesa: null,
+                    idBarrio: null,
                     direccion: '',
+                    barrio: '',
                     telefono: '',
                     observacion: ''
                 };

@@ -75,7 +75,7 @@
 
                             <div class="d-block" style="text-align:left">
                                 <div style="font-size:11px"><span id="spanNombre"></span></div>
-                                <div style="font-size:11px"><span id="spanEndereco"></span></div>
+                                <div class="d-flex" style="font-size:11px"><span id="spanEndereco"></span>, <span id="spanBarrio"></span></div>
                                 <div style="font-size:11px"><span id="spanMesa"></span></div>
                                 <div style="font-size:11px"><span id="spanAplicativo"></span></div>
                             </div>
@@ -148,10 +148,10 @@
                         </div>
 
                         <div class="col-12 col-lg-6 m-0 p-0 mb-2">
-                            <input type="search" id="inputEndereco" list="EnderecoList" placeholder="Endereço" class="form-control form-control-sm w-100" />
-                            <datalist id="EnderecoList" class="w-100">
+                            <input type="search" id="inputBarrio" list="BarrioList" placeholder="Barrio" class="form-control form-control-sm w-100" />
+                            <datalist id="BarrioList" class="w-100">
                             </datalist>
-                            <input id="idBarrio" asp-for="idDireccion" hidden class="form-control" />
+                            <input id="idBarrio" asp-for="idBarrio" hidden class="form-control" />
                         </div>
 
                         <div class="col-12 col-md-8 m-0 p-0 mb-2">

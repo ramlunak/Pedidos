@@ -216,6 +216,10 @@ namespace Pedidos.Models
         [NotMapped]
         public int? idDireccion { get; set; }
         [NotMapped]
+        public string barrio { get; set; }
+        [NotMapped]
+        public int? idBarrio { get; set; }
+        [NotMapped]
         public string telefono { get; set; }
 
         [NotMapped]

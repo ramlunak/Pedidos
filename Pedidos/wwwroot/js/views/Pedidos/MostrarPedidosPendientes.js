@@ -69,16 +69,16 @@ function MostarPedidosPendientes() {
             '               <div class="d-block" style="text-align:left">  ' +
             '                   <div style="font-size:13px" class="d-flex"><b>Codigo: ' + pedido.codigo + '</b>  </div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
-            '                   <div style="font-size:13px">' + pedido.direccion + '</div>  ' + mesa + aplicativo + retirada +
-            '               </div>  ' + PedidoTiempo +
-            '               <div class="d-block" style="text-align:right">  ' +
-            '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
-            tasaEntrega +
-            descuento +
-            '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
-            '               </div>  ' +
-            '           </div>  ' +
-            '          <hr class="m-2" />  ';
+            '                   <div style="font-size:13px">' + pedido.direccion + ' ' + pedido.barrio + '</div>  ' + mesa + aplicativo + retirada +
+                '               </div>  ' + PedidoTiempo +
+                '               <div class="d-block" style="text-align:right">  ' +
+                '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
+                tasaEntrega +
+                descuento +
+                '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
+                '               </div>  ' +
+                '           </div>  ' +
+                '          <hr class="m-2" />  ';
 
         CARD_BODY.append(div_infopedido);
 
@@ -379,7 +379,7 @@ function imprimirPedido(idPedido, pendientes) {
         }
 
         if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
-            comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' </div >');
+            comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' ' + pedido.barrio + ' </div >');
         }
 
         if (pedido.idMesa !== null && pedido.idMesa !== "") {

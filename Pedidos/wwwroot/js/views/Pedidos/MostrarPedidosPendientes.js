@@ -362,7 +362,7 @@ function imprimirPedido(idPedido, pendientes) {
 
         comprobantePedido.append('<div class="centrado"> <b>' + pedido.codigo + '</b> </div >');
 
-        if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
+        if (pedido.direccion !== null && pedido.direccion !== "") {
             comprobantePedido.append('<div class="centrado mb-1"> <b>VIAGEM</b> </div >');
         }
 
@@ -370,20 +370,24 @@ function imprimirPedido(idPedido, pendientes) {
             comprobantePedido.append('<div class="centrado mb-1"> <b>RETIRADA</b> </div >');
         }
 
-        if (pedido.idCliente !== null && pedido.idCliente !== "") {
+        if (pedido.cliente !== null && pedido.cliente !== "") {
             comprobantePedido.append('<div class="centrado"> ' + pedido.cliente + ' </div >');
+        }
+
+        if (pedido.telefono !== null && pedido.telefono !== "") {
+            comprobantePedido.append('<div class="centrado"> Tel: ' + pedido.telefono + ' </div >');
         }
 
         if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
             comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' </div >');
         }
 
-        if (!isNaN(parseInt(pedido.idMesa))) {
+        if (pedido.idMesa !== null && pedido.idMesa !== "") {
             comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
         }
 
         if (pedido.idAplicativo !== null && pedido.idAplicativo !== "") {
-            comprobantePedido.append('<div class="centrado"> Mesa: ' + pedido.idMesa + ' </div >');
+            comprobantePedido.append('<div class="centrado"> ' + pedido.aplicativo + ' </div >');
         }
 
         //LISTA PRODUSTOS

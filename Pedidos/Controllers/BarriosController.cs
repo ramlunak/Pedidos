@@ -47,7 +47,7 @@ namespace Pedidos.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,nombre,idCuenta,activo")] P_Barrio p_Barrios)
+        public async Task<IActionResult> Create(P_Barrio p_Barrios)
         {
             if (!ValidarCuenta())
             {
@@ -55,9 +55,9 @@ namespace Pedidos.Controllers
             }
             if (ModelState.IsValid)
             {
-                if (await GetIdByName(p_Barrios.id, p_Barrios.nombre) != null)
+                if (await GetIdByName(p_Barrios.id, p_Barrios.nombre, p_Barrios.municipio, p_Barrios.estado) != null)
                 {
-                    PrompInfo("O ingrediente já existe");
+                    PrompInfo("O Barrio já existe");
                     return View(p_Barrios);
                 }
 
@@ -108,16 +108,19 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
-                var idIngrediente = await GetIdByName(p_Barrios.id, p_Barrios.nombre);
-                if (idIngrediente != null && idIngrediente != p_Barrios.id)
+                var idBario = await GetIdByName(p_Barrios.id, p_Barrios.nombre, p_Barrios.municipio, p_Barrios.estado);
+                if (idBario != null && idBario != p_Barrios.id)
                 {
-                    PrompInfo("O ingrediente já existe");
+                    PrompInfo("O Barrio já existe");
                     return View(p_Barrios);
                 }
                 try
                 {
                     var entidad = await _context.P_Barrios.FindAsync(id);
+                    entidad.estado = p_Barrios.estado;
+                    entidad.municipio = p_Barrios.municipio;
                     entidad.nombre = p_Barrios.nombre;
+                    entidad.activo = p_Barrios.activo;
 
                     _context.Update(entidad);
                     await _context.SaveChangesAsync();
@@ -175,16 +178,16 @@ namespace Pedidos.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private async Task<int?> GetIdByName(int id, string nombre)
+        private async Task<int?> GetIdByName(int id, string nombre, string municipio, string estado)
         {
             try
             {
-                var ingrediente = await _context.P_Barrios.FirstOrDefaultAsync(e => e.nombre.ToLower() == nombre.ToLower() && e.idCuenta == Cuenta.id);
-                if (ingrediente == null)
+                var barrio = await _context.P_Barrios.FirstOrDefaultAsync(e => e.nombre.ToLower() == nombre.ToLower().Trim() && e.municipio.ToLower() == municipio.ToLower().Trim() && e.estado.ToLower() == estado.ToLower().Trim() && e.idCuenta == Cuenta.id);
+                if (barrio == null)
                 {
                     return null;
                 }
-                return ingrediente.id;
+                return barrio.id;
             }
             catch (Exception)
             {

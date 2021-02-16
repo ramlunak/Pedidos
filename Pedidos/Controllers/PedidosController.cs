@@ -741,17 +741,19 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
+
+            var currentPedido = GetSession<P_Pedido>("currentPedido");
             try
-            {
-                var currentPedido = GetSession<P_Pedido>("currentPedido");
+            {                
                 var producto = currentPedido.productos.First(x => x.id == id);
                 currentPedido.productos.Remove(producto);
+                currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
                 SetSession("currentPedido", currentPedido);
-                return Ok(true);
+                return Ok(currentPedido);
             }
             catch (Exception ex)
             {
-                return NotFound();
+               return Ok(currentPedido);
             }
         }
 

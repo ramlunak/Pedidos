@@ -27,17 +27,23 @@ function deleteCurrentProducto(id) {
                 traditional: true,
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (data) {
-
-                    _CurrentPedido.productos.splice(_CurrentPedido.productos.findIndex(x => x.id === id), 1);
-                    TABLE_PedidoProductos();
-
+                success: function (currentPedido) {
+                    _CurrentPedido = currentPedido;
+                    MostarCurrentPedido();
                 },
                 failure: function (response) {
-                    console.log('failure', response);
+                    Swal.fire(
+                        'Error!',
+                        'Erro de servidor.' + response,
+                        'error'
+                    )
                 },
                 error: function (response) {
-                    console.log('error', response);
+                    Swal.fire(
+                        'Error!',
+                        'Erro de servidor.' + response,
+                        'error'
+                    )
 
                 }
             });

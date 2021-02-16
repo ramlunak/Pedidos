@@ -1087,11 +1087,12 @@ function MostarCurrentPedido() {
 
     $('#inputBarrio').val(_CurrentPedido.barrio);
     $('#idBarrio').val(_CurrentPedido.idBarrio);
+    $('#spanBarrio').html(_CurrentPedido.barrio);
 
     $('#inputDescuento').val(_CurrentPedido.descuento);
     $('#inputPago').prop("checked", _CurrentPedido.DeliveryPago);
 
-    $('#spanTotal').html(_CurrentPedido.valorProductos + _CurrentPedido.tasaEntrega - _CurrentPedido.descuento);
+    $('#spanTotal').html((_CurrentPedido.valorProductos + _CurrentPedido.tasaEntrega - _CurrentPedido.descuento).toFixed(2));
 
     TABLE_PedidoProductos();
 }

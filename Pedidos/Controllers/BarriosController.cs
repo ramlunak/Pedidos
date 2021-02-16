@@ -108,8 +108,8 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
-                var idBario = await GetIdByName(p_Barrios.id, p_Barrios.nombre, p_Barrios.municipio, p_Barrios.estado);
-                if (idBario != null && idBario != p_Barrios.id)
+                var idBarrio = await GetIdByName(p_Barrios.id, p_Barrios.nombre, p_Barrios.municipio, p_Barrios.estado);
+                if (idBarrio != null && idBarrio != p_Barrios.id)
                 {
                     PrompInfo("O Barrio já existe");
                     return View(p_Barrios);

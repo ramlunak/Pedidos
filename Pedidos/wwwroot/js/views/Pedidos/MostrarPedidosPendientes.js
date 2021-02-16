@@ -366,7 +366,7 @@ function imprimirPedido(idPedido, pendientes) {
             comprobantePedido.append('<div class="centrado mb-1"> <b>VIAGEM</b> </div >');
         }
 
-        if (pedido.idDireccion === null && pedido.direccion === "" && pedido.idMesa === null) {
+        if (pedido.direccion === null && pedido.direccion === "" && pedido.idMesa === null) {
             comprobantePedido.append('<div class="centrado mb-1"> <b>RETIRADA</b> </div >');
         }
 
@@ -378,7 +378,7 @@ function imprimirPedido(idPedido, pendientes) {
             comprobantePedido.append('<div class="centrado"> Tel: ' + pedido.telefono + ' </div >');
         }
 
-        if (pedido.idDireccion !== null && pedido.idDireccion !== "") {
+        if (pedido.direccion !== null && pedido.direccion !== "") {
             comprobantePedido.append('<div class="centrado"> ' + pedido.direccion + ' ' + pedido.barrio + ' </div >');
         }
 

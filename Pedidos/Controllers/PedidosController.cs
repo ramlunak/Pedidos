@@ -201,6 +201,12 @@ namespace Pedidos.Controllers
                     {
                         currentPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
                     }
+
+                    if (Cuenta.rol == RolesSistema.Funcionario.ToString())
+                    {
+                        currentPedido.idFuncionario = Cuenta.idFuncionario;
+                    }
+
                     currentPedido.status = StatusPedido.Pendiente.ToString();
                     currentPedido.jsonListProductos = JsonConvert.SerializeObject(currentPedido.productos);
                     currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);

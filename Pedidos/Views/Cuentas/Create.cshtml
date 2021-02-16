@@ -1,54 +1,74 @@
 ﻿@model Pedidos.Models.P_Cuenta
 
-<h4>P_Cuenta</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+<div class="row m-3"></div>
+
+<div class="row d-flex justify-content-center">
+    <div class="col-12 col-md-4">
+        <form id="fromCreateCuenta" asp-action="Create" autocomplete="off">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @*USUARIO*@
             <div class="form-group">
-                <label asp-for="usuario" class="control-label"></label>
-                <input asp-for="usuario" class="form-control" />
+                @*<label asp-for="Usuario" class="control-label"></label>*@
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="fas fa-user-shield"></i>
+                        </span>
+                    </div>
+                    <input asp-for="usuario" autocomplete="new-user" placeholder="Usuario" value="@string.Empty" class="form-control" />
+                </div>
+
                 <span asp-validation-for="usuario" class="text-danger"></span>
             </div>
+
+            @*PASSWORD*@
             <div class="form-group">
-                <label asp-for="password" class="control-label"></label>
-                <input asp-for="password" class="form-control" />
+                @*<label asp-for="Password" class="control-label"></label>*@
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="fas fa-shield-alt"></i>
+                        </span>
+                    </div>
+                    <input asp-for="password" autocomplete="new-password" placeholder="Contraseña" type="password" value="@string.Empty" class="form-control" />
+                </div>
+
                 <span asp-validation-for="password" class="text-danger"></span>
             </div>
+
+
+            @*CONFIRMAR_PASSWORD*@
             <div class="form-group">
-                <label asp-for="rol" class="control-label"></label>
-                <input asp-for="rol" class="form-control" />
-                <span asp-validation-for="rol" class="text-danger"></span>
+                @*<label asp-for="ConfirmPassword" class="control-label"></label>*@
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-addon1">
+                            <i class="fas fa-shield-alt"></i>
+                        </span>
+                    </div>
+                    <input asp-for="confirmPassword" autocomplete="new-password" type="password" value="@string.Empty" placeholder="Confirmar Contraseña" class="form-control" />
+
+                </div>
+
+                <span asp-validation-for="confirmPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="idPlano" class="control-label"></label>
-                <input asp-for="idPlano" class="form-control" />
-                <span asp-validation-for="idPlano" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="activo" /> @Html.DisplayNameFor(model => model.activo)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="estado" class="control-label"></label>
-                <input asp-for="estado" class="form-control" />
-                <span asp-validation-for="estado" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="municipio" class="control-label"></label>
-                <input asp-for="municipio" class="form-control" />
-                <span asp-validation-for="municipio" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
             </div>
         </form>
     </div>
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/views/cuenta/create.js"></script>

@@ -58,14 +58,14 @@
                         <!-- Cuentas -->
 
                         <li class="nav-item">
-                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Contas" asp-authorize asp-roles="@RolesSistema.Administrador" asp-area="" asp-controller="Cuentas" asp-action="Index">
-                                <i class="fa fa-user fa-2x" aria-hidden="true"></i>
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Contas" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento" asp-area="" asp-controller="Cuentas" asp-action="Index">
+                                <i class="fas fa-user-shield fa-2x"></i>
                             </a>
                         </li>
 
                         <!-- Relatorios -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Relatórios">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Relatórios" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-chart-bar fa-2x"></i>
                             </a>
@@ -82,7 +82,7 @@
 
                         <!-- Administar -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-list-alt fa-2x"></i>
                             </a>
@@ -108,7 +108,7 @@
 
                         <!-- Area Producto -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Área de produtos">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Área de produtos" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hamburger fa-2x"></i>
                             </a>
@@ -137,7 +137,7 @@
                                 <i class="fas fa-cash-register fa-2x"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="MotivoSalidaCaja" asp-action="Index">
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="MotivoSalidaCaja" asp-action="Index" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                                     <i class="far fa-question-circle fa-1x mr-2"></i>Motivos de saida
                                 </a>
                                 <div class="dropdown-divider"></div>

@@ -48,6 +48,8 @@ namespace Pedidos.Models
         public bool? deliveryPago { get; set; } = false;
         public bool? deliveryEmdinheiro { get; set; } = false;
 
+        public int? idFuncionario { get; set; }
+
         //AUXILIARES
 
         [NotMapped]

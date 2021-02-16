@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
+using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
@@ -27,7 +28,7 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
-            var Cuentas = await _context.P_Cuentas.ToListAsync();
+            var Cuentas = await _context.P_Cuentas.Where(x => x.idCuentaPadre == Cuenta.id).ToListAsync();
             return View(Cuentas);
         }
 
@@ -60,9 +61,30 @@ namespace Pedidos.Controllers
                     return View(p_Cuenta);
                 }
 
+                p_Cuenta.idCuentaPadre = Cuenta.id;
                 p_Cuenta.activo = true;
+
+                if (Cuenta.rol == RolesSistema.Administrador.ToString())
+                {
+                    p_Cuenta.rol = RolesSistema.Establecimiento.ToString();
+                }
+                else if (Cuenta.rol == RolesSistema.Establecimiento.ToString())
+                {
+                    p_Cuenta.rol = RolesSistema.Funcionario.ToString();
+                    p_Cuenta.estado = Cuenta.estado;
+                    p_Cuenta.municipio = Cuenta.municipio;
+                }
+
                 _context.Add(p_Cuenta);
                 await _context.SaveChangesAsync();
+
+                if (Cuenta.rol == RolesSistema.Establecimiento.ToString())
+                {
+                    var config = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
+                    config.id = 0;
+                    config.idCuenta = p_Cuenta.id;
+                }
+
                 return RedirectToAction(nameof(Index));
             }
             return View(p_Cuenta);

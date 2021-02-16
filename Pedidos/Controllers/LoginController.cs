@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
+using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
@@ -53,11 +54,20 @@ namespace Pedidos.Controllers
                 }
                 else
                 {
+                    if (cuenta.rol == RolesSistema.Funcionario.ToString())
+                    {
+                        var cuentaPadre = await _context.P_Cuentas.Where(x => x.id == cuenta.idCuentaPadre).FirstOrDefaultAsync();
+                        cuenta.idFuncionario = cuenta.id;
+                        cuenta.id = cuentaPadre.id;
+                        cuenta.estado = cuentaPadre.estado;
+                        cuenta.municipio = cuentaPadre.municipio;
+                    }
+
                     await SignIn(cuenta);
                     return RedirectToAction(nameof(Index), "Home", null);
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ViewBag.Erro = "Erro de conexão, contate o suporte técnico.";
             }

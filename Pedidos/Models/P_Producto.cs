@@ -49,6 +49,8 @@ namespace Pedidos.Models
         public int? horasPreparacion { get; set; }
         public int? minutosPreparacion { get; set; }
 
+        public int? cantidadSabores { get; set; } = 0;
+
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 

@@ -7,5 +7,5 @@ CREATE TABLE P_Sabores(
     idCuenta int not null,
     activo bit not null
 );
-   
-
+  
+alter table [dbo].[P_Productos] add cantidadSabores int null

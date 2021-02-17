@@ -1,6 +1,9 @@
 ﻿
+
 $(function () {
-    $("#txtValor").mask("###0.00", { reverse: true });  
+
+    $('#txtValor').mask("###0.00", { reverse: true });
+
 });
 
 

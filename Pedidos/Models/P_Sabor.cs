@@ -8,27 +8,22 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Models
 {
-    public class P_Barrio
+    public class P_Sabor
     {
         public int id { get; set; }
         [Required]
-        public string estado { get; set; }
-        [Required]
-        public string municipio { get; set; }
-        [Required]
         public string nombre { get; set; }
-        public decimal? tasa { get; set; }
+        public decimal? valor { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
-        [NotMapped]
-        public string text
-        {
-            get
-            {
-                var mun = municipio.Substring(0, 4);
-                return $"{nombre}, {mun}, {estado.ToUpper()}";
-            }
-        }
+        //[NotMapped]
+        //public string text
+        //{
+        //    get
+        //    {
+        //        return $"{nombre},{(valor.HasValue ? $" R$ {valor.Value.ToString("F2")}" : "")}";
+        //    }
+        //}
 
     }
 }

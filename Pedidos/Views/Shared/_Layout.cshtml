@@ -65,7 +65,7 @@
 
                         <!-- Relatorios -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Relatórios" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="Relatórios" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-chart-bar fa-2x"></i>
                             </a>
@@ -82,7 +82,7 @@
 
                         <!-- Administar -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="far fa-list-alt fa-2x"></i>
                             </a>
@@ -108,7 +108,7 @@
 
                         <!-- Area Producto -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Área de produtos" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="Área de produtos" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-hamburger fa-2x"></i>
                             </a>
@@ -124,6 +124,10 @@
                                     <i class="fas fa-carrot fa-1x mr-2"></i>Ingredientes
                                 </a>
                                 <div class="dropdown-divider"></div>
+                                <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Sabores" asp-action="Index">
+                                    <i class="fas fa-pizza-slice fa-1x mr-2"></i>Sabores
+                                </a>
+                                <div class="dropdown-divider"></div>
                                 <a class="m-1 dropdown-item text-dark btn btn-outline-primary" asp-area="" asp-controller="Productos" asp-action="Index">
                                     <i class="fas fa-hamburger fa-1x mr-2"></i>Produtos
                                 </a>
@@ -132,7 +136,7 @@
 
                         <!-- Caja -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Caixa">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="Caixa">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cash-register fa-2x"></i>
                             </a>

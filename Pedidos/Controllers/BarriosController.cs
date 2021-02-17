@@ -60,7 +60,7 @@ namespace Pedidos.Controllers
                     PrompInfo("O Barrio já existe");
                     return View(p_Barrios);
                 }
-
+                p_Barrios.estado = p_Barrios.estado.ToUpper();
                 p_Barrios.idCuenta = Cuenta.id;
                 p_Barrios.activo = true;
                 _context.Add(p_Barrios);
@@ -117,7 +117,7 @@ namespace Pedidos.Controllers
                 try
                 {
                     var entidad = await _context.P_Barrios.FindAsync(id);
-                    entidad.estado = p_Barrios.estado;
+                    entidad.estado = p_Barrios.estado.ToUpper();
                     entidad.municipio = p_Barrios.municipio;
                     entidad.nombre = p_Barrios.nombre;
                     entidad.tasa = p_Barrios.tasa;

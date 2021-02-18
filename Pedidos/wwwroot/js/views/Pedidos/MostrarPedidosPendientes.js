@@ -423,7 +423,7 @@ function imprimirPedido(idPedido, pendientes) {
 
             if (producto.sabores.length > 0) {
 
-                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Sabores</b></td></tr>');
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">SABORES</b></td></tr>');
 
                 //SABORES
                 var TABLE_SABORES = $('<table style="width: 100%;">');
@@ -435,7 +435,7 @@ function imprimirPedido(idPedido, pendientes) {
 
                     let TR = $('<tr>');
 
-                    TD1.append('<div>' + sabor.nombre + '</div>');
+                    TD1.append('<div>* ' + sabor.nombre + '</div>');
                     //TD2.append('<div style="white-space:nowrap;margin-left:10px;">R$ ' + sabor.valor + '</div>');
 
                     TR.append(TD1);
@@ -453,7 +453,7 @@ function imprimirPedido(idPedido, pendientes) {
 
             if (producto.adicionales.length > 0) {
 
-                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Adicionais</b></td></tr>');
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">ADICIONAIS</b></td></tr>');
 
                 //ADICIONALES
                 var TABLE_ADICIONALES = $('<table style="width: 100%;">');
@@ -465,7 +465,7 @@ function imprimirPedido(idPedido, pendientes) {
                     let TD3 = $('<td>');
                     let TR = $('<tr>');
 
-                    TD1.append('<div style="white-space:nowrap;vertical-align:top;">  <b>' + adicional.cantidad + '</b></div>');
+                    TD1.append('<div style="white-space:nowrap;vertical-align:top;">  <b>+ ' + adicional.cantidad + '</b></div>');
                     TD2.append('<div>' + adicional.nombre + '</div>');
                     TD3.append('<div style="white-space:nowrap;margin-left:10px;">R$ ' + (adicional.valor * adicional.cantidad).toFixed(2) + '</div>');
 
@@ -484,7 +484,7 @@ function imprimirPedido(idPedido, pendientes) {
 
             if (producto.ingredientes.length > 0) {
 
-                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Preparar sem:</b></td></tr>');
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">PREPARAR SEM:</b></td></tr>');
 
                 //QUITAR INGREDIENTES
                 var TABLE_INGREDIENTES = $('<table style="width: 100%;">');

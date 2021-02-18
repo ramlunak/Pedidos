@@ -164,7 +164,7 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_Adicionais> Adicionales { get; set; } = new List<P_Adicionais>();
         [NotMapped]
-        public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>(); 
+        public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
         [NotMapped]
         public List<P_Sabor> Sabores { get; set; } = new List<P_Sabor>();
         [NotMapped]
@@ -189,6 +189,14 @@ namespace Pedidos.Models
                         if (item.cantidad > 0)
                         {
                             valor_adicionales += (item.Valor * item.cantidad);
+                        }
+                    }
+
+                    foreach (var item in this.Sabores)
+                    {
+                        if (item.selected && item.valor.HasValue)
+                        {
+                            valor_adicionales += (item.valor.Value);
                         }
                     }
 

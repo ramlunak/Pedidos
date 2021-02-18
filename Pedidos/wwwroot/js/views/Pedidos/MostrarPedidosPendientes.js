@@ -70,15 +70,15 @@ function MostarPedidosPendientes() {
             '                   <div style="font-size:13px" class="d-flex"><b>Codigo: ' + pedido.codigo + '</b>  </div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
             '                   <div style="font-size:13px">' + pedido.direccion + ' ' + pedido.barrio + '</div>  ' + mesa + aplicativo + retirada +
-                '               </div>  ' + PedidoTiempo +
-                '               <div class="d-block" style="text-align:right">  ' +
-                '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
-                tasaEntrega +
-                descuento +
-                '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
-                '               </div>  ' +
-                '           </div>  ' +
-                '          <hr class="m-2" />  ';
+            '               </div>  ' + PedidoTiempo +
+            '               <div class="d-block" style="text-align:right">  ' +
+            '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
+            tasaEntrega +
+            descuento +
+            '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
+            '               </div>  ' +
+            '           </div>  ' +
+            '          <hr class="m-2" />  ';
 
         CARD_BODY.append(div_infopedido);
 
@@ -420,6 +420,36 @@ function imprimirPedido(idPedido, pendientes) {
 
             TR.append(TD1, TD2, TD3);
             TABLE.append(TR);
+
+            if (producto.sabores.length > 0) {
+
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Sabores</b></td></tr>');
+
+                //SABORES
+                var TABLE_SABORES = $('<table style="width: 100%;">');
+                TABLE_SABORES.empty();
+                $.each(producto.sabores, function (index, sabor) {
+
+                    let TD1 = $('<td style="vertical-align:top;">');
+                    let TD2 = $('<td style="width:100%">');
+
+                    let TR = $('<tr>');
+
+                    TD1.append('<div>' + sabor.nombre + '</div>');
+                    //TD2.append('<div style="white-space:nowrap;margin-left:10px;">R$ ' + sabor.valor + '</div>');
+
+                    TR.append(TD1);
+                    TABLE_SABORES.append(TR);
+                });
+
+                //ADD ADICIONLES TABLA PRODUCTO
+                var TD_SABORES = $('<td colspan="3">');
+                TD_SABORES.append(TABLE_SABORES);
+
+                var TR1 = $('<tr>');
+                TR1.append(TD_SABORES);
+                TABLE.append(TR1);
+            }
 
             if (producto.adicionales.length > 0) {
 

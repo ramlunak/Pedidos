@@ -527,9 +527,8 @@ namespace Pedidos.Controllers
 
                 var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).OrderBy(x => x.orden).ToList();
                 var listaIngredientes = ingredientes.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
-                var listaSabores = sabores.GroupBy(x => x.valor).Select(y => y.FirstOrDefault()).ToList();
-
-                return Ok(new { producto = filter, adicionales = listaAdicionales, ingredientes = listaIngredientes, sabores = listaSabores });
+                
+                return Ok(new { producto = filter, adicionales = listaAdicionales, ingredientes = listaIngredientes, sabores = sabores });
 
             }
             catch (Exception ex)

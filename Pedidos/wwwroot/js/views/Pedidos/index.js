@@ -595,6 +595,12 @@ function ModalMostarValorProducto() {
         }
     });
 
+    $.each(_ModalSabores, function (index, item) {
+        if (item.valor != null && item.selected) {
+            valorProducto = valorProducto + item.valor;
+        }
+    });
+
     $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(valorProducto)).toFixed(2));
     $('#spanValorProducto').animate({ fontSize: '18px' }, 80);
     $('#spanValorProducto').animate({ fontSize: '15px' }, 80);
@@ -614,7 +620,7 @@ function CargarDatosModalDetalles(data) {
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
-    TABLE_Sabores(data.sabores, data.producto.id)
+    TABLE_Sabores(data.sabores, data.producto.id, data.producto.cantidadSabores)
 
     $('#modalObservacionContent').html('');
     $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" class="form-control" placeholder="Observação"></textarea>');
@@ -836,38 +842,37 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
 
 
 //crear tabla de los ingredientes en el modal
-function TABLE_Sabores(sabores, idProducto) {
+function TABLE_Sabores(sabores, idProducto, cantidadSabores) {
 
     var TABLE = $('#modalTableSabores');
     TABLE.empty();
 
-    if (sabores.length === 0) {
+    if (sabores.length === 0 || cantidadSabores === 0) {
         $('#divSeparadorSabores').hide();
     } else {
         $('#divSeparadorSabores').show();
     }
 
-    $.each(sabores, function (index, item) {
+    if (cantidadSabores > 0) {
+        $.each(sabores, function (index, item) {
 
-        var TD1 = $('<td style="width:100%">');
-        var TD2 = $('<td>');
-        var TR = $('<tr>');
+            var TD1 = $('<td style="width:100%">');
+            var TD2 = $('<td>');
+            var TR = $('<tr>');
 
-        // var codigo = "ADC_" + item.id + "_" + idProducto;
-        //var minusId = "Minus_" + item.id + "_" + idProducto;
+            let valor = '<div class="mr-2"></div>';
 
-        let valor = '<div class="mr-2"></div>';
+            if (item.valor !== null && item.valor !== undefined && item.valor > 0) {
+                valor = '<div class="mr-2">R$ ' + item.valor.toFixed(2) + '</div>';
+            }
 
-        if (item.valor !== null && item.valor !== undefined && item.valor > 0) {
-            valor = '<div class="mr-2">R$ ' + item.valor.toFixed(2) + '</div>';
-        }
+            TD1.append('<div class="d-flex justify-content-between"> <div>' + item.nombre + '</div> ' + valor + '</div>');
+            TD2.append('<div class="cursor-pointer"> <input id="" onchange="saboresOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" /></div>');
 
-        TD1.append('<div class="d-flex justify-content-between"> <div>' + item.nombre + '</div> ' + valor + '</div>');
-        TD2.append('<div class="cursor-pointer"> <input id="" onchange="ingredienteOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" /></div>');
-
-        TR.append(TD1, TD2);
-        TABLE.append(TR);
-    });
+            TR.append(TD1, TD2);
+            TABLE.append(TR);
+        });
+    }
 }
 
 
@@ -940,6 +945,19 @@ function ingredienteOnChange(input, id, idProducto) {
         }
         return item.id === id;
     });
+}
+
+//evento de marcar y desmarcar ingredeinte
+function saboresOnChange(input, id, idProducto) {
+
+    $.grep(_ModalSabores, (item, index) => {
+        if (item.id === id) {
+            item.selected = $(input).is(":checked");
+        }
+        return item.id === id;
+    });
+
+    ModalMostarValorProducto();
 }
 
 //evento de restar contidad producto

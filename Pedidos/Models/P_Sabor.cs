@@ -16,6 +16,9 @@ namespace Pedidos.Models
         public decimal? valor { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
+
+        [NotMapped]
+        public bool selected { get; set; } = false;
         //[NotMapped]
         //public string text
         //{

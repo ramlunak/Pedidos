@@ -19,6 +19,8 @@ var _ModalDeliveryFormaPagamento = {
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
 var _ModalSabores = [];
+var SaboresSelecionados = 0;
+var CantidadSabores = 0;
 
 $(function () {
 
@@ -213,7 +215,9 @@ $(function () {
     });
 
     $("#ModalDetalleProducto").keypress(function (e) {
-        console.log(e);
+
+        if (SaboresSelecionados !== CantidadSabores) return;
+
         if (e.which == 13) {
             //ENTER KEY
             AddProducto();
@@ -547,7 +551,6 @@ function ShowDetallesProducto(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-
             var datosClienteFormulario = _ModalProducto;
             _ModalProducto = data.producto;
             _ModalProducto.cliente = datosClienteFormulario.cliente;
@@ -604,6 +607,12 @@ function ModalMostarValorProducto() {
     $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(valorProducto)).toFixed(2));
     $('#spanValorProducto').animate({ fontSize: '18px' }, 80);
     $('#spanValorProducto').animate({ fontSize: '15px' }, 80);
+
+    if (SaboresSelecionados !== CantidadSabores) {
+        $('#btnModalAdicionar').prop('disabled', true);
+    } else {
+        $('#btnModalAdicionar').prop('disabled', false);
+    }
 
 }
 
@@ -848,9 +857,24 @@ function TABLE_Sabores(sabores, idProducto, cantidadSabores) {
     TABLE.empty();
 
     if (sabores.length === 0 || cantidadSabores === 0) {
+
         $('#divSeparadorSabores').hide();
     } else {
         $('#divSeparadorSabores').show();
+        if (cantidadSabores === 1) {
+            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="font-family: cursive;">Seleccione 1 Sabor</span></td></tr>');
+        } else if (cantidadSabores > 1) {
+            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="font-family: cursive;">Seleccione ' + cantidadSabores + ' Sabores</span></td></tr>');
+        }
+
+    }
+
+    CantidadSabores = cantidadSabores;
+
+    if (SaboresSelecionados !== CantidadSabores) {
+        $('#btnModalAdicionar').prop('disabled', true);
+    } else {
+        $('#btnModalAdicionar').prop('disabled', false);
     }
 
     if (cantidadSabores > 0) {
@@ -867,7 +891,7 @@ function TABLE_Sabores(sabores, idProducto, cantidadSabores) {
             }
 
             TD1.append('<div class="d-flex justify-content-between"> <div>' + item.nombre + '</div> ' + valor + '</div>');
-            TD2.append('<div class="cursor-pointer"> <input id="" onchange="saboresOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" /></div>');
+            TD2.append('<div class="cursor-pointer"> <input name="inputChekedSabores" onchange="saboresOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" /></div>');
 
             TR.append(TD1, TD2);
             TABLE.append(TR);
@@ -956,6 +980,26 @@ function saboresOnChange(input, id, idProducto) {
         }
         return item.id === id;
     });
+
+    if (SaboresSelecionados == CantidadSabores) {
+
+        $(input).prop("checked", false);
+
+        $.grep(_ModalSabores, (item, index) => {
+            if (item.id === id) {
+                item.selected = $(input).is(":checked");
+            }
+            return item.id === id;
+        });
+
+    }
+
+    SaboresSelecionados = _ModalSabores.filter(x => x.selected).length;
+    if (SaboresSelecionados == CantidadSabores) {
+        $('input[name="inputChekedSabores"]:unchecked').prop('disabled', true);
+    } else {
+        $('input[name="inputChekedSabores"]').prop('disabled', false);
+    }
 
     ModalMostarValorProducto();
 }

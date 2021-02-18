@@ -76,6 +76,7 @@ namespace Pedidos.Models
         //PARA CARGAR DETALLES DEL PRODUCTO      
         public string JsonAdicionales { get; set; }
         public string JsonIngredientes { get; set; }
+        public string JsonSabores { get; set; }
 
         //PROPIEDADES AUXILIARES
 
@@ -163,7 +164,9 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_Adicionais> Adicionales { get; set; } = new List<P_Adicionais>();
         [NotMapped]
-        public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
+        public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>(); 
+        [NotMapped]
+        public List<P_Sabor> Sabores { get; set; } = new List<P_Sabor>();
         [NotMapped]
         public decimal ValorMasAdicionales
         {

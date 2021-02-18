@@ -18,6 +18,7 @@ var _ModalDeliveryFormaPagamento = {
 
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
+var _ModalSabores = [];
 
 $(function () {
 
@@ -566,6 +567,7 @@ function ShowDetallesProducto(id) {
 
             _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
+            _ModalSabores = data.sabores;
 
             CargarDatosModalDetalles(data);
         },
@@ -610,9 +612,10 @@ function CargarDatosModalDetalles(data) {
     $('#modalCantidadProducto').html('(' + data.producto.cantidad + ')');
     $("#MINUS_Producto").attr('disabled', 'disabled');
 
-
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
+    TABLE_Sabores(data.sabores, data.producto.id)
+
     $('#modalObservacionContent').html('');
     $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" class="form-control" placeholder="Observação"></textarea>');
 
@@ -831,6 +834,43 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
     });
 }
 
+
+//crear tabla de los ingredientes en el modal
+function TABLE_Sabores(sabores, idProducto) {
+
+    var TABLE = $('#modalTableSabores');
+    TABLE.empty();
+
+    if (sabores.length === 0) {
+        $('#divSeparadorSabores').hide();
+    } else {
+        $('#divSeparadorSabores').show();
+    }
+
+    $.each(sabores, function (index, item) {
+
+        var TD1 = $('<td style="width:100%">');
+        var TD2 = $('<td>');
+        var TR = $('<tr>');
+
+        // var codigo = "ADC_" + item.id + "_" + idProducto;
+        //var minusId = "Minus_" + item.id + "_" + idProducto;
+
+        let valor = '<div class="mr-2"></div>';
+
+        if (item.valor !== null && item.valor !== undefined && item.valor > 0) {
+            valor = '<div class="mr-2">R$ ' + item.valor.toFixed(2) + '</div>';
+        }
+
+        TD1.append('<div class="d-flex justify-content-between"> <div>' + item.nombre + '</div> ' + valor + '</div>');
+        TD2.append('<div class="cursor-pointer"> <input id="" onchange="ingredienteOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" /></div>');
+
+        TR.append(TD1, TD2);
+        TABLE.append(TR);
+    });
+}
+
+
 //evento de adicionar contidad del adicional
 function adicionalPlus(id, idProducto) {
 
@@ -940,6 +980,8 @@ function AddProducto() {
 
     _ModalProducto.adicionales = _ModalAdicionales;
     _ModalProducto.ingredientes = _ModalIngredientes;
+    _ModalProducto.sabores = _ModalSabores;
+
     _ModalProducto.observacion = $('#inputObservacion').val();
 
     _ModalProducto.idCliente = parseInt($('#idCliente').val());

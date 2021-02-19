@@ -131,6 +131,7 @@
     <PackageReference Include="Hangfire" Version="1.7.19" />
     <PackageReference Include="Hangfire.Core" Version="1.7.19" />
     <PackageReference Include="Hangfire.SqlServer" Version="1.7.19" />
+    <PackageReference Include="IronXL.Excel" Version="2020.12.2" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Core" Version="1.1.0" />

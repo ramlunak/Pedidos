@@ -9,6 +9,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Pedidos.Extensions;
+using IronXL;
 
 namespace Pedidos.Controllers
 {
@@ -35,6 +36,12 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
+            WorkBook workbook = WorkBook.Load(file.FileName);
+            WorkSheet sheet = workbook.WorkSheets.First();
+
+            //Select cells easily in Excel notation and return the calculated value
+            var cellValue = sheet["A2"].Value;
+
             var categorias = new List<P_Categoria>();
             var productos = new List<P_Productos>();
             var rowErros = 0;
@@ -46,7 +53,7 @@ namespace Pedidos.Controllers
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     var row = 1;
-                   
+
                     while (reader.Read())
                     {
 

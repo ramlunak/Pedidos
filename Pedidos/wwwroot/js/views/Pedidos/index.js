@@ -670,11 +670,12 @@ function ShowDetallesProducto(id) {
             _ModalIngredientes = data.ingredientes;
             _ModalSabores = data.sabores;
 
-            CargarDatosModalDetalles(data);
-
             $('tr[name="itemListaProducto"]').removeClass("producto-selected");
+            $('#btnModalAdicionar').prop('disabled', false);
             ArrowIdProductoSeleccionado = null;
             ArrowIndexSeleccionado = 0;
+
+            CargarDatosModalDetalles(data);
 
         },
         failure: function (response) {
@@ -969,9 +970,9 @@ function TABLE_Sabores(sabores, idProducto, cantidadSabores) {
     } else {
         $('#divSeparadorSabores').show();
         if (cantidadSabores === 1) {
-            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="font-family: cursive;">Seleccione 1 Sabor</span></td></tr>');
+            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="color:red">Seleccione 1 Sabor</span></td></tr>');
         } else if (cantidadSabores > 1) {
-            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="font-family: cursive;">Seleccione ' + cantidadSabores + ' Sabores</span></td></tr>');
+            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="color:red">Seleccione ' + cantidadSabores + ' Sabores</span></td></tr>');
         }
 
     }

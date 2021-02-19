@@ -118,6 +118,7 @@ namespace Pedidos.Controllers
 
             producto.Adicionales.RemoveAll(a => a.cantidad == 0);
             producto.Ingredientes.RemoveAll(i => i.selected);
+            producto.Sabores.RemoveAll(i => !i.selected);
             try
             {
                 if (currentPedido.productos.Any())
@@ -873,6 +874,7 @@ namespace Pedidos.Controllers
 
             producto.Adicionales.RemoveAll(a => a.cantidad == 0);
             producto.Ingredientes.RemoveAll(i => i.selected);
+            producto.Sabores.RemoveAll(i => !i.selected);
 
             productosPendientes.Add(producto);
             productosPendientes.Where(x => x.isNew).Select((p, i) => { p.posicion = i; return p; }).ToList();

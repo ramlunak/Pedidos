@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,13 +24,13 @@ namespace Pedidos.Models
         public decimal? tasa { get; set; }
         public int idCuenta { get; set; }
         public bool activo { get; set; }
+        [NotMapped]
         public string text
         {
             get
             {
                 var mun = municipio.Substring(0, 4);
                 return $"{nombre}, {mun}, {estado.ToUpper()}";
-
             }
         }
 

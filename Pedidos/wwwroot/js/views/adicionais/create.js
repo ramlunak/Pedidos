@@ -2,10 +2,9 @@
 
 $(function () {
 
-    $('#txtValor') $("#txtTasa").mask("###0.00", { reverse: true });
+    $('#txtValor').mask("###0.00", { reverse: true });
 
 });
-
 
 window.onbeforeunload = function () {
     $('form')[0].reset();

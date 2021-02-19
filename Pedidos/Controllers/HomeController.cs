@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,7 @@ using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento,Funcionario,Integracion")]
     public class HomeController : BaseController
     {
         private readonly AppDbContext _context;

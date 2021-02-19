@@ -55,6 +55,14 @@
                             </a>
                         </li>
 
+                        <!-- Integracion -->
+
+                        <li class="nav-item" asp-authorize asp-roles="@RolesSistema.Integracion">
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Rotas" asp-area="" asp-controller="IntegracionPedidos" asp-action="Index">
+                                <i class="fas fa-map-marked-alt fa-2x"></i>
+                            </a>
+                        </li>
+
                         <!-- Cuentas -->
 
                         <li class="nav-item">

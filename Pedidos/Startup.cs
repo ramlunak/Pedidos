@@ -54,6 +54,7 @@ namespace Pedidos
                    .AddCookie(o =>
                    {
                        o.LoginPath = "/Cuenta/Login";
+                       o.AccessDeniedPath = "/Home/AccessDenied";
                        o.Cookie.Name = "Pedidos";
                    });
 

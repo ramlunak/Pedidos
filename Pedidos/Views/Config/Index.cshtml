@@ -4,102 +4,111 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="row d-flex justify-content-center m-3">
-    <div class="col-12 col-md-8 col-lg-6">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="id" class="form-control" />
-            <input type="hidden" asp-for="idCuenta" class="form-control" />
-
-            <div class="d-flex justify-content-between text-nowrap align-items-center">
-                <hr style="width:100%" />
-                <div style="color:black">ESTABELECIMENTO</div>
-                <hr style="width:100%" />
-            </div>
-
-            <div class="form-group">
-                <table class="w-100">
-                    <tr>
-                        <td class="text-right" style="width:40%">
-                            <label asp-for="nombreEstablecimiento" class="control-label font-weight-bold"></label>
-                        </td>
-                        <td style="width:60%">
-                            <input asp-for="nombreEstablecimiento" class="form-control form-control-sm" />
-                            <span asp-validation-for="nombreEstablecimiento" class="text-danger"></span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right">
-                            <label asp-for="telefonoEstablecimiento" class="control-label font-weight-bold"></label>
-                        </td>
-                        <td>
-                            <input asp-for="telefonoEstablecimiento" class="form-control form-control-sm" />
-                            <span asp-validation-for="telefonoEstablecimiento" class="text-danger"></span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right">
-                            <label asp-for="direccionEstablecimiento" class="control-label font-weight-bold"></label>
-                        </td>
-                        <td>
-                            <textarea asp-for="direccionEstablecimiento" class="form-control form-control-sm" rows="3"></textarea>
-                            <span asp-validation-for="direccionEstablecimiento" class="text-danger"></span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right">
-                            <label asp-for="cnpjEstablecimiento" class="control-label font-weight-bold"></label>
-                        </td>
-                        <td>
-                            <input asp-for="cnpjEstablecimiento" class="form-control form-control-sm" />
-                            <span asp-validation-for="cnpjEstablecimiento" class="text-danger"></span>
-                        </td>
-                    </tr>
-
-                </table>
-            </div>
-
-            <div class="d-flex justify-content-between text-nowrap align-items-center">
-                <hr style="width:100%" />
-                <div style="color:black">DADOS DE IMPREÇÂO</div>
-                <hr style="width:100%" />
-            </div>
-
-            <div class="form-group">
-                <table class="w-100">
-                    <tr>
-                        <td class="text-right" style="width:40%">
-                            <label asp-for="printSize" class="control-label font-weight-bold"></label>
-                        </td>
-                        <td style="width:60%">
-                            <input asp-for="printSize" class="form-control form-control-sm" />
-                            <span asp-validation-for="printSize" class="text-danger"></span>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td class="text-right">
-                            <label asp-for="fontSize" class="control-label font-weight-bold"></label>
-                        </td>
-                        <td>
-                            <input asp-for="fontSize" class="form-control form-control-sm" />
-                            <span asp-validation-for="fontSize" class="text-danger"></span>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" onclick="showLoading()" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
-                <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
-            </div>
-        </form>
+@if (ViewBag.CuentaIntegracion)
+{
+    <div class="container text-center">
+        <div>Cuenta Integracion</div>
     </div>
-</div>
+}
+else
+{
 
+    <div class="row d-flex justify-content-center m-3">
+        <div class="col-12 col-md-8 col-lg-6">
+            <form asp-action="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="id" class="form-control" />
+                <input type="hidden" asp-for="idCuenta" class="form-control" />
+
+                <div class="d-flex justify-content-between text-nowrap align-items-center">
+                    <hr style="width:100%" />
+                    <div style="color:black">ESTABELECIMENTO</div>
+                    <hr style="width:100%" />
+                </div>
+
+                <div class="form-group">
+                    <table class="w-100">
+                        <tr>
+                            <td class="text-right" style="width:40%">
+                                <label asp-for="nombreEstablecimiento" class="control-label font-weight-bold"></label>
+                            </td>
+                            <td style="width:60%">
+                                <input asp-for="nombreEstablecimiento" class="form-control form-control-sm" />
+                                <span asp-validation-for="nombreEstablecimiento" class="text-danger"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <label asp-for="telefonoEstablecimiento" class="control-label font-weight-bold"></label>
+                            </td>
+                            <td>
+                                <input asp-for="telefonoEstablecimiento" class="form-control form-control-sm" />
+                                <span asp-validation-for="telefonoEstablecimiento" class="text-danger"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <label asp-for="direccionEstablecimiento" class="control-label font-weight-bold"></label>
+                            </td>
+                            <td>
+                                <textarea asp-for="direccionEstablecimiento" class="form-control form-control-sm" rows="3"></textarea>
+                                <span asp-validation-for="direccionEstablecimiento" class="text-danger"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <label asp-for="cnpjEstablecimiento" class="control-label font-weight-bold"></label>
+                            </td>
+                            <td>
+                                <input asp-for="cnpjEstablecimiento" class="form-control form-control-sm" />
+                                <span asp-validation-for="cnpjEstablecimiento" class="text-danger"></span>
+                            </td>
+                        </tr>
+
+                    </table>
+                </div>
+
+                <div class="d-flex justify-content-between text-nowrap align-items-center">
+                    <hr style="width:100%" />
+                    <div style="color:black">DADOS DE IMPREÇÂO</div>
+                    <hr style="width:100%" />
+                </div>
+
+                <div class="form-group">
+                    <table class="w-100">
+                        <tr>
+                            <td class="text-right" style="width:40%">
+                                <label asp-for="printSize" class="control-label font-weight-bold"></label>
+                            </td>
+                            <td style="width:60%">
+                                <input asp-for="printSize" class="form-control form-control-sm" />
+                                <span asp-validation-for="printSize" class="text-danger"></span>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td class="text-right">
+                                <label asp-for="fontSize" class="control-label font-weight-bold"></label>
+                            </td>
+                            <td>
+                                <input asp-for="fontSize" class="form-control form-control-sm" />
+                                <span asp-validation-for="fontSize" class="text-danger"></span>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" onclick="showLoading()" value="Salvar" class="btn btn-primary btn-sm form-control form-control-sm mb-2" />
+                    <a class="btn btn-danger btn-sm form-control form-control-sm" asp-action="Index">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+}
 
 @section Scripts {
 

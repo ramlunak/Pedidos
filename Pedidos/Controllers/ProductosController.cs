@@ -19,9 +19,11 @@ using Microsoft.Extensions.FileProviders;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using Pedidos.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento")]
     public class ProductosController : BaseController
     {
         private readonly AppDbContext _context;

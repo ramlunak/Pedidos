@@ -12,9 +12,11 @@ using Newtonsoft.Json;
 using Pedidos.Models.Enums;
 using Pedidos.Extensions;
 using Pedidos.Hubs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento,Funcionario")]
     public class PedidosController : BaseController
     {
         private readonly AppDbContext _context;

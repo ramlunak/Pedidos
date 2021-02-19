@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using Pedidos.Data;
 using Pedidos.Extensions;
 using Pedidos.Models;
+using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
@@ -32,6 +33,7 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
+            ViewBag.CuentaIntegracion = Cuenta.rol == RolesSistema.Integracion.ToString() ? true : false;
 
             var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-141").ToListAsync();
             var pedido = model.FirstOrDefault();
@@ -110,6 +112,16 @@ namespace Pedidos.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult AccessDenied()
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
 
         public async Task<IActionResult> GetReporteVentasAnual()
         {
@@ -132,7 +144,7 @@ namespace Pedidos.Controllers
                 array[8] = reporte.septiembre;
                 array[9] = reporte.octubre;
                 array[10] = reporte.noviembre;
-                array[11] = reporte.diciembre;               
+                array[11] = reporte.diciembre;
                 return Ok(array);
             }
             else

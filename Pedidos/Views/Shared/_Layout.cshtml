@@ -132,7 +132,7 @@
 
                         <!-- Caja -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Caixa">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Caixa" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento,@RolesSistema.Funcionario">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cash-register fa-2x"></i>
                             </a>
@@ -153,7 +153,7 @@
 
                         <!-- Pedidos -->
 
-                        <li class="nav-item">
+                        <li class="nav-item" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento,@RolesSistema.Funcionario">
                             <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Pedidos" asp-area="" asp-controller="Pedidos" asp-action="Index">
                                 <i class="fas fa-baby-carriage fa-2x"></i>
                             </a>

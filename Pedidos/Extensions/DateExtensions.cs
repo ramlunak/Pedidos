@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -27,5 +28,11 @@ namespace Pedidos.Extensions
             var data = TimeZoneInfo.ConvertTimeFromUtc(date.ToUniversalTime(), kstZone);
             return data;
         }
+
+        public static int GetSemana(this DateTime date)
+        {
+            return CultureInfo.GetCultureInfo("pt-BR").Calendar.GetWeekOfYear(date.ToSouthAmericaStandard(), CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
+        }
+
     }
 }

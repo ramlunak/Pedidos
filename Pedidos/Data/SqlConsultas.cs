@@ -41,9 +41,10 @@ namespace Pedidos.Data
         {
             StringBuilder query = new StringBuilder();
 
-            query.Append($"  SELECT id,codigo,nombre,descripcion,idCategoria,idSubCategoria,idCuenta,valor,unidadeMedida,horasPreparacion,minutosPreparacion,activo,tamanho1,valorTamanho1,tamanho2,valorTamanho2,tamanho3,valorTamanho3,tamanho4,valorTamanho4,tamanho5,valorTamanho5,tamanho6,valorTamanho6,tamanho7,valorTamanho7,tamanho8,valorTamanho8,tamanho9,valorTamanho9,imagen ");
+            query.Append($"  SELECT id,codigo,nombre,descripcion,idCategoria,idSubCategoria,idCuenta,valor,unidadeMedida,horasPreparacion,minutosPreparacion,cantidadSabores,activo,tamanho1,valorTamanho1,tamanho2,valorTamanho2,tamanho3,valorTamanho3,tamanho4,valorTamanho4,tamanho5,valorTamanho5,tamanho6,valorTamanho6,tamanho7,valorTamanho7,tamanho8,valorTamanho8,tamanho9,valorTamanho9,imagen ");
             query.Append($" ,JsonAdicionales = (SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsAdicionales from [dbo].[P_CategoriaAdicional] where idCategoria = P.idCategoria and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN[dbo].[P_Adicionais] AS A on V.value = A.id FOR JSON PATH) ");
             query.Append($" ,JsonIngredientes = (SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsIngrediente from [dbo].[P_IngredientesProducto] where idProducto = P.id and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN [dbo].[P_Ingredientes] AS A on V.value = A.id FOR JSON PATH)  ");
+            query.Append($" ,JsonSabores = (SELECT *  FROM P_Sabores  FOR JSON PATH) ");
             query.Append($" FROM[dbo].[P_Productos] AS P ");
             query.Append($" WHERE P.idCuenta = {idCuenta} ");
             var str = query.ToString();
@@ -57,6 +58,7 @@ namespace Pedidos.Data
             query.Append($" SELECT P.id as id");
             query.Append($" ,(SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsAdicionales from [dbo].[P_CategoriaAdicional] where idCategoria = P.idCategoria and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN[dbo].[P_Adicionais] AS A on V.value = A.id FOR JSON PATH) as JsonAdicionales ");
             query.Append($" ,(SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsIngrediente from [dbo].[P_IngredientesProducto] where idProducto = P.id and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN [dbo].[P_Ingredientes] AS A on V.value = A.id FOR JSON PATH) as JsonIngredientes  ");
+            query.Append($" ,(SELECT * FROM FROM  [dbo].[P_Sabores]) as JsonSabores  ");
 
             query.Append($" ,C.nombre as categoria ");
             query.Append($" ,(SELECT * FROM[dbo].[P_Productos] where id = P.id FOR JSON PATH) as JsonProducto ");
@@ -168,13 +170,14 @@ namespace Pedidos.Data
                    $" ,[valor]" +
                    $" ,[horasPreparacion]" +
                    $" ,[minutosPreparacion]" +
+                   $" ,[cantidadSabores]" +
                    $" ,[imagen]" +
                    $" ,[tamanho1]" +
                    $" ,[valorTamanho1]" +
                    $" ,[tamanho2]" +
                    $" ,[valorTamanho2]" +
                    $" ,[tamanho3]" +
-                   $" ,[valorTamanho3]" + 
+                   $" ,[valorTamanho3]" +
                    $" ,[tamanho4]" +
                    $" ,[valorTamanho4]" +
                    $" ,[tamanho5]" +

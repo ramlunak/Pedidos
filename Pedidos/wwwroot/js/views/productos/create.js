@@ -14,6 +14,12 @@ $(function () {
         CargarSubCategorias();
     });
 
+    //$('#inputCantidadSabores').on('input', function () {
+
+    //    $('#spanCantidadSabores').html($('#inputCantidadSabores').val());
+
+    //});
+
     function CargarSubCategorias() {
 
         $.getJSON('/Categorias/GetSubCategarias', { idCategoria: $('#idCategoria').val() }, function (data) {

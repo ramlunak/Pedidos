@@ -512,6 +512,7 @@ namespace Pedidos.Controllers
 
                 var adicionales = new List<P_Adicionais>().ToArray();
                 var ingredientes = new List<P_Ingredientes>().ToArray();
+                var sabores = new List<P_Sabor>().ToArray();
 
                 if (!string.IsNullOrEmpty(filter.JsonAdicionales))
                 {
@@ -521,10 +522,15 @@ namespace Pedidos.Controllers
                 {
                     ingredientes = JsonConvert.DeserializeObject<P_Ingredientes[]>(filter.JsonIngredientes);
                 }
+                if (!string.IsNullOrEmpty(filter.JsonSabores))
+                {
+                    sabores = JsonConvert.DeserializeObject<P_Sabor[]>(filter.JsonSabores);
+                }
 
                 var listaAdicionales = adicionales.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).OrderBy(x => x.orden).ToList();
                 var listaIngredientes = ingredientes.GroupBy(x => x.id).Select(y => y.FirstOrDefault()).ToList();
-                return Ok(new { producto = filter, adicionales = listaAdicionales, ingredientes = listaIngredientes });
+                
+                return Ok(new { producto = filter, adicionales = listaAdicionales, ingredientes = listaIngredientes, sabores = sabores });
 
             }
             catch (Exception ex)

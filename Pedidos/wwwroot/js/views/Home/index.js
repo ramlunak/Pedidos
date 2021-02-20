@@ -2,12 +2,100 @@
 var chatConnectionId;
 
 $(function () {
-
     CargarVentasAnual();
+    CargarVentasMensual();
+    CargarVentasSemana();
+    CargarVentasDia();
+    CargarGraficoVentasAnual();
 
 });
 
+
 function CargarVentasAnual() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetVentasAnual",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#spanVentasAnual').html(parseFloat(data).toFixed(2));
+        },
+        failure: function (response) {
+
+        },
+        error: function (response) {
+
+        }
+    });
+
+}
+
+function CargarVentasMensual() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetVentasMensual",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#spanVentasMensual').html(parseFloat(data).toFixed(2));
+        },
+        failure: function (response) {
+
+        },
+        error: function (response) {
+
+        }
+    });
+
+}
+
+function CargarVentasSemana() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetVentasSemana",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#spanVentasSemana').html(parseFloat(data).toFixed(2));
+        },
+        failure: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+
+}
+
+function CargarVentasDia() {
+
+    $.ajax({
+        type: "GET",
+        url: "/Home/GetVentasDia",
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+            $('#spanVentasDia').html(parseFloat(data).toFixed(2));
+        },
+        failure: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            console.log(response);
+        }
+    });
+
+}
+
+function CargarGraficoVentasAnual() {
 
     $.ajax({
         type: "GET",
@@ -34,7 +122,7 @@ function CargarGrafico() {
 
     //RELATORIO VENTAS MENSUAL
 
-  //  var ctxVendtasMensual = document.getElementById('chartVendtasMensual').getContext('2d');
+    //  var ctxVendtasMensual = document.getElementById('chartVendtasMensual').getContext('2d');
     //var chartVendtasMensual = new Chart(ctxVendtasMensual, {      
     //    type: 'line',
     //    data: {
@@ -68,7 +156,7 @@ function CargarGrafico() {
             labels: ['janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho', 'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'],
             datasets: [
                 {
-                    label: '',                                        
+                    label: '',
                     // backgroundColor: 'rgb(255, 99, 132)',
                     borderColor: 'blue',
                     data: datasets_ventas_anual

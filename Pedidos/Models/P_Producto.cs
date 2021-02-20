@@ -49,6 +49,8 @@ namespace Pedidos.Models
         public int? horasPreparacion { get; set; }
         public int? minutosPreparacion { get; set; }
 
+        public int? cantidadSabores { get; set; } = 0;
+
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 
@@ -74,6 +76,7 @@ namespace Pedidos.Models
         //PARA CARGAR DETALLES DEL PRODUCTO      
         public string JsonAdicionales { get; set; }
         public string JsonIngredientes { get; set; }
+        public string JsonSabores { get; set; }
 
         //PROPIEDADES AUXILIARES
 
@@ -163,6 +166,8 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
         [NotMapped]
+        public List<P_Sabor> Sabores { get; set; } = new List<P_Sabor>();
+        [NotMapped]
         public decimal ValorMasAdicionales
         {
             get
@@ -184,6 +189,14 @@ namespace Pedidos.Models
                         if (item.cantidad > 0)
                         {
                             valor_adicionales += (item.Valor * item.cantidad);
+                        }
+                    }
+
+                    foreach (var item in this.Sabores)
+                    {
+                        if (item.selected && item.valor.HasValue)
+                        {
+                            valor_adicionales += (item.valor.Value);
                         }
                     }
 

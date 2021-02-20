@@ -31,7 +31,7 @@
 
 <div class="row m-3"></div>
 
-<div class="row d-flex justify-content-center">
+<div class="row d-flex justify-content-center p-2">
     <div class="col-12 col-md-4">
         <form id="form_create" asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -80,6 +80,29 @@
                 <div id="form_group_valor" class="form-group">
                     <input asp-for="valor" class="form-control inputDecimal" placeholder="Valor" onclick="this.select()" />
                     <span asp-validation-for="valor" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="card">
+                    <div class="card-header bg-dark text-white">Sabores</div>
+                    <div class="card-body">
+                        <input asp-for="cantidadSabores" id="inputCantidadSabores" type="range" list="listSabores" class="form-range mb-0 w-100" min="0" max="4" step="1" />
+                        <datalist id="listSabores" class="mb-0">
+                            <option value="0" label="0"></option>
+                            <option value="1"></option>
+                            <option value="2"></option>
+                            <option value="3"></option>
+                            <option value="4"></option>
+                        </datalist>
+                        <div class="d-flex justify-content-between pl-1 pr-1 mt-0">
+                            <div>0</div>
+                            <div>1</div>
+                            <div>2</div>
+                            <div>3</div>
+                            <div>4</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

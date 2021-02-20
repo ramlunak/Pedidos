@@ -113,6 +113,74 @@ namespace Pedidos.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public async Task<IActionResult> GetVentasAnual()
+        {
+            var currentYear = DateTime.Now.ToSouthAmericaStandard().Year;
+            var ventas = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.fecha.Year == currentYear && x.status == StatusPedido.Finalizado.ToString())
+                                                  .SumAsync(x => (x.valorProductos + x.tasaEntrega - x.descuento));
+            return Ok(ventas);
+
+        }
+
+        public async Task<IActionResult> GetVentasMensual()
+        {
+
+            var currentYear = DateTime.Now.ToSouthAmericaStandard().Year;
+            var currentMonth = DateTime.Now.ToSouthAmericaStandard().Month;
+            var ventas = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.fecha.Year == currentYear && x.fecha.Month == currentMonth && x.status == StatusPedido.Finalizado.ToString())
+                                                  .SumAsync(x => (x.valorProductos + x.tasaEntrega - x.descuento));
+            return Ok(ventas);
+
+        }
+
+        public async Task<IActionResult> GetVentasSemana()
+        {
+            var currentDay = DateTime.Now.ToSouthAmericaStandard().DayOfWeek;
+            DateTime firstDay = DateTime.Now;//Solo para colocar un valor y declarar a variablek                
+            DateTime LastDay = DateTime.Now;//Solo para colocar un valor y declarar a variable
+
+            if ((int)currentDay == 0)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(-6);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(0);
+            }
+            else if ((int)currentDay == 1)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(0);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(6);
+            }
+            else if ((int)currentDay == 2)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(-1);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(5);
+            }
+            else if ((int)currentDay == 3)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(-2);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(4);
+            }
+            else if ((int)currentDay == 4)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(-3);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(3);
+            }
+            else if ((int)currentDay == 5)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(-4);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(2);
+            }
+            else if ((int)currentDay == 6)
+            {
+                firstDay = DateTime.Now.ToSouthAmericaStandard().AddDays(-5);
+                LastDay = DateTime.Now.ToSouthAmericaStandard().AddDays(1);
+            }
+
+            var ventas = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.fecha >= firstDay && x.fecha <= LastDay && x.status == StatusPedido.Finalizado.ToString())
+                                                  .SumAsync(x => (x.valorProductos + x.tasaEntrega - x.descuento));
+            return Ok(ventas);
+
+        }
+
          [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult AccessDenied()
         {
@@ -123,6 +191,17 @@ namespace Pedidos.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        public async Task<IActionResult> GetVentasDia()
+        {
+
+            var currentYear = DateTime.Now.ToSouthAmericaStandard().Year;
+            var currentMonth = DateTime.Now.ToSouthAmericaStandard().Month;
+            var currentDay = DateTime.Now.ToSouthAmericaStandard().Day;
+            var ventas = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.fecha.Year == currentYear && x.fecha.Month == currentMonth && x.fecha.Day == currentDay && x.status == StatusPedido.Finalizado.ToString())
+                                                  .SumAsync(x => (x.valorProductos + x.tasaEntrega - x.descuento));
+            return Ok(ventas);
+
+        }
 
         public async Task<IActionResult> GetReporteVentasAnual()
         {

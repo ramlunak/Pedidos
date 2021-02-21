@@ -41,7 +41,7 @@ namespace Pedidos.Data
         {
             StringBuilder query = new StringBuilder();
 
-            query.Append($"  SELECT id,codigo,nombre,descripcion,idCategoria,idSubCategoria,idCuenta,valor,unidadeMedida,horasPreparacion,minutosPreparacion,cantidadSabores,activo,tamanho1,valorTamanho1,tamanho2,valorTamanho2,tamanho3,valorTamanho3,tamanho4,valorTamanho4,tamanho5,valorTamanho5,tamanho6,valorTamanho6,tamanho7,valorTamanho7,tamanho8,valorTamanho8,tamanho9,valorTamanho9,imagen ");
+            query.Append($"  SELECT id,codigo,nombre,descripcion,idCategoria,idSubCategoria,idCuenta,valor,unidadeMedida,horasPreparacion,minutosPreparacion,cantidadSabores,actualizarValorSaborMayor,actualizarValorSaborMenor,actualizarValorMediaSabores,activo,tamanho1,valorTamanho1,tamanho2,valorTamanho2,tamanho3,valorTamanho3,tamanho4,valorTamanho4,tamanho5,valorTamanho5,tamanho6,valorTamanho6,tamanho7,valorTamanho7,tamanho8,valorTamanho8,tamanho9,valorTamanho9,imagen ");
             query.Append($" ,JsonAdicionales = (SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsAdicionales from [dbo].[P_CategoriaAdicional] where idCategoria = P.idCategoria and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN[dbo].[P_Adicionais] AS A on V.value = A.id FOR JSON PATH) ");
             query.Append($" ,JsonIngredientes = (SELECT * FROM (SELECT value  FROM STRING_SPLIT(CAST ((select top(1) idsIngrediente from [dbo].[P_IngredientesProducto] where idProducto = P.id and idCuenta = {idCuenta}) AS varchar(MAX)), ',') WHERE RTRIM(value) <> '') AS V JOIN [dbo].[P_Ingredientes] AS A on V.value = A.id FOR JSON PATH)  ");
             query.Append($" ,JsonSabores = (SELECT *  FROM P_Sabores  FOR JSON PATH) ");
@@ -171,6 +171,9 @@ namespace Pedidos.Data
                    $" ,[horasPreparacion]" +
                    $" ,[minutosPreparacion]" +
                    $" ,[cantidadSabores]" +
+                   $" ,[actualizarValorSaborMayor]" +
+                   $" ,[actualizarValorSaborMenor]" +
+                   $" ,[actualizarValorMediaSabores]" +
                    $" ,[imagen]" +
                    $" ,[tamanho1]" +
                    $" ,[valorTamanho1]" +

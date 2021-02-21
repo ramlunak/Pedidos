@@ -37,11 +37,11 @@ namespace Pedidos.Hubs
         public List<MessageHub> mensajes { get; set; }
     }
 
-    public class CardapioHub : Hub
+    public class AppHub : Hub
     {
         private readonly AppDbContext _context;
 
-        public CardapioHub(AppDbContext context)
+        public AppHub(AppDbContext context)
         {
             _context = context;
         }

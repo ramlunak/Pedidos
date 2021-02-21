@@ -753,7 +753,7 @@ function HubConnectCliente() {
 
     var codigo_coneccion_cliente = 'cli_acc' + cardapioIdCuenta + '_' + cardapioMesa;
 
-    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub' + '?isCardapio=true&codigo_coneccion_cliente=' + codigo_coneccion_cliente).configureLogging(signalR.LogLevel.Trace).build();
+    chat = new signalR.HubConnectionBuilder().withUrl('/apphub' + '?isCardapio=true&codigo_coneccion_cliente=' + codigo_coneccion_cliente).configureLogging(signalR.LogLevel.Trace).build();
 
     chat.start().then(function () {
 

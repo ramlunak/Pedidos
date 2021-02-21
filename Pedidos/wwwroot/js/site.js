@@ -20,7 +20,7 @@ var chatIntervelReconnect;
 
 function HubConnect() {
 
-    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub').build();
+    chat = new signalR.HubConnectionBuilder().withUrl('/apphub').build();
 
     chat.start().then(function () {
 

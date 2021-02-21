@@ -176,7 +176,7 @@ namespace Pedidos
                     pattern: "{controller=Login}/{action=Index}/{id?}");
                 endpoints.MapControllers();
                 endpoints.MapRazorPages();
-                endpoints.MapHub<CardapioHub>("/cardapiohub");
+                endpoints.MapHub<AppHub>("/apphub");
             });
         }
 

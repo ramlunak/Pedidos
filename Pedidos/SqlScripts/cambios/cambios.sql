@@ -9,3 +9,7 @@ CREATE TABLE P_Sabores(
 );
   
 alter table [dbo].[P_Productos] add cantidadSabores int null
+
+alter table [dbo].[P_Productos] add actualizarValorSaborMayor bit not null default(0)
+alter table [dbo].[P_Productos] add actualizarValorSaborMenor bit not null default(0)
+alter table [dbo].[P_Productos] add actualizarValorMediaSabores bit not null default(0)

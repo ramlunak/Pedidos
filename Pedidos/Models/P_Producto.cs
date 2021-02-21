@@ -50,6 +50,9 @@ namespace Pedidos.Models
         public int? minutosPreparacion { get; set; }
 
         public int? cantidadSabores { get; set; } = 0;
+        public bool actualizarValorSaborMayor { get; set; } = false;
+        public bool actualizarValorSaborMenor { get; set; } = false;
+        public bool actualizarValorMediaSabores { get; set; } = false;
 
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;

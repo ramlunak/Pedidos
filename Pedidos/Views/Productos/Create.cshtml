@@ -103,23 +103,27 @@
                             <div>4</div>
                         </div>
 
-                        <div class="d-block card border-primary mt-2 p-1">
-                            <div class="d-flex align-items-center">
-                                <input name="switchbuttonActivo" type="checkbox" asp-for="activo" id="id" data-onlabel="Sim" data-offlabel="Não" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
-                                <div class="m-1 text-secondary">O valor do produto será o <strong>maior</strong></div>
-                                <i class="far fa-question-circle text-primary cursor-pointer fa-1x" data-toggle="tooltip" data-placement="top" title="Quando vc tenha um produto com mais de um sabor com preço, o valor do produto será o maior valor dos sabores."></i>
-                            </div>
+                        <div id="divOpcinosCalculoSabores" style="display:none" >
+                            <div class="d-block card border-primary mt-2 p-1">
 
-                            <div class="d-flex align-items-center">
-                                <input name="switchbuttonActivo" type="checkbox" asp-for="activo" id="id" data-onlabel="Sim" data-offlabel="Não" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
-                                <div class="m-1 text-secondary">O valor do produto será o <strong>menor</strong></div>
-                                <i class="far fa-question-circle text-primary cursor-pointer fa-1x" data-toggle="tooltip" data-placement="top" title="Quando vc tenha um produto com mais de um sabor com preço, o valor do produto será o menor valor dos sabores."></i>
-                            </div>
+                                <div class="d-flex align-items-center">
+                                    <input type="checkbox" asp-for="actualizarValorSaborMayor" id="actualizarValorSaborMayor" data-onlabel="Sim" data-offlabel="Não" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
+                                    <div class="m-1 text-secondary">O valor do produto será o <strong>maior</strong></div>
+                                    <i class="far fa-question-circle text-primary cursor-pointer fa-1x" data-toggle="tooltip" data-placement="top" title="Quando vc tenha um produto com mais de um sabor com preço, o valor do produto será o maior valor dos sabores."></i>
+                                </div>
 
-                            <div class="d-flex align-items-center">
-                                <input name="switchbuttonActivo" type="checkbox" asp-for="activo" id="id" data-onlabel="Sim" data-offlabel="Não" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
-                                <div class="m-1 text-secondary">O valor do produto será a <strong>média</strong></div>
-                                <i class="far fa-question-circle text-primary cursor-pointer fa-1x" data-toggle="tooltip" data-placement="top" title="Quando vc tenha um produto com mais de um sabor com preço, o valor do produto será a média (soma dos valores divididos pela quantidade) dos valores dos sabores."></i>
+                                <div class="d-flex align-items-center">
+                                    <input type="checkbox" asp-for="actualizarValorSaborMenor" id="actualizarValorSaborMenor" data-onlabel="Sim" data-offlabel="Não" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
+                                    <div class="m-1 text-secondary">O valor do produto será o <strong>menor</strong></div>
+                                    <i class="far fa-question-circle text-primary cursor-pointer fa-1x" data-toggle="tooltip" data-placement="top" title="Quando vc tenha um produto com mais de um sabor com preço, o valor do produto será o menor valor dos sabores."></i>
+                                </div>
+
+                                <div class="d-flex align-items-center">
+                                    <input type="checkbox" asp-for="actualizarValorMediaSabores" id="actualizarValorMediaSabores" data-onlabel="Sim" data-offlabel="Não" data-toggle="switchbutton" data-offstyle="danger" data-size="xs">
+                                    <div class="m-1 text-secondary">O valor do produto será a <strong>média</strong></div>
+                                    <i class="far fa-question-circle text-primary cursor-pointer fa-1x" data-toggle="tooltip" data-placement="top" title="Quando vc tenha um produto com mais de um sabor com preço, o valor do produto será a média (soma dos valores divididos pela quantidade) dos valores dos sabores."></i>
+                                </div>
+
                             </div>
                         </div>
 

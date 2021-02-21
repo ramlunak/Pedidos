@@ -702,11 +702,49 @@ function ModalMostarValorProducto() {
         }
     });
 
+    //CALCULAR VALOR SEGÙN OPCIONES DE LOS SABORES
+    var mayorValorSabores = 0;
+    var menorValorSabores = 99999999999;
+    var sumaValoresSabores = 0;
+    var cantidadSaboresConValor = 0;
+
     $.each(_ModalSabores, function (index, item) {
+
         if (item.valor != null && item.selected) {
-            valorProducto = valorProducto + item.valor;
+
+            cantidadSaboresConValor++;
+            sumaValoresSabores = sumaValoresSabores + item.valor;
+
+            //Selecionar el valor mayor
+            if (item.valor > mayorValorSabores) {
+                mayorValorSabores = item.valor;
+            }
+
+            //Selecionar el valor menor
+            if (item.valor < menorValorSabores) {
+                menorValorSabores = item.valor;
+            }
         }
+
     });
+
+    if (_ModalProducto.actualizarValorSaborMayor) {
+
+        valorProducto = valorProducto + mayorValorSabores;
+
+    } else if (_ModalProducto.actualizarValorSaborMenor) {
+
+        valorProducto = valorProducto + menorValorSabores;
+
+    } else if (_ModalProducto.actualizarValorMediaSabores) {
+
+        valorProducto = valorProducto + (sumaValoresSabores / cantidadSaboresConValor);
+
+    } else {
+        valorProducto = valorProducto + item.valor;
+    }
+
+    //------------------------------------
 
     $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(valorProducto)).toFixed(2));
     $('#spanValorProducto').animate({ fontSize: '18px' }, 80);
@@ -2127,7 +2165,6 @@ function calcularTotalPagado() {
         $('#modalBtnOkEnd').prop('disabled', true);
     }
 }
-
 
 function CancelarCurrentPedido() {
     $.ajax({

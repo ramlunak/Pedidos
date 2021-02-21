@@ -704,7 +704,7 @@ function ModalMostarValorProducto() {
 
     //CALCULAR VALOR SEGÙN OPCIONES DE LOS SABORES
     var mayorValorSabores = 0;
-    var menorValorSabores = 99999999999;
+    var menorValorSabores = 0;
     var sumaValoresSabores = 0;
     var cantidadSaboresConValor = 0;
 
@@ -721,6 +721,10 @@ function ModalMostarValorProducto() {
             }
 
             //Selecionar el valor menor
+            if (menorValorSabores === 0) {
+                menorValorSabores = item.valor;
+            }
+
             if (item.valor < menorValorSabores) {
                 menorValorSabores = item.valor;
             }
@@ -741,7 +745,7 @@ function ModalMostarValorProducto() {
         valorProducto = valorProducto + (sumaValoresSabores / cantidadSaboresConValor);
 
     } else {
-        valorProducto = valorProducto + item.valor;
+        valorProducto = valorProducto + sumaValoresSabores;
     }
 
     //------------------------------------

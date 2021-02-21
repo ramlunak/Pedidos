@@ -195,13 +195,66 @@ namespace Pedidos.Models
                         }
                     }
 
+                    //Sumar valor sabores
+
+                    //CALCULAR VALOR SEGÙN OPCIONES DE LOS SABORES
+                    decimal mayorValorSabores = 0;
+                    decimal menorValorSabores = 0;
+                    decimal sumaValoresSabores = 0;
+                    var cantidadSaboresConValor = 0;
+
                     foreach (var item in this.Sabores)
                     {
-                        if (item.selected && item.valor.HasValue)
+                        if (item.valor.HasValue && item.selected)
                         {
-                            valor_adicionales += (item.valor.Value);
+                            cantidadSaboresConValor++;
+                            sumaValoresSabores = sumaValoresSabores + item.valor.Value;
+
+                            //Selecionar el valor mayor
+                            if (item.valor > mayorValorSabores)
+                            {
+                                mayorValorSabores = item.valor.Value;
+                            }
+
+                            //Selecionar el valor menor
+                            if (menorValorSabores == 0)
+                            {
+                                menorValorSabores = item.valor.Value;
+                            }
+
+                            if (item.valor < menorValorSabores)
+                            {
+                                menorValorSabores = item.valor.Value;
+                            }
                         }
                     }
+
+                    if (this.actualizarValorSaborMayor)
+                    {
+                        valor_adicionales = valor_adicionales + mayorValorSabores;
+                    }
+                    else if (this.actualizarValorSaborMenor)
+                    {
+                        valor_adicionales = valor_adicionales + menorValorSabores;
+                    }
+                    else if (this.actualizarValorMediaSabores)
+                    {
+                        valor_adicionales = valor_adicionales + (sumaValoresSabores / cantidadSaboresConValor);
+                    }
+                    else
+                    {
+                        valor_adicionales = valor_adicionales + sumaValoresSabores;
+                    }
+
+                    //foreach (var item in this.Sabores)
+                    //{
+                    //    if (item.selected && item.valor.HasValue)
+                    //    {
+                    //        valor_adicionales += (item.valor.Value);
+                    //    }
+                    //}
+
+                    //-----------------------------------------
 
                     return this.cantidad * (valor_producto + valor_adicionales);
                 }

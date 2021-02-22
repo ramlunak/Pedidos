@@ -59,7 +59,7 @@ namespace Pedidos.Hubs
                 await Groups.AddToGroupAsync(Context.ConnectionId, codigoConecionCliente[0]);
             }
 
-            await base.OnConnectedAsync();
+            await base.OnConnectedAsync(); 
         }
 
         #region CLIENTE SEND

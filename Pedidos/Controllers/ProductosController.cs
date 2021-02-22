@@ -95,6 +95,29 @@ namespace Pedidos.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> Sabores(int id)
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
+            await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistSaboresProducto  @idProducto = {id},@idCuenta = {Cuenta.id}");
+
+            var query = await _context.P_Sabores.FromSqlRaw($"EXEC GetSaboresPorProducto @idProducto = '{id}',@idCuenta = '{Cuenta.id}'").ToListAsync();
+            var model = from SAB in query
+                        select new ListarSaboresPorProducto()
+                        {
+                            idProducto = id,
+                            idSabor = SAB.id,
+                            sabor = SAB.nombre,
+                            valor = SAB.valor,
+                            selected = SAB.activo
+                        };
+
+            return View(model.OrderBy(x => x.sabor));
+        }
+
         public async Task<IActionResult> Adicionales(int id)
         {
             if (!ValidarCuenta())
@@ -564,6 +587,29 @@ namespace Pedidos.Controllers
             return Ok(true);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UpdateSaborInProducto([FromBody] ListarSaboresPorProducto listarSaboresPorProducto)
+        {
+            int result;
+
+            result = await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistSaboresProducto  @idProducto = {listarSaboresPorProducto.idProducto},@idCuenta = {Cuenta.id}");
+
+            if (listarSaboresPorProducto.selected)
+            {
+                result = await _context.Database.ExecuteSqlRawAsync($"EXEC AddSaborInProducto @idSabor = {listarSaboresPorProducto.idSabor},  @idProducto = {listarSaboresPorProducto.idProducto},@idCuenta = {Cuenta.id}");
+            }
+            else
+            {
+                result = await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteSaborInProducto @idSabor = {listarSaboresPorProducto.idSabor},  @idProducto = {listarSaboresPorProducto.idProducto},@idCuenta = {Cuenta.id}");
+            }
+
+            if (result == 0)
+            {
+                return NotFound();
+            }
+
+            return Ok(true);
+        }
 
         [HttpPost]
         public IActionResult CustomCrop(string filename, IFormFile blob)

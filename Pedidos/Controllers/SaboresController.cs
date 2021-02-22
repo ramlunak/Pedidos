@@ -29,7 +29,7 @@ namespace Pedidos.Controllers
             }
 
             var model = await _context.P_Sabores.Where(x => x.idCuenta == Cuenta.id).ToListAsync();
-            return View(model);
+            return View(model.OrderBy(x => x.nombre));
         }
 
         public async Task<IActionResult> Create()
@@ -52,11 +52,11 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
-                if (await ExistsByName(p_Sabor.nombre))
-                {
-                    NotifyError("Já existe um adicional com esse nome.");
-                    return View(p_Sabor);
-                }
+                //if (await ExistsByName(p_Sabor.nombre))
+                //{
+                //    NotifyError("Já existe um adicional com esse nome.");
+                //    return View(p_Sabor);
+                //}
 
                 using (var transaction = _context.Database.BeginTransaction())
                 {
@@ -133,12 +133,12 @@ namespace Pedidos.Controllers
 
             if (ModelState.IsValid)
             {
-                var idAdicional = await GetIdByName(p_Sabor.nombre);
-                if (idAdicional != null && idAdicional != p_Sabor.id)
-                {
-                    PrompInfo("O adicional já existe");
-                    return View(p_Sabor);
-                }
+                //var idAdicional = await GetIdByName(p_Sabor.nombre);
+                //if (idAdicional != null && idAdicional != p_Sabor.id)
+                //{
+                //    PrompInfo("O adicional já existe");
+                //    return View(p_Sabor);
+                //}
 
                 try
                 {

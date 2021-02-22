@@ -150,12 +150,17 @@ namespace Pedidos.Data
                    $" OFFSET(@Skip) ROWS FETCH NEXT(@Take) ROWS ONLY";
         }
 
-        public static string GetSqlAllProductos(int idCuenta, int Skip, int Take, string nombre)
+        public static string GetSqlAllProductos(int idCuenta, int Skip, int Take, string nombre, int? idCategoria = null)
         {
             StringBuilder filtro = new StringBuilder();
             if (nombre != null)
             {
                 filtro.Append($" AND nombre LIKE '%{nombre}%'");
+            }
+
+            if (idCategoria != null)
+            {
+                filtro.Append($" AND idCategoria = {idCategoria}");
             }
 
             return $"DECLARE @Skip INT = {Skip}, @Take INT = {Take}" +

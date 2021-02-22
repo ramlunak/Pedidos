@@ -17,6 +17,22 @@
             <div>
                 <form id="formSearchCategoria">
                     <div class="d-flex align-items-center">
+
+                        <select name="idCategoria" id="idCategoria" class="form-control form-control-sm mr-2">
+                            <option value="">Todas</option>
+                            @foreach (var categoria in ViewBag.Categorias)
+                            {
+                                if (ViewBag.idCategoria == categoria.id)
+                                {
+                                    <option selected value="@categoria.id">@categoria.nombre</option>
+                                }
+                                else
+                                {
+                                    <option value="@categoria.id">@categoria.nombre</option>
+                                }
+                            }
+                        </select>
+
                         <input id="nombre" name="nombre" value="@ViewBag.FlrNombre" class="form-control form-control-sm  w-100" type="text" placeholder="Buscar"
                                aria-label="Search">
                         <button class="btn btn-sm btn-outline-primary"><i class="fa fa-search"></i></button>

@@ -900,6 +900,24 @@ namespace Pedidos.Controllers
 
         }
 
+
+        public async Task<IActionResult> adicionarDescuento(int id, float descuento)
+        {
+            try
+            {
+                var pedido = await _context.P_Pedidos.FindAsync(id);
+                pedido.descuento = (decimal)descuento;
+                _context.Update(pedido);
+                await _context.SaveChangesAsync();
+                return Ok(true);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+
         //INTEGRACION
 
         public async Task<IActionResult> AdicionarEnIntegracion(int id, int idBario)

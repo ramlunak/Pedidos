@@ -1,5 +1,5 @@
 ﻿var intervals = [];
-
+var _IdPedidoDescuento = 0;
 //crear tabla de productos del pedido en edicion
 function MostarPedidosPendientes() {
 
@@ -62,15 +62,22 @@ function MostarPedidosPendientes() {
 
         }
 
+        CARD_HEAD.append('<div class="d-flex justify-content-between" > ' +
 
-        CARD_HEAD.append('<div class="d-flex justify-content-end" > ' +
+            '<div>' +
+            '  <button onclick="showModalAddDescuento(' + pedido.id + ',' + pedido.descuento + ')" class="btn btn-sm btn-outline-danger" type="button">  ' +
+            '     <i class="far fa-minus-square"></i>  ' +
+            '     Desconto ' +
+            '  </button>  ' +
+            '</div > ' +
 
+            '<div>' +
             btnEnviadoIntegracion +
             btnEsperandoIntegracion +
             btnEntragadoIntegracion +
             btnCancelarIntegracion +
             btnEnviarIntegracion +
-
+            '</div>' +
             '  </div>  ');
 
         CARD.append(CARD_HEAD);
@@ -359,6 +366,81 @@ function MostarPedidosPendientes() {
 
 }
 
+function showModalAddDescuento(idPedido, oldDescuento) {
+
+    _IdPedidoDescuento = idPedido;
+
+    $('#loadingAddDescuento').hide();
+    $('#botonesAddDescuento').show();
+
+    $('#modalAddDescuento').modal("show");
+    $('#inputAddDescuento').mask("###0.00", { reverse: true });
+    $('#inputAddDescuento').val(null);
+}
+
+function salvarNuevoDescuento() {
+    var newDescuento = parseFloat($('#inputAddDescuento').val());
+
+    if (isNaN(newDescuento)) {
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Informe um valor válido'
+        });
+        return;
+    }
+
+    adicionarDescuento(_IdPedidoDescuento, newDescuento);
+}
+
+function adicionarDescuento(idPedido, newDescuento) {
+
+    $('#loadingAddDescuento').show();
+    $('#botonesAddDescuento').hide();
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/adicionarDescuento?id=" + parseInt(idPedido) + "&descuento=" + parseFloat(newDescuento),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                if (pedido.id === idPedido) {
+                    pedido.descuento = newDescuento;
+                }
+                return true;
+            });
+
+            $('#modalAddDescuento').modal("hide");
+
+            MostarPedidosPendientes();
+
+        },
+        failure: function (response) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Erro do servidor'
+            });
+            $('#loadingAddDescuento').hide();
+            $('#botonesAddDescuento').show();
+        },
+        error: function (response) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Oops...',
+                text: 'Erro do servidor'
+            });
+            $('#loadingAddDescuento').hide();
+            $('#botonesAddDescuento').show();
+        }
+    });
+}
+
+
 function marcarProductoPreparado(idPedido, idProducto, posicion, timer) {
 
     var marcarProducto = {
@@ -444,7 +526,6 @@ function adicionarEnIntegracion(id) {
     });
 }
 
-
 function cancelarEnIntegracion(id) {
 
     let findResult = _PedidosPendientes.filter(function (item) {
@@ -482,7 +563,6 @@ function cancelarEnIntegracion(id) {
         }
     });
 }
-
 
 function imprimirPedido(idPedido, pendientes) {
 

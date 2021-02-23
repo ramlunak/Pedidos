@@ -14,6 +14,37 @@ function MostarPedidosPendientes() {
     $.each(_PedidosPendientes, function (indexPedido, pedido) {
 
         var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  border border-info">');
+        var CARD_HEAD = $('<div class="card-header p-1">');
+
+        CARD_HEAD.append('<div class="d-flex justify-content-end" > ' +
+
+            '   <button class="btn btn-sm btn-outline-primary" type="button">  ' +
+            '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
+            '     <i class="fas fa-motorcycle"></i> Enviado...' +
+            '  </button>  ' +
+
+            '   <button class="btn btn-sm btn-outline-secondary" type="button">  ' +
+            '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
+            '     Esperando...  ' +
+            '  </button>  ' +
+
+            '   <button class="btn btn-sm btn-outline-success" type="button">  ' +
+            '     <i class="fas fa-check"></i>  ' +
+            '     Entregado ' +
+            '  </button>  ' +
+
+            '       <div class="btn btn-sm btn-outline-danger cursor-pointer">  ' +
+            '           <i class="fas fa-ban"></i>  ' +
+            '       </div>  ' +
+
+            '       <div class="btn btn-sm btn-outline-info cursor-pointer">  ' +
+            '           <i class="fas fa-share-square"></i>  ' +
+            '       </div>  ' +
+
+            '  </div>  ');
+
+        CARD.append(CARD_HEAD);
+
         var CARD_BODY = $('<div class="card-body p-1">');
 
         var mesa = '';

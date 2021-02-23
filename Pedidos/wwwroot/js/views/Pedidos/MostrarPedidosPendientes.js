@@ -16,30 +16,38 @@ function MostarPedidosPendientes() {
         var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  border border-info">');
         var CARD_HEAD = $('<div class="card-header p-1">');
 
-        CARD_HEAD.append('<div class="d-flex justify-content-end" > ' +
+        var btnEnviarIntegracion = ' <div class="btn btn-sm btn-outline-info cursor-pointer">  ' +
+            '           <i class="fas fa-share-square"></i>  ' +
+            '       </div>  ';
 
-            '   <button class="btn btn-sm btn-outline-primary" type="button">  ' +
-            '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
-            '     <i class="fas fa-motorcycle"></i> Enviado...' +
-            '  </button>  ' +
+        var btnCancelarIntegracion = ' <div class="btn btn-sm btn-outline-danger cursor-pointer">  ' +
+            '           <i class="fas fa-ban"></i>  ' +
+            '       </div>  ';
 
-            '   <button class="btn btn-sm btn-outline-secondary" type="button">  ' +
-            '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
-            '     Esperando...  ' +
-            '  </button>  ' +
 
-            '   <button class="btn btn-sm btn-outline-success" type="button">  ' +
+        var btnEntragadoIntegracion = '   <button class="btn btn-sm btn-outline-success" type="button">  ' +
             '     <i class="fas fa-check"></i>  ' +
             '     Entregado ' +
-            '  </button>  ' +
+            '  </button>  ';
 
-            '       <div class="btn btn-sm btn-outline-danger cursor-pointer">  ' +
-            '           <i class="fas fa-ban"></i>  ' +
-            '       </div>  ' +
+        var btnEsperandoIntegracion = '   <button class="btn btn-sm btn-outline-secondary" type="button">  ' +
+            '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
+            '     Esperando...  ' +
+            '  </button>  ';
 
-            '       <div class="btn btn-sm btn-outline-info cursor-pointer">  ' +
-            '           <i class="fas fa-share-square"></i>  ' +
-            '       </div>  ' +
+        var btnEnviadoEntregar = '   <button class="btn btn-sm btn-outline-primary" type="button">  ' +
+            '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
+            '     <i class="fas fa-motorcycle"></i> Enviado...' +
+            '  </button>  ';
+
+
+        CARD_HEAD.append('<div class="d-flex justify-content-end" > ' +
+
+            btnEnviadoEntregar +
+            btnEsperandoIntegracion +
+            btnEntragadoIntegracion +
+            btnCancelarIntegracion +
+            btnEnviarIntegracion +
 
             '  </div>  ');
 

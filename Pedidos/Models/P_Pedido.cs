@@ -30,6 +30,7 @@ namespace Pedidos.Models
         public DateTime fecha { get; set; }
         public DateTime? fechaFinalizado { get; set; }
         public string status { get; set; }
+        public string statusIntegracion { get; set; }
         public string descripcion { get; set; }
         public decimal descuento { get; set; } = 0;
         public decimal tasaEntrega { get; set; } = 0;

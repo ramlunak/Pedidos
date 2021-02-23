@@ -17,6 +17,6 @@ alter table [dbo].[P_Productos] add actualizarValorMediaSabores bit not null def
 create table P_SaboresProducto(
 id int identity(1,1) not null,
 idProducto int not null,
-idsSabor text not null,
+idsSabor varchar(255) null,
 idCuenta int not null
 );

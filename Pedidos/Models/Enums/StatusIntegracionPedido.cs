@@ -7,9 +7,9 @@ namespace Pedidos.Models.Enums
 {
     public enum StatusIntegracionPedido
     {
-        NoIntegrado,
         Esperando,
         Enviado,
-        Entregado
+        Entregado,
+        Cancelado
     }
 }

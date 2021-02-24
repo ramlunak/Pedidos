@@ -13,8 +13,11 @@ namespace Pedidos.Models
     public class P_IntegracionPedidos
     {
         public int id { get; set; }
-        public int idPedido { get; set; }
+        public int idPedido { get; set; }       
         public int idCuenta { get; set; }
+        public string usuario { get; set; }
+        public int idBarrio { get; set; }
+        public string barrio { get; set; }
         public int idCuentaIntegracion { get; set; }
         public string statusIntegracion { get; set; }
         public DateTime fecha { get; set; }

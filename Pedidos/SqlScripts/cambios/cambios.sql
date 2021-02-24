@@ -22,3 +22,19 @@ idCuenta int not null
 );
 alter table [dbo].[P_Productos] add actualizarValorMediaSabores bit not null default(0)
 alter table [dbo].[P_Pedidos] add statusIntegracion varchar(50) null
+
+create table P_IntegracionPedidos(
+id int identity(1,1) not null,
+idPedido int not null,
+idCuenta int not null,
+usuario varchar(255) null,
+idBarrio int not null,
+barrio varchar(255) null,
+idCuentaIntegracion int not null,
+statusIntegracion varchar(255) null,
+fecha datetime not null,
+fechaEnviado datetime null,
+fechaEntregado datetime null
+);
+
+alter table [dbo].[P_Cuentas] add idCuentaIntegracion int null

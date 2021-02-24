@@ -25,7 +25,12 @@ function MostarPedidosPendientes() {
         if (pedido.statusIntegracion === null || pedido.statusIntegracion === "Cancelado") {
             //BTN ENVIAR INTEGRACION
 
-            btnEnviarIntegracion = ' <div class="btn btn-sm btn-info cursor-pointer">  ' +
+            let barrio = "";
+            if (pedido.barrio !== null) {
+                barrio = pedido.barrio;
+            }
+
+            btnEnviarIntegracion = ' <div class="btn btn-sm btn-info cursor-pointer" onclick="adicionarEnIntegracion(' + pedido.id + ')">  ' +
                 '           <i class="fas fa-share-square"></i>  ' +
                 '       </div>  ';
 
@@ -37,7 +42,7 @@ function MostarPedidosPendientes() {
                 '     Esperando...  ' +
                 '  </button>  ';
 
-            btnCancelarIntegracion = ' <div class="btn btn-sm btn-outline-danger cursor-pointer">  ' +
+            btnCancelarIntegracion = ' <div class="btn btn-sm btn-outline-danger cursor-pointer ml-2" onclick="cancelarEnIntegracion(' + pedido.id + ')">  ' +
                 '           <i class="fas fa-ban"></i>  ' +
                 '       </div>  ';
 
@@ -390,6 +395,89 @@ function marcarProductoPreparado(idPedido, idProducto, posicion, timer) {
         }
     });
 }
+
+function adicionarEnIntegracion(id) {
+
+    let findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === id);
+    });
+
+    var pedido = findResult[0];
+
+    if (pedido.idBarrio === null || pedido.idBarrio === "" || pedido.idBarrio === undefined) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Informe o Barrio'
+        })
+        return;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/AdicionarEnIntegracion?id=" + parseInt(id) + "&idBario=" + parseInt(pedido.idBarrio),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                if (pedido.id === id) {
+                    pedido.statusIntegracion = "Esperando";
+                }
+                return true;
+            });
+
+            MostarPedidosPendientes();
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
+function cancelarEnIntegracion(id) {
+
+    let findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === id);
+    });
+
+    var pedido = findResult[0];
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CancelarEmIntegracion?id=" + parseInt(id) + "&idBario=" + parseInt(pedido.idBarrio),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                if (pedido.id === id) {
+                    pedido.statusIntegracion = "Cancelado";
+                }
+                return true;
+            });
+
+            MostarPedidosPendientes();
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
 
 function imprimirPedido(idPedido, pendientes) {
 

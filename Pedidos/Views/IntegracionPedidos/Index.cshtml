@@ -3,23 +3,57 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="card-body bg-primary p-2">
-    <div class="d-flex justify-content-between">
-        <div>
+<div id="content">
 
-        </div>
-        <div>
-            <button class="btn btn-outline-success text-white">
-                Nova Rota
-            </button>
+    <div class="card-body bg-primary p-2">
+        <div class="d-flex justify-content-between">
+            <div>
+
+            </div>
+            <div>
+                <button class="btn btn-outline-success text-white">
+                    Nova Rota
+                </button>
+            </div>
         </div>
     </div>
+
+    <div class="row m-2">
+
+        <div v-for="item in barrios" class="card mr-4 mb-4" style="min-width:120px">
+            <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Esperança</strong></div></div>
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning">
+                            <strong>1</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-0">
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <strong>-</strong>
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-success">
+                        <strong>+</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    {{ message }}
 </div>
 
-<div class="m-4">
-
-    @*BARRIOS*@
-    <div class="row">
+<!--<div class="m-4">-->
+@*BARRIOS*@
+<!--<div class="row">
 
         <div class="card mr-4 mb-4" style="min-width:120px">
             <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Bom Retiro</strong></div></div>
@@ -242,24 +276,9 @@
 
     </div>
 
-</div>
+</div>-->
 
-<div id="app">
-    {{ message }}
-</div>
 
 @section Scripts{
-
-    <script>
-        var app = new Vue({
-            el: '#app',
-            created: function () {
-                console.log($('#btnAdd'));
-            },
-            data: {
-                message: 'Hello Vue!'
-            }
-        })
-    </script>
-
+    <script src="~/js/views/IntegracionPedidos/vue_index.js"></script>
 }

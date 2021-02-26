@@ -45,7 +45,7 @@ namespace Pedidos.Controllers
             {
                 var integracionesPedido = await _context.P_IntegracionPedidos.Where(x => x.idCuentaIntegracion == Cuenta.id && x.statusIntegracion == StatusIntegracionPedido.Esperando.ToString()).ToListAsync();
                 var grupoPedidosPorBarrio = from integracion in integracionesPedido
-                                            group integracion by integracion.barrio into g
+                                            group integracion by integracion.barrio.ToUpper() into g
                                             select new DTOGrupoPedidosPorBarrio
                                             {
                                                 barrio = g.Key,

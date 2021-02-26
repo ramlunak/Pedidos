@@ -1,8 +1,4 @@
-﻿Vue.filter('blabla', function (value) {
-    return value.toUpperCase()
-});
-
-var app = new Vue({
+﻿var app = new Vue({
     el: '#content',
     created: function () {
 
@@ -31,7 +27,7 @@ var app = new Vue({
         isLoading: false,
         message: 'Hello Vue!',
         grupoPedidosPorBarrio: []
-    },
+    },    
     methods: {
         CargarGruposPedidos: function () {
 

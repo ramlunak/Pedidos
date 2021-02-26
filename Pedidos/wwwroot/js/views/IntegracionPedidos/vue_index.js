@@ -1,4 +1,8 @@
-﻿var app = new Vue({
+﻿Vue.filter('blabla', function (value) {
+    return value.toUpperCase()
+});
+
+var app = new Vue({
     el: '#content',
     created: function () {
 

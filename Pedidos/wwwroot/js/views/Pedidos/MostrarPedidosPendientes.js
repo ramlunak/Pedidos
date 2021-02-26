@@ -428,6 +428,9 @@ function adicionarEnIntegracion(id) {
                 return true;
             });
 
+
+            EnviarPedidoIntegracion();
+
             MostarPedidosPendientes();
 
         },
@@ -464,6 +467,8 @@ function cancelarEnIntegracion(id) {
                 }
                 return true;
             });
+
+            CancelarPedidoIntegracion();
 
             MostarPedidosPendientes();
 

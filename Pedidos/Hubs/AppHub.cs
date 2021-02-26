@@ -59,7 +59,7 @@ namespace Pedidos.Hubs
                 await Groups.AddToGroupAsync(Context.ConnectionId, codigoConecionCliente[0]);
             }
 
-            await base.OnConnectedAsync(); 
+            await base.OnConnectedAsync();
         }
 
         #region CLIENTE SEND
@@ -81,6 +81,20 @@ namespace Pedidos.Hubs
         public async Task establecimientoSendMessage(string codigoConeccionCliente, string message)
         {
             await Clients.Group(codigoConeccionCliente).SendAsync("clienteReceivedMessage", message);
+        }
+
+        #endregion
+
+        #region
+
+        public async Task enviarPedidoIntegracion(int idCuentaIntegracion, string pedido)
+        {
+            await Clients.User($"mastereat_account_{idCuentaIntegracion}").SendAsync("integracionRecibirPedido", pedido);
+        }
+        
+        public async Task cancelarPedidoIntegracion(int idCuentaIntegracion, string pedido)
+        {
+            await Clients.User($"mastereat_account_{idCuentaIntegracion}").SendAsync("integracionCancelarPedido", pedido);
         }
 
         #endregion

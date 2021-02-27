@@ -25,9 +25,11 @@
     </div>
 
     <template v-else>
+
+        @*BARRIOS*@
         <div class="row m-2">
             <div v-for="item in grupoPedidosPorBarrio" class="card mr-4 mb-4" style="min-width:120px">
-                <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>{{item.barrio | blabla}}</strong></div></div>
+                <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>{{item.barrio}}</strong></div></div>
                 <div class="card-body p-2">
                     <div class="d-flex justify-content-center">
                         <div class="text-center">
@@ -50,8 +52,58 @@
                     </div>
                 </div>
             </div>
-
         </div>
+
+        @*RUTAS*@
+    <div class="row m-2">
+
+        <div class="card w-100 mb-2">
+            <div class="card-body p-0">
+
+                <div class="d-flex justify-content-between">
+
+                    <div class="d-flex">
+                        <div> <img src="~/img/motoboy.gif" style="width:70px" /></div>
+                        <div class="d-flex align-items-center">
+                            <div class="m-2">
+                                <button type="button" class="btn btn-sm btn-warning">
+                                    <strong>Bom Retiro</strong> <span class="badge badge-light">4</span>
+                                </button>
+                            </div>
+                            <div class="m-2">
+                                <button type="button" class="btn btn-sm btn-warning">
+                                    <strong>Canaa</strong> <span class="badge badge-light">4</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="d-block m-2">
+                            <div class="text-center"><img src="~/img/motocicleta.png" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>Alfonzo</strong></div>
+                        </div>
+
+                        <div class="d-block m-2">
+                            <div style="font-size:12px" class="text-center"><strong></strong></div>
+                            <div class="text-center"><img src="~/img/deadline.png" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>12/02/2021 10:21</strong></div>
+                        </div>
+
+                        <div class="d-block m-2">
+                            <div class="text-center"><img src="~/img/Clock.gif" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>00:25:25</strong></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     </template>
 
 </div>
@@ -287,3 +339,44 @@
 @section Scripts{
     <script src="~/js/views/IntegracionPedidos/vue_index.js"></script>
 }
+
+
+<div class="card w-100 mb-2">
+    <div class="card-body p-0">
+        <div class="d-flex justify-content-between">
+
+            <div class="d-flex">
+                <div> <img src="~/img/unnamed.gif" style="width:70px" /></div>
+                <div class="d-flex align-items-center">
+                    <div class="m-2">
+                        <button type="button" class="btn btn-sm btn-success">
+                            <strong>Ciudad Nobre</strong> <span class="badge badge-light">4</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center">
+
+                <div class="d-block m-2">
+                    <div class="text-center"><img src="~/img/motocicleta.png" style="width:30px" /></div>
+                    <div style="font-size:12px" class="text-center"><strong>Alfonzo</strong></div>
+                </div>
+
+                <div class="d-block m-2">
+                    <div style="font-size:12px" class="text-center"><strong></strong></div>
+                    <div class="text-center"><img src="~/img/deadline.png" style="width:30px" /></div>
+                    <div style="font-size:12px" class="text-center"><strong>12/02/2021 10:21</strong></div>
+                </div>
+
+                <div class="d-block m-2">
+                    <div class="text-center"><i class="far fa-clock fa-2x" style="color:green"></i></div>
+                    <div style="font-size:12px" class="text-center"><strong>00:25:25</strong></div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</div>

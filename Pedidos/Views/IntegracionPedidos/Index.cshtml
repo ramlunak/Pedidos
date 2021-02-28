@@ -56,7 +56,7 @@
 
         @*RUTAS*@
         <div class="row m-2">
-            <div v-for="item in rutas" class="card w-100 mb-2">
+            <div v-for="ruta in rutas" class="card w-100 mb-2">
                 <div class="card-body p-0">
 
                     <div class="d-flex justify-content-between">
@@ -64,16 +64,13 @@
                         <div class="d-flex">
                             <div> <img src="~/img/motoboy.gif" style="width:70px" /></div>
                             <div class="d-flex align-items-center">
-                                <div class="m-2">
+                                                               
+                                <div v-for="barrio in ruta.barrios" class="m-2">
                                     <button type="button" class="btn btn-sm btn-warning">
-                                        <strong>Bom Retiro</strong> <span class="badge badge-light">4</span>
+                                        <strong>{{barrio.nombre}}</strong> <span class="badge badge-light">{{barrio.count}}</span>
                                     </button>
                                 </div>
-                                <div class="m-2">
-                                    <button type="button" class="btn btn-sm btn-warning">
-                                        <strong>Canaa</strong> <span class="badge badge-light">4</span>
-                                    </button>
-                                </div>
+
                             </div>
                         </div>
 

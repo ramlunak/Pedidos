@@ -69,8 +69,19 @@ namespace Pedidos.Controllers
             }
             else
             {
+
+                var barios = new List<DTOIntegracionBarrio>();
+                barios.Add(new DTOIntegracionBarrio
+                {
+                    nombre = "Canaa",
+                    count = 3,
+                    usuario = "San Duba"
+                });
+
+                ruta.barrios = barios.ToArray();
                 ruta.idCuentaIntegracion = Cuenta.id;
                 SetSession("IntegracionRuta", ruta);
+
             }
             return Ok(ruta);
         }

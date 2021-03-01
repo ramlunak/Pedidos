@@ -4,16 +4,31 @@
     ViewData["Title"] = "ReporteDePedidos";
 }
 
-<div>
-    <table>
-        @foreach (var item in Model)
-        {
+<div class="m-4">
+    <table class="table">
+        <thead>
             <tr>
-                <td>
-                    @item.codigo
-                </td>
+                <th>Codigo</th>
+                <th>Cliente</th>
+                <th>Valor</th>
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr> 
+                    <td>
+                        @item.codigo
+                    </td>
+                    <td>
+                        @item.cliente
+                    </td>
+                    <td>
+                        R$ @item.valorProductos.ToString("F2")
+                    </td>
+                </tr>
+            }
+        </tbody>
     </table>
 </div>
 

@@ -42,7 +42,11 @@ namespace Pedidos.Controllers
             }
             var model = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString())
                                                 .OrderByDescending(x => x.id).ToListAsync();
-            return View(model);
+
+            return new ViewAsPdf("ReporteDePedidos", model)
+            {
+
+            };
         }
 
         public async Task<ActionResult> VentasPorPeriodo()

@@ -44,6 +44,7 @@ namespace Pedidos.Controllers
             return View();
         }
 
+        //Cargar datos via ajax para la vista
         public async Task<ActionResult> GetDataReporteDePedidos([FromBody] FiltroReporteDePedido filtroReporteDePedido)
         {
 
@@ -52,13 +53,55 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
-            var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString())
-                                                .OrderByDescending(x => x.id).ToListAsync();
+            var pedidos = new List<P_Pedido>();
+
+            if (filtroReporteDePedido.fechaInicio.HasValue && !filtroReporteDePedido.fechaFin.HasValue)
+            {
+                var fechaInicioFormateada = filtroReporteDePedido.fechaInicio.Value.ToSouthAmericaStandard();
+                pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id
+                                                              && x.fecha >= fechaInicioFormateada
+                                                              && x.status == StatusPedido.Finalizado.ToString())
+                                               .OrderByDescending(x => x.id).ToListAsync();
+            }
+            else
+            if (!filtroReporteDePedido.fechaInicio.HasValue && filtroReporteDePedido.fechaFin.HasValue)
+            {
+                var fechaFinFormateada = filtroReporteDePedido.fechaFin.Value.ToSouthAmericaStandard();
+                pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id
+                                                              && x.fecha <= fechaFinFormateada
+                                                              && x.status == StatusPedido.Finalizado.ToString())
+                                               .OrderByDescending(x => x.id).ToListAsync();
+            }
+            else
+             if (filtroReporteDePedido.fechaInicio.HasValue && filtroReporteDePedido.fechaFin.HasValue)
+            {
+                var fechaInicioFormateada = filtroReporteDePedido.fechaInicio.Value.ToSouthAmericaStandard();
+                var fechaFinFormateada = filtroReporteDePedido.fechaFin.Value.ToSouthAmericaStandard();
+                pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id
+                                                             && x.fecha >= fechaInicioFormateada
+                                                              && x.fecha <= fechaFinFormateada
+                                                             && x.status == StatusPedido.Finalizado.ToString())
+                                              .OrderByDescending(x => x.id).ToListAsync();
+            }
+            else
+            {
+                var hoy = DateTime.Now.ToSouthAmericaStandard();
+                pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id
+                                                             && x.fecha.Year == hoy.Year
+                                                             && x.fecha.Month == hoy.Month
+                                                             && x.fecha.Day == hoy.Day
+                                                             && x.status == StatusPedido.Finalizado.ToString())
+                                                    .OrderByDescending(x => x.id).ToListAsync();
+            }
+
             var model = pedidos.Select(x => { x.productos = x.jsonListProductos.ConvertTo<List<P_Productos>>(); return x; }).ToList();
 
             return Ok(model);
         }
 
+
+
+        //---------------------------------------------------------------------------------------
 
         public async Task<ActionResult> VentasPorPeriodo()
         {

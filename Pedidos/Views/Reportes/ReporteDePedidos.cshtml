@@ -5,8 +5,8 @@
 
 <div id="content">
 
-    <div class="row col-12 p-2 d-flex justify-content-end">
-        <i class="fas fa-filter cursor-pointer text-info" data-toggle="tooltip" data-placement="top" title="Filtro"></i>
+    <div class="row col-12 d-flex justify-content-end">
+        <button v-on:click="ShowModalFiltro" class="btn btn-sm btn-outline-info"><i class="fas fa-filter cursor-pointer" data-toggle="tooltip" data-placement="top" title="Filtro"></i></button>
     </div>
 
     @*IF LOADING*@
@@ -29,7 +29,6 @@
                     </tr>
                 </thead>
                 <tbody>
-
                     <tr v-for="pedido in ListaPedidos">
                         <td>
                             {{pedido.codigo}}
@@ -46,6 +45,41 @@
         </div>
 
     </template>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modalFiltroReporteDePedidos" tabindex="-1" role="dialog" aria-labelledby="modalFiltroReporteDePedidosTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFiltroReporteDePedidosTitle">Filtrar</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+
+                        <div class="m-1">
+                            <label>Data Inicio</label>
+                            <input id="inputFechaInicio" name="inputFechaInicio" type="datetime-local" class="form-control" />
+                        </div>
+
+                        <div class="m-1">
+                            <label>Data Fim</label>
+                            <input id="inputFechaFin" name="inputFechaFin" type="datetime-local" class="form-control" />
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="CargarReporteDePedidos()">Filtrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 

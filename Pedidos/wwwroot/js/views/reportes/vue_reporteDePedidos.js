@@ -8,8 +8,8 @@
         ListaPedidos: []
     },
     methods: {
-        NombreFunction: function () {
-            //Declarar
+        ShowModalFiltro: function () {
+            $('#modalFiltroReporteDePedidos').modal('show');
         }
 
     }
@@ -18,8 +18,12 @@
 
 function CargarReporteDePedidos() {
 
-    let filtroReporteDePedido = {
+    let fechaInicio = $('#inputFechaInicio').val();
+    let fechaFin = $('#inputFechaFin').val();
 
+    let filtroReporteDePedido = {
+        fechaInicio: fechaInicio == "" ? null : fechaInicio,
+        fechaFin: fechaFin == "" ? null : fechaFin
     };
 
     $.ajax({

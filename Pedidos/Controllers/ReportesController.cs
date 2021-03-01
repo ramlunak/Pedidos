@@ -95,6 +95,8 @@ namespace Pedidos.Controllers
             }
 
             var model = pedidos.Select(x => { x.productos = x.jsonListProductos.ConvertTo<List<P_Productos>>(); return x; }).ToList();
+            var total = model.Sum(x => x.valorProductos + x.tasaEntrega - x.descuento);
+            ViewBag.Total = total;
 
             return Ok(model);
         }

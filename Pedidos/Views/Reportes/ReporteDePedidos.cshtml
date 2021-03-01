@@ -5,9 +5,11 @@
 
 <div id="content">
 
-    <div class="row col-12 d-flex justify-content-end">
+    <div class="row col-12 p-1 d-flex justify-content-end">
         <button v-on:click="ShowModalFiltro" class="btn btn-sm btn-outline-info"><i class="fas fa-filter cursor-pointer" data-toggle="tooltip" data-placement="top" title="Filtro"></i></button>
     </div>
+
+    <hr />
 
     @*IF LOADING*@
     <div v-if="isLoading">
@@ -19,29 +21,46 @@
     @*IF NOT LOADING*@
     <template v-else>
 
-        <div class="m-4">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Codigo</th>
-                        <th>Cliente</th>
-                        <th>Valor</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="pedido in ListaPedidos">
-                        <td>
-                            {{pedido.codigo}}
-                        </td>
-                        <td>
-                            {{pedido.cliente}}
-                        </td>
-                        <td>
-                            {{pedido.valorProductos}}
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+        <div class="m-4 pr-3 pl-3" style="font-size:14px">
+
+            <div class="row" v-for="pedido in ListaPedidos">
+                <div class="w-100 mb-2">
+                    <div class="card-header p-1">
+                        <div class="d-flex justify-content-between" style="font-weight:600">
+                            <div class="mr-2">
+                                <div class="d-block">
+                                    <div>{{pedido.codigo}}</div>
+                                    <div v-if="pedido.cliente">{{pedido.cliente}}</div>
+                                    <div v-if="pedido.idMesa"> Mesa {{pedido.idMesa}}</div>
+                                    <div v-if="pedido.aplicativo"> Mesa {{pedido.aplicativo}}</div>
+                                </div>
+                            </div>
+                            <div class="mr-2">
+                                <div class="d-flex">
+                                    <div class="btn btn-sm text-primary"><i class="fas fa-motorcycle"></i> R$ {{pedido.tasaEntrega.toFixed(2)}}</div>
+                                    <div class="btn btn-sm text-danger"><i class="fas fa-minus"></i> R$ {{pedido.descuento.toFixed(2)}}</div>
+                                    <div class="btn btn-sm text-success"><i class="fas fa-hand-holding-usd"></i> <strong> R$ {{(pedido.valorProductos + pedido.tasaEntrega - pedido.descuento).toFixed(2)}}</strong></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-1">
+                        <div class="row col-12 ml-2" v-for="producto in pedido.productos">
+                            <div class="w-100">
+                                
+                                <div class="d-flex justify-content-between w-100" style="font-size:15px;font-family:'Times New Roman', Times, serif">
+                                    <div class="mr-2">{{producto.nombre}}</div>
+                                    <div> R$ {{producto.valorMasAdicionales.toFixed(2)}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end">
+                    <div>R$ @ViewBag.Total.ToString("F2")</div>
+                </div>
+            </div>
+
         </div>
 
     </template>

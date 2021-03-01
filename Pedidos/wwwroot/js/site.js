@@ -20,7 +20,7 @@ var chatIntervelReconnect;
 
 function HubConnect() {
 
-    chat = new signalR.HubConnectionBuilder().withUrl('/cardapiohub').build();
+    chat = new signalR.HubConnectionBuilder().withUrl('/apphub').build();
 
     chat.start().then(function () {
 
@@ -85,6 +85,81 @@ function HubConnect() {
         ion.sound.play("beyond_doubt");
     });
 
+
+    //INTEGRACION
+    chat.on("integracionRecibirPedido", function (producto) {
+       // app.isLoading = true;
+        $.ajax({
+            type: "GET",
+            url: "/IntegracionPedidos/GetGruposPedidoPorBarrio/",
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+               // app.isLoading = false;
+                app.grupoPedidosPorBarrio = data;               
+                
+            },
+            failure: function (response) {
+                console.log('failure', response);
+               // app.isLoading = false;
+            },
+            error: function (response) {
+                console.log('error', response);
+               // app.isLoading = false;
+            }
+        });
+
+        ion.sound({
+            sounds: [
+                { name: "beyond_doubt" }
+            ],
+
+            path: location.origin + "/ionsound/sounds/",
+            preload: true,
+            multiplay: true,
+            volume: 0.2
+        });
+
+        ion.sound.play("beyond_doubt");
+    });
+
+    chat.on("integracionCancelarPedido", function (producto) {
+        //app.isLoading = true;
+        $.ajax({
+            type: "GET",
+            url: "/IntegracionPedidos/GetGruposPedidoPorBarrio/",
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                //app.isLoading = false;
+                app.grupoPedidosPorBarrio = data;
+
+            },
+            failure: function (response) {
+                console.log('failure', response);
+               // app.isLoading = false;
+            },
+            error: function (response) {
+                console.log('error', response);
+                //app.isLoading = false;
+            }
+        });
+
+        ion.sound({
+            sounds: [
+                { name: "beyond_doubt" }
+            ],
+
+            path: location.origin + "/ionsound/sounds/",
+            preload: true,
+            multiplay: true,
+            volume: 0.2
+        });
+
+        ion.sound.play("beyond_doubt");
+    });
 }
 
 async function chatReconnect() {

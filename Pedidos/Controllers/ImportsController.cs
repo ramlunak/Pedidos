@@ -9,9 +9,11 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Pedidos.Extensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento")]
     public class ImportsController : BaseController
     {
         // GET: ImportsController

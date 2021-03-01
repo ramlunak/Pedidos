@@ -32,6 +32,7 @@ namespace Pedidos.Models
         public string rol { get; set; }
         public int? idPlano { get; set; }
         public int? idCuentaPadre { get; set; }
+        public int? idCuentaIntegracion { get; set; }
         public bool activo { get; set; } = true;
 
         //Configuraciones

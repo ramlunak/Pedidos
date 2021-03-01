@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using QRCoder;
 using System;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento")]
     public class MesasController : BaseController
     {
         public ActionResult Index(int id)

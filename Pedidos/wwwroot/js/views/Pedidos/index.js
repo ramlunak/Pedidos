@@ -243,6 +243,8 @@ $(function () {
 
     $("#inputProducto").keypress(function (e) {
 
+        $('#btnModalAdicionar').prop('disabled', false);
+
         if (ArrowIdProductoSeleccionado === null) return;
 
         if (e.which == 13) {
@@ -641,6 +643,8 @@ function CargarPedidosPendientes() {
 
 //cargar info para mostrar en el modal 
 function ShowDetallesProducto(id) {
+
+    $('#btnModalAdicionar').prop('disabled', false);
 
     $.ajax({
         type: "GET",

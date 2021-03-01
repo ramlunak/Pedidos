@@ -1,0 +1,340 @@
+﻿@using Pedidos.Models
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div id="content">
+
+    <div class="card-body bg-primary p-2">
+        <div class="d-flex justify-content-between">
+            <div>
+
+            </div>
+            <div>
+                <button v-on:click="CrearNuevaRuta" class="btn btn-outline-warning text-white">
+                    Nova Rota
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div v-if="isLoading">
+        <div class="spinner-border text-warning m-2" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    <template v-else>
+
+        @*BARRIOS*@
+        <div class="row m-2">
+            <div v-for="item in grupoPedidosPorBarrio" class="card mr-4 mb-4" style="min-width:120px">
+                <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>{{item.barrio}}</strong></div></div>
+                <div class="card-body p-2">
+                    <div class="d-flex justify-content-center">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-warning">
+                                <strong>{{item.count}}</strong>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer d-flex justify-content-between p-0">
+                    <div>
+                        <button type="button" class="btn btn-sm btn-outline-danger">
+                            <strong>-</strong>
+                        </button>
+                    </div>
+                    <div>
+                        <button v-on:click="AddBarrio(item)" type="button" class="btn btn-sm btn-outline-success">
+                            <strong>+</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*RUTAS*@
+        <div class="row m-2">
+            <div v-for="ruta in rutas" class="card w-100 mb-2">
+                <div class="card-body p-0">
+
+                    <div class="d-flex justify-content-between">
+
+                        <div class="d-flex">
+                            <div> <img src="~/img/motoboy.gif" style="width:70px" /></div>
+                            <div class="d-flex align-items-center">
+
+                                <div v-for="barrio in ruta.barrios" class="m-2">
+                                    <button type="button" class="btn btn-sm btn-warning">
+                                        <strong>{{barrio.nombre}}</strong> <span class="badge badge-light">{{barrio.count}}</span>
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="d-flex align-items-center">
+
+                            <div class="d-block m-2">
+                                <div class="text-center"><img src="~/img/motocicleta.png" style="width:30px" /></div>
+                                <div style="font-size:12px" class="text-center"><strong>Alfonzo</strong></div>
+                            </div>
+
+                            <div class="d-block m-2">
+                                <div style="font-size:12px" class="text-center"><strong></strong></div>
+                                <div class="text-center"><img src="~/img/deadline.png" style="width:30px" /></div>
+                                <div style="font-size:12px" class="text-center"><strong>12/02/2021 10:21</strong></div>
+                            </div>
+
+                            <div class="d-block m-2">
+                                <div class="text-center"><img src="~/img/Clock.gif" style="width:30px" /></div>
+                                <div style="font-size:12px" class="text-center"><strong>00:25:25</strong></div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </template>
+
+</div>
+
+
+<!--<div class="m-4">-->
+@*BARRIOS*@
+<!--<div class="row">
+
+        <div class="card mr-4 mb-4" style="min-width:120px">
+            <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Bom Retiro</strong></div></div>
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning">
+                            <strong>5</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-0">
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <strong>-</strong>
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-success">
+                        <strong>+</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mr-4 mb-4" style="min-width:120px">
+            <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Esperança</strong></div></div>
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning">
+                            <strong>1</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-0">
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <strong>-</strong>
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-success">
+                        <strong>+</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mr-4 mb-4" style="min-width:120px">
+            <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Canaa</strong></div></div>
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning">
+                            <strong>7</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-0">
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <strong>-</strong>
+                    </button>
+                </div>
+                <div>
+                    <button id="btnAdd" type="button" class="btn btn-sm btn-outline-success">
+                        <strong>+</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mr-4 mb-4" style="min-width:120px">
+            <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Carevelas</strong></div></div>
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning">
+                            <strong>3</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-0">
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <strong>-</strong>
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-success">
+                        <strong>+</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="card mr-4 mb-4" style="min-width:120px">
+            <div class="card-header p-1 text-center text-black"><div class="card-title m-0"><strong>Ciudad Nobre</strong></div></div>
+            <div class="card-body p-2">
+                <div class="d-flex justify-content-center">
+                    <div class="text-center">
+                        <button type="button" class="btn btn-warning">
+                            <strong>4</strong>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer d-flex justify-content-between p-0">
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-danger">
+                        <strong>-</strong>
+                    </button>
+                </div>
+                <div>
+                    <button type="button" class="btn btn-sm btn-outline-success">
+                        <strong>+</strong>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <hr class="mt-0" />
+
+    <div class="row">
+
+        <div class="card w-100 mb-2">
+            <div class="card-body p-0">
+
+                <div class="d-flex justify-content-between">
+
+                    <div class="d-flex">
+                        <div> <img src="~/img/motoboy.gif" style="width:70px" /></div>
+                        <div class="d-flex align-items-center">
+                            <div class="m-2">
+                                <button type="button" class="btn btn-sm btn-warning">
+                                    <strong>Bom Retiro</strong> <span class="badge badge-light">4</span>
+                                </button>
+                            </div>
+                            <div class="m-2">
+                                <button type="button" class="btn btn-sm btn-warning">
+                                    <strong>Canaa</strong> <span class="badge badge-light">4</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="d-block m-2">
+                            <div class="text-center"><img src="~/img/motocicleta.png" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>Alfonzo</strong></div>
+                        </div>
+
+                        <div class="d-block m-2">
+                            <div style="font-size:12px" class="text-center"><strong></strong></div>
+                            <div class="text-center"><img src="~/img/deadline.png" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>12/02/2021 10:21</strong></div>
+                        </div>
+
+                        <div class="d-block m-2">
+                            <div class="text-center"><img src="~/img/Clock.gif" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>00:25:25</strong></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="card w-100 mb-2">
+            <div class="card-body p-0">
+                <div class="d-flex justify-content-between">
+
+                    <div class="d-flex">
+                        <div> <img src="~/img/unnamed.gif" style="width:70px" /></div>
+                        <div class="d-flex align-items-center">
+                            <div class="m-2">
+                                <button type="button" class="btn btn-sm btn-success">
+                                    <strong>Ciudad Nobre</strong> <span class="badge badge-light">4</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+
+                        <div class="d-block m-2">
+                            <div class="text-center"><img src="~/img/motocicleta.png" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>Alfonzo</strong></div>
+                        </div>
+
+                        <div class="d-block m-2">
+                            <div style="font-size:12px" class="text-center"><strong></strong></div>
+                            <div class="text-center"><img src="~/img/deadline.png" style="width:30px" /></div>
+                            <div style="font-size:12px" class="text-center"><strong>12/02/2021 10:21</strong></div>
+                        </div>
+
+                        <div class="d-block m-2">
+                            <div class="text-center"><i class="far fa-clock fa-2x" style="color:green"></i></div>
+                            <div style="font-size:12px" class="text-center"><strong>00:25:25</strong></div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+
+</div>-->
+
+
+@section Scripts{
+    <script src="~/js/views/IntegracionPedidos/vue_index.js"></script>
+}
+

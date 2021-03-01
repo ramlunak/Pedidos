@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,7 @@ using Pedidos.Models.Enums;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento,Funcionario,Integracion")]
     public class HomeController : BaseController
     {
         private readonly AppDbContext _context;
@@ -33,6 +34,7 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
+            ViewBag.CuentaIntegracion = Cuenta.rol == RolesSistema.Integracion.ToString() ? true : false;
 
             var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-141").ToListAsync();
             var pedido = model.FirstOrDefault();
@@ -177,6 +179,16 @@ namespace Pedidos.Controllers
                                                   .SumAsync(x => (x.valorProductos + x.tasaEntrega - x.descuento));
             return Ok(ventas);
 
+        }
+
+         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult AccessDenied()
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
         public async Task<IActionResult> GetVentasDia()

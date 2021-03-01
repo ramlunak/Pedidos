@@ -12,6 +12,7 @@ namespace Pedidos.Models.Enums
     {
         Administrador,
         Establecimiento,
+        Integracion, 
         Funcionario,
         Cliente
     }

@@ -37,11 +37,11 @@ namespace Pedidos.Hubs
         public List<MessageHub> mensajes { get; set; }
     }
 
-    public class CardapioHub : Hub
+    public class AppHub : Hub
     {
         private readonly AppDbContext _context;
 
-        public CardapioHub(AppDbContext context)
+        public AppHub(AppDbContext context)
         {
             _context = context;
         }
@@ -81,6 +81,20 @@ namespace Pedidos.Hubs
         public async Task establecimientoSendMessage(string codigoConeccionCliente, string message)
         {
             await Clients.Group(codigoConeccionCliente).SendAsync("clienteReceivedMessage", message);
+        }
+
+        #endregion
+
+        #region
+
+        public async Task enviarPedidoIntegracion(int idCuentaIntegracion, string pedido)
+        {
+            await Clients.User($"mastereat_account_{idCuentaIntegracion}").SendAsync("integracionRecibirPedido", pedido);
+        }
+        
+        public async Task cancelarPedidoIntegracion(int idCuentaIntegracion, string pedido)
+        {
+            await Clients.User($"mastereat_account_{idCuentaIntegracion}").SendAsync("integracionCancelarPedido", pedido);
         }
 
         #endregion

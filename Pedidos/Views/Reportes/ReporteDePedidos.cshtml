@@ -1,34 +1,54 @@
-﻿@model IEnumerable<Pedidos.Models.P_Pedido>
-
+﻿
 @{
     ViewData["Title"] = "ReporteDePedidos";
 }
 
-<div class="m-4">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Codigo</th>
-                <th>Cliente</th>
-                <th>Valor</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr> 
-                    <td>
-                        @item.codigo
-                    </td>
-                    <td>
-                        @item.cliente
-                    </td>
-                    <td>
-                        R$ @item.valorProductos.ToString("F2")
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+<div id="content">
+
+    <div class="row col-12 p-2 d-flex justify-content-end">
+        <i class="fas fa-filter cursor-pointer text-info" data-toggle="tooltip" data-placement="top" title="Filtro"></i>
+    </div>
+
+    @*IF LOADING*@
+    <div v-if="isLoading">
+        <div class="spinner-border text-warning m-2" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+
+    @*IF NOT LOADING*@
+    <template v-else>
+
+        <div class="m-4">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Cliente</th>
+                        <th>Valor</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr v-for="pedido in ListaPedidos">
+                        <td>
+                            {{pedido.codigo}}
+                        </td>
+                        <td>
+                            {{pedido.cliente}}
+                        </td>
+                        <td>
+                            {{pedido.valorProductos}}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </template>
+
 </div>
 
+@section Scripts{
+    <script src="~/js/views/reportes/vue_reporteDePedidos.js"></script>
+}

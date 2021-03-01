@@ -179,7 +179,7 @@ namespace Pedidos
                 endpoints.MapHub<AppHub>("/apphub");
             });
 
-            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
+            //Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "Rotativa");
 
         }
 

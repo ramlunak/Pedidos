@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Extensions;
 using Pedidos.Models;
+using Pedidos.Models.DTO;
 using Pedidos.Models.Enums;
 using Pedidos.Models.Filtros;
 using Rotativa.AspNetCore;
@@ -33,21 +34,31 @@ namespace Pedidos.Controllers
             _context = context;
         }
 
-        public async Task<ActionResult> ReporteDePedidos()
+        public ActionResult ReporteDePedidos()
+        {
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
+            return View();
+        }
+
+        public async Task<ActionResult> GetDataReporteDePedidos([FromBody] FiltroReporteDePedido filtroReporteDePedido)
         {
 
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
             }
-            var model = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString())
+
+            var pedidos = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString())
                                                 .OrderByDescending(x => x.id).ToListAsync();
+            var model = pedidos.Select(x => { x.productos = x.jsonListProductos.ConvertTo<List<P_Productos>>(); return x; }).ToList();
 
-            return new ViewAsPdf("ReporteDePedidos", model)
-            {
-
-            };
+            return Ok(model);
         }
+
 
         public async Task<ActionResult> VentasPorPeriodo()
         {

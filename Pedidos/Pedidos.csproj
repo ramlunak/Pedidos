@@ -167,7 +167,6 @@
   <ItemGroup>
     <Folder Include="SqlScripts\cambios\" />
     <Folder Include="TagHelpers\Enums\" />
-    <Folder Include="wwwroot\js\views\reportes\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -17,6 +17,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Rotativa\wkhtmltoimage.exe" />
+    <Content Remove="wwwroot\Rotativa\wkhtmltopdf.exe" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Rotativa\wkhtmltoimage.exe" />
+    <None Remove="Rotativa\wkhtmltopdf.exe" />
     <None Remove="SqlScripts\barrio.sql" />
     <None Remove="SqlScripts\Caja.sql" />
     <None Remove="SqlScripts\cambios\cambios.sql" />
@@ -40,6 +47,13 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Rotativa\wkhtmltoimage.exe" />
+    <EmbeddedResource Include="Rotativa\wkhtmltopdf.exe" />
+    <EmbeddedResource Include="wwwroot\Rotativa\wkhtmltoimage.exe" />
+    <EmbeddedResource Include="wwwroot\Rotativa\wkhtmltopdf.exe" />
   </ItemGroup>
 
   <ItemGroup>
@@ -151,32 +165,14 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Data\Reports\dsVendas.Designer.cs">
-      <DependentUpon>dsVendas.xsd</DependentUpon>
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Data\Reports\dsVendas.xsc">
-      <DependentUpon>dsVendas.xsd</DependentUpon>
-    </None>
-    <None Update="Data\Reports\dsVendas.xsd">
-      <SubType>Designer</SubType>
-      <LastGenOutput>dsVendas.Designer.cs</LastGenOutput>
-      <Generator>MSDataSetGenerator</Generator>
-    </None>
-    <None Update="Data\Reports\dsVendas.xss">
-      <DependentUpon>dsVendas.xsd</DependentUpon>
-    </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Rotativa\" />
     <Folder Include="SqlScripts\cambios\" />
     <Folder Include="TagHelpers\Enums\" />
     <Folder Include="wwwroot\js\views\reportes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Rotativa\wkhtmltoimage.exe" />
+    <Resource Include="Rotativa\wkhtmltopdf.exe" />
   </ItemGroup>
 
   <ItemGroup>

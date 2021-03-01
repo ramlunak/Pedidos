@@ -13,7 +13,7 @@ namespace Pedidos.Models
     public class P_IntegracionRuta
     {
         public int id { get; set; }
-        public int idsPedido { get; set; }
+        public int[] idsPedido { get; set; }
         public DTOIntegracionBarrio[] barrios { get; set; }
         public int idCuentaIntegracion { get; set; }
         public int idEntregador { get; set; }

@@ -1,4 +1,5 @@
-﻿
+﻿@using Pedidos.Models
+
 @{
     ViewData["Title"] = "Index";
 }
@@ -46,7 +47,7 @@
                         </button>
                     </div>
                     <div>
-                        <button type="button" class="btn btn-sm btn-outline-success">
+                        <button v-on:click="AddBarrio(item)" type="button" class="btn btn-sm btn-outline-success">
                             <strong>+</strong>
                         </button>
                     </div>
@@ -64,7 +65,7 @@
                         <div class="d-flex">
                             <div> <img src="~/img/motoboy.gif" style="width:70px" /></div>
                             <div class="d-flex align-items-center">
-                                                               
+
                                 <div v-for="barrio in ruta.barrios" class="m-2">
                                     <button type="button" class="btn btn-sm btn-warning">
                                         <strong>{{barrio.nombre}}</strong> <span class="badge badge-light">{{barrio.count}}</span>

@@ -8,6 +8,7 @@ namespace Pedidos.Models.Enums
     public enum StatusIntegracionPedido
     {
         Esperando,
+        EnCurrentRuta,
         Enviado,
         Entregado,
         Cancelado

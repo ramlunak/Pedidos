@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
+using Pedidos.Extensions;
 using Pedidos.Models;
 using Pedidos.Models.Enums;
 using System;
@@ -49,9 +50,9 @@ namespace Pedidos.Controllers
                                                 barrio = g.Key,
                                                 idBarrio = g.First().idBarrio,
                                                 count = g.Count(),
-                                                listIntegracionPedidos = g.ToList()
+                                                listIntegracionPedidos = g.OrderBy(x => x.idCuentaIntegracion).ToList()
                                             };
-
+                SetSession("integracionesGrupoPedidos", grupoPedidosPorBarrio.ToList());
                 return Ok(grupoPedidosPorBarrio);
             }
             catch (Exception ex)
@@ -69,16 +70,6 @@ namespace Pedidos.Controllers
             }
             else
             {
-
-                var barios = new List<DTOIntegracionBarrio>();
-                barios.Add(new DTOIntegracionBarrio
-                {
-                    nombre = "Canaa",
-                    count = 3,
-                    usuario = "San Duba"
-                });
-
-                ruta.barrios = barios.ToArray();
                 ruta.idCuentaIntegracion = Cuenta.id;
                 SetSession("IntegracionRuta", ruta);
 
@@ -97,6 +88,50 @@ namespace Pedidos.Controllers
             }
 
             return Ok(rutas);
+        }
+
+        public async Task<IActionResult> AddBarrio([FromBody] DTOGrupoPedidosPorBarrio dTOGrupoPedidosPorBarrio)
+        {
+
+            //Adicionar pedido a la ruta
+            var currentRuta = GetSession<P_IntegracionRuta>("IntegracionRuta");
+            if (currentRuta != null)
+            {
+
+                var barios = new List<DTOIntegracionBarrio>();
+                if (currentRuta.barrios != null)
+                    barios = currentRuta.barrios.ToList();
+
+                if (barios.Where(x => x.nombre.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Any())
+                {
+                    barios.Where(x => x.nombre.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Select(x => { x.count++; return x; }).ToList();
+                }
+                else
+                {
+                    barios.Add(new DTOIntegracionBarrio
+                    {
+                        nombre = dTOGrupoPedidosPorBarrio.barrio,
+                        count = 1
+                    });
+                }
+
+                currentRuta.barrios = barios.ToArray();
+                SetSession("IntegracionRuta", currentRuta);
+            }
+
+            //REMOVER primer integracion pedido
+            var grupoPedidosPorBarrio = GetSession<List<DTOGrupoPedidosPorBarrio>>("integracionesGrupoPedidos");
+            grupoPedidosPorBarrio.Where(x => x.barrio.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Select(x => { x.listIntegracionPedidos.RemoveAt(0); x.count--; return x; }).ToList();
+            grupoPedidosPorBarrio = grupoPedidosPorBarrio.Where(x => x.count > 0).ToList();
+
+            //ACTUALIZAR IntegracionPedido en BD
+            var idIntegracionPedido = dTOGrupoPedidosPorBarrio.listIntegracionPedidos.FirstOrDefault().id;
+            var result = await _context.Database.ExecuteSqlRawAsync($"UPDATE [dbo].[P_IntegracionPedidos] SET [statusIntegracion] = 'EnCurrentRuta' WHERE id = {idIntegracionPedido}");
+
+            SetSession("integracionesGrupoPedidos", grupoPedidosPorBarrio.ToList());
+
+            return Ok(new { currentRuta, currentRuta.barrios, grupoPedidosPorBarrio });
+
         }
 
 

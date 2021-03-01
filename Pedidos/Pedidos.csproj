@@ -20,7 +20,6 @@
     <None Remove="SqlScripts\barrio.sql" />
     <None Remove="SqlScripts\Caja.sql" />
     <None Remove="SqlScripts\cambios\cambios.sql" />
-    <None Remove="wwwroot\Reports\Vendas.rdlc" />
     <None Remove="SqlScripts\Cardapio.sql" />
     <None Remove="SqlScripts\Categoria - Copy.sql" />
     <None Remove="SqlScripts\Categoria.sql" />
@@ -41,10 +40,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="wwwroot\Reports\Vendas.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
@@ -149,6 +144,7 @@
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.5" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
     <PackageReference Include="QRCoder" Version="1.4.1" />
+    <PackageReference Include="Rotativa.AspNetCore" Version="1.2.0-beta" />
     <PackageReference Include="SixLabors.ImageSharp" Version="1.0.2" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.0" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="4.7.1" />
@@ -177,8 +173,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Rotativa\" />
     <Folder Include="SqlScripts\cambios\" />
     <Folder Include="TagHelpers\Enums\" />
+    <Folder Include="wwwroot\js\views\reportes\" />
   </ItemGroup>
 
   <ItemGroup>

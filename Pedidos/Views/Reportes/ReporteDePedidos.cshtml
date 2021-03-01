@@ -1,0 +1,19 @@
+﻿@model IEnumerable<Pedidos.Models.P_Pedido>
+
+@{
+    ViewData["Title"] = "ReporteDePedidos";
+}
+
+<div>
+    <table>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.codigo
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+

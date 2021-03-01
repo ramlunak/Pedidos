@@ -177,6 +177,9 @@ namespace Pedidos
                 endpoints.MapRazorPages();
                 endpoints.MapHub<CardapioHub>("/cardapiohub");
             });
+
+            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa");
+
         }
 
         public class DateTimeConverter : JsonConverter<DateTime>

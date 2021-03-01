@@ -6,6 +6,7 @@ using Pedidos.Extensions;
 using Pedidos.Models;
 using Pedidos.Models.Enums;
 using Pedidos.Models.Filtros;
+using Rotativa.AspNetCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,18 @@ namespace Pedidos.Controllers
         public ReportesController(AppDbContext context)
         {
             _context = context;
+        }
+
+        public async Task<ActionResult> ReporteDePedidos()
+        {
+
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+            var model = await _context.P_Pedidos.Where(x => x.idCuenta == Cuenta.id && x.status == StatusPedido.Finalizado.ToString())
+                                                .OrderByDescending(x => x.id).ToListAsync();
+            return View(model);
         }
 
         public async Task<ActionResult> VentasPorPeriodo()

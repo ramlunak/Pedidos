@@ -33,7 +33,6 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
-
             var model = await _context.P_Pedidos.Where(x => x.codigo == "P1-141").ToListAsync();
             var pedido = model.FirstOrDefault();
             pedido.productos = pedido.jsonListProductos.ConvertTo<List<P_Productos>>();

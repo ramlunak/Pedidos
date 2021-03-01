@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
 using Pedidos.Models;
+using Pedidos.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento,Funcionario,Integracion")]
     public class ConfigController : BaseController
     {
         private readonly AppDbContext _context;
@@ -25,6 +28,8 @@ namespace Pedidos.Controllers
             {
                 return RedirectToAction("Salir", "Login");
             }
+
+            ViewBag.CuentaIntegracion = Cuenta.rol == RolesSistema.Integracion.ToString() ? true : false;
 
             var model = await _context.P_Config.Where(x => x.idCuenta == Cuenta.id).FirstOrDefaultAsync();
 

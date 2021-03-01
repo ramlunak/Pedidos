@@ -55,6 +55,14 @@
                             </a>
                         </li>
 
+                        <!-- Integracion -->
+
+                        <li class="nav-item" asp-authorize asp-roles="@RolesSistema.Integracion">
+                            <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Rotas" asp-area="" asp-controller="IntegracionPedidos" asp-action="Index">
+                                <i class="fas fa-map-marked-alt fa-2x"></i>
+                            </a>
+                        </li>
+
                         <!-- Cuentas -->
 
                         <li class="nav-item">
@@ -139,7 +147,7 @@
 
                         <!-- Caja -->
 
-                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="right" title="Caixa">
+                        <li class="nav-item dropdown" data-toggle="tooltip" data-placement="top" title="Caixa" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento,@RolesSistema.Funcionario">
                             <a class="m-1 nav-link  dropdown-toggle text-dark btn btn-outline-primary" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-cash-register fa-2x"></i>
                             </a>
@@ -160,9 +168,9 @@
 
                         <!-- Pedidos -->
 
-                        <li class="nav-item">
+                        <li class="nav-item" asp-authorize asp-roles="@RolesSistema.Administrador,@RolesSistema.Establecimiento,@RolesSistema.Funcionario">
                             <a class="m-1 nav-link text-dark btn btn-outline-primary" data-toggle="tooltip" data-placement="top" title="Pedidos" asp-area="" asp-controller="Pedidos" asp-action="Index">
-                                <i class="fas fa-baby-carriage fa-2x"></i>
+                                <i class="fas fa-shopping-cart fa-2x"></i>
                             </a>
                         </li>
 
@@ -188,6 +196,7 @@
         </footer>*@
 
     <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+    <script src="~/lib/vuejs/vuejs.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/lib/limonte-sweetalert2/sweetalert2.js" asp-append-version="true"></script>
     <script src="~/lib/bootstrap-switch-button/bootstrap-switch-button.min.js" asp-append-version="true"></script>

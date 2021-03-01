@@ -68,6 +68,8 @@ namespace Pedidos.Data
 
         public DbSet<Pedidos.Models.P_Sabor> P_Sabores { get; set; }
 
+        public DbSet<Pedidos.Models.P_IntegracionPedidos> P_IntegracionPedidos { get; set; }
+
         public DbSet<Pedidos.Models.P_RelatorioVendasAnual> P_RelatorioVendasAnual { get; set; }
     }
 }

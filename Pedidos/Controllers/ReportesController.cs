@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Pedidos.Data;
@@ -22,6 +23,7 @@ namespace Pedidos.Controllers
         public int count { get; set; }
     }
 
+    [Authorize(Roles = "Administrador,Establecimiento")]
     public class ReportesController : BaseController
     {
         private readonly AppDbContext _context;

@@ -14,6 +14,67 @@ function MostarPedidosPendientes() {
     $.each(_PedidosPendientes, function (indexPedido, pedido) {
 
         var CARD = $('<div id="CARD_PEDIDO_' + pedido.id + '" class="card mb-2  border border-info">');
+        var CARD_HEAD = $('<div class="card-header p-1">');
+
+        let btnEnviarIntegracion = "";
+        let btnEsperandoIntegracion = "";
+        let btnCancelarIntegracion = "";
+        let btnEnviadoIntegracion = "";
+        let btnEntragadoIntegracion = "";
+
+        if (pedido.statusIntegracion === null || pedido.statusIntegracion === "Cancelado") {
+            //BTN ENVIAR INTEGRACION
+
+            let barrio = "";
+            if (pedido.barrio !== null) {
+                barrio = pedido.barrio;
+            }
+
+            btnEnviarIntegracion = ' <div class="btn btn-sm btn-info cursor-pointer" onclick="adicionarEnIntegracion(' + pedido.id + ')">  ' +
+                '           <i class="fas fa-share-square"></i>  ' +
+                '       </div>  ';
+
+        } else if (pedido.statusIntegracion === "Esperando") {
+            //BTN ESPERANDO Y CANCELAR INTEGRACION
+
+            btnEsperandoIntegracion = '   <button class="btn btn-sm btn-outline-secondary" type="button">  ' +
+                '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
+                '     Esperando...  ' +
+                '  </button>  ';
+
+            btnCancelarIntegracion = ' <div class="btn btn-sm btn-outline-danger cursor-pointer ml-2" onclick="cancelarEnIntegracion(' + pedido.id + ')">  ' +
+                '           <i class="fas fa-ban"></i>  ' +
+                '       </div>  ';
+
+        } else if (pedido.statusIntegracion === "Enviado") {
+            //BTN ENVIADO INTEGRACION
+            btnEnviadoIntegracion = '   <button class="btn btn-sm btn-outline-primary" type="button">  ' +
+                '     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>  ' +
+                '     <i class="fas fa-motorcycle"></i> Enviado...' +
+                '  </button>  ';
+
+        } else if (pedido.statusIntegracion === "Entregado") {
+            //BTN ENTREGADO INTEGRACION
+            btnEntragadoIntegracion = '   <button class="btn btn-sm btn-outline-success" type="button">  ' +
+                '     <i class="fas fa-check"></i>  ' +
+                '     Entregado ' +
+                '  </button>  ';
+
+        }
+
+
+        CARD_HEAD.append('<div class="d-flex justify-content-end" > ' +
+
+            btnEnviadoIntegracion +
+            btnEsperandoIntegracion +
+            btnEntragadoIntegracion +
+            btnCancelarIntegracion +
+            btnEnviarIntegracion +
+
+            '  </div>  ');
+
+        CARD.append(CARD_HEAD);
+
         var CARD_BODY = $('<div class="card-body p-1">');
 
         var mesa = '';
@@ -70,15 +131,15 @@ function MostarPedidosPendientes() {
             '                   <div style="font-size:13px" class="d-flex"><b>Codigo: ' + pedido.codigo + '</b>  </div>  ' +
             '                   <div style="font-size:13px">' + pedido.cliente + '</div>  ' +
             '                   <div style="font-size:13px">' + pedido.direccion + ' ' + pedido.barrio + '</div>  ' + mesa + aplicativo + retirada +
-                '               </div>  ' + PedidoTiempo +
-                '               <div class="d-block" style="text-align:right">  ' +
-                '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
-                tasaEntrega +
-                descuento +
-                '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
-                '               </div>  ' +
-                '           </div>  ' +
-                '          <hr class="m-2" />  ';
+            '               </div>  ' + PedidoTiempo +
+            '               <div class="d-block" style="text-align:right">  ' +
+            '                   <div style="font-size:13px">Valor do pedido: <b>R$ ' + valorPedido.toFixed(2) + '</b></div>  ' +
+            tasaEntrega +
+            descuento +
+            '                   <div style="font-size:13px"><b>Total a pagar: R$ ' + totalPagar.toFixed(2) + '</b></div>  ' +
+            '               </div>  ' +
+            '           </div>  ' +
+            '          <hr class="m-2" />  ';
 
         CARD_BODY.append(div_infopedido);
 
@@ -335,6 +396,94 @@ function marcarProductoPreparado(idPedido, idProducto, posicion, timer) {
     });
 }
 
+function adicionarEnIntegracion(id) {
+
+    let findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === id);
+    });
+
+    var pedido = findResult[0];
+
+    if (pedido.idBarrio === null || pedido.idBarrio === "" || pedido.idBarrio === undefined) {
+        Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: 'Informe o Barrio'
+        })
+        return;
+    }
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/AdicionarEnIntegracion?id=" + parseInt(id) + "&idBario=" + parseInt(pedido.idBarrio),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                if (pedido.id === id) {
+                    pedido.statusIntegracion = "Esperando";
+                }
+                return true;
+            });
+
+
+            EnviarPedidoIntegracion();
+
+            MostarPedidosPendientes();
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
+function cancelarEnIntegracion(id) {
+
+    let findResult = _PedidosPendientes.filter(function (item) {
+        return (item.id === id);
+    });
+
+    var pedido = findResult[0];
+
+    $.ajax({
+        type: "GET",
+        url: "/Pedidos/CancelarEmIntegracion?id=" + parseInt(id) + "&idBario=" + parseInt(pedido.idBarrio),
+        traditional: true,
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            _PedidosPendientes = $.grep(_PedidosPendientes, function (pedido) {
+                if (pedido.id === id) {
+                    pedido.statusIntegracion = "Cancelado";
+                }
+                return true;
+            });
+
+            CancelarPedidoIntegracion();
+
+            MostarPedidosPendientes();
+
+        },
+        failure: function (response) {
+            console.log('failure', response);
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+}
+
+
 function imprimirPedido(idPedido, pendientes) {
 
     var NombreEstablecimiento = $('#NombreEstablecimiento').val();
@@ -421,9 +570,39 @@ function imprimirPedido(idPedido, pendientes) {
             TR.append(TD1, TD2, TD3);
             TABLE.append(TR);
 
+            if (producto.sabores.length > 0) {
+
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">SABORES</b></td></tr>');
+
+                //SABORES
+                var TABLE_SABORES = $('<table style="width: 100%;">');
+                TABLE_SABORES.empty();
+                $.each(producto.sabores, function (index, sabor) {
+
+                    let TD1 = $('<td style="vertical-align:top;">');
+                    let TD2 = $('<td style="width:100%">');
+
+                    let TR = $('<tr>');
+
+                    TD1.append('<div>* ' + sabor.nombre + '</div>');
+                    //TD2.append('<div style="white-space:nowrap;margin-left:10px;">R$ ' + sabor.valor + '</div>');
+
+                    TR.append(TD1);
+                    TABLE_SABORES.append(TR);
+                });
+
+                //ADD ADICIONLES TABLA PRODUCTO
+                var TD_SABORES = $('<td colspan="3">');
+                TD_SABORES.append(TABLE_SABORES);
+
+                var TR1 = $('<tr>');
+                TR1.append(TD_SABORES);
+                TABLE.append(TR1);
+            }
+
             if (producto.adicionales.length > 0) {
 
-                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Adicionais</b></td></tr>');
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">ADICIONAIS</b></td></tr>');
 
                 //ADICIONALES
                 var TABLE_ADICIONALES = $('<table style="width: 100%;">');
@@ -435,7 +614,7 @@ function imprimirPedido(idPedido, pendientes) {
                     let TD3 = $('<td>');
                     let TR = $('<tr>');
 
-                    TD1.append('<div style="white-space:nowrap;vertical-align:top;">  <b>' + adicional.cantidad + '</b></div>');
+                    TD1.append('<div style="white-space:nowrap;vertical-align:top;">  <b>+ ' + adicional.cantidad + '</b></div>');
                     TD2.append('<div>' + adicional.nombre + '</div>');
                     TD3.append('<div style="white-space:nowrap;margin-left:10px;">R$ ' + (adicional.valor * adicional.cantidad).toFixed(2) + '</div>');
 
@@ -454,7 +633,7 @@ function imprimirPedido(idPedido, pendientes) {
 
             if (producto.ingredientes.length > 0) {
 
-                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">Preparar sem:</b></td></tr>');
+                TABLE.append('<tr><td colspan="3"><b style="font-family: cursive;">PREPARAR SEM:</b></td></tr>');
 
                 //QUITAR INGREDIENTES
                 var TABLE_INGREDIENTES = $('<table style="width: 100%;">');

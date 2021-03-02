@@ -16,8 +16,17 @@ var _ModalDeliveryFormaPagamento = {
     cliente: '',
 };
 
+var ArrowIndexSeleccionado = -1;
+var ArrowIdProductoSeleccionado = null;
+
+var productosFiltrados = [];
 var _ModalAdicionales = [];
 var _ModalIngredientes = [];
+var _ModalSabores = [];
+var SaboresSelecionados = 0;
+var CantidadSabores = 0;
+
+var ItemListaProductoHover = true;
 
 $(function () {
 
@@ -171,7 +180,6 @@ $(function () {
 
     });
 
-
     $('#inputBarrio').on('input propertychange', function (e) {
         $('#spanBarrio').html($('#inputBarrio').val());
 
@@ -203,16 +211,22 @@ $(function () {
 
         var filtro = $('#inputProducto').val();
         if (filtro !== null && filtro !== "") {
-            var productosFiltrados = filterItems(filtro);
+            productosFiltrados = filterItems(filtro);
             FiltrarProductos(productosFiltrados);
         } else {
             productosFiltrados = [];
             FiltrarProductos(productosFiltrados);
         }
+
+        $('tr[name="itemListaProducto"]').removeClass("producto-selected");
+        ArrowIdProductoSeleccionado = null;
+        ArrowIndexSeleccionado = -1;
     });
 
     $("#ModalDetalleProducto").keypress(function (e) {
-        console.log(e);
+
+        if (SaboresSelecionados !== CantidadSabores) return;
+
         if (e.which == 13) {
             //ENTER KEY
             AddProducto();
@@ -227,7 +241,98 @@ $(function () {
         }
     });
 
+    $("#inputProducto").keypress(function (e) {
+
+        $('#btnModalAdicionar').prop('disabled', false);
+
+        if (ArrowIdProductoSeleccionado === null) return;
+
+        if (e.which == 13) {
+            let idCardProducto = "#itemListaProducto" + ArrowIdProductoSeleccionado;
+            $(idCardProducto).click();
+        }
+    });
+
+    $(document).mousemove(function (event) {
+        if (!ItemListaProductoHover) {
+            ItemListaProductoHover = true;
+            $('tr[name="itemListaProducto"]').removeClass("hover");
+            $('tr[name="itemListaProducto"]').addClass("hover");
+        }
+    });
+
+    $(document).keydown(function (e) {
+        switch (e.which) {
+            case 37:    //left arrow key
+
+                break;
+            case 38:    //up arrow key
+                arrowSeleccionarProducto("up");
+                break;
+            case 39:    //right arrow key
+
+                break;
+            case 40:    //bottom arrow key
+                arrowSeleccionarProducto("bottom");
+                break;
+        }
+    });
+
+
 });
+
+function arrowSeleccionarProducto(direccion) {
+
+    if (!$('#inputProducto').is(":focus")) return;
+
+    if (direccion === "bottom") {
+        ArrowIndexSeleccionado++;
+        if (ArrowIndexSeleccionado > productosFiltrados.length) {
+            ArrowIndexSeleccionado = productosFiltrados.length;
+        }
+    } else if (direccion === "up") {
+        ArrowIndexSeleccionado--;
+        if (ArrowIndexSeleccionado < 0) {
+            ArrowIndexSeleccionado = -1;
+            $('html, body').animate({
+                scrollTop: 0
+            }, 1);
+        }
+    }
+
+    if (productosFiltrados.length > 0 && ArrowIndexSeleccionado <= productosFiltrados.length - 1) {
+
+        $('tr[name="itemListaProducto"]').removeClass("hover");
+        ItemListaProductoHover = false;
+
+        if (ArrowIndexSeleccionado === 0) {
+
+            $('tr[name="itemListaProducto"]').removeClass("producto-selected");
+
+            let idProductoSeleccionado = productosFiltrados[0].id;
+            ArrowIdProductoSeleccionado = idProductoSeleccionado;
+            let idCardProducto = "#itemListaProducto" + idProductoSeleccionado;
+            $(idCardProducto).addClass("producto-selected");
+            $('html, body').animate({
+                scrollTop: $(idCardProducto).offset().top - $(window).height() + 150
+            }, 1);
+        }
+        else {
+
+            $('tr[name="itemListaProducto"]').removeClass("producto-selected");
+
+            let idProductoSeleccionado = productosFiltrados[ArrowIndexSeleccionado].id;
+
+            ArrowIdProductoSeleccionado = idProductoSeleccionado;
+            let idCardProducto = "#itemListaProducto" + idProductoSeleccionado;
+            $(idCardProducto).addClass("producto-selected");
+            $('html, body').animate({
+                scrollTop: $(idCardProducto).offset().top - $(window).height() + 150
+            }, 1);
+        }
+
+    }
+}
 
 function showInputValorProducto(idAdicional) {
     let labelValor = $('#spanValorProducto');
@@ -432,7 +537,7 @@ function FiltrarProductos(productos) {
 
         var TD1 = $('<td style="width:100%">');
         var TD2 = $('<td style="width:auto">');
-        var TR = $('<tr class="hover" onclick="ShowDetallesProducto(' + item.id + ')">');
+        var TR = $('<tr name="itemListaProducto" id="itemListaProducto' + item.id + '" class="hover" onclick="ShowDetallesProducto(' + item.id + ')">');
 
         TD1.append('<div><b>' + item.nombre + '</b></div>');
         var divTamanhos = $('<div style="display: inline-table">');
@@ -539,6 +644,8 @@ function CargarPedidosPendientes() {
 //cargar info para mostrar en el modal 
 function ShowDetallesProducto(id) {
 
+    $('#btnModalAdicionar').prop('disabled', false);
+
     $.ajax({
         type: "GET",
         url: "/Productos/GetDetalleProducto/" + id,
@@ -546,7 +653,6 @@ function ShowDetallesProducto(id) {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-
             var datosClienteFormulario = _ModalProducto;
             _ModalProducto = data.producto;
             _ModalProducto.cliente = datosClienteFormulario.cliente;
@@ -566,8 +672,15 @@ function ShowDetallesProducto(id) {
 
             _ModalAdicionales = data.adicionales;
             _ModalIngredientes = data.ingredientes;
+            _ModalSabores = data.sabores;
+
+            $('tr[name="itemListaProducto"]').removeClass("producto-selected");
+            $('#btnModalAdicionar').prop('disabled', false);
+            ArrowIdProductoSeleccionado = null;
+            ArrowIndexSeleccionado = 0;
 
             CargarDatosModalDetalles(data);
+
         },
         failure: function (response) {
             console.log('failure', response);
@@ -593,9 +706,63 @@ function ModalMostarValorProducto() {
         }
     });
 
+    //CALCULAR VALOR SEGÙN OPCIONES DE LOS SABORES
+    var mayorValorSabores = 0;
+    var menorValorSabores = 0;
+    var sumaValoresSabores = 0;
+    var cantidadSaboresConValor = 0;
+
+    $.each(_ModalSabores, function (index, item) {
+
+        if (item.valor != null && item.selected) {
+
+            cantidadSaboresConValor++;
+            sumaValoresSabores = sumaValoresSabores + item.valor;
+
+            //Selecionar el valor mayor
+            if (item.valor > mayorValorSabores) {
+                mayorValorSabores = item.valor;
+            }
+
+            //Selecionar el valor menor
+            if (menorValorSabores === 0) {
+                menorValorSabores = item.valor;
+            }
+
+            if (item.valor < menorValorSabores) {
+                menorValorSabores = item.valor;
+            }
+        }
+
+    });
+
+    if (_ModalProducto.actualizarValorSaborMayor) {
+
+        valorProducto = valorProducto + mayorValorSabores;
+
+    } else if (_ModalProducto.actualizarValorSaborMenor) {
+
+        valorProducto = valorProducto + menorValorSabores;
+
+    } else if (_ModalProducto.actualizarValorMediaSabores) {
+
+        valorProducto = valorProducto + (sumaValoresSabores / cantidadSaboresConValor);
+
+    } else {
+        valorProducto = valorProducto + sumaValoresSabores;
+    }
+
+    //------------------------------------
+
     $('#spanValorProducto').html((_ModalProducto.cantidad * parseFloat(valorProducto)).toFixed(2));
     $('#spanValorProducto').animate({ fontSize: '18px' }, 80);
     $('#spanValorProducto').animate({ fontSize: '15px' }, 80);
+
+    if (SaboresSelecionados !== CantidadSabores) {
+        $('#btnModalAdicionar').prop('disabled', true);
+    } else {
+        $('#btnModalAdicionar').prop('disabled', false);
+    }
 
 }
 
@@ -610,9 +777,14 @@ function CargarDatosModalDetalles(data) {
     $('#modalCantidadProducto').html('(' + data.producto.cantidad + ')');
     $("#MINUS_Producto").attr('disabled', 'disabled');
 
+    if (data.producto.cantidadSabores === null || data.producto.cantidadSabores === undefined) {
+        data.producto.cantidadSabores = 0;
+    }
 
     TABLE_Adicional(data.adicionales, data.producto.id);
     TABLE_Ingredientes(data.ingredientes, data.producto.id)
+    TABLE_Sabores(data.sabores, data.producto.id, data.producto.cantidadSabores)
+
     $('#modalObservacionContent').html('');
     $('#modalObservacionContent').append('<textarea id="inputObservacion" rows="2" class="form-control" placeholder="Observação"></textarea>');
 
@@ -831,6 +1003,57 @@ function TABLE_Ingredientes(ingredientes, idProducto) {
     });
 }
 
+
+//crear tabla de los ingredientes en el modal
+function TABLE_Sabores(sabores, idProducto, cantidadSabores) {
+
+    var TABLE = $('#modalTableSabores');
+    TABLE.empty();
+
+    if (sabores.length === 0 || cantidadSabores === 0) {
+
+        $('#divSeparadorSabores').hide();
+    } else {
+        $('#divSeparadorSabores').show();
+        if (cantidadSabores === 1) {
+            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="color:red">Seleccione 1 Sabor</span></td></tr>');
+        } else if (cantidadSabores > 1) {
+            TABLE.append('<tr><td colspan="3" style="text-align: center;"><span style="color:red">Seleccione ' + cantidadSabores + ' Sabores</span></td></tr>');
+        }
+
+    }
+
+    CantidadSabores = cantidadSabores;
+
+    if (SaboresSelecionados !== CantidadSabores) {
+        $('#btnModalAdicionar').prop('disabled', true);
+    } else {
+        $('#btnModalAdicionar').prop('disabled', false);
+    }
+
+    if (cantidadSabores > 0) {
+        $.each(sabores, function (index, item) {
+
+            var TD1 = $('<td style="width:100%">');
+            var TD2 = $('<td>');
+            var TR = $('<tr>');
+
+            let valor = '<div class="mr-2"></div>';
+
+            if (item.valor !== null && item.valor !== undefined && item.valor > 0) {
+                valor = '<div class="mr-2">R$ ' + item.valor.toFixed(2) + '</div>';
+            }
+
+            TD1.append('<div class="d-flex justify-content-between"> <div>' + item.nombre + '</div> ' + valor + '</div>');
+            TD2.append('<div class="cursor-pointer"> <input name="inputChekedSabores" onchange="saboresOnChange(this,' + item.id + ',' + idProducto + ')" type="checkbox" /></div>');
+
+            TR.append(TD1, TD2);
+            TABLE.append(TR);
+        });
+    }
+}
+
+
 //evento de adicionar contidad del adicional
 function adicionalPlus(id, idProducto) {
 
@@ -902,6 +1125,39 @@ function ingredienteOnChange(input, id, idProducto) {
     });
 }
 
+//evento de marcar y desmarcar ingredeinte
+function saboresOnChange(input, id, idProducto) {
+
+    $.grep(_ModalSabores, (item, index) => {
+        if (item.id === id) {
+            item.selected = $(input).is(":checked");
+        }
+        return item.id === id;
+    });
+
+    if (SaboresSelecionados == CantidadSabores) {
+
+        $(input).prop("checked", false);
+
+        $.grep(_ModalSabores, (item, index) => {
+            if (item.id === id) {
+                item.selected = $(input).is(":checked");
+            }
+            return item.id === id;
+        });
+
+    }
+
+    SaboresSelecionados = _ModalSabores.filter(x => x.selected).length;
+    if (SaboresSelecionados == CantidadSabores) {
+        $('input[name="inputChekedSabores"]:unchecked').prop('disabled', true);
+    } else {
+        $('input[name="inputChekedSabores"]').prop('disabled', false);
+    }
+
+    ModalMostarValorProducto();
+}
+
 //evento de restar contidad producto
 function productoMinus(btn) {
 
@@ -940,6 +1196,8 @@ function AddProducto() {
 
     _ModalProducto.adicionales = _ModalAdicionales;
     _ModalProducto.ingredientes = _ModalIngredientes;
+    _ModalProducto.sabores = _ModalSabores;
+
     _ModalProducto.observacion = $('#inputObservacion').val();
 
     _ModalProducto.idCliente = parseInt($('#idCliente').val());
@@ -1915,7 +2173,6 @@ function calcularTotalPagado() {
         $('#modalBtnOkEnd').prop('disabled', true);
     }
 }
-
 
 function CancelarCurrentPedido() {
     $.ajax({

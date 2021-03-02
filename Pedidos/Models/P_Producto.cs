@@ -49,6 +49,11 @@ namespace Pedidos.Models
         public int? horasPreparacion { get; set; }
         public int? minutosPreparacion { get; set; }
 
+        public int? cantidadSabores { get; set; } = 0;
+        public bool actualizarValorSaborMayor { get; set; } = false;
+        public bool actualizarValorSaborMenor { get; set; } = false;
+        public bool actualizarValorMediaSabores { get; set; } = false;
+
         [DisplayName("Ativo")]
         public bool activo { get; set; } = true;
 
@@ -74,6 +79,7 @@ namespace Pedidos.Models
         //PARA CARGAR DETALLES DEL PRODUCTO      
         public string JsonAdicionales { get; set; }
         public string JsonIngredientes { get; set; }
+        public string JsonSabores { get; set; }
 
         //PROPIEDADES AUXILIARES
 
@@ -163,6 +169,8 @@ namespace Pedidos.Models
         [NotMapped]
         public List<P_Ingredientes> Ingredientes { get; set; } = new List<P_Ingredientes>();
         [NotMapped]
+        public List<P_Sabor> Sabores { get; set; } = new List<P_Sabor>();
+        [NotMapped]
         public decimal ValorMasAdicionales
         {
             get
@@ -186,6 +194,67 @@ namespace Pedidos.Models
                             valor_adicionales += (item.Valor * item.cantidad);
                         }
                     }
+
+                    //Sumar valor sabores
+
+                    //CALCULAR VALOR SEGÙN OPCIONES DE LOS SABORES
+                    decimal mayorValorSabores = 0;
+                    decimal menorValorSabores = 0;
+                    decimal sumaValoresSabores = 0;
+                    var cantidadSaboresConValor = 0;
+
+                    foreach (var item in this.Sabores)
+                    {
+                        if (item.valor.HasValue && item.selected)
+                        {
+                            cantidadSaboresConValor++;
+                            sumaValoresSabores = sumaValoresSabores + item.valor.Value;
+
+                            //Selecionar el valor mayor
+                            if (item.valor > mayorValorSabores)
+                            {
+                                mayorValorSabores = item.valor.Value;
+                            }
+
+                            //Selecionar el valor menor
+                            if (menorValorSabores == 0)
+                            {
+                                menorValorSabores = item.valor.Value;
+                            }
+
+                            if (item.valor < menorValorSabores)
+                            {
+                                menorValorSabores = item.valor.Value;
+                            }
+                        }
+                    }
+
+                    if (this.actualizarValorSaborMayor)
+                    {
+                        valor_adicionales = valor_adicionales + mayorValorSabores;
+                    }
+                    else if (this.actualizarValorSaborMenor)
+                    {
+                        valor_adicionales = valor_adicionales + menorValorSabores;
+                    }
+                    else if (this.actualizarValorMediaSabores)
+                    {
+                        valor_adicionales = valor_adicionales + (sumaValoresSabores / cantidadSaboresConValor);
+                    }
+                    else
+                    {
+                        valor_adicionales = valor_adicionales + sumaValoresSabores;
+                    }
+
+                    //foreach (var item in this.Sabores)
+                    //{
+                    //    if (item.selected && item.valor.HasValue)
+                    //    {
+                    //        valor_adicionales += (item.valor.Value);
+                    //    }
+                    //}
+
+                    //-----------------------------------------
 
                     return this.cantidad * (valor_producto + valor_adicionales);
                 }

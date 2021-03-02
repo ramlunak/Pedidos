@@ -13,6 +13,52 @@ $(function () {
         $('#idCategoria').val(opt.length ? opt.attr('id') : '');
     });
 
+    //SABORES
+    MostrarOpcionesCalculoSabores();
+
+    $('#inputCantidadSabores').on('change', function (e) {
+
+        if (!isNaN(parseInt($('#inputCantidadSabores').val()))) {
+
+            if (parseInt($('#inputCantidadSabores').val()) >= 2) {
+                $('#divOpcinosCalculoSabores').show();
+            } else {
+                $('#divOpcinosCalculoSabores').hide();
+            }
+
+        } else {
+            $('#divOpcinosCalculoSabores').hide();
+        }
+
+    });
+
+    $('#actualizarValorSaborMayor').on('change', function (e) {
+
+        if ($('#actualizarValorSaborMayor').prop('checked')) {
+            document.getElementById('actualizarValorSaborMenor').switchButton('off');
+            document.getElementById('actualizarValorMediaSabores').switchButton('off');
+        }
+
+    });
+
+    $('#actualizarValorSaborMenor').on('change', function (e) {
+
+        if ($('#actualizarValorSaborMenor').prop('checked')) {
+            document.getElementById('actualizarValorSaborMayor').switchButton('off');
+            document.getElementById('actualizarValorMediaSabores').switchButton('off');
+        }
+
+    });
+
+    $('#actualizarValorMediaSabores').on('change', function (e) {
+
+        if ($('#actualizarValorMediaSabores').prop('checked')) {
+            document.getElementById('actualizarValorSaborMenor').switchButton('off');
+            document.getElementById('actualizarValorSaborMayor').switchButton('off');
+        }
+
+    });
+
     //TAMANHOS
     $('#panelTamanhos').on('show.bs.collapse', function () {
         $('#form_group_valor').hide('slow');
@@ -25,6 +71,19 @@ $(function () {
     
 });
 
+function MostrarOpcionesCalculoSabores() {
+    if (!isNaN(parseInt($('#inputCantidadSabores').val()))) {
+
+        if (parseInt($('#inputCantidadSabores').val()) >= 2) {
+            $('#divOpcinosCalculoSabores').show();
+        } else {
+            $('#divOpcinosCalculoSabores').hide();
+        }
+
+    } else {
+        $('#divOpcinosCalculoSabores').hide();
+    }
+}
 
 window.onbeforeunload = function () {
     $('form')[0].reset();

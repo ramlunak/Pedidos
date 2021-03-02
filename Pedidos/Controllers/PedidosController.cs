@@ -12,9 +12,11 @@ using Newtonsoft.Json;
 using Pedidos.Models.Enums;
 using Pedidos.Extensions;
 using Pedidos.Hubs;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Pedidos.Controllers
 {
+    [Authorize(Roles = "Administrador,Establecimiento,Funcionario")]
     public class PedidosController : BaseController
     {
         private readonly AppDbContext _context;
@@ -50,6 +52,7 @@ namespace Pedidos.Controllers
                 }
             }
 
+            SetSession("Config", config);
 
             ViewBag.NombreEstablecimiento = config.nombreEstablecimiento;
             ViewBag.TelefonoEstablecimiento = config.telefonoEstablecimiento;
@@ -118,6 +121,7 @@ namespace Pedidos.Controllers
 
             producto.Adicionales.RemoveAll(a => a.cantidad == 0);
             producto.Ingredientes.RemoveAll(i => i.selected);
+            producto.Sabores.RemoveAll(i => !i.selected);
             try
             {
                 if (currentPedido.productos.Any())
@@ -409,7 +413,6 @@ namespace Pedidos.Controllers
                 pedidosPendientes.Select(c => { c.productos = c.jsonListProductos.ConvertTo<List<P_Productos>>(); return c; }).ToList();
 
             }
-
 
             return Ok(new { pedidosPendientes = pedidosPendientes.OrderByDescending(x => x.fecha).ThenBy(x => x.status).ToList() });
         }
@@ -744,7 +747,7 @@ namespace Pedidos.Controllers
 
             var currentPedido = GetSession<P_Pedido>("currentPedido");
             try
-            {                
+            {
                 var producto = currentPedido.productos.First(x => x.id == id);
                 currentPedido.productos.Remove(producto);
                 currentPedido.valorProductos = currentPedido.productos.Sum(x => x.ValorMasAdicionales);
@@ -753,7 +756,7 @@ namespace Pedidos.Controllers
             }
             catch (Exception ex)
             {
-               return Ok(currentPedido);
+                return Ok(currentPedido);
             }
         }
 
@@ -873,6 +876,7 @@ namespace Pedidos.Controllers
 
             producto.Adicionales.RemoveAll(a => a.cantidad == 0);
             producto.Ingredientes.RemoveAll(i => i.selected);
+            producto.Sabores.RemoveAll(i => !i.selected);
 
             productosPendientes.Add(producto);
             productosPendientes.Where(x => x.isNew).Select((p, i) => { p.posicion = i; return p; }).ToList();
@@ -894,6 +898,91 @@ namespace Pedidos.Controllers
 
             return Ok(productosPendientes.OrderBy(x => x.posicion).ToList());
 
+        }
+
+        //INTEGRACION
+
+        public async Task<IActionResult> AdicionarEnIntegracion(int id, int idBario)
+        {
+            var integracionPedido = new P_IntegracionPedidos();
+
+            try
+            {
+                var exist = await _context.P_IntegracionPedidos.CountAsync(x => x.idPedido == id);
+
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                {
+                    if (exist > 0)
+                    {
+                        integracionPedido = await _context.P_IntegracionPedidos.FirstOrDefaultAsync(x => x.idPedido == id);
+                        integracionPedido.statusIntegracion = StatusIntegracionPedido.Esperando.ToString();
+                        integracionPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
+
+                        _context.Update(integracionPedido);
+                    }
+                    else
+                    {
+                        integracionPedido.idPedido = id;
+                        integracionPedido.idBarrio = idBario;
+                        integracionPedido.barrio = GetSession<List<P_Barrio>>("Barrios").Find(x => x.id == idBario).nombre;
+                        integracionPedido.idCuenta = Cuenta.id;
+                        integracionPedido.usuario = GetSession<P_Config>("Config").nombreEstablecimiento;
+                        integracionPedido.idCuentaIntegracion = Cuenta.idCuentaIntegracion ?? 0;
+                        integracionPedido.statusIntegracion = StatusIntegracionPedido.Esperando.ToString();
+                        integracionPedido.fecha = DateTime.Now.ToSouthAmericaStandard();
+                        _context.Add(integracionPedido);
+                    }
+
+                    var pedido = await _context.P_Pedidos.FindAsync(id);
+                    pedido.statusIntegracion = StatusIntegracionPedido.Esperando.ToString();
+                    _context.Update(pedido);
+
+                    _context.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            return Ok(integracionPedido);
+        }
+
+        public async Task<IActionResult> CancelarEmIntegracion(int id)
+        {
+            var integracionPedido = new P_IntegracionPedidos();
+
+            try
+            {
+                var integracion = new P_IntegracionPedidos();
+                var integraciones = await _context.P_IntegracionPedidos.Where(x => x.idPedido == id).ToListAsync();
+                if (integraciones.Any())
+                {
+                    integracion = integraciones.FirstOrDefault();
+                    integracion.statusIntegracion = StatusIntegracionPedido.Cancelado.ToString();
+                }
+
+                using (var dbContextTransaction = _context.Database.BeginTransaction())
+                {
+                    _context.Update(integracion);
+
+                    var pedido = await _context.P_Pedidos.FindAsync(id);
+                    pedido.statusIntegracion = StatusIntegracionPedido.Cancelado.ToString();
+                    _context.Update(pedido);
+
+                    _context.SaveChanges();
+                    dbContextTransaction.Commit();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+
+            return Ok(integracionPedido);
         }
 
     }

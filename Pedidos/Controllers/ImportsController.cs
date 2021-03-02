@@ -38,7 +38,14 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
-            WorkBook workbook = WorkBook.Load(file.FileName);
+            WorkBook workbook;
+
+            using (var ms = new MemoryStream())
+            {
+                file.CopyTo(ms);
+                workbook = WorkBook.Load(ms);
+            }
+
             WorkSheet sheet = workbook.WorkSheets.First();
 
             //Select cells easily in Excel notation and return the calculated value

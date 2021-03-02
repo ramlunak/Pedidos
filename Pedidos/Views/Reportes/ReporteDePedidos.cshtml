@@ -56,9 +56,11 @@
                         </div>
                     </div>
                 </div>
+                @if (@ViewBag.Total != null) { 
                 <div class="d-flex justify-content-end">
                     <div>R$ @ViewBag.Total.ToString("F2")</div>
                 </div>
+                }
             </div>
 
         </div>

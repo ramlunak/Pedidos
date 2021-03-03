@@ -22,6 +22,10 @@
     {
       "library": "ion-sound@3.0.7",
       "destination": "wwwroot/ion-sound/"
+    },
+    {
+      "library": "twitter-bootstrap@5.0.0-beta2",
+      "destination": "wwwroot/lib/bootstrap/"
     }
   ]
 }

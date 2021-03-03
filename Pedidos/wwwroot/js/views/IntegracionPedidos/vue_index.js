@@ -18,6 +18,9 @@
         },
         AddBarrio: function (item) {
             AddBarrioCurrentRuta(item);
+        },
+        RemoveBarrio: function (rutaPedido) {
+            RemoveBarrioCurrentRuta(rutaPedido);
         }
     }
 });
@@ -107,11 +110,44 @@ function AddBarrioCurrentRuta(item) {
         data: JSON.stringify(item),
         contentType: "application/json; charset=utf-8",
         dataType: "json",
-        success: function (data) {
+        success: function (data) {            
             app.grupoPedidosPorBarrio = data.grupoPedidosPorBarrio;
             app.rutas = [];
-            data.currentRuta.barrios = data.barrios;
+            data.currentRuta.rutaPedidos = data.rutaPedidos;
+            data.currentRuta.gruposRutaPedido = data.gruposRutaPedido;
             app.rutas.push(data.currentRuta);
+        },
+        failure: function (response) {
+            console.log('failure', response);
+
+        },
+        error: function (response) {
+            console.log('error', response);
+
+        }
+    });
+
+}
+
+function RemoveBarrioCurrentRuta(rutaPedido) {
+
+    console.log(JSON.stringify(rutaPedido));
+
+    $.ajax({
+        type: "POST",
+        url: "/IntegracionPedidos/RemoveBarrio",
+        traditional: true,
+        data: JSON.stringify(item),
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        success: function (data) {
+
+            console.log(data);
+            //app.grupoPedidosPorBarrio = data.grupoPedidosPorBarrio;
+            //app.rutas = [];
+            //data.currentRuta.barrios = data.barrios;
+            //app.rutas.push(data.currentRuta);
+
         },
         failure: function (response) {
             console.log('failure', response);

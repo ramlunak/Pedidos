@@ -98,42 +98,54 @@ namespace Pedidos.Controllers
             if (currentRuta != null)
             {
 
-                var barios = new List<DTOIntegracionBarrio>();
-                if (currentRuta.barrios != null)
-                    barios = currentRuta.barrios.ToList();
+                var rutaPedidos = new List<P_IntegracionPedidos>();
+                if (currentRuta.rutaPedidos != null)
+                    rutaPedidos = currentRuta.rutaPedidos.ToList();
 
-                if (barios.Where(x => x.nombre.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Any())
-                {
-                    barios.Where(x => x.nombre.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Select(x => { x.count++; return x; }).ToList();
-                }
-                else
-                {
-                    barios.Add(new DTOIntegracionBarrio
-                    {
-                        nombre = dTOGrupoPedidosPorBarrio.barrio,
-                        count = 1
-                    });
-                }
+                //if (rutaPedidos.Where(x => x.barrio.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Any())
+                //{
+                //    rutaPedidos.Where(x => x.barrio.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).ToList();
+                //}
+                //else
+                //{
+                //    rutaPedidos.Add(dTOGrupoPedidosPorBarrio.listIntegracionPedidos.First());
+                //}
 
-                currentRuta.barrios = barios.ToArray();
+                rutaPedidos.Add(dTOGrupoPedidosPorBarrio.listIntegracionPedidos.First());
+
+                currentRuta.rutaPedidos = rutaPedidos.ToArray();
+
+                var gruposRutaPedido = from rutaPedido in currentRuta.rutaPedidos
+                                       group rutaPedido by rutaPedido.barrio.ToUpper() into g
+                                       select new DTORutaPedido
+                                       {
+                                           barrio = g.Key,
+                                           count = g.Count()
+                                       };
+
+                currentRuta.gruposRutaPedido = gruposRutaPedido.ToArray();
                 SetSession("IntegracionRuta", currentRuta);
+
+                //REMOVER primer integracion pedido
+                var grupoPedidosPorBarrio = GetSession<List<DTOGrupoPedidosPorBarrio>>("integracionesGrupoPedidos");
+                grupoPedidosPorBarrio.Where(x => x.barrio.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Select(x => { x.listIntegracionPedidos.RemoveAt(0); x.count--; return x; }).ToList();
+                grupoPedidosPorBarrio = grupoPedidosPorBarrio.Where(x => x.count > 0).ToList();
+
+                //ACTUALIZAR IntegracionPedido en BD
+                var idIntegracionPedido = dTOGrupoPedidosPorBarrio.listIntegracionPedidos.FirstOrDefault().id;
+                var result = await _context.Database.ExecuteSqlRawAsync($"UPDATE [dbo].[P_IntegracionPedidos] SET [statusIntegracion] = 'EnCurrentRuta' WHERE id = {idIntegracionPedido}");
+
+                SetSession("integracionesGrupoPedidos", grupoPedidosPorBarrio.ToList());
+
+                return Ok(new { currentRuta, currentRuta.rutaPedidos, gruposRutaPedido, grupoPedidosPorBarrio });
+
+            }
+            else
+            {
+                return NotFound();
             }
 
-            //REMOVER primer integracion pedido
-            var grupoPedidosPorBarrio = GetSession<List<DTOGrupoPedidosPorBarrio>>("integracionesGrupoPedidos");
-            grupoPedidosPorBarrio.Where(x => x.barrio.ToLower() == dTOGrupoPedidosPorBarrio.barrio.ToLower()).Select(x => { x.listIntegracionPedidos.RemoveAt(0); x.count--; return x; }).ToList();
-            grupoPedidosPorBarrio = grupoPedidosPorBarrio.Where(x => x.count > 0).ToList();
-
-            //ACTUALIZAR IntegracionPedido en BD
-            var idIntegracionPedido = dTOGrupoPedidosPorBarrio.listIntegracionPedidos.FirstOrDefault().id;
-            var result = await _context.Database.ExecuteSqlRawAsync($"UPDATE [dbo].[P_IntegracionPedidos] SET [statusIntegracion] = 'EnCurrentRuta' WHERE id = {idIntegracionPedido}");
-
-            SetSession("integracionesGrupoPedidos", grupoPedidosPorBarrio.ToList());
-
-            return Ok(new { currentRuta, currentRuta.barrios, grupoPedidosPorBarrio });
-
         }
-
 
     }
 }

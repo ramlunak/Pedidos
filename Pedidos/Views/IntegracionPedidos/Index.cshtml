@@ -65,10 +65,13 @@
                         <div class="d-flex">
                             <div> <img src="~/img/motoboy.gif" style="width:70px" /></div>
                             <div class="d-flex align-items-center">
-
-                                <div v-for="barrio in ruta.barrios" class="m-2">
-                                    <button type="button" class="btn btn-sm btn-warning">
-                                        <strong>{{barrio.nombre}}</strong> <span class="badge badge-light">{{barrio.count}}</span>
+                                 
+                                <div v-for="rutaPedido in ruta.gruposRutaPedido" class="d-flex m-2">
+                                    <div v-on:click="RemoveBarrio(rutaPedido)" class="btn-sm btn-danger cursor-pointer unselectable m-0">
+                                        <strong>-</strong>
+                                    </div>
+                                    <button type="button" class="btn btn-sm btn-warning m-0">
+                                        <strong>{{rutaPedido.barrio}}</strong> <span class="badge badge-light">{{rutaPedido.count}}</span>
                                     </button>
                                 </div>
 

@@ -14,7 +14,8 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
         public int[] idsPedido { get; set; }
-        public DTOIntegracionBarrio[] barrios { get; set; }
+        public P_IntegracionPedidos[] rutaPedidos { get; set; }
+        public DTORutaPedido[] gruposRutaPedido { get; set; }                
         public int idCuentaIntegracion { get; set; }
         public int idEntregador { get; set; }
         public string entregador { get; set; }
@@ -24,11 +25,10 @@ namespace Pedidos.Models
         public DateTime? fechaEntregado { get; set; }
     }
 
-    public class DTOIntegracionBarrio
+    public class DTORutaPedido
     {
-        public string nombre { get; set; }
+        public string barrio { get; set; }
         public int count { get; set; }
-        public string usuario { get; set; }
     }
 
 }

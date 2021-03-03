@@ -202,6 +202,77 @@ namespace Pedidos.Controllers
                                     errorProducto = true;
                                 }
 
+                                if (valor == null && valorTamanho1 == null && valorTamanho2 == null && valorTamanho3 == null && valorTamanho4 == null && valorTamanho5 == null)
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Valor",
+                                        Detail = "Deve ter um valor ou pelo menos um tamanho"
+                                    });
+                                    errorProducto = true;
+                                }
+
+                                if ((tamanho1 == null && valorTamanho1 != null) || (tamanho1 != null && valorTamanho1 == null))
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Tamanho 1",
+                                        Detail = "Se tiver um valor, deve ter um tamanho e vice-versa"
+                                    });
+                                    errorProducto = true;
+                                }
+
+                                if ((tamanho2 == null && valorTamanho2 != null) || (tamanho2 != null && valorTamanho2 == null))
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Tamanho 2",
+                                        Detail = "Se tiver um valor, deve ter um tamanho e vice-versa"
+                                    });
+                                    errorProducto = true;
+                                }
+
+                                if ((tamanho3 == null && valorTamanho3 != null) || (tamanho3 != null && valorTamanho3 == null))
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Tamanho 3",
+                                        Detail = "Se tiver um valor, deve ter um tamanho e vice-versa"
+                                    });
+                                    errorProducto = true;
+                                }
+
+                                if ((tamanho4 == null && valorTamanho4 != null) || (tamanho4 != null && valorTamanho4 == null))
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Tamanho 4",
+                                        Detail = "Se tiver um valor, deve ter um tamanho e vice-versa"
+                                    });
+                                    errorProducto = true;
+                                }
+
+                                if ((tamanho5 == null && valorTamanho5 != null) || (tamanho5 != null && valorTamanho5 == null))
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Tamanho 5",
+                                        Detail = "Se tiver um valor, deve ter um tamanho e vice-versa"
+                                    });
+                                    errorProducto = true;
+                                }
 
                                 if (!errorProducto){
                                     productos.Add( new P_Productos{

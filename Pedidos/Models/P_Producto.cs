@@ -15,16 +15,18 @@ namespace Pedidos.Models
     {
         public int id { get; set; }
 
+        [Required(ErrorMessage = "O código é obrigatorio")]
+        [DisplayName("Código")]
         public string codigo { get; set; }
 
         [Required(ErrorMessage = "O nome é obrigatorio")]
         [DisplayName("Nome")]
         public string nombre { get; set; }
 
-        [DisplayName("descrição")]
+        [DisplayName("Descrição")]
         public string descripcion { get; set; }
 
-        [Required(ErrorMessage = "A Categoria é obrigatoria")]
+        [Required(ErrorMessage = "A categoria é obrigatoria")]
         [DisplayName("Categoria")]
         public int idCategoria { get; set; }
         public int? idSubCategoria { get; set; }

@@ -13,9 +13,14 @@ namespace Pedidos.Models
       
         public int id { get; set; }
 
-        [Required(ErrorMessage = "O nome é obrigatorio")]
+        [Required(ErrorMessage = "O nome é obrigatório")]
         [DisplayName("Nome")]
-        public string nombre { get; set; }     
+        public string nombre { get; set; }  
+
+        [Required(ErrorMessage = "O código é obrigatório")]
+        [DisplayName("Código")]
+        public string codigo { get; set; }  
+         
         public int idCuenta { get; set; }
 
         [DisplayName("Ativo")]

@@ -1,7 +1,6 @@
 ﻿using ExcelDataReader;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
 using Pedidos.Models;
 using System;
 using System.Collections.Generic;
@@ -53,89 +52,195 @@ namespace Pedidos.Controllers
 
             var categorias = new List<P_Categoria>();
             var productos = new List<P_Productos>();
-            var rowErros = 0;
+            var erros = new List<ErrorDetail>();
 
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
 
+                //CARGAR CATEGORIAS
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     var row = 1;
-
                     while (reader.Read())
                     {
-
                         if (row >= 4)
                         {
                             try
-                            {
-                                //CARGAR CATEGORIAS
-                                var nomeCategoria = reader.GetValue(0);
-                                if (nomeCategoria != null && !nomeCategoria.ToString().IsNullOrEmtpy())
+                            {                                   
+                                var errorCategoria = false;
+                                var codigoCategoria = reader.GetValue(0);
+                                var nomeCategoria = reader.GetValue(1);
+
+                                if (nomeCategoria == null || nomeCategoria.ToString().IsNullOrEmtpy()){
+                                    break;
+                                }
+
+                                var exist = categorias.Find(
+                                    delegate (P_Categoria cat)
+                                    {
+                                        return cat.nombre.Equals(nomeCategoria.ToString().Trim());
+                                    }
+                                );
+
+                                if (exist != null)
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoCategoria.ToString().Trim(),
+                                        Column = "Nome da Categoria",
+                                        Detail = "Categoria duplicada"
+                                    });
+                                    errorCategoria = true;
+                                }    
+
+                                if (!errorCategoria)
                                 {
                                     categorias.Add(new P_Categoria
                                     {
+                                        codigo = codigoCategoria.ToString().Trim(),
                                         nombre = nomeCategoria.ToString().Trim()
                                     });
                                 }
-
-                                //CARGAR PRODUCTOS
-                                var nomeProducto = reader.GetValue(2);
-                                var categoriaProducto = reader.GetValue(3);
-                                var valor = reader.GetValue(4);
-                                var horas = reader.GetValue(5);
-                                var minutos = reader.GetValue(6);
-                                var descripcion = reader.GetValue(7);
-                                var tamanho1 = reader.GetValue(8);
-                                var valorTamanho1 = reader.GetValue(9);
-                                var tamanho2 = reader.GetValue(10);
-                                var valorTamanho2 = reader.GetValue(11);
-                                var tamanho3 = reader.GetValue(12);
-                                var valorTamanho3 = reader.GetValue(13);
-
-                                if (nomeProducto == null || categoriaProducto == null)
-                                {
-                                    rowErros++;
-                                }
-                                else if (valor == null && valorTamanho1 == null && valorTamanho2 == null && valorTamanho3 == null)
-                                {
-                                    rowErros++;
-                                }
-                                else
-                                {
-                                    var producto = new P_Productos();
-                                    producto.nombre = nomeProducto.ToString().Trim();
-                                    producto.Categoria = categoriaProducto.ToString().Trim();
-                                    producto.valor = valor is null ? 0 : Convert.ToDecimal(valor.ToString().Trim().Replace(",", "."));
-                                    producto.horasPreparacion = horas is null ? 0 : Convert.ToInt32(horas.ToString().Trim());
-                                    producto.minutosPreparacion = minutos is null ? 0 : Convert.ToInt32(minutos.ToString().Trim());
-                                    producto.descripcion = descripcion.ToString();
-                                    producto.tamanho1 = tamanho1 is null ? null : tamanho1.ToString().Trim();
-                                    producto.valorTamanho1 = valorTamanho1 is null ? 0 : Convert.ToDecimal(valorTamanho1.ToString().Trim().Replace(",", "."));
-                                    producto.tamanho2 = tamanho2 is null ? null : tamanho2.ToString().Trim();
-                                    producto.valorTamanho2 = valorTamanho2 is null ? 0 : Convert.ToDecimal(valorTamanho2.ToString().Trim().Replace(",", "."));
-                                    producto.tamanho3 = tamanho3 is null ? null : tamanho3.ToString().Trim();
-                                    producto.valorTamanho3 = valorTamanho3 is null ? 0 : Convert.ToDecimal(valorTamanho3.ToString().Trim().Replace(",", "."));
-
-                                    productos.Add(producto);
-                                }
-
                             }
                             catch (Exception ex)
                             {
-                                ;
+                                //throw ex;
                             }
                         }
                         row++;
                     }
                 }
+            }
 
+            using (var stream = new MemoryStream())
+            {
+                await file.CopyToAsync(stream);
+                
+                //CARGAR PRODUCTOS
+                using (var reader = ExcelReaderFactory.CreateReader(stream))
+                {
+                    var row = 1;
+                    while (reader.Read())
+                    {
+                        if (row >= 4)
+                        {
+                            try
+                            {                                 
+                                var errorProducto = false;
+                                var codigoProducto = reader.GetValue(3);
+                                var nomeProducto = reader.GetValue(4);
+                                var categoriaProducto = reader.GetValue(5);
+                                var valor = reader.GetValue(6);
+                                var horas = reader.GetValue(7);
+                                var minutos = reader.GetValue(8);
+                                var descripcion = reader.GetValue(9);
+                                var tamanho1 = reader.GetValue(10);
+                                var valorTamanho1 = reader.GetValue(11);
+                                var tamanho2 = reader.GetValue(12);
+                                var valorTamanho2 = reader.GetValue(13);
+                                var tamanho3 = reader.GetValue(14);
+                                var valorTamanho3 = reader.GetValue(15);
+                                var tamanho4 = reader.GetValue(16);
+                                var valorTamanho4 = reader.GetValue(17);
+                                var tamanho5 = reader.GetValue(18);
+                                var valorTamanho5 = reader.GetValue(19);
+
+                                if (nomeProducto == null){
+                                    break;
+                                }
+
+                                if (categoriaProducto == null || categoriaProducto.ToString().IsNullOrEmtpy())
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Categoria de produto",
+                                        Detail = "A categoria do produto é obrigatória"
+                                    });
+                                    errorProducto = true;
+                                }
+                                else {
+                                    var existCat = categorias.Find(
+                                        delegate (P_Categoria cat)
+                                        {
+                                            return cat.nombre.Equals(categoriaProducto.ToString().Trim());
+                                        }
+                                    );
+
+                                    if (existCat is null)
+                                    {
+                                        erros.Add(new ErrorDetail
+                                        {
+                                            Row = row,
+                                            Code = codigoProducto.ToString().Trim(),
+                                            Column = "Categoria de produto",
+                                            Detail = "A categoria não existe"
+                                        });
+                                        errorProducto = true;
+                                    }
+                                }                                
+
+                                var existPro = productos.Find(
+                                   delegate (P_Productos pro)
+                                   {
+                                       return pro.nombre.Equals(nomeProducto.ToString().Trim());
+                                   }
+                                );
+
+                                if (existPro != null)
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Nome do produto",
+                                        Detail = "Produto duplicado"
+                                    });
+                                    errorProducto = true;
+                                }
+
+
+                                if (!errorProducto){
+                                    productos.Add( new P_Productos{
+                                        codigo = codigoProducto.ToString().Trim(),
+                                        nombre = nomeProducto.ToString().Trim(),
+                                        Categoria = categoriaProducto.ToString().Trim(),
+                                        valor = valor is null ? 0 : Convert.ToDecimal(valor.ToString().Trim().Replace(",", ".")),
+                                        horasPreparacion = horas is null ? 0 : Convert.ToInt32(horas.ToString().Trim()),
+                                        minutosPreparacion = minutos is null ? 0 : Convert.ToInt32(minutos.ToString().Trim()),
+                                        descripcion = descripcion is null ? "" : descripcion.ToString().Trim(),
+                                        tamanho1 = tamanho1?.ToString().Trim(),
+                                        valorTamanho1 = valorTamanho1 is null ? 0 : Convert.ToDecimal(valorTamanho1.ToString().Trim().Replace(",", ".")),
+                                        tamanho2 = tamanho2?.ToString().Trim(),
+                                        valorTamanho2 = valorTamanho2 is null ? 0 : Convert.ToDecimal(valorTamanho2.ToString().Trim().Replace(",", ".")),
+                                        tamanho3 = tamanho3?.ToString().Trim(),
+                                        valorTamanho3 = valorTamanho3 is null ? 0 : Convert.ToDecimal(valorTamanho3.ToString().Trim().Replace(",", ".")),
+                                        tamanho4 = tamanho4?.ToString().Trim(),
+                                        valorTamanho4 = valorTamanho4 is null ? 0 : Convert.ToDecimal(valorTamanho4.ToString().Trim().Replace(",", ".")),
+                                        tamanho5 = tamanho5?.ToString().Trim(),
+                                        valorTamanho5 = valorTamanho5 is null ? 0 : Convert.ToDecimal(valorTamanho5.ToString().Trim().Replace(",", ".")),
+                                        
+                                    });
+                                }                                
+
+                            }
+                            catch (Exception ex)
+                            {
+                                //throw ex;
+                            }
+                        }
+                        row++;
+                    }
+                }
             }
 
             ViewBag.Categorias = categorias;
             ViewBag.Productos = productos;
-            ViewBag.RowErros = rowErros;
+            ViewBag.Erros = erros;
+            ViewBag.rowErros = erros.Count();
 
             return View();
         }

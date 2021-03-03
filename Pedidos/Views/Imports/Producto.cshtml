@@ -2,16 +2,56 @@
     For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-<div class="container">
-    <form method="post" asp-controller="Imports" asp-action="Producto" enctype="multipart/form-data">
+<div class="container mt-2">
+    <form method="post" asp-controller="Imports" asp-action="Producto" enctype="multipart/form-data" >
+        <div class="custom-file">
+            <input type="file" name="file" id="file" class="custom-file-input" required>
+            <label class="custom-file-label" for="file">Escolher arquivo...</label>
+            <div class="invalid-feedback"> Escolha um arquivo </div>
+        </div>
 
-        <div class="form-group">
-            <input type="file" name="file" id="file" class="form-control" />
+        <div class="form-group mt-2">
             <button type="submit" class="btn btn-outline-secondary">Cargar</button>
         </div>
 
     </form>
 </div>
+
+@if (ViewBag.Erros != null && ViewBag.rowErros > 0)
+{
+    <div class="card m-2">
+        <div class="card-header bg-danger text-white">
+            <div class="row d-flex justify-content-center">
+                <div class="text-center">
+                    ERROS
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Linha</th>
+                        <th>Código</th>
+                        <th>Coluna</th>
+                        <th>Detalhe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.Erros)
+                    {
+                        <tr>
+                            <td class="text-danger">@item.Row</td>
+                            <td class="text-danger">@item.Code</td>
+                            <td class="text-danger">@item.Column</td>
+                            <td class="text-danger">@item.Detail</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
 
 @if (ViewBag.Categorias != null)
 {
@@ -19,7 +59,7 @@
         <div class="card-header bg-info text-white">
             <div class="row d-flex justify-content-center">
                 <div class="text-center">
-                    CATEGORÍAS
+                    CATEGORIAS
                 </div>
             </div>
 
@@ -78,7 +118,7 @@
                         imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
                     }
 
-                    bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue ? true : false;
+                    bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue || item.valorTamanho4.HasValue || item.valorTamanho5.HasValue ? true : false;
 
                     <div class="col-12 col-md-6 col-xl-4 mb-2">
                         <div class="card">
@@ -128,6 +168,12 @@
                                                         @if (item.valorTamanho3.HasValue)
                                                         {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
 
+                                                        @if (item.valorTamanho4.HasValue)
+                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho4 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho4.Value.ToString("F2")</div> </div>}
+
+                                                        @if (item.valorTamanho5.HasValue)
+                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho5 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho5.Value.ToString("F2")</div> </div>}
+
                                                     </div>
                                                 </td>
                                             </tr>
@@ -140,7 +186,7 @@
                                             </tr>
                                         }
                                         <tr>
-                                            <td><b>Categoría</b></td>
+                                            <td><b>Categoria</b></td>
                                             <td>: @item.Categoria</td>
                                         </tr>
                                         @if (!string.IsNullOrEmpty(item.tempo))
@@ -156,7 +202,7 @@
                                 {
                                     <div class="row">
                                         <p>
-                                            <b>descrição:</b> @item.descripcion
+                                            <b>Descrição:</b> @item.descripcion
                                         </p>
                                     </div>
                                 }

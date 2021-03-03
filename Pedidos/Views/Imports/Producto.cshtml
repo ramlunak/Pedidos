@@ -3,18 +3,23 @@
 *@
 
 <div class="container mt-2">
-    <form method="post" asp-controller="Imports" asp-action="Producto" enctype="multipart/form-data" >
+    <form method="post" asp-controller="Imports" asp-action="Producto" enctype="multipart/form-data">
         <div class="custom-file">
             <input type="file" name="file" id="file" class="custom-file-input" required>
             <label class="custom-file-label" for="file">Escolher arquivo...</label>
-            <div class="invalid-feedback"> Escolha um arquivo </div>
         </div>
 
         <div class="form-group mt-2">
-            <button type="submit" class="btn btn-outline-secondary">Cargar</button>
+            <button type="submit" class="btn btn-outline-secondary">Carregar</button>
+            @if (ViewBag.Categorias != null && ViewBag.Productos != null)
+            {
+                <input type="hidden" name="aplicar" value="true">
+                <button class="btn btn-outline-secondary float-right">Aplicar</button>                    
+            }
         </div>
 
     </form>
+
 </div>
 
 @if (ViewBag.Erros != null && ViewBag.rowErros > 0)

@@ -10,12 +10,21 @@ using System.Threading.Tasks;
 using Pedidos.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using IronXL;
+using Pedidos.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace Pedidos.Controllers
 {
     [Authorize(Roles = "Administrador,Establecimiento")]
     public class ImportsController : BaseController
     {
+        private readonly AppDbContext _context;
+
+        public ImportsController(AppDbContext context)
+        {
+            _context = context;
+        }
+
         // GET: ImportsController
         public ActionResult Producto()
         {
@@ -23,6 +32,72 @@ namespace Pedidos.Controllers
             if (!ValidarCuenta())
             {
                 return RedirectToAction("Salir", "Login");
+            }
+
+            return View();
+        }
+                
+        [HttpGet]
+        public async Task<IActionResult> Producto(string data)
+        {
+
+            if (!ValidarCuenta())
+            {
+                return RedirectToAction("Salir", "Login");
+            }
+
+            var erros = new List<ErrorDetail>();
+
+            if (GetSession<List<P_Categoria>>("Categorias") != null && data.Equals("aplicar"))
+            {
+                var categorias = GetSession<List<P_Categoria>>("Categorias");
+                foreach (var item in categorias) {
+                    var result = await _context.P_Categorias.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                    if (result.Count > 0)
+                    {
+                        erros.Add(new ErrorDetail
+                        {
+                            Code = item.codigo,
+                            Column = "Nome da Categoria",
+                            Detail = "A categoria '"+item.nombre+"' já existe no banco de dados"
+                        });
+                    } else 
+                    {
+                        item.idCuenta = Cuenta.id;
+                        _context.Add(item);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                if (GetSession<List<P_Productos>>("Productos") != null) {
+                    var productos = GetSession<List<P_Productos>>("Productos");
+                    foreach (var item in productos)
+                    {
+                        var result = await _context.P_Productos.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                        if (result.Count > 0)
+                        {
+                            erros.Add(new ErrorDetail
+                            {
+                                Code = item.codigo,
+                                Column = "Nome do Produto",
+                                Detail = "O produto '" + item.nombre + "' já existe no banco de dados"
+                            });
+                        }
+                        else
+                        {
+                            var cat = await _context.P_Categorias.Where(x => x.nombre.Equals(item.Categoria)).ToListAsync();
+                            item.idCuenta = Cuenta.id;
+                            item.idCategoria = cat.First().id;
+                            _context.Add(item);
+                            await _context.SaveChangesAsync();
+                        }
+                    }
+                }
+
+                ViewBag.ErrosAplicar = erros;
+                ViewBag.rowErrosAplicar = erros.Count();
+                //SetSession("Categorias", null);
+                //SetSession("Productos", null);
             }
 
             return View();
@@ -54,11 +129,10 @@ namespace Pedidos.Controllers
             var productos = new List<P_Productos>();
             var erros = new List<ErrorDetail>();
 
+            //CARGAR CATEGORIAS
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-
-                //CARGAR CATEGORIAS
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     var row = 1;
@@ -67,12 +141,13 @@ namespace Pedidos.Controllers
                         if (row >= 4)
                         {
                             try
-                            {                                   
+                            {
                                 var errorCategoria = false;
                                 var codigoCategoria = reader.GetValue(0);
                                 var nomeCategoria = reader.GetValue(1);
 
-                                if (nomeCategoria == null || nomeCategoria.ToString().IsNullOrEmtpy()){
+                                if (nomeCategoria == null || nomeCategoria.ToString().IsNullOrEmtpy())
+                                {
                                     break;
                                 }
 
@@ -93,7 +168,7 @@ namespace Pedidos.Controllers
                                         Detail = "Categoria duplicada"
                                     });
                                     errorCategoria = true;
-                                }    
+                                }
 
                                 if (!errorCategoria)
                                 {
@@ -114,11 +189,10 @@ namespace Pedidos.Controllers
                 }
             }
 
+            //CARGAR PRODUCTOS
             using (var stream = new MemoryStream())
             {
                 await file.CopyToAsync(stream);
-                
-                //CARGAR PRODUCTOS
                 using (var reader = ExcelReaderFactory.CreateReader(stream))
                 {
                     var row = 1;
@@ -127,7 +201,7 @@ namespace Pedidos.Controllers
                         if (row >= 4)
                         {
                             try
-                            {                                 
+                            {
                                 var errorProducto = false;
                                 var codigoProducto = reader.GetValue(3);
                                 var nomeProducto = reader.GetValue(4);
@@ -147,7 +221,8 @@ namespace Pedidos.Controllers
                                 var tamanho5 = reader.GetValue(18);
                                 var valorTamanho5 = reader.GetValue(19);
 
-                                if (nomeProducto == null){
+                                if (nomeProducto == null)
+                                {
                                     break;
                                 }
 
@@ -162,7 +237,8 @@ namespace Pedidos.Controllers
                                     });
                                     errorProducto = true;
                                 }
-                                else {
+                                else
+                                {
                                     var existCat = categorias.Find(
                                         delegate (P_Categoria cat)
                                         {
@@ -181,13 +257,13 @@ namespace Pedidos.Controllers
                                         });
                                         errorProducto = true;
                                     }
-                                }                                
+                                }
 
                                 var existPro = productos.Find(
-                                   delegate (P_Productos pro)
-                                   {
-                                       return pro.nombre.Equals(nomeProducto.ToString().Trim());
-                                   }
+                                    delegate (P_Productos pro)
+                                    {
+                                        return pro.nombre.Equals(nomeProducto.ToString().Trim());
+                                    }
                                 );
 
                                 if (existPro != null)
@@ -274,8 +350,10 @@ namespace Pedidos.Controllers
                                     errorProducto = true;
                                 }
 
-                                if (!errorProducto){
-                                    productos.Add( new P_Productos{
+                                if (!errorProducto)
+                                {
+                                    productos.Add(new P_Productos
+                                    {
                                         codigo = codigoProducto.ToString().Trim(),
                                         nombre = nomeProducto.ToString().Trim(),
                                         Categoria = categoriaProducto.ToString().Trim(),
@@ -293,9 +371,9 @@ namespace Pedidos.Controllers
                                         valorTamanho4 = valorTamanho4 is null ? 0 : Convert.ToDecimal(valorTamanho4.ToString().Trim().Replace(",", ".")),
                                         tamanho5 = tamanho5?.ToString().Trim(),
                                         valorTamanho5 = valorTamanho5 is null ? 0 : Convert.ToDecimal(valorTamanho5.ToString().Trim().Replace(",", ".")),
-                                        
+
                                     });
-                                }                                
+                                }
 
                             }
                             catch (Exception ex)
@@ -312,6 +390,9 @@ namespace Pedidos.Controllers
             ViewBag.Productos = productos;
             ViewBag.Erros = erros;
             ViewBag.rowErros = erros.Count();
+
+            SetSession("Categorias", categorias);
+            SetSession("Productos", productos);                       
 
             return View();
         }

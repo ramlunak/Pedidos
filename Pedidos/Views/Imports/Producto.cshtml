@@ -5,7 +5,7 @@
 <div class="container mt-2">
     <form method="post" asp-controller="Imports" asp-action="Producto" enctype="multipart/form-data">
         <div class="custom-file">
-            <input type="file" name="file" id="file" class="custom-file-input" required>
+            <input type="file" name="file" id="file" class="custom-file-input" required="false">
             <label class="custom-file-label" for="file">Escolher arquivo...</label>
         </div>
 
@@ -13,14 +13,47 @@
             <button type="submit" class="btn btn-outline-secondary">Carregar</button>
             @if (ViewBag.Categorias != null && ViewBag.Productos != null)
             {
-                <input type="hidden" name="aplicar" value="true">
-                <button class="btn btn-outline-secondary float-right">Aplicar</button>                    
+                <a asp-route-data="aplicar" asp-controller="Imports" asp-action="Producto" class="btn btn-outline-secondary float-right" id="aplicar">Aplicar</a>
             }
         </div>
 
     </form>
 
 </div>
+
+@if (ViewBag.ErrosAplicar != null && ViewBag.rowErrosAplicar > 0)
+{
+    <div class="card m-2">
+        <div class="card-header bg-danger text-white">
+            <div class="row d-flex justify-content-center">
+                <div class="text-center">
+                    ERROS
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Código</th>
+                        <th>Coluna</th>
+                        <th>Detalhe</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in ViewBag.ErrosAplicar)
+                    {
+                        <tr>
+                            <td class="text-danger">@item.Code</td>
+                            <td class="text-danger">@item.Column</td>
+                            <td class="text-danger">@item.Detail</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}
 
 @if (ViewBag.Erros != null && ViewBag.rowErros > 0)
 {

@@ -16,8 +16,7 @@ namespace Pedidos.Models
         [Required(ErrorMessage = "O nome é obrigatório")]
         [DisplayName("Nome")]
         public string nombre { get; set; }  
-
-        [Required(ErrorMessage = "O código é obrigatório")]
+                
         [DisplayName("Código")]
         public string codigo { get; set; }  
          

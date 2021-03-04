@@ -14,8 +14,7 @@ namespace Pedidos.Models
     public class P_Productos
     {
         public int id { get; set; }
-
-        [Required(ErrorMessage = "O código é obrigatorio")]
+                
         [DisplayName("Código")]
         public string codigo { get; set; }
 

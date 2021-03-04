@@ -5,252 +5,252 @@
 <div class="container mt-2">
     <form method="post" asp-controller="Imports" asp-action="Producto" enctype="multipart/form-data">
         <div class="custom-file">
-            <input type="file" name="file" id="file" class="custom-file-input" required="false">
+            <input type="file" name="file" id="file" class="custom-file-input" required>
             <label class="custom-file-label" for="file">Escolher arquivo...</label>
         </div>
 
         <div class="form-group mt-2">
             <button type="submit" class="btn btn-outline-secondary">Carregar</button>
-            @if (ViewBag.Categorias != null && ViewBag.Productos != null)
+            @if (ViewBag.Categorias != null && ViewBag.rowErros == 0)
             {
-                <a asp-route-data="aplicar" asp-controller="Imports" asp-action="Producto" class="btn btn-outline-secondary float-right" id="aplicar">Aplicar</a>
+                <a asp-route-data="update" asp-controller="Imports" asp-action="Producto" class="btn btn-outline-secondary float-right" id="aplicar">Salvar e substituir</a> <span> </span>
+                <a asp-route-data="save" asp-controller="Imports" asp-action="Producto" class="btn btn-outline-secondary float-right" id="aplicar">Salvar</a>
             }
         </div>
 
     </form>
 
-</div>
-
-@if (ViewBag.ErrosAplicar != null && ViewBag.rowErrosAplicar > 0)
-{
-    <div class="card m-2">
-        <div class="card-header bg-danger text-white">
-            <div class="row d-flex justify-content-center">
-                <div class="text-center">
-                    ERROS
+    @if (ViewBag.ErrosSalvar != null && ViewBag.rowErrosSalvar > 0)
+    {
+        <div class="card m-2">
+            <div class="card-header bg-danger text-white">
+                <div class="row d-flex justify-content-center">
+                    <div class="text-center">
+                        ERROS
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Código</th>
-                        <th>Coluna</th>
-                        <th>Detalhe</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.ErrosAplicar)
-                    {
+            <div class="card-body">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td class="text-danger">@item.Code</td>
-                            <td class="text-danger">@item.Column</td>
-                            <td class="text-danger">@item.Detail</td>
+                            <th>Código</th>
+                            <th>Coluna</th>
+                            <th>Detalhe</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
-
-@if (ViewBag.Erros != null && ViewBag.rowErros > 0)
-{
-    <div class="card m-2">
-        <div class="card-header bg-danger text-white">
-            <div class="row d-flex justify-content-center">
-                <div class="text-center">
-                    ERROS
-                </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.ErrosSalvar)
+                        {
+                            <tr>
+                                <td class="text-danger">@item.Code</td>
+                                <td class="text-danger">@item.Column</td>
+                                <td class="text-danger">@item.Detail</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>Linha</th>
-                        <th>Código</th>
-                        <th>Coluna</th>
-                        <th>Detalhe</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.Erros)
-                    {
+    }
+
+    @if (ViewBag.Erros != null && ViewBag.rowErros > 0)
+    {
+        <div class="card m-2">
+            <div class="card-header bg-danger text-white">
+                <div class="row d-flex justify-content-center">
+                    <div class="text-center">
+                        ERROS
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td class="text-danger">@item.Row</td>
-                            <td class="text-danger">@item.Code</td>
-                            <td class="text-danger">@item.Column</td>
-                            <td class="text-danger">@item.Detail</td>
+                            <th>Linha</th>
+                            <th>Código</th>
+                            <th>Coluna</th>
+                            <th>Detalhe</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
-
-@if (ViewBag.Categorias != null)
-{
-    <div class="card m-2">
-        <div class="card-header bg-info text-white">
-            <div class="row d-flex justify-content-center">
-                <div class="text-center">
-                    CATEGORIAS
-                </div>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Erros)
+                        {
+                            <tr>
+                                <td class="text-danger">@item.Row</td>
+                                <td class="text-danger">@item.Code</td>
+                                <td class="text-danger">@item.Column</td>
+                                <td class="text-danger">@item.Detail</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-
         </div>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="col-8">
-                            Nome
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in ViewBag.Categorias)
-                    {
+    }
+
+    @if (ViewBag.Categorias != null)
+    {
+        <div class="card m-2">
+            <div class="card-header bg-info text-white">
+                <div class="row d-flex justify-content-center">
+                    <div class="text-center">
+                        CATEGORIAS
+                    </div>
+                </div>
+
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
                         <tr>
-                            <td>
-                                @item.nombre
-                            </td>
-
-                            <td>
-                            </td>
-
+                            <th class="col-8">
+                                Nome
+                            </th>
+                            <th></th>
                         </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-    </div>
-}
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Categorias)
+                        {
+                            <tr>
+                                <td>
+                                    @item.nombre
+                                </td>
 
-@if (ViewBag.Productos != null)
-{
-    <div class="card m-2">
-        <div class="card-header bg-info text-white">
-            <div class="row d-flex justify-content-center">
-                <div class="text-center">
-                    PRODUTOS
-                </div>
+                                <td>
+                                </td>
+
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
         </div>
-        <div class="card-body">
-            <div class="row">
+    }
 
-                @foreach (var producto in ViewBag.Productos)
-                {
-                    var item = (P_Productos)producto;
+    @if (ViewBag.Productos != null)
+    {
+        <div class="card m-2">
+            <div class="card-header bg-info text-white">
+                <div class="row d-flex justify-content-center">
+                    <div class="text-center">
+                        PRODUTOS
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
 
-                    var modalId = $"modal{item.id}";
-                    var imgDataURL = string.Empty;
-                    if (item.imagen != null)
+                    @foreach (var producto in ViewBag.Productos)
                     {
-                        string imreBase64Data = Convert.ToBase64String(item.imagen);
-                        imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
-                    }
+                        var item = (P_Productos)producto;
 
-                    bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue || item.valorTamanho4.HasValue || item.valorTamanho5.HasValue ? true : false;
+                        var modalId = $"modal{item.id}";
+                        var imgDataURL = string.Empty;
+                        if (item.imagen != null)
+                        {
+                            string imreBase64Data = Convert.ToBase64String(item.imagen);
+                            imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                        }
 
-                    <div class="col-12 col-md-6 col-xl-4 mb-2">
-                        <div class="card">
-                            <div class="card-header bg-primary p-2">
-                                <div class="row d-flex align-content-center pl-3">
+                        bool tieneTemanhos = item.valorTamanho1.HasValue || item.valorTamanho2.HasValue || item.valorTamanho3.HasValue || item.valorTamanho4.HasValue || item.valorTamanho5.HasValue ? true : false;
 
-                                    <div>
-                                        @if (item.imagen != null && item.imagen.Length > 0)
-                                        {
-                                            <img class="rounded-circle border border-primary producto-image-50px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
-                                        }
+                        <div class="col-12 col-md-6 col-xl-4 mb-2">
+                            <div class="card">
+                                <div class="card-header bg-primary p-2">
+                                    <div class="row d-flex align-content-center pl-3">
+
+                                        <div>
+                                            @if (item.imagen != null && item.imagen.Length > 0)
+                                            {
+                                                <img class="rounded-circle border border-primary producto-image-50px" src="@imgDataURL" data-toggle="modal" data-target="#@modalId" />
+                                            }
+                                        </div>
+                                        <div class="text-center d-flex align-content-center">
+                                            <b class="ml-2" style="align-items: center; display: flex; color:white">@item.nombre.ToUpper()</b>
+                                        </div>
+
                                     </div>
-                                    <div class="text-center d-flex align-content-center">
-                                        <b class="ml-2" style="align-items: center; display: flex; color:white">@item.nombre.ToUpper()</b>
-                                    </div>
-
                                 </div>
-                            </div>
-                            <div class="card-body">
+                                <div class="card-body">
 
-                                <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
-                                    <div class="modal-dialog modal-dialog-centered" role="document">
-                                        <div class="modal-content" style="background-color: transparent;border: none;">
+                                    <div class="modal fade" id="@modalId" tabindex="-1" role="dialog" aria-labelledby="1#@modalId" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content" style="background-color: transparent;border: none;">
 
-                                            <div class="modal-body">
-                                                <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
+                                                <div class="modal-body">
+                                                    <img style="max-height:500px;max-width:500px;object-fit:cover;border-radius:5px" src="@imgDataURL" data-toggle="modal" data-target="#exampleModalCenter" />
+
+                                                </div>
 
                                             </div>
-
                                         </div>
                                     </div>
-                                </div>
 
-                                <div class="row">
-                                    <table>
-                                        @if (tieneTemanhos)
-                                        {
-                                            <tr>
-                                                <td colspan="2">
-                                                    <div class="d-flex justify-content-between">
-                                                        @if (item.valorTamanho1.HasValue)
-                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
-
-                                                        @if (item.valorTamanho2.HasValue)
-                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
-
-                                                        @if (item.valorTamanho3.HasValue)
-                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
-
-                                                        @if (item.valorTamanho4.HasValue)
-                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho4 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho4.Value.ToString("F2")</div> </div>}
-
-                                                        @if (item.valorTamanho5.HasValue)
-                                                        {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho5 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho5.Value.ToString("F2")</div> </div>}
-
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        }
-                                        else
-                                        {
-                                            <tr>
-                                                <td><b>Preço</b></td>
-                                                <td>: <b style="color:green">R$ @item.valor.ToString("F2")</b> </td>
-                                            </tr>
-                                        }
-                                        <tr>
-                                            <td><b>Categoria</b></td>
-                                            <td>: @item.Categoria</td>
-                                        </tr>
-                                        @if (!string.IsNullOrEmpty(item.tempo))
-                                        {
-                                            <tr>
-                                                <td><b>Tempo</b></td>
-                                                <td>:   <i class="fa fa-clock" style="color:gray"></i> @item.tempo</td>
-                                            </tr>
-                                        }
-                                    </table>
-                                </div>
-                                @if (!string.IsNullOrEmpty(item.descripcion))
-                                {
                                     <div class="row">
-                                        <p>
-                                            <b>Descrição:</b> @item.descripcion
-                                        </p>
+                                        <table>
+                                            @if (tieneTemanhos)
+                                            {
+                                                <tr>
+                                                    <td colspan="2">
+                                                        <div class="d-flex justify-content-between">
+                                                            @if (item.valorTamanho1.HasValue)
+                                                            {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho1 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho1.Value.ToString("F2")</div> </div>}
+
+                                                            @if (item.valorTamanho2.HasValue)
+                                                            {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho2 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho2.Value.ToString("F2")</div> </div>}
+
+                                                            @if (item.valorTamanho3.HasValue)
+                                                            {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho3 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho3.Value.ToString("F2")</div> </div>}
+
+                                                            @if (item.valorTamanho4.HasValue)
+                                                            {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho4 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho4.Value.ToString("F2")</div> </div>}
+
+                                                            @if (item.valorTamanho5.HasValue)
+                                                            {<div class="btn btn-sm btn-secondary   m-1 d-flex">@item.tamanho5 <div class="ml-1" style="color:chartreuse">R$ @item.valorTamanho5.Value.ToString("F2")</div> </div>}
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+                                            else
+                                            {
+                                                <tr>
+                                                    <td><b>Preço</b></td>
+                                                    <td>: <b style="color:green">R$ @item.valor.ToString("F2")</b> </td>
+                                                </tr>
+                                            }
+                                            <tr>
+                                                <td><b>Categoria</b></td>
+                                                <td>: @item.Categoria</td>
+                                            </tr>
+                                            @if (!string.IsNullOrEmpty(item.tempo))
+                                            {
+                                                <tr>
+                                                    <td><b>Tempo</b></td>
+                                                    <td>:   <i class="fa fa-clock" style="color:gray"></i> @item.tempo</td>
+                                                </tr>
+                                            }
+                                        </table>
                                     </div>
-                                }
+                                    @if (!string.IsNullOrEmpty(item.descripcion))
+                                    {
+                                        <div class="row">
+                                            <p>
+                                                <b>Descrição:</b> @item.descripcion
+                                            </p>
+                                        </div>
+                                    }
+                                </div>
+
                             </div>
-
                         </div>
-                    </div>
-                }
+                    }
 
+                </div>
             </div>
         </div>
-    </div>
-}
+    }
+</div>

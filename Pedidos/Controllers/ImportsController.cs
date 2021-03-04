@@ -24,21 +24,9 @@ namespace Pedidos.Controllers
         {
             _context = context;
         }
-
-        // GET: ImportsController
-        public ActionResult Producto()
-        {
-
-            if (!ValidarCuenta())
-            {
-                return RedirectToAction("Salir", "Login");
-            }
-
-            return View();
-        }
-                
+                      
         [HttpGet]
-        public async Task<IActionResult> Producto(string data)
+        public async Task<IActionResult> Producto(string data = "")
         {
 
             if (!ValidarCuenta())
@@ -48,54 +36,150 @@ namespace Pedidos.Controllers
 
             var erros = new List<ErrorDetail>();
 
-            if (GetSession<List<P_Categoria>>("Categorias") != null && data.Equals("aplicar"))
+            if (GetSession<List<P_Categoria>>("Categorias") != null)
             {
-                var categorias = GetSession<List<P_Categoria>>("Categorias");
-                foreach (var item in categorias) {
-                    var result = await _context.P_Categorias.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
-                    if (result.Count > 0)
+                if (data.Equals("save"))
+                {
+                    var categorias = GetSession<List<P_Categoria>>("Categorias");
+                    foreach (var item in categorias)
                     {
-                        erros.Add(new ErrorDetail
-                        {
-                            Code = item.codigo,
-                            Column = "Nome da Categoria",
-                            Detail = "A categoria '"+item.nombre+"' já existe no banco de dados"
-                        });
-                    } else 
-                    {
-                        item.idCuenta = Cuenta.id;
-                        _context.Add(item);
-                        await _context.SaveChangesAsync();
-                    }
-                }
-
-                if (GetSession<List<P_Productos>>("Productos") != null) {
-                    var productos = GetSession<List<P_Productos>>("Productos");
-                    foreach (var item in productos)
-                    {
-                        var result = await _context.P_Productos.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                        var result = await _context.P_Categorias.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
                         if (result.Count > 0)
                         {
                             erros.Add(new ErrorDetail
                             {
                                 Code = item.codigo,
-                                Column = "Nome do Produto",
-                                Detail = "O produto '" + item.nombre + "' já existe no banco de dados"
+                                Column = "Nome da Categoria",
+                                Detail = "A categoria '" + item.nombre + "' já existe no banco de dados"
                             });
                         }
                         else
                         {
-                            var cat = await _context.P_Categorias.Where(x => x.nombre.Equals(item.Categoria)).ToListAsync();
                             item.idCuenta = Cuenta.id;
-                            item.idCategoria = cat.First().id;
                             _context.Add(item);
                             await _context.SaveChangesAsync();
                         }
                     }
-                }
 
-                ViewBag.ErrosAplicar = erros;
-                ViewBag.rowErrosAplicar = erros.Count();
+                    if (GetSession<List<P_Productos>>("Productos") != null)
+                    {
+                        var productos = GetSession<List<P_Productos>>("Productos");
+                        foreach (var item in productos)
+                        {
+                            var result = await _context.P_Productos.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                            if (result.Count > 0)
+                            {
+                                erros.Add(new ErrorDetail
+                                {
+                                    Code = item.codigo,
+                                    Column = "Nome do Produto",
+                                    Detail = "O produto '" + item.nombre + "' já existe no banco de dados"
+                                });
+                            }
+                            else
+                            {                                
+                                var cat = await _context.P_Categorias.Where(x => x.nombre.Equals(item.Categoria)).ToListAsync();
+                                item.idCuenta = Cuenta.id;
+                                item.idCategoria = cat.First().id;
+                                _context.Add(item);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+                }
+                else if (data.Equals("update"))
+                {
+                    var categorias = GetSession<List<P_Categoria>>("Categorias");
+                    foreach (var item in categorias)
+                    {
+                        var result = await _context.P_Categorias.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id && x.codigo == null).ToListAsync();
+                        if (result.Count > 0)
+                        {
+                            erros.Add(new ErrorDetail
+                            {
+                                Code = item.codigo,
+                                Column = "Nome da Categoria",
+                                Detail = "A categoria '" + item.nombre + "' já existe no banco de dados"
+                            });
+                        }
+                        else
+                        {
+                            var cat = await _context.P_Categorias.Where(x => x.codigo.Equals(item.codigo) && x.idCuenta == Cuenta.id).ToListAsync();
+
+                            if (cat.Count > 0)
+                            {
+                                var category = cat.First();
+                                category.nombre = item.nombre;
+                                _context.Update(category);
+                                await _context.SaveChangesAsync();
+                            }
+                            else {
+                                item.idCuenta = Cuenta.id;
+                                _context.Add(item);
+                                await _context.SaveChangesAsync();
+                            }
+                        }
+                    }
+
+                    if (GetSession<List<P_Productos>>("Productos") != null)
+                    {
+                        var productos = GetSession<List<P_Productos>>("Productos");
+                        foreach (var item in productos)
+                        {
+                            var result = await _context.P_Productos.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id && x.codigo == null).ToListAsync();
+                            if (result.Count > 0)
+                            {
+                                erros.Add(new ErrorDetail
+                                {
+                                    Code = item.codigo,
+                                    Column = "Nome do Produto",
+                                    Detail = "O produto '" + item.nombre + "' já existe no banco de dados"
+                                });
+                            }
+                            else
+                            {
+                                var pro = await _context.P_Productos.Where(x => x.codigo.Equals(item.codigo) && x.idCuenta == Cuenta.id).ToListAsync();
+                                var cat = await _context.P_Categorias.Where(x => x.nombre.Equals(item.Categoria)).ToListAsync();
+                                item.idCategoria = cat.First().id;
+
+                                if (pro.Count > 0)
+                                {
+                                    var product = pro.First();
+                                    product.nombre = item.nombre;
+                                    product.idCategoria = item.idCategoria;
+                                    product.valor = item.valor;
+                                    product.horasPreparacion = item.horasPreparacion;
+                                    product.minutosPreparacion = item.minutosPreparacion;
+                                    product.descripcion = item.descripcion;
+                                    product.tamanho1 = item.tamanho1;
+                                    product.valorTamanho1 = item.valorTamanho1;
+                                    product.tamanho2 = item.tamanho2;
+                                    product.valorTamanho2 = item.valorTamanho2;
+                                    product.tamanho3 = item.tamanho3;
+                                    product.valorTamanho3 = item.valorTamanho3;
+                                    product.tamanho4 = item.tamanho4;
+                                    product.valorTamanho4 = item.valorTamanho4;
+                                    product.tamanho5 = item.tamanho5;
+                                    product.valorTamanho5 = item.valorTamanho5;
+
+                                    _context.Update(product);
+                                    await _context.SaveChangesAsync();
+                                }
+                                else
+                                {
+                                    item.idCuenta = Cuenta.id;
+                                    _context.Add(item);
+                                    await _context.SaveChangesAsync();
+                                }
+
+                            }
+                        }
+                    }
+                }
+                
+
+                ViewBag.ErrosSalvar = erros;
+                ViewBag.rowErrosSalvar = erros.Count();
                 //SetSession("Categorias", null);
                 //SetSession("Productos", null);
             }

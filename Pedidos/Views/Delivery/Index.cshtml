@@ -4,10 +4,65 @@
 }
 
 <div id="content">
-    <div class="card">
-        <div class="card-body">
-            ghdg
+
+    <div style="position: fixed; z-index: 1; height: 60px; width: 100vw;">
+        <div class="card card-body bg-primary p-1 m-0">
+            <div class="d-flex justify-content-between">
+
+                <div class="d-flex text-white align-items-center">
+                    <i class="far fa-user-circle fa-2x mr-2"></i>
+                    <span id="cardapioNombreCliente"></span>
+                </div>
+
+                <div>
+
+                    <button id="btnCardapioChatCliente" type="button" class="btn " data-toggle="modal" data-target="#chatCardapioModal">
+                        <i class="far fa-comments fa-2x" style="color:white"></i>
+                        <span class="badge bg-warning" style="vertical-align: top">3</span>
+                    </button>
+
+                    <button type="button" class="btn">
+                        <i class="fas fa-cart-plus fa-2x" style="color:white"></i>
+                        <span class="badge bg-danger" style="vertical-align: top;color: white">R$ 25.00</span>
+                    </button>
+                </div>
+            </div>
         </div>
+    </div>
+
+    <div style="position:absolute;top:58px;left:0;right:0">
+
+        <div class="card-body p-0">
+            <div class="row p-0 m-0">
+                <div class="col-12 m-2 text-center text-uppercase"><strong>San Duba</strong></div>
+                <div class="col-12">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroup-sizing-sm"><i class="fas fa-search"></i></span>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Small" aria-describedby="inputGroup-sizing-sm" placeholder="Buscar produto">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="accordion">
+            <div class="card m-0">
+                <div class="card-header cursor-pointer" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" aria-expanded="true" aria-controls="collapseOne">
+                            Pizza
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        productos
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 

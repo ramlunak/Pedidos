@@ -82,7 +82,71 @@ namespace Pedidos.Models
         public string JsonSabores { get; set; }
 
         //PROPIEDADES AUXILIARES
+        [NotMapped]
+        public bool tieneTamanho1
+        {
+            get
+            {
+                if (this.valorTamanho1.HasValue && this.valorTamanho1.Value > 0)
+                    return true;
+                else return false;
+            }
+        }
 
+        [NotMapped]
+        public bool tieneTamanho2
+        {
+            get
+            {
+                if (this.valorTamanho2.HasValue && this.valorTamanho2.Value > 0)
+                    return true;
+                else return false;
+            }
+        }
+
+        [NotMapped]
+        public bool tieneTamanho3
+        {
+            get
+            {
+                if (this.valorTamanho3.HasValue && this.valorTamanho3.Value > 0)
+                    return true;
+                else return false;
+            }
+        }
+
+        [NotMapped]
+        public bool tieneTamanho4
+        {
+            get
+            {
+                if (this.valorTamanho4.HasValue && this.valorTamanho4.Value > 0)
+                    return true;
+                else return false;
+            }
+        }
+
+        [NotMapped]
+        public bool tieneTamanho5
+        {
+            get
+            {
+                if (this.valorTamanho5.HasValue && this.valorTamanho5.Value > 0)
+                    return true;
+                else return false;
+            }
+        }
+        [NotMapped]
+        public bool tieneTamanhos
+        {
+            get
+            {
+                if (tieneTamanho1 || tieneTamanho2 || tieneTamanho3 || tieneTamanho4 || tieneTamanho5)
+                    return true;
+                else
+                    return false;
+            }
+        }
         [NotMapped]
         public int tiempo_pedido
         {

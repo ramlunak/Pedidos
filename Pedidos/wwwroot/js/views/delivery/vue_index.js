@@ -6,7 +6,8 @@
     data: {
         isLoading: false,
         categorias: [],
-        productos: []
+        productos: [],
+        grupoProductos: []
     },
     methods: {
         newfuntion: function () {
@@ -25,8 +26,9 @@ function CargarDatos() {
         contentType: "application/json; charset=utf-8",
         dataType: "json",
         success: function (data) {
-            app.categorias = data.categorias;
-            app.productos = data.productos;
+            // app.categorias = data.categorias;
+            //app.productos = data.productos;
+            app.grupoProductos = data.grupoProductos;
             console.log(data);
             // this.isLoading = false;
         },

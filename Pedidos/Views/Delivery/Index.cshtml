@@ -47,15 +47,15 @@
         </div>
 
         <div id="accordion">
-            <div class="card m-0">
-                <div class="card-header cursor-pointer" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+            <div v-for="categoria in categorias" class="card m-0">
+                <div class="card-header cursor-pointer" data-toggle="collapse" v-bind:data-target="'#panel_'+categoria.id">
                     <h5 class="mb-0">
                         <button class="btn btn-link" aria-expanded="true" aria-controls="collapseOne">
-                            Pizza
+                            {{categoria.nombre}}
                         </button>
                     </h5>
                 </div>
-                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div v-bind:id="'panel_'+categoria.id" class="collapse show"  data-parent="#accordion">
                     <div class="card-body">
                         productos
                     </div>

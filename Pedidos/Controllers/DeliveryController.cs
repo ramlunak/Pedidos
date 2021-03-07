@@ -23,7 +23,7 @@ namespace Pedidos.Controllers
             ViewBag.Link = id;
             return View();
         }
-         
+
         public async Task<IActionResult> CargarDatos()
         {
             try
@@ -34,7 +34,12 @@ namespace Pedidos.Controllers
                 var categorias = await _context.P_Categorias.Where(x => x.idCuenta == 5 && x.activo).ToListAsync();
                 SetSession("CardapioCategorias", productos);
 
-                return Ok(categorias);
+                var model = new ViewModels.VMCardapioOnline();
+                model.idCuenta = 5;
+                model._Categorias = categorias;
+                model._Productos = productos;
+
+                return Ok(new { categorias, productos });
             }
             catch (Exception ex)
             {

@@ -15,7 +15,6 @@
                 </div>
 
                 <div>
-
                     <button id="btnCardapioChatCliente" type="button" class="btn " data-toggle="modal" data-target="#chatCardapioModal">
                         <i class="far fa-comments fa-2x" style="color:white"></i>
                         <span class="badge bg-warning" style="vertical-align: top">3</span>
@@ -46,11 +45,12 @@
             </div>
         </div>
 
+
         <div id="accordion">
             <div v-for="grupo in grupoProductos" class="card m-0">
                 <div class="card-header cursor-pointer" data-toggle="collapse" v-bind:data-target="'#panel_'+grupo.idCategoria">
                     <h5 class="mb-0">
-                        <i class="fas fa-layer-group"></i>
+                        <i class="fas fa-project-diagram fa-1x mr-2"></i>
                         <button class="btn text-uppercase" aria-expanded="true" aria-controls="collapseOne">
                             {{grupo.categoria}}
                         </button>
@@ -59,7 +59,7 @@
                 <div v-bind:id="'panel_'+grupo.idCategoria" class="collapse hide" data-parent="#accordion">
                     <div class="card-body">
                         <div v-for="producto in grupo.productos" class="cursor-pointer hover pl-1">
-                            <div class="d-block">
+                            <div v-on:click="DetalleProducto(producto.idCuenta,producto.id)" class="d-block">
                                 <div><strong>{{producto.nombre}}</strong></div>
                                 <div>
 
@@ -98,6 +98,106 @@
         </div>
 
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="ModalDetalleProductoTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+
+                    <div class="d-block">
+                        <div>
+                            <h5 class="modal-title" id="ModalDetalleProductoTitle">
+                                {{modalProducto.nombre}}
+                            </h5>
+                        </div>
+                        <div>{{modalValorProducto}}</div>
+                    </div>
+
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    @*ADICIONALES*@
+
+                    <div v-if="modalAdicionales.length > 0" id="accordionAdicionales">
+                        <div class="card border-0">
+                            <div class="card-header bg-transparent text-center" id="headingOne" style="border:none" data-toggle="collapse" data-target="#collapseOne">
+                                <div class="d-flex">
+                                    <hr class="w-100">
+                                    <h5 class="mb-0">
+                                        <button class="btn btn-outline-primary" aria-expanded="true" aria-controls="collapseOne">
+                                            <div class="d-flex">ADICIONALES</div>
+                                        </button>
+                                    </h5>
+                                    <hr class="w-100">
+                                </div>
+                            </div>
+                            <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionAdicionales">
+                                <div class="card-body">
+                                    <div v-for="adicional in modalAdicionales">
+                                        <div class="d-flex">
+                                            <div>{{adicional.nombre}}</div>
+                                            <div></div>
+                                            <div></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*INGREDIENTES*@
+                    <div>
+                        <div>
+                            <div class="d-flex align-content-center">
+                                <hr class="w-100">
+                                <div class="m-1" style="color:gray">INGREDIENTES</div>
+                                <hr class="w-100">
+                            </div>
+                        </div>
+
+                        <div v-for="ingrediente in modalIngredientes">
+                            <div class="d-flex">
+                                <div>{{ingrediente.nombre}}</div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    @*SABORES*@
+                    <!--<div>
+                        <div>
+                            <div class="d-flex align-content-center">
+                                <hr class="w-100">
+                                <div class="m-1" style="color:gray">SABORES</div>
+                                <hr class="w-100">
+                            </div>
+                        </div>
+
+                        <div v-for="ingrediente in modalIngredientes">
+                            <div class="d-flex">
+                                <div>{{ingrediente.nombre}}</div>
+                                <div></div>
+                                <div></div>
+                            </div>
+                        </div>
+                    </div>-->
+
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 @section Scripts{

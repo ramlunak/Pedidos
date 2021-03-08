@@ -100,7 +100,7 @@
     </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="ModalDetalleProductoTitle" aria-hidden="true">
+    <div style="font-size:15px" class="modal fade" id="ModalDetalleProducto" tabindex="-1" role="dialog" aria-labelledby="ModalDetalleProductoTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -140,13 +140,13 @@
                                     <div v-for="adicional in modalAdicionales">
                                         <div class="d-flex justify-content-between">
                                             <div>
-                                                <span v-if="adicional.cantidad > 0">{{adicional.cantidad}}</span>
+                                                <span v-if="adicional.cantidad > 0" style="color:blue">+{{adicional.cantidad}}</span>
                                                 {{adicional.nombre}}
                                             </div>
                                             <div class="d-flex align-items-center">
                                                 <div>R$ {{adicional.valor.toFixed(2)}}</div>
-                                                <div><button class="btn p-1 ml-2"><i class="fa fa-minus cursor-pointer"></i></button></div>
-                                                <div><button class="btn p-1 ml-2"><i class="fa fa-plus cursor-pointer"></i></button></div>
+                                                <div><button class="btn p-1 ml-2" v-on:click="MinusAdicional(adicional.id)"><i style="font-size:20px" class="fa fa-minus cursor-pointer"></i></button></div>
+                                                <div><button class="btn p-1 ml-2" v-on:click="PlusAdicional(adicional.id)"><i style="font-size:20px" class="fa fa-plus cursor-pointer"></i></button></div>
                                             </div>
                                         </div>
                                     </div>
@@ -166,10 +166,9 @@
                         </div>
 
                         <div v-for="ingrediente in modalIngredientes">
-                            <div class="d-flex">
-                                <div>{{ingrediente.nombre}}</div>
-                                <div></div>
-                                <div></div>
+                            <div class="d-flex justify-content-between">
+                                <div> {{ingrediente.nombre}}</div>
+                                <input type="checkbox" v-model="ingrediente.selected" />
                             </div>
                         </div>
                     </div>

@@ -22,6 +22,16 @@
         },
         CloseModalDetalle: function () {
             $('#ModalDetalleProducto').modal('hide');
+        },
+        PlusAdicional: function (id) {
+            this.modalAdicionales.find(x => x.id === id).cantidad++;
+            console.log(app.modalIngredientes);
+        },
+        MinusAdicional: function (id) {
+            var cantidad = this.modalAdicionales.find(x => x.id === id).cantidad;
+            if (cantidad > 0) {
+                this.modalAdicionales.find(x => x.id === id).cantidad--;
+            }
         }
     }
 });

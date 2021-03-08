@@ -64,6 +64,7 @@ namespace Pedidos.Controllers
                     if (GetSession<List<P_Productos>>("Productos") != null)
                     {
                         var productos = GetSession<List<P_Productos>>("Productos");
+                        int i = 0;
                         foreach (var item in productos)
                         {
                             var result = await _context.P_Productos.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
@@ -83,9 +84,35 @@ namespace Pedidos.Controllers
                                 item.idCategoria = cat.First().id;
                                 _context.Add(item);
                                 await _context.SaveChangesAsync();
+
+                                if (GetSession<List<List<P_Ingredientes>>>("Ingredientes") != null)
+                                {
+                                    var ingredientes = GetSession<List<List<P_Ingredientes>>>("Ingredientes");
+                                    foreach (var dat in ingredientes[i])
+                                    {
+                                        var ing = await _context.P_Ingredientes.Where(x => x.nombre.Equals(dat.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                                        if (ing.Count == 0)
+                                        {
+                                            dat.idCuenta = Cuenta.id;
+                                            _context.Add(dat);
+                                            await _context.SaveChangesAsync();
+                                        }
+
+                                        var pro = await _context.P_Productos.Where(x => x.codigo.Equals(item.codigo) && x.idCuenta == Cuenta.id).ToListAsync();
+                                        var product = pro.First();
+                                        await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {product.id},@idCuenta = {Cuenta.id}");
+
+                                        var ingredients = await _context.P_Ingredientes.Where(x => x.nombre.Equals(dat.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                                        var ingredient = ingredients.First();
+
+                                        await _context.Database.ExecuteSqlRawAsync($"EXEC AddIngredienteInProducto @idIngrediente = {ingredient.id},  @idProducto = {product.id},@idCuenta = {Cuenta.id}");
+                                    }
+                                }
                             }
+                            i++;
                         }
                     }
+                                        
                 }
                 else if (data.Equals("update"))
                 {
@@ -124,6 +151,7 @@ namespace Pedidos.Controllers
                     if (GetSession<List<P_Productos>>("Productos") != null)
                     {
                         var productos = GetSession<List<P_Productos>>("Productos");
+                        int i = 0;
                         foreach (var item in productos)
                         {
                             var result = await _context.P_Productos.Where(x => x.nombre.Equals(item.nombre) && x.idCuenta == Cuenta.id && x.codigo == null).ToListAsync();
@@ -172,7 +200,31 @@ namespace Pedidos.Controllers
                                     await _context.SaveChangesAsync();
                                 }
 
+                                if (GetSession<List<List<P_Ingredientes>>>("Ingredientes") != null)
+                                {
+                                    var ingredientes = GetSession<List<List<P_Ingredientes>>>("Ingredientes");
+                                    foreach (var dat in ingredientes[i])
+                                    {
+                                        var ing = await _context.P_Ingredientes.Where(x => x.nombre.Equals(dat.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                                        if (ing.Count == 0)
+                                        {
+                                            dat.idCuenta = Cuenta.id;
+                                            _context.Add(dat);
+                                            await _context.SaveChangesAsync();
+                                        }
+                                        pro = await _context.P_Productos.Where(x => x.codigo.Equals(item.codigo) && x.idCuenta == Cuenta.id).ToListAsync();
+                                        var product = pro.First();
+                                        await _context.Database.ExecuteSqlRawAsync($"EXEC InsertIfNotExistIngredientesProducto  @idProducto = {product.id},@idCuenta = {Cuenta.id}");
+                                        await _context.Database.ExecuteSqlRawAsync($"EXEC DeleteIngredientesInProducto  @idProducto = {product.id},@idCuenta = {Cuenta.id}");
+
+                                        var ingredients = await _context.P_Ingredientes.Where(x => x.nombre.Equals(dat.nombre) && x.idCuenta == Cuenta.id).ToListAsync();
+                                        var ingredient = ingredients.First();
+
+                                        await _context.Database.ExecuteSqlRawAsync($"EXEC AddIngredienteInProducto @idIngrediente = {ingredient.id},  @idProducto = {product.id},@idCuenta = {Cuenta.id}");
+                                    }
+                                }
                             }
+                            i++;
                         }
                     }
                 }
@@ -211,6 +263,7 @@ namespace Pedidos.Controllers
 
             var categorias = new List<P_Categoria>();
             var productos = new List<P_Productos>();
+            var ingredientes = new List<List<P_Ingredientes>>();
             var erros = new List<ErrorDetail>();
 
             //CARGAR CATEGORIAS
@@ -304,6 +357,13 @@ namespace Pedidos.Controllers
                                 var valorTamanho4 = reader.GetValue(17);
                                 var tamanho5 = reader.GetValue(18);
                                 var valorTamanho5 = reader.GetValue(19);
+                                var cantidadSabores = reader.GetValue(20);
+                                var valorSabor = reader.GetValue(21);
+                                var actualizarValorSaborMayor = false;
+                                var actualizarValorSaborMenor = false;
+                                var actualizarValorSaborMedia = false;  
+                                var ingred = reader.GetValue(22);
+                                var ing = new List<P_Ingredientes>();
 
                                 if (nomeProducto == null)
                                 {
@@ -434,6 +494,53 @@ namespace Pedidos.Controllers
                                     errorProducto = true;
                                 }
 
+                                if (cantidadSabores == null || cantidadSabores.ToString().IsNullOrEmtpy())
+                                {
+                                    erros.Add(new ErrorDetail
+                                    {
+                                        Row = row,
+                                        Code = codigoProducto.ToString().Trim(),
+                                        Column = "Sabores",
+                                        Detail = "O número de sabores é obrigatória"
+                                    });
+                                    errorProducto = true;
+                                }
+                                
+                                switch (valorSabor.ToString()) {
+                                    case "O valor do produto será o maior": 
+                                        {
+                                            actualizarValorSaborMayor = true;
+                                            break; 
+                                        }
+
+                                    case "O valor do produto será o menor": 
+                                        {
+                                            actualizarValorSaborMenor = true;
+                                            break;
+                                        }
+
+                                    case "O valor do produto será a média":
+                                        {
+                                            actualizarValorSaborMedia = true;
+                                            break;
+                                        }
+
+                                    default: 
+                                        {
+                                            break;
+                                        }
+                                }                                
+
+                                if (ingred != null)
+                                {
+                                    string[] arr = ingred.ToString().Split(",");
+                                    foreach (var item in arr) {
+                                        ing.Add(new P_Ingredientes { 
+                                            nombre = item
+                                        });
+                                    }
+                                }
+
                                 if (!errorProducto)
                                 {
                                     productos.Add(new P_Productos
@@ -455,8 +562,13 @@ namespace Pedidos.Controllers
                                         valorTamanho4 = valorTamanho4 is null ? 0 : Convert.ToDecimal(valorTamanho4.ToString().Trim().Replace(",", ".")),
                                         tamanho5 = tamanho5?.ToString().Trim(),
                                         valorTamanho5 = valorTamanho5 is null ? 0 : Convert.ToDecimal(valorTamanho5.ToString().Trim().Replace(",", ".")),
+                                        cantidadSabores = Convert.ToInt32(cantidadSabores.ToString().Trim()),
+                                        actualizarValorSaborMayor = actualizarValorSaborMayor,
+                                        actualizarValorSaborMenor = actualizarValorSaborMenor,
+                                        actualizarValorMediaSabores = actualizarValorSaborMedia
 
                                     });
+                                    ingredientes.Add(ing);
                                 }
 
                             }
@@ -476,7 +588,8 @@ namespace Pedidos.Controllers
             ViewBag.rowErros = erros.Count();
 
             SetSession("Categorias", categorias);
-            SetSession("Productos", productos);                       
+            SetSession("Productos", productos);
+            SetSession("Ingredientes", ingredientes);
 
             return View();
         }

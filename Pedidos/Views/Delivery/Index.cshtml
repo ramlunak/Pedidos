@@ -123,7 +123,7 @@
                     @*ADICIONALES*@
 
                     <div v-if="modalAdicionales.length > 0" id="accordionAdicionales">
-                        <div class="card border-0">
+                        <div class="card p-0 border-0">
                             <div class="card-header bg-transparent text-center" id="headingOne" style="border:none" data-toggle="collapse" data-target="#collapseOne">
                                 <div class="d-flex">
                                     <hr class="w-100">
@@ -136,12 +136,18 @@
                                 </div>
                             </div>
                             <div id="collapseOne" class="collapse hide" aria-labelledby="headingOne" data-parent="#accordionAdicionales">
-                                <div class="card-body">
+                                <div class="card-body p-0">
                                     <div v-for="adicional in modalAdicionales">
-                                        <div class="d-flex">
-                                            <div>{{adicional.nombre}}</div>
-                                            <div></div>
-                                            <div></div>
+                                        <div class="d-flex justify-content-between">
+                                            <div>
+                                                <span v-if="adicional.cantidad > 0">{{adicional.cantidad}}</span>
+                                                {{adicional.nombre}}
+                                            </div>
+                                            <div class="d-flex align-items-center">
+                                                <div>R$ {{adicional.valor.toFixed(2)}}</div>
+                                                <div><button class="btn p-1 ml-2"><i class="fa fa-minus cursor-pointer"></i></button></div>
+                                                <div><button class="btn p-1 ml-2"><i class="fa fa-plus cursor-pointer"></i></button></div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

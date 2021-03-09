@@ -175,23 +175,22 @@
 
 
                     @*SABORES*@
-                    <!--<div>
+                    <div>
                         <div>
                             <div class="d-flex align-content-center">
                                 <hr class="w-100">
-                                <div class="m-1" style="color:gray">SABORES</div>
+                                <div class="m-1" style="color:gray">INGREDIENTES</div>
                                 <hr class="w-100">
                             </div>
                         </div>
 
-                        <div v-for="ingrediente in modalIngredientes">
-                            <div class="d-flex">
-                                <div>{{ingrediente.nombre}}</div>
-                                <div></div>
-                                <div></div>
+                        <div v-for="sabor in modalProducto.sabores">
+                            <div class="d-flex justify-content-between">
+                                <div> {{sabor.nombre}}</div>
+                                <input type="checkbox" v-model="ingrediente.selected" />
                             </div>
                         </div>
-                    </div>-->
+                    </div>
 
 
                 </div>

@@ -30,7 +30,7 @@ namespace Pedidos.Controllers
                 return RedirectToAction("Salir", "Login");
             }
 
-            var model = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id).Take(50).ToListAsync();
+            var model = await _context.P_Caja.Where(x => x.idCuenta == Cuenta.id).OrderByDescending(x=>x.id).Take(50).ToListAsync();
             ViewBag.CajaAbierta = model.Any(x => x.isOpen);
 
             if (model.Any(x => x.isOpen))

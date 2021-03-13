@@ -84,7 +84,7 @@ namespace Pedidos
             string connection = "";
 
 #if DEBUG
-            connection = Configuration.GetConnectionString("ConnectionStringProduction");
+            connection = Configuration.GetConnectionString("ConnectionStringDev");
 #else
             connection = Configuration.GetConnectionString("ConnectionStringProduction");
 #endif
